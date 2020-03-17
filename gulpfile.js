@@ -5,7 +5,11 @@
 // npm i -g gulp-cli
 
 // devDependencies (-D | --save-dev)
-// npm i -D babel-core babel-loader@7 babel-preset-env babel-preset-latest browser-sync commonjs gulp gulp-autoprefixer gulp-changed gulp-clean gulp-cli gulp-commonjs gulp-concat gulp-cssmin gulp-htmlclean gulp-htmlmin gulp-if gulp-imagemin gulp-inline-css gulp-less gulp-notify gulp-plumber gulp-pug gulp-real-favicon gulp-rename gulp-rigger gulp-sass gulp-sourcemaps gulp-typescript gulp-uglify gulp-util gulp-watch imgminify less-plugin-lists rimraf tslib typescript webpack webpack-stream
+// npm i -D @babel/core @babel/node @babel/cli @babel/preset-env @babel/plugin-transform-runtime @babel/runtime babel-loader webpack webpack-dev-server webpack-cli
+// npm i -D babel-core babel-preset-env babel-preset-latest typescript webpack-stream
+// npm i -D browser-sync gulp gulp-autoprefixer gulp-changed gulp-clean gulp-cli gulp-commonjs gulp-concat gulp-cssmin gulp-htmlclean gulp-htmlmin gulp-if gulp-imagemin gulp-inline-css gulp-less gulp-notify gulp-plumber gulp-pug gulp-real-favicon gulp-rename gulp-rigger gulp-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch imgminify less-plugin-lists rimraf
+
+// npm install --save-dev @babel/core @babel/node @babel/cli @babel/preset-env @babel/plugin-transform-runtime @babel/runtime babel-loader webpack webpack-dev-server webpack-cli
 
 // devDependencies (-S | --save)
 // npm i -S animate.css bootstrap clipboard fancybox jquery jquery-modal jquery.maskedinput
@@ -38,12 +42,10 @@ const gulp = require('gulp'), // сам gulp
 	ImgMinify = require('imgminify'),
 	fs = require('fs'), // работа с файловой системой 
 	htmlclean = require('gulp-htmlclean'),
-	//gulpCommonJS = require('gulp-commonjs'),
-	//ts = require('gulp-typescript'),
-	//tsProject = ts.createProject('tsconfig.json'),
 	webpack = require('webpack'),
 	webpackStream = require('webpack-stream'),
-	webpackConfig = require('./webpack.config.js');
+	webpackConfig = require('./webpack.config.js'),
+	dir = require('path');
 
 // Переменные проекта
 
@@ -98,6 +100,10 @@ gulp.task('clean:root', function (done) {
 	rimraf(root + path.clean, done);
 });
 
+gulp.task('clean:webpack', function (done) {
+	rimraf(root + 'webpack', done);
+});
+
 gulp.task('html', function (done) {
 	gulp.src(src + 'html/**/*')
 		.pipe(htmlclean())
@@ -112,30 +118,18 @@ gulp.task('js', function (done) {
 	done();
 });
 
-gulp.task('webpack', function (done) {
+gulp.task('build:webpack', function (done) {
 	gulp.src(src + 'js/**/*.js')
 		.pipe(webpackStream(webpackConfig), webpack)
-		.pipe(gulp.dest(root + 'webpack'));
+		//.pipe(gulp.dest(root + 'webpack'));
 	done();
 });
 
-//gulp.task('commonjs', function (done) {
-//	gulp.src(src + 'js_dev/**/*.js')
-//		.pipe(gulpCommonJS())
-//		.pipe(gulp.dest(root + 'commonjs'));
-//	done();
-//});
-
-//gulp.task('ts', function () {
-//	var tsResult = gulp.src(src + 'ts/**/*.ts') // or tsProject.src()
-//		.pipe(tsProject());
-
-//	return tsResult.js.pipe(gulp.dest(root + 'ts'));
-//});
-
 // Execution
 
-gulp.task('root', gulp.series(gulp.parallel('js', 'webpack'), 'html'));
+gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
+
+gulp.task('root', gulp.series('clean:webpack', gulp.parallel('js', 'webpack'), 'html'));
 
 // задача по умолчанию
 

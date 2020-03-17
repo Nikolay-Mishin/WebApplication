@@ -25,10 +25,8 @@
 		// "noImplicitUseStrict": false,
 		// "noLib": false,
 		"paths": {
-			"tslib": [ "node_modules/tslib/tslib.d.ts" ],
+			// "tslib": [ "node_modules/tslib/tslib.d.ts" ],
 			"jquery": [ "node_modules/jquery/dist/jquery" ]
-			// "commonjs": [ "node_modules/commonjs/lib/system" ],
-
 		},
 		"removeComments": false,
 		"sourceMap": true,
