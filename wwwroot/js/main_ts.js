@@ -1,19 +1,34 @@
 ﻿"use strict";
 // ts/lib.ts
-define("lib", ["require", "exports"], function (require, exports) {
+System.register("lib", [], function (exports_1, context_1) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
+    var __moduleName = context_1 && context_1.id;
     function foo() {
         window.console.log("ts/lib.ts");
     }
-    exports.foo = foo;
+    exports_1("foo", foo);
+    return {
+        setters: [],
+        execute: function () {
+        }
+    };
 });
-define("app", ["require", "exports", "lib"], function (require, exports, lib) {
+System.register("app", ["lib"], function (exports_2, context_2) {
     "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    // ts/app.ts
-    window.console.log("ts/app.ts");
-    window.console.log(lib.foo);
+    var lib;
+    var __moduleName = context_2 && context_2.id;
+    return {
+        setters: [
+            function (lib_1) {
+                lib = lib_1;
+            }
+        ],
+        execute: function () {
+            // ts/app.ts
+            window.console.log("ts/app.ts");
+            window.console.log(lib.foo);
+        }
+    };
 });
 // index.ts
 window.console.log("index.ts");
@@ -39,4 +54,4 @@ window.onload = function () {
     var greeter = new Greeter(el);
     greeter.start();
 };
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=main_ts.js.map
