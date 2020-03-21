@@ -6,13 +6,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Client\js\app.ts" />
+    <None Remove="Client\js\index.ts" />
+    <None Remove="Client\js\lib.ts" />
+    <None Remove="Client\js\main.ts" />
+    <None Remove="Client\ts\app.ts" />
+    <None Remove="Client\ts\index.ts" />
+    <None Remove="Client\ts\lib.ts" />
+    <None Remove="Client\ts\main.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="Client\ts\index.ts" />
-	  <TypeScriptCompile Include="Client\ts\app.ts" />
+	  <Content Include="Client\js\app.ts">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Include="Client\ts\app.ts">
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <TypeScriptCompile Include="Client\js\index.ts" />
+	  <TypeScriptCompile Include="Client\js\lib.ts" />
+	  <TypeScriptCompile Include="Client\js\main.ts" />
+	  <TypeScriptCompile Include="Client\ts\index.ts" />
 	  <TypeScriptCompile Include="Client\ts\lib.ts" />
 	  <TypeScriptCompile Include="Client\ts\main.ts" />
   </ItemGroup>
@@ -21,10 +40,6 @@
     <Content Update="tsconfig.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Client\js\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

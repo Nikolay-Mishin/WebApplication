@@ -31,18 +31,18 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es5",
-		// "rootDir": "Client",
-		"outDir": "Client/js"
-		// "outFile": "Client/js/main.js"
+		"rootDir": "Client",
+		"outDir": "wwwroot/js"
+		// "outFile": "wwwroot/js/main.js"
 	},
 	"exclude": [
 		"node_modules",
 		"gulpfile.js",
 		"wwwroot",
-		"Client/js"
+		"Client/js/**/*.js"
 	],
 	"include": [
-		"Client/ts"
+		//"Client/ts/**/*.ts"
 	]
 }
 
@@ -122,7 +122,7 @@
 	"outDir": "wwwroot"
 		// Перенаправить структуру вывода в каталог
 		// Определяет корневой каталог входных файлов. Используйте только для управления структурой выходного каталога --outDir
-	"outFile": "./wwwroot/scripts/main.js",
+	"outFile": "wwwroot/js/main.js",
 		// Объединить и выдать вывод в один файл. Порядок конкатенации определяется списком файлов, передаваемых компилятору в командной строке, а также ссылками и импортом с тройной косой чертой. См. Документацию заказа выходного файла (https://github.com/Microsoft/TypeScript/wiki/FAQ#how-do-i-control-file-ordering-in-combined-output---out-) для более подробной информации
 },
 "exclude": [

@@ -129,7 +129,7 @@ gulp.task('build:webpack', function (done) {
 
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
-gulp.task('root', gulp.series('clean:webpack', gulp.parallel('js', 'webpack'), 'html'));
+gulp.task('root', gulp.series('clean:webpack', gulp.parallel('js'), 'html'));
 
 // задача по умолчанию
 

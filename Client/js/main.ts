@@ -1,6 +1,6 @@
 // ts/main.ts
 
-class Greeter {
+class GreeterJS {
 	private element: HTMLElement;
 	private span: HTMLElement;
 	private timerToken: number;
@@ -23,6 +23,6 @@ class Greeter {
 
 window.onload = () => {
 	const el = document.body;
-	const greeter = new Greeter(el);
+	const greeter = new GreeterJS(el);
 	greeter.start();
 };
