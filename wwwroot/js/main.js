@@ -1,4 +1,22 @@
 ﻿"use strict";
+// ts/lib.ts
+define("lib", ["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    function foo() {
+        window.console.log("ts/lib.ts");
+    }
+    exports.foo = foo;
+});
+define("app", ["require", "exports", "lib"], function (require, exports, lib) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    // ts/app.ts
+    window.console.log("ts/app.ts");
+    window.console.log(lib.foo);
+});
+// index.ts
+window.console.log("index.ts");
 // ts/main.ts
 var Greeter = /** @class */ (function () {
     function Greeter(element) {

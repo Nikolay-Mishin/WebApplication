@@ -16,7 +16,7 @@
 			"es2015",
 			"es6"
 		],
-		"module": "commonjs",
+		"module": "system",
 		"moduleResolution": "node",
 		"newLine": "crlf",
 		"noEmitOnError": true,
@@ -25,15 +25,15 @@
 		// "noImplicitUseStrict": false,
 		// "noLib": false,
 		"paths": {
-			// "tslib": [ "node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "node_modules/jquery/dist/jquery" ]
+			"tslib": [ "./../../../../node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "./../../../../node_modules/jquery/dist/jquery" ]
 		},
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es5",
 		// "rootDir": "Client/ts",
-		"outDir": "wwwroot/js"
-		// "outFile": "wwwroot/js/main.js"
+		//"outDir": "wwwroot/js"
+		 "outFile": "wwwroot/js/main_ts.js"
 	},
 	"exclude": [
 		"node_modules",
@@ -65,7 +65,7 @@
 	"emitBOM": true,
 		// Излучите метку порядка байтов UTF-8 (BOM) в начале выходных файлов
 	"importHelpers": true,
-		// Импорт помощников (например __extends, __restи т. Д.) Из tslib
+		// Импорт помощников (например __extends, __rest и т. Д.) Из tslib
 		// https://www.npmjs.com/package/tslib
 	"lib": [
 		"es2016",
@@ -78,8 +78,8 @@
 	"module": "commonjs",
 		// Укажите генерацию кода модуля: "None", "CommonJS", "AMD", "System", "UMD", "ES6", "ES2015"или "ESNext".
 		// target === "ES3" or "ES5" ? "CommonJS" : "ES6"
-			► Только "AMD"и "System" может использоваться вместе с --outFile.
-			► "ES6"и "ES2015"значения могут быть использованы при нацеливании "ES5"или ниже
+			► Только "AMD" и "System" может использоваться вместе с --outFile.
+			► "ES6"и "ES2015" значения могут быть использованы при нацеливании "ES5"или ниже
 	"moduleResolution": "node", // module === "AMD" or "System" or "ES6" ? "Classic" : "Node"
 		// Определите, как модули разрешаются. Либо "Node"для разрешения стиля Node.js / io.js, либо "Classic"
 	"newLine": "crlf",

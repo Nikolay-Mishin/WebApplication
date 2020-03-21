@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:js' AfterBuild='html' />
+/// <binding BeforeBuild='clean:js' AfterBuild='html, webpack' />
 'use strict';
 
 // global (-g)
@@ -75,7 +75,12 @@ let path = {
 			scss: 'src/scss/**/*.scss',
 			js: 'src/js/**/*.js'
 		},
-		clean: '**/*' // путь очистки директории для сборки
+		clean: { // путь очистки директории для сборки
+			root: '**/*',
+			html: root + 'html',
+			js: root + 'js',
+			webpack: root + 'webpack'
+		}
 	},
 	// конфигурация browser sync
 	config = {
@@ -97,15 +102,15 @@ let path = {
 	};
 
 gulp.task('clean:root', function (done) {
-	rimraf(root + path.clean, done);
+	rimraf(path.clean.root, done);
 });
 
 gulp.task('clean:webpack', function (done) {
-	rimraf(root + 'webpack', done);
+	rimraf(path.clean.webpack, done);
 });
 
 gulp.task('clean:js', function (done) {
-	rimraf(root + 'js', done);
+	rimraf(path.clean.js, done);
 });
 
 gulp.task('html', function (done) {
