@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:js' />
+/// <binding BeforeBuild='clean:js' AfterBuild='html' />
 'use strict';
 
 // global (-g)
