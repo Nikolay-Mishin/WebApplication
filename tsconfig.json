@@ -31,7 +31,7 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es5",
-		"rootDir": "Client",
+		// "rootDir": "Client/ts",
 		"outDir": "wwwroot/js"
 		// "outFile": "wwwroot/js/main.js"
 	},
@@ -39,10 +39,10 @@
 		"node_modules",
 		"gulpfile.js",
 		"wwwroot",
-		"Client/js/**/*.js"
+		"Client/js"
 	],
 	"include": [
-		//"Client/ts/**/*.ts"
+		"Client/ts"
 	]
 }
 
@@ -129,7 +129,7 @@
 	"wwwroot",
 	"node_modules",
 	"gulpfile.js",
-	"Client/**_dev"
+	"Client/**_/*.js"
 ],
 "include": [
 	"Client"

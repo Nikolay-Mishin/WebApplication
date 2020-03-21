@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:root' AfterBuild='default' />
+/// <binding BeforeBuild='clean:js' />
 'use strict';
 
 // global (-g)
@@ -102,6 +102,10 @@ gulp.task('clean:root', function (done) {
 
 gulp.task('clean:webpack', function (done) {
 	rimraf(root + 'webpack', done);
+});
+
+gulp.task('clean:js', function (done) {
+	rimraf(root + 'js', done);
 });
 
 gulp.task('html', function (done) {

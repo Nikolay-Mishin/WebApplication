@@ -9,7 +9,6 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		path: path.join(__dirname, '/wwwroot'),
-
 		publicPath: '/wwwroot',
 		// library: 'app',
 		// libraryTarget: 'umd',
