@@ -29,11 +29,11 @@ const path = require('path');
 module.exports = {
 	mode: 'none', // development | production
 	entry: {
-		app: path.join(__dirname, '/Client/js/app.js')
+		app: './Client/js/app.js'
 	},
 	output: {
 		filename: '[name].js',
-		path: path.join(__dirname, '/wwwroot'),
+		path: path.resolve(__dirname, 'wwwroot'),
 		publicPath: '/wwwroot',
 		//library: 'App',
 		//libraryTarget: 'umd',
@@ -42,8 +42,9 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
+				test: /\.(js)$/,
 				exclude: /(node_modules|bower_components)/,
+				include: path.resolve(__dirname, 'Client/js'),
 				loader: 'babel-loader',
 				query: {
 					presets: ["env"],
@@ -51,27 +52,31 @@ module.exports = {
 			},
 		],
 	},
-//	devtool: 'source-map',
-//	optimization: {
-//		minimize: false,
-//	},
-//	resolve: {
-//		modules: ['node_modules'],
-//		//alias: {
-//		//	Utilities: path.resolve(__dirname, 'src/utilities/'),
-//		//	Templates: path.resolve(__dirname, 'src/templates/')
-//		//}
-//	},
-//	plugins: [
-//		new webpack.ProvidePlugin({
-//			$: "jquery",
-//			jQuery: "jquery"
-//		})
-//	]
+	devtool: 'source-map',
+	optimization: {
+		minimize: false,
+	},
+	externals: {
+		jquery: 'jQuery'
+	},
+	resolve: {
+		modules: ['../../../../node_modules'],
+		//extensions: ['', '.js', '.ts'],
+		// import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
+		alias: {
+			Utilities: path.resolve(__dirname, 'src/utilities/')
+		}
+	},
+	plugins: [
+		new webpack.ProvidePlugin({
+			$: 'jQuery',
+			jQuery: 'jQuery'
+		})
+	]
 };
 
 console.log(__dirname);
-console.log(path.join(__dirname, '/wwwroot'));
+console.log(path.resolve(__dirname, 'wwwroot'));
 
 console.log(module.exports.entry.app);
 console.log(module.exports.output.path);

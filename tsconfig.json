@@ -4,10 +4,10 @@
 		"allowJs": true,
 		"alwaysStrict": true,
 		"baseUrl": ".",
-		// "checkJs": true,
+		"checkJs": true,
 		"charset": "utf-8",
-		// "declaration": true,
-		"emitBOM": true,
+		//"declaration": true,
+		//"emitBOM": true,
 		"importHelpers": true,
 		"lib": [
 			"es2016",
@@ -16,14 +16,14 @@
 			"es2015",
 			"es6"
 		],
-		"module": "system",
+		"module": "amd",
 		"moduleResolution": "node",
 		"newLine": "crlf",
 		"noEmitOnError": true,
-		// "noEmitHelpers": false,
+		"noEmitHelpers": false,
 		"noImplicitAny": false,
-		// "noImplicitUseStrict": false,
-		// "noLib": false,
+		//"noImplicitUseStrict": false,
+		"noLib": false,
 		"paths": {
 			"tslib": [ "./../../../../node_modules/tslib/tslib.d.ts" ],
 			"jquery": [ "./../../../../node_modules/jquery/dist/jquery" ]
@@ -31,9 +31,9 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es5",
-		// "rootDir": "Client/ts",
+		//"rootDir": "Client/ts",
 		//"outDir": "wwwroot/js"
-		 "outFile": "wwwroot/js/main_ts.js"
+		 "outFile": "wwwroot/js/main.js"
 	},
 	"exclude": [
 		"node_modules",
@@ -59,7 +59,7 @@
 		// Базовый каталог для разрешения не относительных имен модулей. См. Раздел «Разрешение модуля» для получения более подробной информации
 		// https://www.typescriptlang.org/docs/handbook/module-resolution.html#base-url
 	"checkJs": true,
-		// Сообщить об ошибках в .jsфайлах. Используйте в сочетании с --allowJs
+		// Сообщить об ошибках в .js файлах. Используйте в сочетании с --allowJs
 	"charset": "utf-8",
 		// Набор символов входных файлов
 	"emitBOM": true,
@@ -92,7 +92,7 @@
 	"noImplicitAny": false,
 		// Поднимите ошибку в выражениях и объявлениях с подразумеваемым anyтипом
 	"noImplicitUseStrict": false,
-		// Не испускайте "use strict"директивы при выводе модуля
+		// Не испускайте "use strict" директивы при выводе модуля
 	"noLib": false,
 		// Не включайте файл библиотеки по умолчанию ( lib.d.ts)
 	"paths": {
@@ -104,7 +104,7 @@
 	"removeComments": false,
 		// Удалите все комментарии, кроме комментариев к заголовку с копией права /*!
 	"sourceMap": true,
-		// Создает соответствующий .mapфайл
+		// Создает соответствующий .map файл
 	"target": "es6",
 		// Укажите целевую версию ECMAScript:
 			► "ES3"(по умолчанию)

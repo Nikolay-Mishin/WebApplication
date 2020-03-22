@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:js' AfterBuild='html, webpack' />
+/// <binding />
 'use strict';
 
 // global (-g)
@@ -76,7 +76,7 @@ let path = {
 			js: 'src/js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
-			root: '**/*',
+			root: '**',
 			html: root + 'html',
 			js: root + 'js',
 			webpack: root + 'webpack'
@@ -105,22 +105,27 @@ gulp.task('clean:root', function (done) {
 	rimraf(path.clean.root, done);
 });
 
-gulp.task('clean:webpack', function (done) {
-	rimraf(path.clean.webpack, done);
+
+gulp.task('clean:html', function (done) {
+	rimraf(path.clean.js, done);
 });
 
 gulp.task('clean:js', function (done) {
 	rimraf(path.clean.js, done);
 });
 
-gulp.task('html', function (done) {
+gulp.task('clean:webpack', function (done) {
+	rimraf(path.clean.webpack, done);
+});
+
+gulp.task('build:html', function (done) {
 	gulp.src(src + 'html/**/*')
 		.pipe(htmlclean())
 		.pipe(gulp.dest(root + 'html/'));
 	done();
 });
 
-gulp.task('js', function (done) {
+gulp.task('build:js', function (done) {
 	gulp.src(src + 'js/**/*.js')
 		// .pipe(uglify())
 		.pipe(gulp.dest(root + 'js/'));
@@ -130,15 +135,20 @@ gulp.task('js', function (done) {
 gulp.task('build:webpack', function (done) {
 	gulp.src(src + 'js/**/*.js')
 		.pipe(webpackStream(webpackConfig), webpack)
-		//.pipe(gulp.dest(root + 'webpack'));
+		//.pipe(gulp.dest(root + 'webpack'))
+		//.pipe(uglify())
+		//.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest(root + 'webpack'));
 	done();
 });
 
 // Execution
 
+gulp.task('html', gulp.series('clean:html', 'build:html'));
+gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
-gulp.task('root', gulp.series('clean:webpack', gulp.parallel('js'), 'html'));
+gulp.task('root', gulp.series('html', gulp.parallel('webpack', 'js')));
 
 // задача по умолчанию
 
