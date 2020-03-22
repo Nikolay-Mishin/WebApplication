@@ -1,10 +1,10 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"allowJs": true,
+		//"allowJs": true,
 		"alwaysStrict": true,
 		"baseUrl": ".",
-		"checkJs": true,
+		//"checkJs": true,
 		"charset": "utf-8",
 		//"declaration": true,
 		//"emitBOM": true,
@@ -25,8 +25,8 @@
 		//"noImplicitUseStrict": false,
 		"noLib": false,
 		"paths": {
-			"tslib": [ "./../../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../../node_modules/jquery/dist/jquery" ]
+			"tslib": [ "./node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "./node_modules/jquery/dist/jquery" ]
 		},
 		"removeComments": false,
 		"sourceMap": true,

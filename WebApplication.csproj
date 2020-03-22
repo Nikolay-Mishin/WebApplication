@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\webpack\**" />
-    <Content Remove="wwwroot\webpack\**" />
-    <EmbeddedResource Remove="wwwroot\webpack\**" />
-    <None Remove="wwwroot\webpack\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Client\js\app.js" />
     <None Remove="Client\js\lib.js" />
     <None Remove="Client\ts\app.ts" />
@@ -43,10 +36,6 @@
     <Content Update="tsconfig.json">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

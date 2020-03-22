@@ -44,7 +44,7 @@ module.exports = {
 			{
 				test: /\.(js)$/,
 				exclude: /(node_modules|bower_components)/,
-				include: path.resolve(__dirname, 'Client/js'),
+				//include: path.resolve(__dirname, 'Client/js'),
 				loader: 'babel-loader',
 				query: {
 					presets: ["env"],
@@ -60,7 +60,7 @@ module.exports = {
 		jquery: 'jQuery'
 	},
 	resolve: {
-		modules: ['../../../../node_modules'],
+		modules: ['node_modules'],
 		//extensions: ['', '.js', '.ts'],
 		// import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
