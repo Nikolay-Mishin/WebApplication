@@ -1,33 +1,31 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		//"allowJs": true,
-		"alwaysStrict": true,
-		"baseUrl": "./",
-		//"checkJs": true,
-		"charset": "utf-8",
-		//"declaration": true,
-		//"emitBOM": true,
-		"importHelpers": true,
+		//"rootDir": "Client/ts",
+		"outDir": "Client/js/ts",
+		//"outFile": "Client/js/main.js",
 		"lib": [ "dom", "es2015", "es6" ],
 		"module": "es2015", // commonjs, es6, es2015
-		//"moduleResolution": "node",
-		"newLine": "crlf",
-		"noEmitOnError": true,
-		//"noEmitHelpers": false,
-		"noImplicitAny": false,
-		//"noImplicitUseStrict": false,
-		"noLib": false,
-		"paths": {
-			"tslib": [ "node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "node_modules/jquery/dist/jquery" ]
-		},
-		"removeComments": false,
-		"sourceMap": true,
 		"target": "es5",
-		//"rootDir": "Client/ts",
-		"outDir": "Client/js/ts"
-		//"outFile": "Client/js/main.js"
+		"noEmitOnError": true,
+		"sourceMap": true,
+		"removeComments": false,
+		"alwaysStrict": true,
+		"noImplicitAny": false,
+		"charset": "utf-8",
+		"newLine": "crlf",
+		"baseUrl": "./"
+		//"allowJs": true,
+		//"checkJs": true,
+		//"declaration": true,
+		//"emitBOM": true,
+		//"moduleResolution": "node",
+		//"noEmitHelpers": false,
+		//"importHelpers": true,
+		//"paths": {
+		//	"tslib": [ "node_modules/tslib/tslib.d.ts" ],
+		//	"jquery": [ "node_modules/jquery/dist/jquery" ]
+		//},
 	},
 	"exclude": [
 		"node_modules",
