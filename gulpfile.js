@@ -1,4 +1,4 @@
-/// <binding AfterBuild='build:root' />
+/// <binding BeforeBuild='clean:root' AfterBuild='build:root' />
 'use strict';
 
 // global (-g)
@@ -105,31 +105,26 @@ gulp.task('clean:root', function (done) {
 	gulp.src(path.clean.root)
 		.on('data', function (file) {
 			console.log({
-				contents: file.contents, // содержимое файла
-				path: file.path, // путь до файла
-				cwd: file.cwd, // основная директория
-				base: file.base, // базовая директория
-				// helpers
-				relative: file.relative, // имя файла относительно текущей директории
-				dirname: file.dirname, // имя текущей директории
-				basename: file.basename, // название файла
-				stem: file.stem, // имя файла
-				extname: file.extname, // расширение файла
-				isDir: file.extname === '',
-				isBaseDir: file.base === file.dirname,
+				//contents: file.contents, // содержимое файла
+				//path: file.path, // путь до файла
+				//cwd: file.cwd, // основная директория
+				//base: file.base, // базовая директория
+				//// helpers
+				//relative: file.relative, // имя файла относительно текущей директории
+				//dirname: file.dirname, // имя текущей директории
+				//basename: file.basename, // название файла
+				//stem: file.stem, // имя файла
+				//extname: file.extname, // расширение файла
+				//isDir: file.extname === '',
+				//isBaseDir: file.base === file.dirname,
 				clean: root + file.relative
 			});
 			if (file.extname === '' && file.base === file.dirname) {
-				//rimraf(root + file.relative, done);
+				rimraf(root + file.relative, done);
 			}
 		});
 	done();
 });
-
-gulp.task('clean:path', function (done) {
-	rimraf(path.clean.root, done);
-});
-
 
 gulp.task('clean:html', function (done) {
 	rimraf(path.clean.js, done);
