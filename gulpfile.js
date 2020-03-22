@@ -177,7 +177,7 @@ gulp.task('build:webpack', function(done) {
 		//.pipe(uglify().on('error', getError))
 		//.pipe(sourcemaps.write('.')) // Пропишем карты
 		//.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest(root + 'webpack'))
+		.pipe(gulp.dest(root + 'js'))
 		.pipe(getNotify('build:webpack'));
 	done();
 });
@@ -199,9 +199,9 @@ gulp.task('html', gulp.series('clean:html', 'build:html'));
 gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
-gulp.task('build:root', gulp.series('build:html', gulp.parallel('build:webpack', 'build:js')));
+gulp.task('build:root', gulp.series('build:html', gulp.parallel('build:webpack')));
 
-gulp.task('root', gulp.series('html', gulp.parallel('webpack', 'js')));
+gulp.task('root', gulp.series('html', gulp.parallel('webpack')));
 
 // задача по умолчанию
 

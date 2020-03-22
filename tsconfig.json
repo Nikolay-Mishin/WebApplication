@@ -5,7 +5,7 @@
 		"outDir": "Client/js/ts",
 		//"outFile": "Client/js/main.js",
 		"lib": [ "dom", "es2015", "es6" ],
-		"module": "es2015", // commonjs, es6, es2015
+		"module": "es2015", // amd, es2015
 		"target": "es5",
 		"noEmitOnError": true,
 		"sourceMap": true,

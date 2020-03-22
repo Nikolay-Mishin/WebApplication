@@ -30,14 +30,15 @@ module.exports = {
 	mode: 'none', // development | production
 	entry: {
 		app: './Client/js/app.js',
-		main: './Client/js/ts/app.js'
+		main: './Client/js/ts/app.js',
+		//Amd: './Client/js/main.js'
 	},
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'wwwroot'),
 		publicPath: '/wwwroot',
-		//library: 'App',
-		//libraryTarget: 'umd',
+		//library: 'Amd',
+		//libraryTarget: 'amd', // umd, amd
 		globalObject: 'this'
 	},
 	module: {
