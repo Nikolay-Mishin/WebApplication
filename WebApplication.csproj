@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <None Remove="Client\js\app.js" />
+    <None Remove="Client\js\foo.js" />
     <None Remove="Client\js\lib.js" />
     <None Remove="Client\ts\app.ts" />
     <None Remove="Client\ts\index.ts" />
@@ -26,6 +27,7 @@
 	  <Content Include="Client\ts\app.ts">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
+	  <TypeScriptCompile Include="Client\js\foo.js" />
 	  <TypeScriptCompile Include="Client\js\lib.js" />
 	  <TypeScriptCompile Include="Client\ts\index.ts" />
 	  <TypeScriptCompile Include="Client\ts\lib.ts" />

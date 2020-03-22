@@ -44,7 +44,7 @@ module.exports = {
 			{
 				test: /\.(js)$/,
 				exclude: /(node_modules|bower_components)/,
-				//include: path.resolve(__dirname, 'Client/js'),
+				include: path.resolve(__dirname, 'Client/js'),
 				loader: 'babel-loader',
 				query: {
 					presets: ["env"],
