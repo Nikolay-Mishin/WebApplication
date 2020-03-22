@@ -71,7 +71,7 @@ let path = {
 			img: 'src/img/**/*.{jpeg,jpg,png,svg,gif}'
 		},
 		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: 'src/**/*.{html, htm}',
+			html: 'src/**/*.{html,htm}',
 			scss: 'src/scss/**/*.scss',
 			js: 'src/js/**/*.js'
 		},
@@ -148,14 +148,20 @@ gulp.task('clean:webpack', function (done) {
 
 gulp.task('build:html', function (done) {
 	gulp.src(src + 'html/**/*')
+		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(htmlclean())
+		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(gulp.dest(root + 'html/'));
 	done();
 });
 
 gulp.task('build:js', function (done) {
-	gulp.src(src + 'js/**/*.js')
-		// .pipe(uglify())
+	gulp.src(src + 'js/**/*.{js,js.map}')
+		//.pipe(gulp.dest(root + 'js/'))
+		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
+		//.pipe(uglify())
+		//.pipe(sourcemaps.write('.')) // Пропишем карты
+		//.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest(root + 'js/'));
 	done();
 });
@@ -164,7 +170,9 @@ gulp.task('build:webpack', function (done) {
 	gulp.src(src + 'js/**/*.js')
 		.pipe(webpackStream(webpackConfig), webpack)
 		//.pipe(gulp.dest(root + 'webpack'))
+		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		//.pipe(uglify())
+		//.pipe(sourcemaps.write('.')) // Пропишем карты
 		//.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest(root + 'webpack'));
 	done();

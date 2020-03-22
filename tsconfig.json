@@ -33,7 +33,7 @@
 		"target": "es5",
 		//"rootDir": "Client/ts",
 		//"outDir": "wwwroot/js"
-		 "outFile": "wwwroot/js/main.js"
+		"outFile": "Client/js/main.js"
 	},
 	"exclude": [
 		"node_modules",
