@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:root' AfterBuild='build:root' />
+/// <binding AfterBuild='build:root' />
 'use strict';
 
 // global (-g)
@@ -76,7 +76,7 @@ let path = {
 			js: 'src/js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
-			root: '**',
+			root: root + '**/',
 			html: root + 'html',
 			js: root + 'js',
 			webpack: root + 'webpack'
@@ -102,6 +102,31 @@ let path = {
 	};
 
 gulp.task('clean:root', function (done) {
+	gulp.src(path.clean.root)
+		.on('data', function (file) {
+			console.log({
+				contents: file.contents, // содержимое файла
+				path: file.path, // путь до файла
+				cwd: file.cwd, // основная директория
+				base: file.base, // базовая директория
+				// helpers
+				relative: file.relative, // имя файла относительно текущей директории
+				dirname: file.dirname, // имя текущей директории
+				basename: file.basename, // название файла
+				stem: file.stem, // имя файла
+				extname: file.extname, // расширение файла
+				isDir: file.extname === '',
+				isBaseDir: file.base === file.dirname,
+				clean: root + file.relative
+			});
+			if (file.extname === '' && file.base === file.dirname) {
+				//rimraf(root + file.relative, done);
+			}
+		});
+	done();
+});
+
+gulp.task('clean:path', function (done) {
 	rimraf(path.clean.root, done);
 });
 
@@ -127,7 +152,7 @@ gulp.task('build:html', function (done) {
 
 gulp.task('build:js', function (done) {
 	gulp.src(src + 'js/**/*.js')
-		// .pipe(uglify())
+		//.pipe(uglify())
 		.pipe(gulp.dest(root + 'js/'));
 	done();
 });
