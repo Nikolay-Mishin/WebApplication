@@ -1,7 +1,5 @@
 // ts/lib.ts
 
-function foo() {
+export default function lib() {
 	window.console.log("ts/lib.ts");
 }
-
-export { foo };

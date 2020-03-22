@@ -1,6 +1,6 @@
 // ts/main.ts
 
-class Greeter {
+export default class Greeter {
 	private element: HTMLElement;
 	private span: HTMLElement;
 	private timerToken: number;
@@ -20,9 +20,3 @@ class Greeter {
 		clearTimeout(this.timerToken);
 	}
 }
-
-window.onload = () => {
-	const el = document.body;
-	const greeter = new Greeter(el);
-	greeter.start();
-};

@@ -1,7 +1,5 @@
 // js/lib.js
 
-function foo() {
+export default function lib() {
 	console.log("js/lib.js");
 }
-
-export { foo };

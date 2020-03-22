@@ -17,7 +17,7 @@
 			"es6"
 		],
 		"module": "amd",
-		"moduleResolution": "node",
+		"moduleResolution": "Classic",
 		"newLine": "crlf",
 		"noEmitOnError": true,
 		"noEmitHelpers": false,
