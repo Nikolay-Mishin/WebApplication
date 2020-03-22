@@ -1,4 +1,4 @@
-/// <binding />
+/// <binding BeforeBuild='clean:root' AfterBuild='build:root' />
 'use strict';
 
 // global (-g)
@@ -147,6 +147,8 @@ gulp.task('build:webpack', function (done) {
 gulp.task('html', gulp.series('clean:html', 'build:html'));
 gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
+
+gulp.task('build:root', gulp.series('build:html', gulp.parallel('build:webpack', 'build:js')));
 
 gulp.task('root', gulp.series('html', gulp.parallel('webpack', 'js')));
 
