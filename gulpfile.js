@@ -105,18 +105,18 @@ gulp.task('clean:root', function (done) {
 	gulp.src(path.clean.root)
 		.on('data', function (file) {
 			console.log({
-				contents: file.contents, // содержимое файла
-				path: file.path, // путь до файла
-				cwd: file.cwd, // основная директория
-				base: file.base, // базовая директория
-				// helpers
-				relative: file.relative, // имя файла относительно текущей директории
-				dirname: file.dirname, // имя текущей директории
-				basename: file.basename, // название файла
-				stem: file.stem, // имя файла
-				extname: file.extname, // расширение файла
-				isDir: file.extname === '',
-				isBaseDir: file.base === file.dirname,
+				//contents: file.contents, // содержимое файла
+				//path: file.path, // путь до файла
+				//cwd: file.cwd, // основная директория
+				//base: file.base, // базовая директория
+				//// helpers
+				//relative: file.relative, // имя файла относительно текущей директории
+				//dirname: file.dirname, // имя текущей директории
+				//basename: file.basename, // название файла
+				//stem: file.stem, // имя файла
+				//extname: file.extname, // расширение файла
+				//isDir: file.extname === '',
+				//isBaseDir: file.base === file.dirname,
 				clean: root + file.relative
 			});
 			if (file.extname === '' && file.base === file.dirname) {
