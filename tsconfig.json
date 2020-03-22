@@ -3,37 +3,31 @@
 	"compilerOptions": {
 		//"allowJs": true,
 		"alwaysStrict": true,
-		"baseUrl": ".",
+		"baseUrl": "./",
 		//"checkJs": true,
 		"charset": "utf-8",
 		//"declaration": true,
 		//"emitBOM": true,
 		"importHelpers": true,
-		"lib": [
-			"es2016",
-			"dom",
-			"es5",
-			"es2015",
-			"es6"
-		],
-		"module": "amd",
-		"moduleResolution": "Classic",
+		"lib": [ "dom", "es2015", "es6" ],
+		"module": "es2015", // commonjs, es6, es2015
+		//"moduleResolution": "node",
 		"newLine": "crlf",
 		"noEmitOnError": true,
-		"noEmitHelpers": false,
+		//"noEmitHelpers": false,
 		"noImplicitAny": false,
 		//"noImplicitUseStrict": false,
 		"noLib": false,
 		"paths": {
-			"tslib": [ "./node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./node_modules/jquery/dist/jquery" ]
+			"tslib": [ "node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "node_modules/jquery/dist/jquery" ]
 		},
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es5",
 		//"rootDir": "Client/ts",
-		//"outDir": "wwwroot/js"
-		"outFile": "Client/js/main.js"
+		"outDir": "Client/js/ts"
+		//"outFile": "Client/js/main.js"
 	},
 	"exclude": [
 		"node_modules",
