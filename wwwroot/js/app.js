@@ -91,23 +91,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
-/* 1 */,
-/* 2 */
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _lib = __webpack_require__(3);
+var _lib = __webpack_require__(1);
 
 var _lib2 = _interopRequireDefault(_lib);
 
-var _main = __webpack_require__(4);
+var _main = __webpack_require__(2);
 
 var _main2 = _interopRequireDefault(_main);
 
@@ -125,7 +123,7 @@ window.onload = function () {
 };
 
 /***/ }),
-/* 3 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -142,7 +140,7 @@ function lib() {
 }
 
 /***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

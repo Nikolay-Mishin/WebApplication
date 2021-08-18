@@ -27,7 +27,7 @@ const path = require('path');
 //}
 
 module.exports = {
-	//mode: 'none', //development | production
+	mode: 'none', //development | production
 	entry: {
 		app: './Client/js/app.js',
 		main: './Client/js/ts/app.js',
