@@ -31,13 +31,12 @@ module.exports = {
 	entry: {
 		app: './Client/js/app.js',
 		main: './Client/js/ts/app.js',
-		//Amd: './Client/js/main.js'
 	},
 	output: {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'wwwroot'),
 		publicPath: '/wwwroot',
-		//library: 'Amd',
+		//library: 'umd',
 		//libraryTarget: 'amd', // umd, amd
 		globalObject: 'this'
 	},
