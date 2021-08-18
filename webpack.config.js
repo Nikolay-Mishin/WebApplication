@@ -36,8 +36,8 @@ module.exports = {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'wwwroot'),
 		publicPath: '/wwwroot',
-		//library: 'umd',
-		//libraryTarget: 'amd', // umd, amd
+		library: 'Client',
+		libraryTarget: 'umd', // umd, amd
 		globalObject: 'this'
 	},
 	module: {
