@@ -13,8 +13,28 @@ module.exports = {
 		publicPath: '/wwwroot',
 		library: 'Client',
 		libraryTarget: 'umd', //umd, amd
-		globalObject: 'this'
+		globalObject: 'this',
 	},
+	resolve: {
+		modules: ['node_modules'],
+		extensions: ['.js', '.ts'],
+		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
+		alias: {
+			Utilities: path.resolve(__dirname, 'src/utilities/'),
+			'@': path.resolve(__dirname, 'Client'),
+			'@js': path.resolve(__dirname, 'Client/js'),
+		}
+	},
+	optimization: {
+		minimize: false,
+	},
+	devtool: 'source-map',
+	plugins: [
+		new webpack.ProvidePlugin({
+			$: 'jQuery',
+			jQuery: 'jQuery',
+		})
+	],
 	module: {
 		rules: [
 			{
@@ -28,27 +48,9 @@ module.exports = {
 			},
 		],
 	},
-	devtool: 'source-map',
-	optimization: {
-		minimize: false,
-	},
 	externals: {
-		jquery: 'jQuery'
+		jquery: 'jQuery',
 	},
-	resolve: {
-		modules: ['node_modules'],
-		//extensions: ['', '.js', '.ts'],
-		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
-		alias: {
-			Utilities: path.resolve(__dirname, 'src/utilities/')
-		}
-	},
-	plugins: [
-		new webpack.ProvidePlugin({
-			$: 'jQuery',
-			jQuery: 'jQuery'
-		})
-	]
 };
 
 console.log(__dirname);
