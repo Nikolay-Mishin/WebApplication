@@ -1,31 +1,59 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
+		"baseUrl": "./",
 		//"rootDir": "Client/ts",
 		"outDir": "Client/js/ts",
 		//"outFile": "Client/js/main.js",
-		"lib": [ "dom", "es2015", "es6" ],
-		"module": "es2015", // amd, es2015
-		"target": "es5",
-		"noEmitOnError": true,
-		"sourceMap": true,
-		"removeComments": false,
-		"alwaysStrict": true,
-		"noImplicitAny": false,
-		"charset": "utf-8",
-		"newLine": "crlf",
-		"baseUrl": "./"
-		//"allowJs": true,
+		"lib": [ "dom", "es6" ],
+		"module": "umd", // amd, es2015
+		"target": "es6",
+		"moduleResolution": "node",
+		"importHelpers": true,
+		//"noEmitHelpers": false,
+		"allowJs": true,
 		//"checkJs": true,
 		//"declaration": true,
-		//"emitBOM": true,
-		//"moduleResolution": "node",
-		//"noEmitHelpers": false,
-		//"importHelpers": true,
-		//"paths": {
-		//	"tslib": [ "node_modules/tslib/tslib.d.ts" ],
-		//	"jquery": [ "node_modules/jquery/dist/jquery" ]
-		//},
+		//"noLib": false,
+		"sourceMap": true,
+		"emitBOM": true,
+		"charset": "utf-8",
+		"newLine": "crlf",
+		"removeComments": false,
+		"noEmitOnError": true,
+		//"alwaysStrict": true,
+		"noImplicitAny": true,
+		//"noImplicitUseStrict": false,
+
+		"paths": {
+			"tslib": [ "./../../../../node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "./../../../../node_modules/jquery/dist/jquery" ]
+		}
+
+		// Strict Checks
+		//"alwaysStrict": true,
+		//"noImplicitAny": true,
+		//"strictNullChecks": true,
+		//"strictPropertyInitialization": true,
+		//"strictFunctionTypes": true,
+		//"noImplicitThis": true,
+		//"strictBindCallApply": true,
+		//"noPropertyAccessFromIndexSignature": true,
+		//"noUncheckedIndexedAccess": true,
+
+		// Linter Checks
+		//"noImplicitReturns": true, // https://eslint.org/docs/rules/consistent-return ?
+		//"noFallthroughCasesInSwitch": true, // https://eslint.org/docs/rules/no-fallthrough
+		//"noUnusedLocals": true, // https://eslint.org/docs/rules/no-unused-vars
+		//"noUnusedParameters": true, // https://eslint.org/docs/rules/no-unused-vars#args
+		//"allowUnreachableCode": false, // https://eslint.org/docs/rules/no-unreachable ?
+		//"allowUnusedLabels": false, // https://eslint.org/docs/rules/no-unused-labels
+
+		// Base Strict Checks
+		//"noImplicitUseStrict": false,
+		//"suppressExcessPropertyErrors": false,
+		//"suppressImplicitAnyIndexErrors": false,
+		//"noStrictGenericChecks": false
 	},
 	"exclude": [
 		"node_modules",
