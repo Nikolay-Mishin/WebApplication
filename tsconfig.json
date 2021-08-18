@@ -10,7 +10,7 @@
 		"target": "es6",
 		"moduleResolution": "classic",
 		"esModuleInterop": true,
-		//"allowSyntheticDefaultImports": true,
+		"allowSyntheticDefaultImports": true,
 		"importHelpers": true,
 		"allowJs": true,
 		//"checkJs": true,
@@ -24,11 +24,11 @@
 		"noEmitOnError": true,
 		//"noEmitHelpers": false,
 		//"alwaysStrict": true,
-		"noImplicitAny": true,
 		//"noImplicitUseStrict": false,
+		"noImplicitAny": true,
 		"paths": {
-			"tslib": [ "./../../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../../node_modules/jquery/dist/jquery" ]
+			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
 		}
 
 		// Strict Checks
