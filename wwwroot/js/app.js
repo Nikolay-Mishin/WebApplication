@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["Client"] = factory();
+	else
+		root["Client"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -81,21 +91,23 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
+/* 0 */,
+/* 1 */,
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _lib = __webpack_require__(1);
+var _lib = __webpack_require__(3);
 
 var _lib2 = _interopRequireDefault(_lib);
 
-var _main = __webpack_require__(2);
+var _main = __webpack_require__(4);
 
 var _main2 = _interopRequireDefault(_main);
 
@@ -113,7 +125,7 @@ window.onload = function () {
 };
 
 /***/ }),
-/* 1 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -130,7 +142,7 @@ function lib() {
 }
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -176,4 +188,5 @@ exports.default = Greeter;
 
 /***/ })
 /******/ ]);
+});
 //# sourceMappingURL=app.js.map
