@@ -91,20 +91,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./js/ts/app.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */,
-/* 1 */,
-/* 2 */,
-/* 3 */
+/******/ ({
+
+/***/ "./js/ts/app.js":
+/*!**********************!*\
+  !*** ./js/ts/app.js ***!
+  \**********************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib */ "./js/ts/lib.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./js/ts/main.js");
 ﻿
 
 // ts/app.ts
@@ -118,7 +120,12 @@ window.onload = () => {
 //# sourceMappingURL=app.js.map
 
 /***/ }),
-/* 4 */
+
+/***/ "./js/ts/lib.js":
+/*!**********************!*\
+  !*** ./js/ts/lib.js ***!
+  \**********************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -131,7 +138,12 @@ function lib() {
 //# sourceMappingURL=lib.js.map
 
 /***/ }),
-/* 5 */
+
+/***/ "./js/ts/main.js":
+/*!***********************!*\
+  !*** ./js/ts/main.js ***!
+  \***********************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -156,6 +168,7 @@ class Greeter {
 //# sourceMappingURL=main.js.map
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });
 //# sourceMappingURL=main.js.map

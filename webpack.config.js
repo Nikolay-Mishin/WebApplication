@@ -1,30 +1,69 @@
+// Подключаемые плагины
+
 const webpack = require('webpack'),
 	path = require('path');
 
-const root = path.resolve(__dirname, 'wwwroot'),
+// Переменные проекта
+
+const isDev = process.env.NODE_ENV === 'development',
+	isProd = !isDev,
+	root = 'wwwroot',
+	dist = path.resolve(__dirname, 'wwwroot'),
 	src = path.resolve(__dirname, 'src');
 
+const babelOptions = preset => {
+	const opts = {
+		presets: [
+			'@babel/preset-env'
+		],
+		plugins: [
+			'@babel/plugin-proposal-class-properties',
+			'@babel/plugin-transform-runtime'
+		]
+	};
+
+	if (preset) {
+		opts.presets.push(preset);
+	}
+
+	return opts;
+};
+
+const jsLoaders = () => {
+	const loaders = [{
+		loader: 'babel-loader',
+		options: babelOptions()
+	}];
+
+	if (isDev) {
+		loaders.push('eslint-loader');
+	}
+
+	return loaders;
+};
+
 module.exports = {
-	mode: 'none', //development | production
+	context: src,
+	mode: 'development', //none | development | production
 	entry: {
-		app: './src/js/app.js',
-		main: './src/js/ts/app.js',
+		app: './js/app.js',
+		main: './js/ts/app.js'
 	},
 	output: {
 		filename: '[name].js',
-		path: root,
-		publicPath: '/wwwroot',
+		path: dist,
+		publicPath: `/${root}`,
 		library: 'src',
 		libraryTarget: 'umd', //umd, amd
-		globalObject: 'this',
+		globalObject: 'this'
 	},
 	resolve: {
 		modules: ['node_modules'],
 		extensions: ['.js', '.ts'],
 		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
-			'^@': root,
-			'^/': src,
+			'^@': dist,
+			'^/': src
 		}
 	},
 	optimization: {
@@ -34,29 +73,28 @@ module.exports = {
 	plugins: [
 		new webpack.ProvidePlugin({
 			$: 'jQuery',
-			jQuery: 'jQuery',
+			jQuery: 'jQuery'
 		})
 	],
+	//externals: {
+	//	jquery: 'jQuery'
+	//},
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
-				include: `${src}/js`,
-				loader: 'babel-loader',
-				query: {
-					presets: ["env"],
-				},
+				include: './js',
+				use: jsLoaders(),
+				//loader: 'babel-loader',
+				//query: babelQuery(),
 			},
 		],
-	},
-	externals: {
-		jquery: 'jQuery',
-	},
+	}
 };
 
 console.log(__dirname);
-console.log(root);
+console.log(dist);
 
 console.log(module.exports.entry.app);
 console.log(module.exports.output.path);

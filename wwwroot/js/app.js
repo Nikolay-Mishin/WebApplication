@@ -91,17 +91,22 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./js/app.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "./js/app.js":
+/*!*******************!*\
+  !*** ./js/app.js ***!
+  \*******************/
+/*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib */ "./js/lib.js");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./js/main.js");
 
 
 
@@ -118,7 +123,12 @@ window.onload = function () {
 
 
 /***/ }),
-/* 1 */
+
+/***/ "./js/lib.js":
+/*!*******************!*\
+  !*** ./js/lib.js ***!
+  \*******************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -132,7 +142,12 @@ function lib() {
 
 
 /***/ }),
-/* 2 */
+
+/***/ "./js/main.js":
+/*!********************!*\
+  !*** ./js/main.js ***!
+  \********************/
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -160,6 +175,7 @@ class Greeter {
 
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });
 //# sourceMappingURL=app.js.map

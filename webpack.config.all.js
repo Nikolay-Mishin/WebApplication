@@ -1,3 +1,5 @@
+// Подключаемые плагины
+
 const path = require('path'),
 	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
@@ -7,8 +9,13 @@ const path = require('path'),
 	TerserWebpackPlugin = require('terser-webpack-plugin'),
 	{ BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
+// Переменные проекта
+
 const isDev = process.env.NODE_ENV === 'development',
-	isProd = !isDev;
+	isProd = !isDev,
+	dist = path.resolve(__dirname, 'dist'),
+	src = path.resolve(__dirname, 'src');
+	
 
 const optimization = () => {
 	const config = {
@@ -90,8 +97,8 @@ const plugins = () => {
 		}),
 		new CleanWebpackPlugin(),
 		new CopyWebpackPlugin([{
-			from: path.resolve(__dirname, 'src/favicon.ico'),
-			to: path.resolve(__dirname, 'dist')
+			from: `${src}/favicon.ico`,
+			to: dist
 		}]),
 		new MiniCssExtractPlugin({
 			filename: filename('css')
@@ -106,7 +113,7 @@ const plugins = () => {
 }
 
 module.exports = {
-	context: path.resolve(__dirname, 'src'),
+	context: src,
 	mode: 'development',
 	entry: {
 		main: ['@babel/polyfill', './index.jsx'],
@@ -114,19 +121,20 @@ module.exports = {
 	},
 	output: {
 		filename: filename('js'),
-		path: path.resolve(__dirname, 'dist')
+		path: dist
 	},
 	resolve: {
 		extensions: ['.js', '.json', '.png'],
 		alias: {
-			'@models': path.resolve(__dirname, 'src/models'),
-			'@': path.resolve(__dirname, 'src'),
+			'@models': `${src}/models`,
+			'@': src,
 		}
 	},
 	optimization: optimization(),
 	devServer: {
-		port: 4200,
+		port: 8080,
 		hot: isDev
+		//contentBase: './dist' // Будет запускать сервер на localhost:8080 в этой папке
 	},
 	devtool: isDev ? 'source-map' : '',
 	plugins: plugins(),
@@ -146,13 +154,16 @@ module.exports = {
 			},
 			{
 				//test: /\.(png|jpg|svg|gif)$/,
+				//test: /\.(?:ico|gif|png|jp(e)g)$/i,
 				test: /\.(png|jp(e)g|svg|gif)$/,
 				use: ['file-loader']
+				//type: 'asset/resource',
 			},
 			{
 				//test: /\.(ttf|woff|woff2|eot)$/,
 				test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
 				use: ['file-loader']
+				//type: 'asset/inline',
 			},
 			{
 				test: /\.xml$/,
@@ -183,17 +194,16 @@ module.exports = {
 					options: babelOptions('@babel/preset-react')
 				}
 			},
-			// изображения
-			{
-				//test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
-				test: /\.(?:ico|gif|png|jp(e)g)$/i,
-				type: 'asset/resource',
-			},
-			// шрифты и SVG
-			{
-				test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
-				type: 'asset/inline',
-			},
+			// Файлы CSV
+			//{
+			//	test: /\.(csv|tsv)$/i,
+			//	use: ['csv-loader'],
+			//},
+			// Файлы XML
+			//{
+			//	test: /\.xml$/i,
+			//	use: ['xml-loader'],
+			//},
 		]
 	}
 }
