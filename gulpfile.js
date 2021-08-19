@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:dist' AfterBuild='build:dist' />
+/// <binding AfterBuild='build:dist' />
 'use strict';
 
 // global (-g)
@@ -79,7 +79,6 @@ const dist = './wwwroot/',
 		},
 		clean: { // путь очистки директории для сборки
 			dist: dist + '**/*',
-			dist2: dist2 + '**/*',
 			html: dist + 'html',
 			js: dist + 'js',
 			webpack: dist + 'webpack'
@@ -104,8 +103,8 @@ const dist = './wwwroot/',
 		folder: ""
 	};
 
-gulp.task('clean:dist_path', function(done) {
-	gulp.src(path.clean.dist)
+gulp.task('clean:dist', function(done) {
+	gulp.src(path.clean.dist2)
 		.on('data', function(file) {
 			console.log({
 				//contents: file.contents, // содержимое файла
@@ -129,8 +128,8 @@ gulp.task('clean:dist_path', function(done) {
 	done();
 });
 
-gulp.task('clean:dist', function(done) {
-	rimraf(path.clean.dist2, done);
+gulp.task('clean:dist_path', function(done) {
+	rimraf(path.clean.dist, done);
 });
 
 gulp.task('clean:html', function(done) {
@@ -196,9 +195,8 @@ gulp.task('html', gulp.series('clean:html', 'build:html'));
 gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
-gulp.task('build:dist', gulp.series('build:html', gulp.parallel('build:webpack')));
-
 gulp.task('dist', gulp.series('html', gulp.parallel('webpack')));
+gulp.task('build:dist', gulp.series('clean:dist', gulp.parallel('build:html', 'build:webpack')));
 
 // задача по умолчанию
 

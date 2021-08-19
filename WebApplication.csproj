@@ -13,10 +13,6 @@
     <None Remove="src\ts\index.ts" />
     <None Remove="src\ts\lib.ts" />
     <None Remove="src\ts\main.ts" />
-    <None Remove="www\html\app.html" />
-    <None Remove="www\html\app.html.map" />
-    <None Remove="www\html\main.html" />
-    <None Remove="www\html\main.html.map" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,18 +25,6 @@
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
 	  <Content Include="src\ts\app.ts">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="www\html\app.html">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="www\html\app.html.map">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="www\html\main.html">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Include="www\html\main.html.map">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
 	  <TypeScriptCompile Include="src\js\foo.js" />
