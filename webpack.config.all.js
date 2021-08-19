@@ -193,17 +193,7 @@ module.exports = {
 					loader: 'babel-loader',
 					options: babelOptions('@babel/preset-react')
 				}
-			},
-			// Файлы CSV
-			//{
-			//	test: /\.(csv|tsv)$/i,
-			//	use: ['csv-loader'],
-			//},
-			// Файлы XML
-			//{
-			//	test: /\.xml$/i,
-			//	use: ['xml-loader'],
-			//},
+			}
 		]
 	}
 }
