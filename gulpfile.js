@@ -79,6 +79,7 @@ const dist = './wwwroot/',
 		},
 		clean: { // путь очистки директории для сборки
 			dist: dist + '**/*',
+			dist2: dist2 + '**/*',
 			html: dist + 'html',
 			js: dist + 'js',
 			webpack: dist + 'webpack'
@@ -129,7 +130,7 @@ gulp.task('clean:dist_path', function(done) {
 });
 
 gulp.task('clean:dist', function(done) {
-	rimraf(path.clean.dist, done);
+	rimraf(path.clean.dist2, done);
 });
 
 gulp.task('clean:html', function(done) {
