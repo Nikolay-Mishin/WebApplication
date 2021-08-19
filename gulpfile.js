@@ -1,4 +1,4 @@
-/// <binding AfterBuild='build:dist' />
+/// <binding AfterBuild='build' />
 'use strict';
 
 // global (-g)
@@ -51,8 +51,8 @@ const gulp = require('gulp'), // сам gulp
 
 // Переменные проекта
 
-const dist = './wwwroot/',
-	dist2 = './www/',
+const build = './wwwroot/',
+	build2 = './www/',
 	src = './src/',
 	path = {
 		build: { // пути для сборки проектов
@@ -78,10 +78,10 @@ const dist = './wwwroot/',
 			js: 'src/js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
-			dist: dist + '**/*',
-			html: dist + 'html',
-			js: dist + 'js',
-			webpack: dist + 'webpack'
+			build: build + '**/*',
+			html: build + 'html',
+			js: build + 'js',
+			webpack: build + 'webpack'
 		}
 	},
 	// конфигурация browser sync
@@ -103,33 +103,32 @@ const dist = './wwwroot/',
 		folder: ""
 	};
 
-gulp.task('clean:dist', function(done) {
-	gulp.src(path.clean.dist2)
+gulp.task('clean:build', function(done) {
+	gulp.src(path.clean.build, { base: build })
 		.on('data', function(file) {
 			console.log({
+				//base: file.base, // базовая директория
+				//dirname: file.dirname, // имя текущей директории
+				//relative: file.relative, // имя файла относительно текущей директории
+				//extname: file.extname, // расширение файла
 				//contents: file.contents, // содержимое файла
 				//path: file.path, // путь до файла
 				//cwd: file.cwd, // основная директория
-				//base: file.base, // базовая директория
-				//// helpers
-				//relative: file.relative, // имя файла относительно текущей директории
-				//dirname: file.dirname, // имя текущей директории
 				//basename: file.basename, // название файла
 				//stem: file.stem, // имя файла
-				//extname: file.extname, // расширение файла
 				//isDir: file.extname === '',
 				//isBaseDir: file.base === file.dirname,
-				clean: dist + file.relative
+				clean: build + file.relative
 			});
-			if (file.extname === '' && file.base === file.dirname) {
-				rimraf(dist + file.relative, done);
+			if (file.base === file.dirname) {
+				//rimraf(build + file.relative, done);
 			}
 		});
 	done();
 });
 
-gulp.task('clean:dist_path', function(done) {
-	rimraf(path.clean.dist, done);
+gulp.task('clean:build_path', function(done) {
+	rimraf(path.clean.build, done);
 });
 
 gulp.task('clean:html', function(done) {
@@ -149,18 +148,18 @@ gulp.task('build:html', function(done) {
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(htmlclean())
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(gulp.dest(dist + 'html/'));
+		.pipe(gulp.dest(build + 'html/'));
 	done();
 });
 
 gulp.task('build:js', function(done) {
 	gulp.src(src + 'js/**/*.{js,js.map}')
-		//.pipe(gulp.dest(dist + 'js/'))
+		//.pipe(gulp.dest(build + 'js/'))
 		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		//.pipe(uglify().on('error', getError))
 		//.pipe(sourcemaps.write('.')) // Пропишем карты
 		//.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest(dist + 'js/'))
+		.pipe(gulp.dest(build + 'js/'))
 		.pipe(getNotify('build:js'));
 	done();
 });
@@ -168,12 +167,12 @@ gulp.task('build:js', function(done) {
 gulp.task('build:webpack', function(done) {
 	gulp.src(src + 'js/**/*.js')
 		.pipe(webpackStream(webpackConfig), webpack)
-		//.pipe(gulp.dest(dist + 'webpack'))
+		//.pipe(gulp.dest(build + 'webpack'))
 		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		//.pipe(uglify().on('error', getError))
 		//.pipe(sourcemaps.write('.')) // Пропишем карты
 		//.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest(dist + 'js'))
+		.pipe(gulp.dest(build + 'js'))
 		.pipe(getNotify('build:webpack'));
 	done();
 });
@@ -195,12 +194,12 @@ gulp.task('html', gulp.series('clean:html', 'build:html'));
 gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
-gulp.task('dist', gulp.series('html', gulp.parallel('webpack')));
-gulp.task('build:dist', gulp.series('clean:dist', gulp.parallel('build:html', 'build:webpack')));
+gulp.task('build:all', gulp.series('html', gulp.parallel('webpack')));
+gulp.task('build', gulp.series('clean:build', gulp.parallel('build:html', 'build:webpack')));
 
 // задача по умолчанию
 
-gulp.task('default', gulp.series('dist'));
+gulp.task('default', gulp.series('build'));
 
 // Основные Задачи
 
@@ -228,21 +227,17 @@ gulp.task('test', function(done) {
 	done();
 });
 
-gulp.task('clean:dist', function(done) {
-	rimraf('dist', done);
-});
-
 gulp.task('move:files', function(done) {
-	gulp.src('files/**/*.{html, htm}').pipe(gulp.dest('dist'));
-	gulp.src('files/**/*.pug').pipe(gulp.dest('dist/pug/'));
-	gulp.src('files/**/*.css').pipe(gulp.dest('dist/css/'));
-	gulp.src('files/**/*.scss').pipe(gulp.dest('dist/scss/'));
-	gulp.src('files/**/*.js').pipe(gulp.dest('dist/js/'));
-	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest('dist/img/'));
+	gulp.src('files/**/*.{html, htm}').pipe(gulp.dest('build'));
+	gulp.src('files/**/*.pug').pipe(gulp.dest('build/pug/'));
+	gulp.src('files/**/*.css').pipe(gulp.dest('build/css/'));
+	gulp.src('files/**/*.scss').pipe(gulp.dest('build/scss/'));
+	gulp.src('files/**/*.js').pipe(gulp.dest('build/js/'));
+	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest('build/img/'));
 	done();
 });
 
-gulp.task('move', gulp.series('clean:dist', 'move:files'));
+gulp.task('move', gulp.series('clean:build', 'move:files'));
 
 /**********************
  * check cmd arguments

@@ -15,7 +15,7 @@ HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-фа�
 const isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
 	root = 'wwwroot',
-	dist = path.resolve(__dirname, 'wwwroot'),
+	build = path.resolve(__dirname, 'wwwroot'),
 	src = path.resolve(__dirname, 'src'),
 	optimization = () => {
 		const config = {
@@ -96,11 +96,11 @@ const isDev = process.env.NODE_ENV === 'development',
 			new CleanWebpackPlugin(),
 			new CopyWebpackPlugin([{
 				from: `${src}/favicon.ico`,
-				to: dist
+				to: build
 				//patterns: [
 				//	{
 				//		from: `${src}/favicon.ico`,
-				//		to: dist
+				//		to: build
 				//	},
 				//],
 			}]),
@@ -126,7 +126,7 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		//filename: filename('js'),
-		path: dist,
+		path: build,
 		publicPath: `/${root}`,
 		library: 'src',
 		libraryTarget: 'umd', //umd, amd
@@ -137,7 +137,7 @@ module.exports = {
 		extensions: ['.js', '.ts'],
 		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
-			'^@': dist,
+			'^@': build,
 			'^/': src
 		}
 	},
@@ -148,7 +148,7 @@ module.exports = {
 	//devServer: {
 	//	port: 8080,
 	//	hot: isDev,
-	//	contentBase: './dist' // Будет запускать сервер на localhost:8080 в этой папке
+	//	contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
 	//},
 	devtool: 'source-map',
 	//devtool: isDev ? 'source-map' : '',
@@ -228,7 +228,7 @@ module.exports = {
 };
 
 console.log(__dirname);
-console.log(dist);
+console.log(build);
 
 console.log(module.exports.entry.app);
 console.log(module.exports.output.path);
