@@ -1,10 +1,10 @@
 // Подключаемые плагины
 
 const webpack = require('webpack'),
-	path = require('path'),
-	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
+	path = require('path');
+HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
-	CopyWebpackPlugin = require('copy-webpack-plugin'),
+	CopyWebpackPlugin  = require('copy-webpack-plugin'),
 	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
 	OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin'),
 	TerserWebpackPlugin = require('terser-webpack-plugin'),
@@ -16,115 +16,116 @@ const isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
 	root = 'wwwroot',
 	dist = path.resolve(__dirname, 'wwwroot'),
-	src = path.resolve(__dirname, 'src');
-
-const optimization = () => {
-	const config = {
-		splitChunks: {
-			chunks: 'all'
+	src = path.resolve(__dirname, 'src'),
+	optimization = () => {
+		const config = {
+			splitChunks: {
+				chunks: 'all'
+			}
 		}
-	}
 
-	if (isProd) {
-		config.minimizer = [
-			new OptimizeCssAssetWebpackPlugin(),
-			new TerserWebpackPlugin()
-		]
-	}
+		if (isProd) {
+			config.minimizer = [
+				new OptimizeCssAssetWebpackPlugin(),
+				new TerserWebpackPlugin()
+			]
+		}
 
-	return config
-}
-
-const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`
-
-const cssLoaders = extra => {
-	const loaders = [
-		{
-			loader: MiniCssExtractPlugin.loader,
-			options: {
-				hmr: isDev,
-				reloadAll: true
+		return config
+	},
+	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
+	cssLoaders = extra => {
+		const loaders = [
+			{
+				loader: MiniCssExtractPlugin.loader,
+				options: {
+					hmr: isDev,
+					reloadAll: true
+				},
 			},
-		},
-		'css-loader'
-	]
-
-	if (extra) {
-		loaders.push(extra)
-	}
-
-	return loaders
-}
-
-const babelOptions = preset => {
-	const opts = {
-		presets: [
-			'@babel/preset-env'
-		],
-		plugins: [
-			'@babel/plugin-proposal-class-properties',
-			'@babel/plugin-transform-runtime'
+			'css-loader'
 		]
+
+		if (extra) {
+			loaders.push(extra)
+		}
+
+		return loaders
+	},
+	babelOptions = preset => {
+		const opts = {
+			presets: [
+				'@babel/preset-env'
+			],
+			plugins: [
+				'@babel/plugin-proposal-class-properties',
+				'@babel/plugin-transform-runtime'
+			]
+		};
+
+		if (preset) {
+			opts.presets.push(preset);
+		}
+
+		return opts;
+	},
+	jsLoaders = () => {
+		const loaders = [{
+			loader: 'babel-loader',
+			options: babelOptions()
+		}];
+
+		if (isDev) {
+			loaders.push('eslint-loader');
+		}
+
+		return loaders;
+	},
+	plugins = () => {
+		const base = [
+			new webpack.ProvidePlugin({
+				$: 'jQuery',
+				jQuery: 'jQuery'
+			}),
+			new HTMLWebpackPlugin({
+				template: './index.html',
+				minify: {
+					collapseWhitespace: isProd
+				}
+			}),
+			new CleanWebpackPlugin(),
+			new CopyWebpackPlugin([{
+				from: `${src}/favicon.ico`,
+				to: dist
+				//patterns: [
+				//	{
+				//		from: `${src}/favicon.ico`,
+				//		to: dist
+				//	},
+				//],
+			}]),
+			new MiniCssExtractPlugin({
+				filename: filename('css')
+			})
+		]
+
+		if (isProd) {
+			base.push(new BundleAnalyzerPlugin())
+		}
+
+		return base
 	};
 
-	if (preset) {
-		opts.presets.push(preset);
-	}
-
-	return opts;
-};
-
-const jsLoaders = () => {
-	const loaders = [{
-		loader: 'babel-loader',
-		options: babelOptions()
-	}];
-
-	if (isDev) {
-		loaders.push('eslint-loader');
-	}
-
-	return loaders;
-};
-
-const plugins = () => {
-	const base = [
-		new webpack.ProvidePlugin({
-			$: 'jQuery',
-			jQuery: 'jQuery'
-		}),
-		new HTMLWebpackPlugin({
-			template: './index.html',
-			minify: {
-				collapseWhitespace: isProd
-			}
-		}),
-		new CleanWebpackPlugin(),
-		new CopyWebpackPlugin([{
-			from: `${src}/favicon.ico`,
-			to: dist
-		}]),
-		new MiniCssExtractPlugin({
-			filename: filename('css')
-		})
-	]
-
-	if (isProd) {
-		base.push(new BundleAnalyzerPlugin())
-	}
-
-	return base
-}
-
 module.exports = {
-	//context: src,
+	context: src,
 	mode: 'development', //none | development | production
 	entry: {
-		app: './src/js/app.js',
-		main: './src/js/ts/app.js'
+		app: './js/app.js',
+		main: './js/ts/app.js'
 	},
 	output: {
 		filename: '[name].js',
+		//filename: filename('js'),
 		path: dist,
 		publicPath: `/${root}`,
 		library: 'src',
@@ -132,7 +133,7 @@ module.exports = {
 		globalObject: 'this'
 	},
 	resolve: {
-		//modules: ['node_modules'],
+		modules: ['node_modules'],
 		extensions: ['.js', '.ts'],
 		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
@@ -158,9 +159,9 @@ module.exports = {
 			jQuery: 'jQuery'
 		})
 	],
-	//externals: {
-	//	jquery: 'jQuery'
-	//},
+	externals: {
+		jquery: 'jQuery'
+	},
 	module: {
 		rules: [
 			//{
@@ -199,15 +200,15 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
-				include: './src/js',
-				//use: jsLoaders(),
-				loader: 'babel-loader',
-				query: babelOptions(),
+				include: '/js',
+				use: jsLoaders(),
+				//loader: 'babel-loader',
+				//query: babelOptions(),
 			},
 			//{
 			//	test: /\.ts$/,
 			//	exclude: /(node_modules|bower_components)/,
-			//	include: './ts',
+			//	include: '/ts',
 			//	loader: {
 			//		loader: 'babel-loader',
 			//		options: babelOptions('@babel/preset-typescript')

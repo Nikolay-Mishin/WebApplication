@@ -52,9 +52,9 @@ const gulp = require('gulp'), // сам gulp
 // Переменные проекта
 
 const dist = './wwwroot/',
-	src = './src/';
-
-const path = {
+	dist2 = './www/',
+	src = './src/',
+	path = {
 		build: { // пути для сборки проектов
 			all: 'build/',
 			scss: 'build/css/',
@@ -78,7 +78,7 @@ const path = {
 			js: 'src/js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
-			dist: dist + '**/',
+			dist: dist + '**/*',
 			html: dist + 'html',
 			js: dist + 'js',
 			webpack: dist + 'webpack'
@@ -103,7 +103,7 @@ const path = {
 		folder: ""
 	};
 
-gulp.task('clean:dist', function(done) {
+gulp.task('clean:dist_path', function(done) {
 	gulp.src(path.clean.dist)
 		.on('data', function(file) {
 			console.log({
@@ -128,11 +128,7 @@ gulp.task('clean:dist', function(done) {
 	done();
 });
 
-gulp.task('clean:path', function(done) {
-	rimraf(dist + '**/*', done);
-});
-
-gulp.task('clean:dist_path', function(done) {
+gulp.task('clean:dist', function(done) {
 	rimraf(path.clean.dist, done);
 });
 
