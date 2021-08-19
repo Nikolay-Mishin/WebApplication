@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["Client"] = factory();
+		exports["src"] = factory();
 	else
-		root["Client"] = factory();
+		root["src"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -99,43 +99,32 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */,
 /* 2 */,
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-var _lib = __webpack_require__(4);
-
-var _lib2 = _interopRequireDefault(_lib);
-
-var _main = __webpack_require__(5);
-
-var _main2 = _interopRequireDefault(_main);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+﻿
 
 // ts/app.ts
 window.console.log("ts/app.ts");
-window.console.log(_lib2.default);
-window.onload = function () {
-    var el = document.body;
-    var greeter = new _main2.default(el);
+window.console.log(_lib__WEBPACK_IMPORTED_MODULE_0__["default"]);
+window.onload = () => {
+    const el = document.body;
+    const greeter = new _main__WEBPACK_IMPORTED_MODULE_1__["default"](el);
     greeter.start();
 };
 //# sourceMappingURL=app.js.map
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = lib;
-// ts/lib.ts
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return lib; });
+﻿// ts/lib.ts
 function lib() {
     window.console.log("ts/lib.ts");
 }
@@ -143,49 +132,28 @@ function lib() {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// ts/main.ts
-var Greeter = function () {
-    function Greeter(element) {
-        _classCallCheck(this, Greeter);
-
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Greeter; });
+﻿// ts/main.ts
+class Greeter {
+    constructor(element) {
         this.element = element;
         this.element.innerHTML += "The time is: ";
         this.span = document.createElement("span");
         this.element.appendChild(this.span);
         this.span.innerText = new Date().toUTCString();
     }
-
-    _createClass(Greeter, [{
-        key: "start",
-        value: function start() {
-            // this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
-        }
-    }, {
-        key: "stop",
-        value: function stop() {
-            clearTimeout(this.timerToken);
-        }
-    }]);
-
-    return Greeter;
-}();
+    start() {
+        // this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+    }
+    stop() {
+        clearTimeout(this.timerToken);
+    }
+}
 //# sourceMappingURL=main.js.map
-
-
-exports.default = Greeter;
 
 /***/ })
 /******/ ]);

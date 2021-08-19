@@ -52,7 +52,7 @@ const gulp = require('gulp'), // сам gulp
 // Переменные проекта
 
 const root = './wwwroot/',
-	src = './Client/';
+	src = './src/';
 
 const path = {
 		build: { // пути для сборки проектов
