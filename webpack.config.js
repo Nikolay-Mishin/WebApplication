@@ -1,17 +1,20 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require('webpack'),
+	path = require('path');
+
+const root = path.resolve(__dirname, 'wwwroot'),
+	src = path.resolve(__dirname, 'src');
 
 module.exports = {
 	mode: 'none', //development | production
 	entry: {
-		app: './Client/js/app.js',
-		main: './Client/js/ts/app.js',
+		app: './src/js/app.js',
+		main: './src/js/ts/app.js',
 	},
 	output: {
 		filename: '[name].js',
-		path: path.resolve(__dirname, 'wwwroot'),
+		path: root,
 		publicPath: '/wwwroot',
-		library: 'Client',
+		library: 'src',
 		libraryTarget: 'umd', //umd, amd
 		globalObject: 'this',
 	},
@@ -20,9 +23,8 @@ module.exports = {
 		extensions: ['.js', '.ts'],
 		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
-			Utilities: path.resolve(__dirname, 'src/utilities/'),
-			'@': path.resolve(__dirname, 'Client'),
-			'@js': path.resolve(__dirname, 'Client/js'),
+			'^@': root,
+			'^/': src,
 		}
 	},
 	optimization: {
@@ -38,9 +40,9 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(js)$/,
+				test: /\.js$/,
 				exclude: /(node_modules|bower_components)/,
-				include: path.resolve(__dirname, 'Client/js'),
+				include: `${src}/js`,
 				loader: 'babel-loader',
 				query: {
 					presets: ["env"],
@@ -54,7 +56,7 @@ module.exports = {
 };
 
 console.log(__dirname);
-console.log(path.resolve(__dirname, 'wwwroot'));
+console.log(root);
 
 console.log(module.exports.entry.app);
 console.log(module.exports.output.path);

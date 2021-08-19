@@ -2,9 +2,9 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"baseUrl": "./",
-		//"rootDir": "Client/ts",
-		"outDir": "Client/js/ts",
-		//"outFile": "Client/js/main.js",
+		//"rootDir": "src/ts",
+		"outDir": "src/js/ts",
+		//"outFile": "src/js/main.js",
 		"lib": [ "dom", "es6" ],
 		"module": "es6", // amd, es2015
 		"target": "es6",
@@ -60,10 +60,10 @@
 		"node_modules",
 		"gulpfile.js",
 		"wwwroot",
-		"Client/js"
+		"src/js"
 	],
 	"include": [
-		"Client/ts"
+		"src/ts"
 	]
 }
 

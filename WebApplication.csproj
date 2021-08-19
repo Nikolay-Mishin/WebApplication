@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Client\js\app.js" />
-    <None Remove="Client\js\foo.js" />
-    <None Remove="Client\js\lib.js" />
-    <None Remove="Client\ts\app.ts" />
-    <None Remove="Client\ts\index.ts" />
-    <None Remove="Client\ts\lib.ts" />
-    <None Remove="Client\ts\main.ts" />
+    <None Remove="src\js\app.js" />
+    <None Remove="src\js\foo.js" />
+    <None Remove="src\js\lib.js" />
+    <None Remove="src\ts\app.ts" />
+    <None Remove="src\ts\index.ts" />
+    <None Remove="src\ts\lib.ts" />
+    <None Remove="src\ts\main.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,17 +21,17 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Content Include="Client\js\app.js">
+	  <Content Include="src\js\app.js">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
-	  <Content Include="Client\ts\app.ts">
+	  <Content Include="src\ts\app.ts">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
-	  <TypeScriptCompile Include="Client\js\foo.js" />
-	  <TypeScriptCompile Include="Client\js\lib.js" />
-	  <TypeScriptCompile Include="Client\ts\index.ts" />
-	  <TypeScriptCompile Include="Client\ts\lib.ts" />
-	  <TypeScriptCompile Include="Client\ts\main.ts" />
+	  <TypeScriptCompile Include="src\js\foo.js" />
+	  <TypeScriptCompile Include="src\js\lib.js" />
+	  <TypeScriptCompile Include="src\ts\index.ts" />
+	  <TypeScriptCompile Include="src\ts\lib.ts" />
+	  <TypeScriptCompile Include="src\ts\main.ts" />
   </ItemGroup>
 
   <ItemGroup>
