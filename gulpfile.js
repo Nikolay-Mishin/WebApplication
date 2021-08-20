@@ -106,31 +106,7 @@ const build = './wwwroot/',
 		folder: ''
 	};
 
-gulp.task('clean:build', function(done) {
-	gulp.src(path.clean.build/*, { read: false }*/)
-		.on('data', function(file) {
-			console.log({
-				//base: file.base, // базовая директория
-				//dirname: file.dirname, // имя текущей директории
-				//relative: file.relative, // имя файла относительно текущей директории
-				//extname: file.extname, // расширение файла
-				//contents: file.contents, // содержимое файла
-				//path: file.path, // путь до файла
-				//cwd: file.cwd, // основная директория
-				//basename: file.basename, // название файла
-				//stem: file.stem, // имя файла
-				//isDir: file.extname === '',
-				//isBaseDir: file.base === file.dirname,
-				clean: build + file.relative
-			});
-			if (file.base === file.dirname) {
-				//rimraf(build + file.relative, done);
-			}
-		});
-	done();
-});
-
-gulp.task('clean:build_path', function(done) {
+gulp.task('clean', function (done) {
 	rimraf(path.clean.build, done);
 });
 
@@ -157,11 +133,11 @@ gulp.task('build:html', function(done) {
 
 gulp.task('build:js', function(done) {
 	gulp.src(path.src.js)
-		//.pipe(gulp.dest(build + 'js/'))
-		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
-		//.pipe(uglify().on('error', getError))
-		//.pipe(sourcemaps.write('.')) // Пропишем карты
-		//.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest(path.build.js))
+		.pipe(sourcemaps.init()) // Инициализируем sourcemap
+		.pipe(uglify().on('error', getError))
+		.pipe(sourcemaps.write('.')) // Пропишем карты
+		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest(path.build.js))
 		.pipe(getNotify('build:js'));
 	done();
@@ -170,11 +146,6 @@ gulp.task('build:js', function(done) {
 gulp.task('build:webpack', function(done) {
 	gulp.src(path.src.js)
 		.pipe(webpackStream(webpackConfig), webpack)
-		//.pipe(gulp.dest(build + 'webpack'))
-		//.pipe(sourcemaps.init()) // Инициализируем sourcemap
-		//.pipe(uglify().on('error', getError))
-		//.pipe(sourcemaps.write('.')) // Пропишем карты
-		//.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest(path.build.js))
 		.pipe(getNotify('build:webpack'));
 	done();
@@ -198,7 +169,7 @@ gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
 gulp.task('build:all', gulp.series('html', gulp.parallel('webpack')));
-gulp.task('build', gulp.series('clean:build', gulp.parallel('build:html', 'build:webpack')));
+gulp.task('build', gulp.series('clean', gulp.parallel('build:html', 'build:webpack')));
 
 // задача по умолчанию
 
@@ -240,7 +211,7 @@ gulp.task('move:files', function(done) {
 	done();
 });
 
-gulp.task('move', gulp.series('clean:build', 'move:files'));
+gulp.task('move', gulp.series('clean', 'move:files'));
 
 /**********************
  * check cmd arguments
@@ -360,9 +331,9 @@ gulp.task('check-for-favicon-update', function(done) {
 
 // Очистка дериктории для компиляции
 
-gulp.task('clean', function(done) {
-	rimraf(path.clean, done);
-});
+//gulp.task('clean', function(done) {
+//	rimraf(path.clean.build, done);
+//});
 
 gulp.task('dev:html', function(done) {
 	gulp.src(path.src.html)
@@ -408,7 +379,7 @@ gulp.task('dev:js', function(done) {
 		.pipe(uglify()) // сжатие js
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
-		.pipe(gulp.dest(path.build.js)) // готовый файл  min в build
+		.pipe(gulp.dest(path.build.js)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });

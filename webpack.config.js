@@ -12,16 +12,24 @@ HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-фа�
 
 // Переменные проекта
 
-const isDev = process.env.NODE_ENV === 'development',
+const isDev = true,
+	//isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
 	root = 'wwwroot',
 	build = path.resolve(__dirname, 'wwwroot'),
 	src = path.resolve(__dirname, 'src'),
+	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
+	devServer = {
+		port: 8080,
+		hot: isDev,
+		contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
+	},
 	optimization = () => {
 		const config = {
-			splitChunks: {
-				chunks: 'all'
-			}
+			minimize: false
+			//splitChunks: {
+			//	chunks: 'all'
+			//}
 		}
 
 		if (isProd) {
@@ -33,7 +41,6 @@ const isDev = process.env.NODE_ENV === 'development',
 
 		return config
 	},
-	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
 	cssLoaders = extra => {
 		const loaders = [
 			{
@@ -76,7 +83,7 @@ const isDev = process.env.NODE_ENV === 'development',
 		}];
 
 		if (isDev) {
-			loaders.push('eslint-loader');
+			//loaders.push('eslint-loader');
 		}
 
 		return loaders;
@@ -141,17 +148,9 @@ module.exports = {
 			'^/': src
 		}
 	},
-	optimization: {
-		minimize: false,
-	},
-	//optimization: optimization(),
-	//devServer: {
-	//	port: 8080,
-	//	hot: isDev,
-	//	contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
-	//},
-	devtool: 'source-map',
-	//devtool: isDev ? 'source-map' : '',
+	//devServer: devServer,
+	optimization: optimization(),
+	devtool: isDev ? 'source-map' : '',
 	//plugins: plugins(),
 	plugins: [
 		new webpack.ProvidePlugin({
@@ -164,6 +163,30 @@ module.exports = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.js$/,
+				exclude: /(node_modules|bower_components)/,
+				include: '/js',
+				use: jsLoaders()
+			},
+			//{
+			//	test: /\.ts$/,
+			//	exclude: /(node_modules|bower_components)/,
+			//	include: '/ts',
+			//	loader: {
+			//		loader: 'babel-loader',
+			//		options: babelOptions('@babel/preset-typescript')
+			//	}
+			//},
+			//{
+			//	test: /\.jsx$/,
+			//	exclude: /(node_modules|bower_components)/,
+			//	include: '/react',
+			//	loader: {
+			//		loader: 'babel-loader',
+			//		options: babelOptions('@babel/preset-react')
+			//	}
+			//},
 			//{
 			//	test: /\.css$/,
 			//	use: cssLoaders()
@@ -196,32 +219,6 @@ module.exports = {
 			//{
 			//	test: /\.csv$/,
 			//	use: ['csv-loader']
-			//},
-			{
-				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
-				include: '/js',
-				use: jsLoaders(),
-				//loader: 'babel-loader',
-				//query: babelOptions(),
-			},
-			//{
-			//	test: /\.ts$/,
-			//	exclude: /(node_modules|bower_components)/,
-			//	include: '/ts',
-			//	loader: {
-			//		loader: 'babel-loader',
-			//		options: babelOptions('@babel/preset-typescript')
-			//	}
-			//},
-			//{
-			//	test: /\.jsx$/,
-			//	exclude: /(node_modules|bower_components)/,
-			//	include: '/react',
-			//	loader: {
-			//		loader: 'babel-loader',
-			//		options: babelOptions('@babel/preset-react')
-			//	}
 			//}
 		],
 	}
