@@ -12,17 +12,27 @@ HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-фа�
 
 // Переменные проекта
 
-const isDev = true,
+const build = path.resolve(__dirname, 'wwwroot'),
+	src = path.resolve(__dirname, 'src'),
+	root = 'wwwroot',
+	isDev = true,
 	//isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
-	root = 'wwwroot',
-	build = path.resolve(__dirname, 'wwwroot'),
-	src = path.resolve(__dirname, 'src'),
 	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
 	devServer = {
 		port: 8080,
 		hot: isDev,
 		contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
+	},
+	resolve = {
+		modules: ['node_modules'],
+		extensions: ['.js', '.ts'],
+		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
+		alias: {
+			'^@': build,
+			'^/': src,
+			'jQuery': path.resolve(__dirname, './../../../jquery')
+		}
 	},
 	optimization = () => {
 		const config = {
@@ -91,29 +101,28 @@ const isDev = true,
 	plugins = () => {
 		const base = [
 			new webpack.ProvidePlugin({
-				$: 'jQuery',
-				jQuery: 'jQuery'
+				$: 'jQuery'
 			}),
-			new HTMLWebpackPlugin({
-				template: './index.html',
-				minify: {
-					collapseWhitespace: isProd
-				}
-			}),
-			new CleanWebpackPlugin(),
-			new CopyWebpackPlugin([{
-				from: `${src}/favicon.ico`,
-				to: build
-				//patterns: [
-				//	{
-				//		from: `${src}/favicon.ico`,
-				//		to: build
-				//	},
-				//],
-			}]),
-			new MiniCssExtractPlugin({
-				filename: filename('css')
-			})
+			//new HTMLWebpackPlugin({
+			//	template: './index.html',
+			//	minify: {
+			//		collapseWhitespace: isProd
+			//	}
+			//}),
+			//new CleanWebpackPlugin(),
+			//new CopyWebpackPlugin([{
+			//	from: `${src}/favicon.ico`,
+			//	to: build
+			//	//patterns: [
+			//	//	{
+			//	//		from: `${src}/favicon.ico`,
+			//	//		to: build
+			//	//	},
+			//	//],
+			//}]),
+			//new MiniCssExtractPlugin({
+			//	filename: filename('css')
+			//})
 		]
 
 		if (isProd) {
@@ -134,33 +143,16 @@ module.exports = {
 		filename: '[name].js',
 		//filename: filename('js'),
 		path: build,
-		publicPath: `/${root}`,
-		library: 'src',
-		libraryTarget: 'umd', //umd, amd
 		globalObject: 'this'
-	},
-	resolve: {
-		modules: ['node_modules'],
-		extensions: ['.js', '.ts'],
-		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
-		alias: {
-			'^@': build,
-			'^/': src
-		}
+		//publicPath: `/${root}`,
+		//library: 'src',
+		//libraryTarget: 'umd', //umd, amd
 	},
 	//devServer: devServer,
+	resolve: resolve,
 	optimization: optimization(),
 	devtool: isDev ? 'source-map' : '',
-	//plugins: plugins(),
-	plugins: [
-		new webpack.ProvidePlugin({
-			$: 'jQuery',
-			jQuery: 'jQuery'
-		})
-	],
-	externals: {
-		jquery: 'jQuery'
-	},
+	plugins: plugins(),
 	module: {
 		rules: [
 			{

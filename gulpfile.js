@@ -66,7 +66,8 @@ const build = './wwwroot/',
 			img: build + 'img/'
 		},
 		src: { // пути размещения исходных файлов проекта
-			html: src + '**/*.{html,htm}',
+			all: src,
+			html: src + 'html/**/*.{html,htm}',
 			pug: src + 'pug/*.pug',
 			scss: src + 'scss/*.scss',
 			js: src + 'js/*.{js,js.map}',
@@ -144,7 +145,7 @@ gulp.task('build:js', function(done) {
 });
 
 gulp.task('build:webpack', function(done) {
-	gulp.src(path.src.js)
+	gulp.src(path.src.all)
 		.pipe(webpackStream(webpackConfig), webpack)
 		.pipe(gulp.dest(path.build.js))
 		.pipe(getNotify('build:webpack'));
