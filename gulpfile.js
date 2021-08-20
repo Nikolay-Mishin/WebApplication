@@ -144,8 +144,8 @@ gulp.task('build:js', function(done) {
 	done();
 });
 
-gulp.task('build:webpack', function(done) {
-	gulp.src(path.src.all)
+gulp.task('build:webpack', function (done) {
+	gulp.src(path.src.all, { read: false })
 		.pipe(webpackStream(webpackConfig), webpack)
 		.pipe(gulp.dest(path.build.js))
 		.pipe(getNotify('build:webpack'));
@@ -170,8 +170,8 @@ gulp.task('js', gulp.series('clean:js', 'build:js'));
 gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
 
 gulp.task('build:all', gulp.series('html', gulp.parallel('webpack')));
-//gulp.task('build', gulp.series('clean', gulp.parallel('build:html', 'build:webpack')));
-gulp.task('build', gulp.series('build:webpack'));
+gulp.task('build', gulp.series('clean', gulp.parallel('build:html', 'build:webpack')));
+//gulp.task('build', gulp.series('build:webpack'));
 
 // задача по умолчанию
 

@@ -109,17 +109,17 @@ const root = 'wwwroot',
 			//		collapseWhitespace: isProd
 			//	}
 			//}),
-			new CleanWebpackPlugin(),
-			new CopyWebpackPlugin([
-				//{
-				//	from: `${src}/favicon.ico`,
-				//	to: build
-				//}
-				{
-					from: `${src}/html/**/*`,
-					to: build
-				}
-			]),
+			//new CleanWebpackPlugin(),
+			//new CopyWebpackPlugin([
+			//	//{
+			//	//	from: `${src}/favicon.ico`,
+			//	//	to: build
+			//	//}
+			//	{
+			//		from: `${src}/html/**/*`,
+			//		to: `${build}/html`
+			//	}
+			//]),
 			//new MiniCssExtractPlugin({
 			//	filename: filename('css')
 			//})
