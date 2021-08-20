@@ -2,7 +2,7 @@
 
 const webpack = require('webpack'),
 	path = require('path');
-HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
+	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
 	CopyWebpackPlugin  = require('copy-webpack-plugin'),
 	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
@@ -12,9 +12,9 @@ HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-фа�
 
 // Переменные проекта
 
-const build = path.resolve(__dirname, 'wwwroot'),
+const root = 'wwwroot',
+	build = path.resolve(__dirname, root),
 	src = path.resolve(__dirname, 'src'),
-	root = 'wwwroot',
 	isDev = true,
 	//isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
@@ -109,17 +109,17 @@ const build = path.resolve(__dirname, 'wwwroot'),
 			//		collapseWhitespace: isProd
 			//	}
 			//}),
-			//new CleanWebpackPlugin(),
-			//new CopyWebpackPlugin([{
-			//	from: `${src}/favicon.ico`,
-			//	to: build
-			//	//patterns: [
-			//	//	{
-			//	//		from: `${src}/favicon.ico`,
-			//	//		to: build
-			//	//	},
-			//	//],
-			//}]),
+			new CleanWebpackPlugin(),
+			new CopyWebpackPlugin([
+				//{
+				//	from: `${src}/favicon.ico`,
+				//	to: build
+				//}
+				{
+					from: `${src}/html/**/*`,
+					to: build
+				}
+			]),
 			//new MiniCssExtractPlugin({
 			//	filename: filename('css')
 			//})
@@ -140,13 +140,12 @@ module.exports = {
 		main: './js/ts/app.js'
 	},
 	output: {
-		filename: '[name].js',
-		//filename: filename('js'),
+		filename: filename('js'),
 		path: build,
+		publicPath: `/${root}`,
+		library: 'lib',
+		libraryTarget: 'umd',
 		globalObject: 'this'
-		//publicPath: `/${root}`,
-		//library: 'src',
-		//libraryTarget: 'umd', //umd, amd
 	},
 	//devServer: devServer,
 	resolve: resolve,
