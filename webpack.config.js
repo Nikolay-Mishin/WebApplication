@@ -40,7 +40,7 @@ const root = 'wwwroot',
 			//splitChunks: {
 			//	chunks: 'all'
 			//}
-		}
+		};
 
 		if (isProd) {
 			config.minimizer = [
@@ -49,7 +49,18 @@ const root = 'wwwroot',
 			]
 		}
 
-		return config
+		return config;
+	},
+	excludes = exclude => {
+		const excludes = [
+			'/(node_modules|bower_components)/'
+		];
+
+		if (exclude) {
+			excludes.push(exclude);
+		}
+
+		return excludes;
 	},
 	cssLoaders = extra => {
 		const loaders = [
@@ -61,13 +72,13 @@ const root = 'wwwroot',
 				},
 			},
 			'css-loader'
-		]
+		];
 
 		if (extra) {
 			loaders.push(extra)
 		}
 
-		return loaders
+		return loaders;
 	},
 	babelOptions = preset => {
 		const opts = {
@@ -116,7 +127,7 @@ const root = 'wwwroot',
 			//	//	to: build
 			//	//}
 			//	{
-			//		from: `${src}/html/**/*`,
+			//		from: `${src}/html`,
 			//		to: `${build}/html`
 			//	}
 			//]),
@@ -129,7 +140,7 @@ const root = 'wwwroot',
 			base.push(new BundleAnalyzerPlugin())
 		}
 
-		return base
+		return base;
 	};
 
 module.exports = {
@@ -156,13 +167,13 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				exclude: /(node_modules|bower_components)/,
+				exclude: excludes(),
 				include: '/js',
 				use: jsLoaders()
 			},
 			//{
 			//	test: /\.ts$/,
-			//	exclude: /(node_modules|bower_components)/,
+			//	exclude: excludes(),
 			//	include: '/ts',
 			//	loader: {
 			//		loader: 'babel-loader',
@@ -171,7 +182,7 @@ module.exports = {
 			//},
 			//{
 			//	test: /\.jsx$/,
-			//	exclude: /(node_modules|bower_components)/,
+			//	exclude: excludes(),
 			//	include: '/react',
 			//	loader: {
 			//		loader: 'babel-loader',

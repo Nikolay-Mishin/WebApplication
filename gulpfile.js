@@ -145,7 +145,7 @@ gulp.task('build:js', function(done) {
 });
 
 gulp.task('build:webpack', function (done) {
-	gulp.src(path.src.all, { read: false })
+	gulp.src(path.src.all)
 		.pipe(webpackStream(webpackConfig), webpack)
 		.pipe(gulp.dest(path.build.js))
 		.pipe(getNotify('build:webpack'));
