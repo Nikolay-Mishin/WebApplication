@@ -19,21 +19,6 @@ const root = 'wwwroot',
 	//isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
 	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
-	devServer = {
-		port: 8080,
-		hot: isDev,
-		contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
-	},
-	resolve = {
-		modules: ['node_modules'],
-		extensions: ['.js', '.ts'],
-		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
-		alias: {
-			'^@': build,
-			'^/': src,
-			'jQuery': path.resolve(__dirname, './../../../jquery')
-		}
-	},
 	optimization = () => {
 		const config = {
 			minimize: false
@@ -50,6 +35,41 @@ const root = 'wwwroot',
 		}
 
 		return config;
+	},
+	plugins = () => {
+		const base = [
+			new webpack.ProvidePlugin({
+				$: 'jquery',
+				jQuery: 'jquery',
+				'window.jQuery': 'jquery'
+			}),
+			//new HTMLWebpackPlugin({
+			//	template: './index.html',
+			//	minify: {
+			//		collapseWhitespace: isProd
+			//	}
+			//}),
+			//new CleanWebpackPlugin(),
+			//new CopyWebpackPlugin([
+			//	//{
+			//	//	from: `${src}/favicon.ico`,
+			//	//	to: build
+			//	//}
+			//	{
+			//		from: `${src}/html`,
+			//		to: `${build}/html`
+			//	}
+			//]),
+			new MiniCssExtractPlugin({
+				filename: filename('css')
+			})
+		]
+
+		if (isProd) {
+			base.push(new BundleAnalyzerPlugin())
+		}
+
+		return base;
 	},
 	excludes = exclude => {
 		const excludes = [
@@ -108,39 +128,6 @@ const root = 'wwwroot',
 		}
 
 		return loaders;
-	},
-	plugins = () => {
-		const base = [
-			new webpack.ProvidePlugin({
-				$: 'jQuery'
-			}),
-			//new HTMLWebpackPlugin({
-			//	template: './index.html',
-			//	minify: {
-			//		collapseWhitespace: isProd
-			//	}
-			//}),
-			//new CleanWebpackPlugin(),
-			//new CopyWebpackPlugin([
-			//	//{
-			//	//	from: `${src}/favicon.ico`,
-			//	//	to: build
-			//	//}
-			//	{
-			//		from: `${src}/html`,
-			//		to: `${build}/html`
-			//	}
-			//]),
-			//new MiniCssExtractPlugin({
-			//	filename: filename('css')
-			//})
-		]
-
-		if (isProd) {
-			base.push(new BundleAnalyzerPlugin())
-		}
-
-		return base;
 	};
 
 module.exports = {
@@ -158,8 +145,24 @@ module.exports = {
 		libraryTarget: 'umd',
 		globalObject: 'this'
 	},
-	//devServer: devServer,
-	resolve: resolve,
+	//devServer: {
+	//	port: 8080,
+	//	hot: isDev,
+	//	contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
+	//},
+	resolve: {
+		modules: ['node_modules'],
+		extensions: ['.js', '.ts'],
+		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
+		alias: {
+			'^@': build,
+			'^/': src,
+			'jQuery': path.resolve(__dirname, './../../../jquery')
+		}
+	},
+	externals: {
+		jquery: 'jQuery'
+	},
 	optimization: optimization(),
 	devtool: isDev ? 'source-map' : '',
 	plugins: plugins(),
