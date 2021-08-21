@@ -12,8 +12,7 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"importHelpers": true,
-		"allowJs": true,
-		"checkJs": true,
+
 		//"declaration": true,
 		//"noLib": false,
 		"sourceMap": true,
@@ -23,17 +22,17 @@
 		"removeComments": false,
 		"noEmitOnError": true,
 		//"noEmitHelpers": false,
-		//"alwaysStrict": true,
-		//"noImplicitUseStrict": false,
-		"noImplicitAny": true,
 		"paths": {
 			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
 			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
-		}
+		},
+		"allowJs": true,
+		"checkJs": true,
 
 		// Strict Checks
 		//"alwaysStrict": true,
-		//"noImplicitAny": true,
+		//"noImplicitUseStrict": false,
+		"noImplicitAny": true
 		//"strictNullChecks": true,
 		//"strictPropertyInitialization": true,
 		//"strictFunctionTypes": true,

@@ -1,7 +1,7 @@
 // Подключаемые плагины
 
 const webpack = require('webpack'),
-	path = require('path');
+	path = require('path'),
 	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
 	CopyWebpackPlugin  = require('copy-webpack-plugin'),
