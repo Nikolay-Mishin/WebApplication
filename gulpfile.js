@@ -1,24 +1,5 @@
 /// <binding AfterBuild='build' />
-'use strict';
-
-// global (-g)
-// npm i -g gulp-cli
-
-// devDependencies (-D | --save-dev)
-// npm i -D @babel/core @babel/node @babel/cli @babel/preset-env @babel/plugin-transform-runtime @babel/runtime babel-loader webpack webpack-dev-server webpack-cli
-// npm i -D babel-core babel-preset-env babel-preset-latest typescript webpack-stream
-// npm i -D browser-sync gulp gulp-autoprefixer gulp-changed gulp-clean gulp-cli gulp-commonjs gulp-concat gulp-cssmin gulp-htmlclean gulp-htmlmin gulp-if gulp-imagemin gulp-inline-css gulp-less gulp-notify gulp-plumber gulp-pug gulp-real-favicon gulp-rename gulp-rigger gulp-sass gulp-sourcemaps gulp-uglify gulp-util gulp-watch imgminify less-plugin-lists rimraf
-
-// npm install --save-dev @babel/core @babel/node @babel/cli @babel/preset-env @babel/plugin-transform-runtime @babel/runtime babel-loader webpack webpack-dev-server webpack-cli
-
-// devDependencies (-S | --save)
-// npm i -S animate.css bootstrap clipboard fancybox jquery jquery-modal jquery.maskedinput
-
-// Uninstall
-// npm -g uninstall <name> --save also removes it globally
-// npm uninstall <name> removes the module from node_modules, but not package.json
-// npm uninstall <name> --save also removes it from dependencies in package.json
-// npm uninstall <name> --save-dev also removes it from devDependencies in package.json
+//'use strict';
 
 // Подключаемые плагины
 
