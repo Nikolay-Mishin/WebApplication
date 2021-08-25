@@ -109,6 +109,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./js/ts/main.js");
 ﻿
 
+//import $ from "jquery";
+// global.jQuery = global.$ = $;
+//window.console.log($);
 // ts/app.ts
 window.console.log("ts/app.ts");
 window.console.log(_lib__WEBPACK_IMPORTED_MODULE_0__["default"]);
