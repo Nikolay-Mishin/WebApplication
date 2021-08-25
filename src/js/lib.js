@@ -1,5 +1,5 @@
-// js/lib.js
-
+﻿// ts/lib.ts
 export default function lib() {
-	console.log("js/lib.js");
+    window.console.log("ts/lib.ts");
 }
+//# sourceMappingURL=lib.js.map

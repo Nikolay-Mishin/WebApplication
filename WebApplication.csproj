@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <None Remove="src\js\app.js" />
-    <None Remove="src\js\foo.js" />
     <None Remove="src\js\lib.js" />
     <None Remove="src\ts\app.ts" />
     <None Remove="src\ts\index.ts" />
@@ -27,7 +26,6 @@
 	  <Content Include="src\ts\app.ts">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
-	  <TypeScriptCompile Include="src\js\foo.js" />
 	  <TypeScriptCompile Include="src\js\lib.js" />
 	  <TypeScriptCompile Include="src\ts\index.ts" />
 	  <TypeScriptCompile Include="src\ts\lib.ts" />
@@ -41,7 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="src\js\ts\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": "./",
 		//"rootDir": "src/ts",
-		"outDir": "src/js/ts",
+		"outDir": "src/js",
 		//"outFile": "src/js/main-ts.js",
 		"lib": [ "dom", "es6" ],
 		"module": "es6", // amd, es2015

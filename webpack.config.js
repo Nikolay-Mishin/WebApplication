@@ -143,8 +143,7 @@ module.exports = {
 	context: src,
 	mode: 'development', //none | development | production
 	entry: {
-		app: './js/app.js',
-		main: './js/ts/app.js'
+		app: './js/app.js'
 	},
 	output: {
 		filename: filename('js'),

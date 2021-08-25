@@ -107,20 +107,20 @@ return /******/ (function(modules) { // webpackBootstrap
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib */ "./js/lib.js");
 /* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./main */ "./js/main.js");
+﻿
 
-
-
-// js/app.js
-
-console.log("js/app.js");
-console.log(_lib__WEBPACK_IMPORTED_MODULE_0__["default"]);
-
-window.onload = function () {
-	var el = document.body;
-	var greeter = new _main__WEBPACK_IMPORTED_MODULE_1__["default"](el);
-	greeter.start();
+//import $ from "jquery";
+//global.jQuery = global.$ = $;
+//window.console.log($);
+// ts/app.ts
+window.console.log("ts/app.ts");
+window.console.log(_lib__WEBPACK_IMPORTED_MODULE_0__["default"]);
+window.onload = () => {
+    const el = document.body;
+    const greeter = new _main__WEBPACK_IMPORTED_MODULE_1__["default"](el);
+    greeter.start();
 };
-
+//# sourceMappingURL=app.js.map
 
 /***/ }),
 
@@ -134,12 +134,11 @@ window.onload = function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return lib; });
-// js/lib.js
-
+﻿// ts/lib.ts
 function lib() {
-	console.log("js/lib.js");
+    window.console.log("ts/lib.ts");
 }
-
+//# sourceMappingURL=lib.js.map
 
 /***/ }),
 
@@ -153,26 +152,23 @@ function lib() {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Greeter; });
-// js/main.js
-
+﻿// ts/main.ts
 class Greeter {
-	constructor(element) {
-		this.element = element;
-		this.element.innerHTML += "The time is: ";
-		this.span = document.createElement("span");
-		this.element.appendChild(this.span);
-		this.span.innerText = new Date().toUTCString();
-	}
-
-	start() {
-		// this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
-	}
-
-	stop() {
-		clearTimeout(this.timerToken);
-	}
+    constructor(element) {
+        this.element = element;
+        this.element.innerHTML += "The time is: ";
+        this.span = document.createElement("span");
+        this.element.appendChild(this.span);
+        this.span.innerText = new Date().toUTCString();
+    }
+    start() {
+        // this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+    }
+    stop() {
+        clearTimeout(this.timerToken);
+    }
 }
-
+//# sourceMappingURL=main.js.map
 
 /***/ })
 
