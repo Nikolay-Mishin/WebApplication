@@ -1,10 +1,10 @@
-﻿import $ from "jquery";
-import lib from "./lib";
+﻿import lib from "./lib";
 import Greeter from "./main";
+import $ from "jquery";
 //global.jQuery = global.$ = $;
 window.console.log($);
 // ts/app.ts
-window.console.log("ts/app2.ts");
+window.console.log("ts/app.ts");
 window.console.log(lib);
 window.onload = () => {
     const el = document.body;

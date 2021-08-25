@@ -11,7 +11,7 @@
 			"grouped-imports": false,
 			"module-source-path": "basename"
 		}]
-	}
+	},
 	"jsRules": {},
 	"rulesDirectory": []
 }
