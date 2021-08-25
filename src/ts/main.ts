@@ -4,6 +4,7 @@ export default class Greeter {
 	private element: HTMLElement;
 	private span: HTMLElement;
 	private timerToken: number;
+
 	constructor(element: HTMLElement) {
 		this.element = element;
 		this.element.innerHTML += "The time is: ";
