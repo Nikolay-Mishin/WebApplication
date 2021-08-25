@@ -2,7 +2,7 @@
 	"compileOnSave": true,
 	"compilerOptions": {
 		"baseUrl": "./",
-		"rootDir": "src/ts",
+		//"rootDir": "src/ts",
 		"outDir": "src/js/ts",
 		//"outFile": "src/js/main.js",
 		"lib": [ "dom", "es6" ],
