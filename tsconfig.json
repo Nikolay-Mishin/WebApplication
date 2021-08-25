@@ -25,7 +25,7 @@
 		"allowJs": true,
 		"paths": {
 			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../node_modules/jquery/dist/jquery.js" ]
+			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
 		},
 
 		// Strict Checks
