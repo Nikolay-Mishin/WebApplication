@@ -151,7 +151,7 @@ module.exports = {
 		path: build,
 		publicPath: `/${root}`,
 		library: 'lib',
-		libraryTarget: 'amd',
+		libraryTarget: 'umd',
 		globalObject: 'this'
 	},
 	//devServer: {
