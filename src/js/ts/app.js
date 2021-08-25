@@ -1,7 +1,7 @@
 ﻿import lib from "./lib";
 import Greeter from "./main";
 //import $ from "jquery";
-// global.jQuery = global.$ = $;
+//global.jQuery = global.$ = $;
 //window.console.log($);
 // ts/app.ts
 window.console.log("ts/app.ts");

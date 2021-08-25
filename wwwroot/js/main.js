@@ -1,14 +1,4 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["lib"] = factory();
-	else
-		root["lib"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+define("lib", [], function() { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -110,7 +100,7 @@ __webpack_require__.r(__webpack_exports__);
 ﻿
 
 //import $ from "jquery";
-// global.jQuery = global.$ = $;
+//global.jQuery = global.$ = $;
 //window.console.log($);
 // ts/app.ts
 window.console.log("ts/app.ts");
@@ -172,6 +162,5 @@ class Greeter {
 
 /***/ })
 
-/******/ });
-});
+/******/ })});;
 //# sourceMappingURL=main.js.map
