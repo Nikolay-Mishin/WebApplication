@@ -1,4 +1,4 @@
-/// <binding AfterBuild='build' />
+/// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 //'use strict';
 
 // Подключаемые плагины
@@ -39,7 +39,6 @@ const build = './wwwroot/',
 			all: build,
 			html: build + 'html/',
 			css: build + 'css/',
-			scss: build + 'scss/',
 			js: build + 'js/', 
 			favicon: build + 'favicon/',
 			faviconDataFile: src + 'favicon/faviconData.json',
@@ -58,13 +57,14 @@ const build = './wwwroot/',
 			img: src + 'img/**/*.{jpeg,jpg,png,svg,gif}'
 		},
 		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: src + '**/*.{html,htm}',
+			html: src + 'html/**/*.{html,htm}',
 			scss: src + 'scss/**/*.scss',
 			js: src + 'js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
 			build: build + '**/*',
 			html: build + 'html',
+			css: src + 'css',
 			js: build + 'js',
 			webpack: build + 'webpack'
 		}
@@ -144,6 +144,14 @@ function getNotify(title, message = 'Scripts Done') {
 	});
 }
 
+// Отслеживание изменений в проекте
+
+gulp.task('watch:webpack', function (done) {
+	//gulp.watch(path.watch.js, gulp.series('build'));
+	gulp.watch(path.watch.js);
+	done();
+});
+
 // Execution
 
 gulp.task('html', gulp.series('clean:html', 'build:html'));
@@ -160,7 +168,7 @@ gulp.task('default', gulp.series('build'));
 
 // Основные Задачи
 
-gulp.task('test', function(done) {
+gulp.task('move:test', function(done) {
 	gulp.src('src/**/*')
 		.on('data', function(file) {
 			console.log({
@@ -188,7 +196,6 @@ gulp.task('move:files', function(done) {
 	gulp.src('files/**/*.{html,htm}').pipe(gulp.dest(path.build.all));
 	gulp.src('files/**/*.pug').pipe(gulp.dest(path.build.pug));
 	gulp.src('files/**/*.css').pipe(gulp.dest(path.build.css));
-	gulp.src('files/**/*.scss').pipe(gulp.dest(path.build.scss));
 	gulp.src('files/**/*.js').pipe(gulp.dest(path.build.js));
 	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest(path.build.img));
 	done();
