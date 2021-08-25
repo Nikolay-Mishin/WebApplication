@@ -14,18 +14,18 @@
 		"importHelpers": true,
 
 		//"declaration": true,
-		//"noLib": false,
+		"noLib": false,
 		"sourceMap": true,
 		"emitBOM": true,
 		"charset": "utf-8",
 		"newLine": "crlf",
 		"removeComments": false,
 		"noEmitOnError": true,
-		//"noEmitHelpers": false,
+		"noEmitHelpers": false,
 		"allowJs": true,
 		"paths": {
 			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
+			"jquery": [ "./../../../node_modules/jquery/dist/jquery.js" ]
 		},
 
 		// Strict Checks
