@@ -2,6 +2,7 @@
 
 const webpack = require('webpack'),
 	path = require('path'),
+	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
 	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
 	CopyWebpackPlugin  = require('copy-webpack-plugin'),
@@ -43,6 +44,14 @@ const root = 'wwwroot',
 				jQuery: 'jquery',
 				'window.jQuery': 'jquery'
 			}),
+			//new HtmlWebpackExternalsPlugin({ // optional plugin: inject cdn
+			//	externals: [
+			//		{
+			//			module: 'jquery',
+			//			entry: 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'
+			//		}
+			//	],
+			//}),
 			//new HTMLWebpackPlugin({
 			//	template: './index.html',
 			//	minify: {
@@ -157,7 +166,7 @@ module.exports = {
 		alias: {
 			'^@': build,
 			'^/': src,
-			'jQuery': path.resolve(__dirname, './../../../jquery')
+			//'jQuery': path.resolve(__dirname, './../../../jquery')
 		}
 	},
 	externals: {
