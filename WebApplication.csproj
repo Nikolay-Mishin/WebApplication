@@ -32,17 +32,17 @@
     <None Remove="src\ts\main.ts" />
   </ItemGroup>-->
 
-  <!--<ItemGroup>
-	  <Content Include="src\js\app.js">
+  <ItemGroup>
+	  <!--<Content Include="src\js\app.js">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
+	  <TypeScriptCompile Include="src\js\lib.js" />-->
 	  <Content Include="src\ts\app.ts">
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
-	  <TypeScriptCompile Include="src\js\lib.js" />
 	  <TypeScriptCompile Include="src\ts\lib.ts" />
 	  <TypeScriptCompile Include="src\ts\main.ts" />
-  </ItemGroup>-->
+  </ItemGroup>
 
   <!--<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>
