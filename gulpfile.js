@@ -1,4 +1,4 @@
-/// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
+/// <binding ProjectOpened='watch:webpack' />
 //'use strict';
 
 // Подключаемые плагины
