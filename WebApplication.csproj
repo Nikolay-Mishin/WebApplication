@@ -21,7 +21,7 @@
     <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
     <TypeScriptMapRoot />
-    <TypeScriptSourceRoot>Client</TypeScriptSourceRoot>
+    <TypeScriptSourceRoot>src</TypeScriptSourceRoot>
   </PropertyGroup>-->
 
 	<ItemGroup>
@@ -32,9 +32,6 @@
 	<!--<ItemGroup>
     <None Remove="src\js\app.js" />
     <None Remove="src\js\lib.js" />
-    <None Remove="src\ts\app.ts" />
-    <None Remove="src\ts\lib.ts" />
-    <None Remove="src\ts\main.ts" />
   </ItemGroup>-->
 
 	<ItemGroup>
@@ -49,9 +46,9 @@
 		<TypeScriptCompile Include="src\ts\main.ts" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<!--<ItemGroup>
 	  <Folder Include="src\js\" />
-	</ItemGroup>
+	</ItemGroup>-->
 
 	<!--<ItemGroup>
     <Folder Include="wwwroot\" />
