@@ -1,4 +1,4 @@
-const config = require('../gulpfile-template.config'),
+const config = require('../gulpfile.config'),
 	gulp = require('gulp'),
 	plumber = require('gulp-plumber'),
 	pug = require('gulp-pug'),
