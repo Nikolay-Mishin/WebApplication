@@ -5,9 +5,9 @@ const { join } = require('path'),
 	port = process.env.PORT || 8080,
 	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment = process.env
 
-const root = __dirname;
-const build = path.resolve(root, 'build');
-const src = path.resolve(root, 'src');
+const root = __dirname,
+	build = path.resolve(root, 'build'),
+	src = path.resolve(root, 'src');
 
 module.exports = {
 	root,
