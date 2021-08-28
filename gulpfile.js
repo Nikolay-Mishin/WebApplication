@@ -3,8 +3,10 @@
 
 // Подключаемые плагины
 
-const path = require('path'), // paths
+const config = require('./gulpfile.config'),
+	path = require('path'), // path
 	{ src, dest, watch, lastRun, series, parallel } = require('gulp'), // сам gulp
+	gulp = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
 	rimraf = require('rimraf'),// удаление файлов
@@ -33,61 +35,62 @@ const path = require('path'), // paths
 
 // Переменные проекта
 
-const build = './wwwroot/',
-	src_path = './src/',
-	paths = {
-		build: { // пути для сборки проектов
-			all: build,
-			html: build + 'html/',
-			css: build + 'css/',
-			js: build + 'js/', 
-			favicon: build + 'favicon/',
-			faviconDataFile: src_path + 'favicon/faviconData.json',
-			faviconInject: build + '**/*.html',
-			img: build + 'img/'
-		},
-		src: { // пути размещения исходных файлов проекта
-			all: src_path,
-			html: src_path + 'html/**/*.{html,htm}',
-			pug: src_path + 'pug/*.pug',
-			scss: src_path + 'scss/*.scss',
-			js: src_path + 'js/*.{js,js.map}',
-			webpack: src_path + 'js/**/*.js',
-			favicon: src_path + 'favicon/icon.png',
-			iconsPath: '/favicon',
-			img: src_path + 'img/**/*.{jpeg,jpg,png,svg,gif}'
-		},
-		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: src_path + 'html/**/*.{html,htm}',
-			scss: src_path + 'scss/**/*.scss',
-			js: src_path + 'js/**/*.js'
-		},
-		clean: { // путь очистки директории для сборки
-			build: build + '**/*',
-			html: build + 'html',
-			css: build + 'css',
-			js: build + 'js',
-			webpack: build + 'webpack'
-		}
-	},
-	// конфигурация browser sync
-	config = {
-		server: {
-			baseDir: build,
-			index: 'index.html'
-		},
-		tunnel: true,
-		host: 'localhost',
-		port: 7787,
-		logPrefix: "WebDev"
-	},
-	site = {
-		server: 'site.ru',
-		user: 'tstv',
-		pass: '112121',
-		port: '10000',
-		folder: ''
-	};
+const { paths, serverConfig, site } = config;
+	//build = './wwwroot/',
+	//src_path = './src/',
+	//paths = {
+	//	build: { // пути для сборки проектов
+	//		all: build,
+	//		html: build + 'html/',
+	//		css: build + 'css/',
+	//		js: build + 'js/', 
+	//		favicon: build + 'favicon/',
+	//		faviconDataFile: src_path + 'favicon/faviconData.json',
+	//		faviconInject: build + '**/*.html',
+	//		img: build + 'img/'
+	//	},
+	//	src: { // пути размещения исходных файлов проекта
+	//		all: src_path,
+	//		html: src_path + 'html/**/*.{html,htm}',
+	//		pug: src_path + 'pug/*.pug',
+	//		scss: src_path + 'scss/*.scss',
+	//		js: src_path + 'js/*.{js,js.map}',
+	//		webpack: src_path + 'js/**/*.js',
+	//		favicon: src_path + 'favicon/icon.png',
+	//		iconsPath: '/favicon',
+	//		img: src_path + 'img/**/*.{jpeg,jpg,png,svg,gif}'
+	//	},
+	//	watch: { // пути файлов, за изменением которых мы хотим наблюдать
+	//		html: src_path + 'html/**/*.{html,htm}',
+	//		scss: src_path + 'scss/**/*.scss',
+	//		js: src_path + 'js/**/*.js'
+	//	},
+	//	clean: { // путь очистки директории для сборки
+	//		build: build + '**/*',
+	//		html: build + 'html',
+	//		css: build + 'css',
+	//		js: build + 'js',
+	//		webpack: build + 'webpack'
+	//	}
+	//},
+	//// конфигурация browser sync
+	//serverConfig = {
+	//	server: {
+	//		baseDir: build,
+	//		index: 'index.html'
+	//	},
+	//	tunnel: true,
+	//	host: 'localhost',
+	//	port: 7787,
+	//	logPrefix: "WebDev"
+	//},
+	//site = {
+	//	server: 'site.ru',
+	//	user: 'tstv',
+	//	pass: '112121',
+	//	port: '10000',
+	//	folder: ''
+	//};
 
 gulp.task('clean', function(done) {
 	rimraf(paths.clean.build, done);
@@ -427,7 +430,7 @@ gulp.task('dev:imgmin', function(done) {
 /* Webserver */
 
 gulp.task('webserver', function(done) {
-	browserSync(config); // локальный сервер
+	browserSync(serverConfig); // локальный сервер
 	done();
 });
 
