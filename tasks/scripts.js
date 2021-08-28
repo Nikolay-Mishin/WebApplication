@@ -1,38 +1,24 @@
-const gulp = require('gulp'),
-	plumber = require('gulp-plumber'),
-	webpack = require('webpack-stream'),
-	CircularDependencyPlugin = require('circular-dependency-plugin'),
-	DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin"),
-	eslint = require('gulp-eslint');
+const { paths } = require('../gulpfile.config'),
+	{ src, dest } = require('gulp'),
+	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
+	concat = require('concat'),
+	rename = require('gulp-rename'), // плагин переименования файлов
+	babel = require('gulp-babel'),
+	terser = require('terser'),
+	gulpTerser = require('gulp-terser');
 
 module.exports = function scripts() {
-	return gulp.src('src/js/main.js')
-		.pipe(plumber())
-		.pipe(eslint())
-		.pipe(eslint.format())
-		.pipe(webpack({
-			mode: process.env.NODE_ENV,
-			output: {
-				filename: '[name].min.js',
-			},
-			module: {
-				rules: [
-					{
-						test: /\.m?js$/,
-						exclude: /(node_modules|bower_components)/,
-						use: {
-							loader: 'babel-loader',
-							options: {
-								presets: ['@babel/preset-env']
-							}
-						}
-					}
-				]
-			},
-			plugins: [
-				new CircularDependencyPlugin(),
-				new DuplicatePackageCheckerPlugin()
-			]
-		}))
-		.pipe(gulp.dest('build/js'));
+	return src(paths.src.js)
+		.pipe(sourcemaps.init())
+		.pipe(babel({
+			//presets: ['env']
+			presets: ['@babel/preset-env']
+		}).on('error', babel.logError))
+		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('.'))
+		.pipe(dest(paths.build.js))
+		//.pipe(gulpTerser())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(gulpTerser({}, terser.minify))
+		.pipe(dest(paths.build.js));
 };
