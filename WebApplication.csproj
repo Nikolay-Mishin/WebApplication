@@ -49,6 +49,9 @@
 	  <None Update="gulpfile - Копировать - Копировать.config.js">
 	    <DependentUpon>gulpfile.config.js</DependentUpon>
 	  </None>
+	  <None Update="gulpfile - Копировать.config.js">
+	    <DependentUpon>gulpfile.config.js</DependentUpon>
+	  </None>
 	</ItemGroup>
 
 	<!--<ItemGroup>
