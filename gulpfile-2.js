@@ -131,7 +131,7 @@ task('webpack', series('clean:webpack', 'build:webpack'));
 task('build:all', series('html', parallel('webpack')));
 //task('build', series('build:webpack'));
 //task('build', series('clean', parallel('build:html', 'build:webpack')));
-exports.build = series(clean, parallel('build:html', 'build:webpack'));
+exports.build = series('clean', parallel('build:html', 'build:webpack'));
 
 // задача по умолчанию
 
