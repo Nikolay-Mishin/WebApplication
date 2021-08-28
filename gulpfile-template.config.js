@@ -1,13 +1,14 @@
-const path = require('path')
+const path = require('path');
 
-const build = path.resolve(__dirname, 'build')
-const src = path.resolve(root, 'src')
+const root = __dirname,
+	build = path.resolve(root, 'build'),
+	src = path.resolve(root, 'src');
 
 module.exports = {
+	root,
 	build,
 	src,
-	buildPath: path.resolve(root, 'build'),
-		pug2html: {
+	pug2html: {
 		beautifyHtml: false
 	},
 	lighthouse: {
@@ -24,6 +25,6 @@ module.exports = {
 		}
 	},
 	copyDependencies: {
-		dist: path.resolve(src, 'local_modules')
+		dist: path.resolve(root, 'local_modules')
 	}
-}
+};

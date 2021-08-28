@@ -13,9 +13,10 @@ const webpack = require('webpack'),
 
 // Переменные проекта
 
-const root = 'wwwroot',
-	build = path.resolve(__dirname, root),
-	src = path.resolve(__dirname, 'src'),
+const root = __dirname,
+	publicPath = 'wwwroot',
+	build = path.resolve(root, publicPath),
+	src = path.resolve(root, 'src'),
 	isDev = true,
 	//isDev = process.env.NODE_ENV === 'development',
 	isProd = !isDev,
@@ -148,7 +149,7 @@ module.exports = {
 	output: {
 		filename: filename('js'),
 		path: build,
-		publicPath: `/${root}`,
+		publicPath: publicPath,
 		library: 'lib',
 		libraryTarget: 'umd',
 		globalObject: 'this'
