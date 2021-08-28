@@ -13,7 +13,7 @@ module.exports = function scripts() {
 		.pipe(sourcemaps.init())
 		.pipe(babel({
 			//presets: ['env']
-			presets: ['@babel/preset-env']
+								presets: ['@babel/preset-env']
 		}).on('error', babel.logError))
 		.pipe(concat('app.js'))
 		.pipe(sourcemaps.write('.'))

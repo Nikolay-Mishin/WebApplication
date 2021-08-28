@@ -1,9 +1,9 @@
-const gulp = require('gulp')
-const plumber = require('gulp-plumber')
-const webpack = require('webpack-stream')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
-const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin")
-const eslint = require('gulp-eslint')
+const gulp = require('gulp'),
+	plumber = require('gulp-plumber'),
+	webpack = require('webpack-stream'),
+	CircularDependencyPlugin = require('circular-dependency-plugin'),
+	DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin"),
+	eslint = require('gulp-eslint');
 
 module.exports = function scripts() {
 	return gulp.src('src/js/main.js')
@@ -23,7 +23,7 @@ module.exports = function scripts() {
 						use: {
 							loader: 'babel-loader',
 							options: {
-							presets: ['@babel/preset-env']
+								presets: ['@babel/preset-env']
 							}
 						}
 					}
@@ -34,6 +34,5 @@ module.exports = function scripts() {
 				new DuplicatePackageCheckerPlugin()
 			]
 		}))
-		.pipe(gulp.dest('build/js'))
-}
-
+		.pipe(gulp.dest('build/js'));
+};

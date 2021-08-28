@@ -5,8 +5,9 @@ const { join } = require('path'),
 	port = process.env.PORT || 8080,
 	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment = process.env
 
-const build = path.resolve(__dirname, 'build')
-const src = path.resolve(root, 'src')
+const root = __dirname;
+const build = path.resolve(root, 'build');
+const src = path.resolve(root, 'src');
 
 module.exports = {
 	root,
@@ -63,7 +64,7 @@ module.exports = {
 			iconsPath: '/favicon',
 			img: join(src, 'img/**/*.{jpeg,jpg,png,svg,gif}')
 		},
-		watch: { // пути файлов, за изменением которых мы хотим наблюдать
+		watch: { // ���� ������, �� ���������� ������� �� ����� ���������
 			html: join(src, 'html/**/*.{html,htm}'),
 			scss: join(src, 'scss/**/*.scss'),
 			js: join(src, 'js/**/*.js')
