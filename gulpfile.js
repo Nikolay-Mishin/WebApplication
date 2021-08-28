@@ -4,8 +4,7 @@
 // Подключаемые плагины
 
 const path = require('path'), // paths
-	{ src, dest, watch, lastRun, series, parallel } = require('gulp'),
-	//gulp = require('gulp'), // сам gulp
+	{ src, dest, watch, lastRun, series, parallel } = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
 	rimraf = require('rimraf'),// удаление файлов
@@ -37,7 +36,7 @@ const path = require('path'), // paths
 // Переменные проекта
 
 const build = './wwwroot/',
-	src = './src/',
+	src_path = './src/',
 	paths = {
 		build: { // пути для сборки проектов
 			all: build,
@@ -45,30 +44,30 @@ const build = './wwwroot/',
 			css: build + 'css/',
 			js: build + 'js/', 
 			favicon: build + 'favicon/',
-			faviconDataFile: src + 'favicon/faviconData.json',
+			faviconDataFile: src_path + 'favicon/faviconData.json',
 			faviconInject: build + '**/*.html',
 			img: build + 'img/'
 		},
 		src: { // пути размещения исходных файлов проекта
-			all: src,
-			html: src + 'html/**/*.{html,htm}',
-			pug: src + 'pug/*.pug',
-			scss: src + 'scss/*.scss',
-			js: src + 'js/*.{js,js.map}',
-			webpack: src + 'js/**/*.js',
-			favicon: src + 'favicon/icon.png',
+			all: src_path,
+			html: src_path + 'html/**/*.{html,htm}',
+			pug: src_path + 'pug/*.pug',
+			scss: src_path + 'scss/*.scss',
+			js: src_path + 'js/*.{js,js.map}',
+			webpack: src_path + 'js/**/*.js',
+			favicon: src_path + 'favicon/icon.png',
 			iconsPath: '/favicon',
-			img: src + 'img/**/*.{jpeg,jpg,png,svg,gif}'
+			img: src_path + 'img/**/*.{jpeg,jpg,png,svg,gif}'
 		},
 		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: src + 'html/**/*.{html,htm}',
-			scss: src + 'scss/**/*.scss',
-			js: src + 'js/**/*.js'
+			html: src_path + 'html/**/*.{html,htm}',
+			scss: src_path + 'scss/**/*.scss',
+			js: src_path + 'js/**/*.js'
 		},
 		clean: { // путь очистки директории для сборки
 			build: build + '**/*',
 			html: build + 'html',
-			css: src + 'css',
+			css: build + 'css',
 			js: build + 'js',
 			webpack: build + 'webpack'
 		}
