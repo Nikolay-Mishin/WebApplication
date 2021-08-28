@@ -1,12 +1,14 @@
-/// <binding ProjectOpened='watch:webpack' />
+// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 //'use strict';
 
 // Подключаемые плагины
 
-const gulp = require('gulp'), // сам gulp 
+const config = require('./gulpfile.config'),
+	path = require('path'), // path
+	{ task, src, dest, watch, lastRun, series, parallel } = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
-	rimraf = require('rimraf'),// удаление файлов
+	rimraf = require('rimraf'), // удаление файлов
 	pug = require('gulp-pug'), // плагин компиляции pug
 	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
 	prefixer = require('gulp-autoprefixer'), // плагин расстановки префиксов
@@ -27,108 +29,76 @@ const gulp = require('gulp'), // сам gulp
 	htmlclean = require('gulp-htmlclean'),
 	webpack = require('webpack'), // webpack
 	webpackStream = require('webpack-stream'), // webpack
-	webpackConfig = require('./webpack.config.js'), // webpack.config
-	dir = require('path'); // path
+	webpackConfig = require('./webpack.config'), // webpack.config
+	babel = require('gulp-babel'),
+	terser = require('terser'),
+	gulpTerser = require('gulp-terser');
 
 // Переменные проекта
 
-const build = './wwwroot/',
-	src = './src/',
-	path = {
-		build: { // пути для сборки проектов
-			all: build,
-			html: build + 'html/',
-			css: build + 'css/',
-			js: build + 'js/', 
-			favicon: build + 'favicon/',
-			faviconDataFile: src + 'favicon/faviconData.json',
-			faviconInject: build + '**/*.html',
-			img: build + 'img/'
-		},
-		src: { // пути размещения исходных файлов проекта
-			all: src,
-			html: src + 'html/**/*.{html,htm}',
-			pug: src + 'pug/*.pug',
-			scss: src + 'scss/*.scss',
-			js: src + 'js/*.{js,js.map}',
-			webpack: src + 'js/**/*.js',
-			favicon: src + 'favicon/icon.png',
-			iconsPath: '/favicon',
-			img: src + 'img/**/*.{jpeg,jpg,png,svg,gif}'
-		},
-		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: src + 'html/**/*.{html,htm}',
-			scss: src + 'scss/**/*.scss',
-			js: src + 'js/**/*.js'
-		},
-		clean: { // путь очистки директории для сборки
-			build: build + '**/*',
-			html: build + 'html',
-			css: src + 'css',
-			js: build + 'js',
-			webpack: build + 'webpack'
-		}
-	},
-	// конфигурация browser sync
-	config = {
-		server: {
-			baseDir: build,
-			index: 'index.html'
-		},
-		tunnel: true,
-		host: 'localhost',
-		port: 7787,
-		logPrefix: "WebDev"
-	},
-	site = {
-		server: 'site.ru',
-		user: 'tstv',
-		pass: '112121',
-		port: '10000',
-		folder: ''
-	};
+const { paths, serverConfig, site } = config;
 
-gulp.task('clean', function (done) {
-	rimraf(path.clean.build, done);
+//const clean = require('./tasks/clean');
+//task('clean', clean);
+function clean(done) {
+	rimraf(paths.clean.build, done);
+};
+exports.clean = clean;
+
+task('clean:html', function(done) {
+	rimraf(paths.clean.html, done);
 });
 
-gulp.task('clean:html', function(done) {
-	rimraf(path.clean.html, done);
+task('clean:js', function(done) {
+	rimraf(paths.clean.js, done);
 });
 
-gulp.task('clean:js', function(done) {
-	rimraf(path.clean.js, done);
+task('clean:webpack', function(done) {
+	rimraf(paths.clean.webpack, done);
 });
 
-gulp.task('clean:webpack', function (done) {
-	rimraf(path.clean.webpack, done);
-});
-
-gulp.task('build:html', function(done) {
-	gulp.src(path.src.html)
+task('build:html', function(done) {
+	src(paths.src.html)
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(htmlclean())
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(gulp.dest(path.build.html));
+		.pipe(dest(paths.build.html));
 	done();
 });
 
-gulp.task('build:js', function(done) {
-	gulp.src(path.src.js)
-		.pipe(gulp.dest(path.build.js))
+task('build:js', function(done) {
+	src(paths.src.js)
+		.pipe(dest(paths.build.js))
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(uglify().on('error', getError))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest(path.build.js))
+		.pipe(dest(paths.build.js))
 		.pipe(getNotify('build:js'));
 	done();
 });
 
-gulp.task('build:webpack', function (done) {
-	gulp.src(path.src.all)
+task('scripts', function(done) {
+	src(paths.src.js)
+		.pipe(sourcemaps.init())
+		.pipe(babel({
+			//presets: ['env']
+			presets: ['@babel/preset-env']
+		}).on('error', babel.logError))
+		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('.'))
+		.pipe(dest(paths.build.js))
+		//.pipe(gulpTerser())
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(gulpTerser({}, terser.minify))
+		.pipe(dest(paths.build.js));
+	done();
+});
+
+task('build:webpack', function(done) {
+	src(paths.src.all)
 		.pipe(webpackStream(webpackConfig), webpack)
-		.pipe(gulp.dest(path.build.js))
+		.pipe(dest(paths.build.js))
 		.pipe(getNotify('build:webpack'));
 	done();
 });
@@ -146,34 +116,35 @@ function getNotify(title, message = 'Scripts Done') {
 
 // Отслеживание изменений в проекте
 
-gulp.task('watch:webpack', function (done) {
-	//gulp.watch(path.watch.js, gulp.series('build'));
-	gulp.watch(path.watch.js);
+task('watch:webpack', function(done) {
+	//watch(paths.watch.js, series('build'));
+	watch(paths.watch.js);
 	done();
 });
 
 // Execution
 
-gulp.task('html', gulp.series('clean:html', 'build:html'));
-gulp.task('js', gulp.series('clean:js', 'build:js'));
-gulp.task('webpack', gulp.series('clean:webpack', 'build:webpack'));
+task('html', series('clean:html', 'build:html'));
+task('js', series('clean:js', 'build:js'));
+task('webpack', series('clean:webpack', 'build:webpack'));
 
-gulp.task('build:all', gulp.series('html', gulp.parallel('webpack')));
-gulp.task('build', gulp.series('clean', gulp.parallel('build:html', 'build:webpack')));
-//gulp.task('build', gulp.series('build:webpack'));
+task('build:all', series('html', parallel('webpack')));
+//task('build', series('build:webpack'));
+//task('build', series('clean', parallel('build:html', 'build:webpack')));
+exports.build = series(clean, parallel('build:html', 'build:webpack'));
 
 // задача по умолчанию
 
-gulp.task('default', gulp.series('build'));
+task('default', series('build'));
 
 // Основные Задачи
 
-gulp.task('move:test', function(done) {
-	gulp.src('src/**/*')
+task('move:test', function(done) {
+	src('src/**/*')
 		.on('data', function(file) {
 			console.log({
 				contents: file.contents, // содержимое файла
-				path: file.path, // путь до файла
+				path: file.paths, // путь до файла
 				cwd: file.cwd, // основная директория
 				base: file.base, // базовая директория
 				// helpers
@@ -184,7 +155,7 @@ gulp.task('move:test', function(done) {
 				extname: file.extname // расширение файла
 			});
 		})
-		.pipe(gulp.dest(function(file) {
+		.pipe(dest(function(file) {
 			return file.extname == '.html' ? 'files/html' :
 				file.extname == '.css' ? 'files/css' :
 					file.extname == '.js' ? 'files/js' : 'files'
@@ -192,16 +163,16 @@ gulp.task('move:test', function(done) {
 	done();
 });
 
-gulp.task('move:files', function(done) {
-	gulp.src('files/**/*.{html,htm}').pipe(gulp.dest(path.build.all));
-	gulp.src('files/**/*.pug').pipe(gulp.dest(path.build.pug));
-	gulp.src('files/**/*.css').pipe(gulp.dest(path.build.css));
-	gulp.src('files/**/*.js').pipe(gulp.dest(path.build.js));
-	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest(path.build.img));
+task('move:files', function(done) {
+	src('files/**/*.{html,htm}').pipe(dest(paths.build.all));
+	src('files/**/*.pug').pipe(dest(paths.build.pug));
+	src('files/**/*.css').pipe(dest(paths.build.css));
+	src('files/**/*.js').pipe(dest(paths.build.js));
+	src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(dest(paths.build.img));
 	done();
 });
 
-gulp.task('move', gulp.series('clean', 'move:files'));
+task('move', series('clean', 'move:files'));
 
 /**********************
  * check cmd arguments
@@ -227,7 +198,7 @@ const arg = (argList => {
 	return arg;
 })(process.argv);
 
-gulp.task('args', function(done) {
+task('args', function(done) {
 	console.log(arg);
 	done();
 });
@@ -236,11 +207,11 @@ gulp.task('args', function(done) {
 // You should run it at least once to create the icons. Then,
 // you should run it whenever RealFaviconGenerator updates its
 // package (see the check-for-favicon-update task below).
-gulp.task('generate-favicon', function(done) {
+task('generate-favicon', function(done) {
 	realFavicon.generateFavicon({
-		masterPicture: path.src.favicon,
-		dest: path.build.favicon,
-		iconsPath: path.src.iconsPath,
+		masterPicture: paths.src.favicon,
+		dest: paths.build.favicon,
+		iconsPath: paths.src.iconsPath,
 		design: {
 			ios: {
 				pictureAspect: 'backgroundAndMargin',
@@ -295,7 +266,7 @@ gulp.task('generate-favicon', function(done) {
 			htmlCodeFile: false,
 			usePathAsIs: false
 		},
-		markupFile: path.build.faviconDataFile
+		markupFile: paths.build.faviconDataFile
 	},
 		function() {
 			done();
@@ -306,8 +277,8 @@ gulp.task('generate-favicon', function(done) {
 // released a new Touch icon along with the latest version of iOS).
 // Run this task from time to time. Ideally, make it part of your
 // continuous integration system.
-gulp.task('check-for-favicon-update', function(done) {
-	var currentVersion = JSON.parse(fs.readFileSync(path.build.faviconDataFile)).version;
+task('check-for-favicon-update', function(done) {
+	var currentVersion = JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).version;
 	realFavicon.checkForUpdates(currentVersion, function(err) {
 		if (err) {
 			throw err;
@@ -321,29 +292,29 @@ gulp.task('check-for-favicon-update', function(done) {
 
 // Очистка дериктории для компиляции
 
-//gulp.task('clean', function(done) {
-//	rimraf(path.clean.build, done);
+//task('clean', function(done) {
+//	rimraf(paths.clean.build, done);
 //});
 
-gulp.task('dev:html', function(done) {
-	gulp.src(path.src.html)
-		.pipe(gulpif(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code)))
-		.pipe(gulp.dest(path.build.all))
+task('dev:html', function(done) {
+	src(paths.src.html)
+		.pipe(gulpif(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code)))
+		.pipe(dest(paths.build.all))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
-gulp.task('dev:pug', function(done) {
-	gulp.src(path.src.pug)
+task('dev:pug', function(done) {
+	src(paths.src.pug)
 		.pipe(pug({
 			pretty: true
 		}))
-		.pipe(gulp.dest(path.build.all));
+		.pipe(dest(paths.build.all));
 	done();
 });
 
-gulp.task('dev:scss', function(done) {
-	gulp.src(path.src.scss) // main файл
+task('dev:scss', function(done) {
+	src(paths.src.scss) // main файл
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(sass({
 			outputStyle: 'compressed', // минимиация файла
@@ -356,27 +327,27 @@ gulp.task('dev:scss', function(done) {
 			remove: true // удаление лишних стилей при обработке
 		}))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(gulp.dest(path.build.css)) // готовый файл min в build
+		.pipe(dest(paths.build.css)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
-gulp.task('dev:js', function(done) {
-	gulp.src(path.src.js) // main файл
+task('dev:js', function(done) {
+	src(paths.src.js) // main файл
 		.pipe(rigger()) // rigger
-		.pipe(gulp.dest(path.build.js)) // готовый файл в build
+		.pipe(dest(paths.build.js)) // готовый файл в build
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(uglify()) // сжатие js
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
-		.pipe(gulp.dest(path.build.js)) // готовый файл min в build
+		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
 let imgminify = new ImgMinify()
-	.src(path.src.img)
-	.dest(path.build.img)
+	.src(paths.src.img)
+	.dest(paths.build.img)
 	.use(ImgMinify.gifsicle({ interlaced: true }))
 	.use(ImgMinify.jpegoptim({ progressive: true, max: 60 }))
 	.use(ImgMinify.jpegtran({ progressive: true }))
@@ -384,7 +355,7 @@ let imgminify = new ImgMinify()
 	.use(ImgMinify.pngquant({ speed: 1 }))
 	.use(ImgMinify.svgo());
 
-gulp.task('dev:img', function(done) {
+task('dev:img', function(done) {
 	imgminify.run(function(err, files) {
 		if (err) {
 			throw err;
@@ -394,22 +365,22 @@ gulp.task('dev:img', function(done) {
 	done();
 });
 
-gulp.task('dev:imgmin', function(done) {
-	gulp.src(path.src.img)
+task('dev:imgmin', function(done) {
+	src(paths.src.img)
 		.pipe(imagemin({
 			interlaced: true,
 			progressive: true,
 			optimizationLevel: 5,
 			svgoPlugins: [{ removeViewBox: true }]
 		}))
-		.pipe(gulp.dest(path.build.img));
+		.pipe(dest(paths.build.img));
 	done();
 });
 
 /* Webserver */
 
-gulp.task('webserver', function(done) {
-	browserSync(config); // локальный сервер
+task('webserver', function(done) {
+	browserSync(serverConfig); // локальный сервер
 	done();
 });
 
@@ -417,8 +388,8 @@ gulp.task('webserver', function(done) {
 	* Production Tasks
 ********************************** */
 
-gulp.task('sftp:push', function(done) {
-	gulp.src(path.build.all)
+task('sftp:push', function(done) {
+	src(paths.build.all)
 		.pipe(sftp({
 			host: site.server,
 			user: site.user,
@@ -429,17 +400,17 @@ gulp.task('sftp:push', function(done) {
 	done();
 });
 
-gulp.task('prod:html', function(done) {
-	gulp.src(path.src.html)
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code))
+task('prod:html', function(done) {
+	src(paths.src.html)
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code))
 		.pipe(htmlmin({ collapseWhitespace: true }))
-		.pipe(gulp.dest(path.build.all))
+		.pipe(dest(paths.build.all))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
-gulp.task('prod:scss', function(done) {
-	gulp.src(path.src.scss)
+task('prod:scss', function(done) {
+	src(paths.src.scss)
 		.pipe(sass({
 			outputStyle: "compressed",
 			sourcemaps: false
@@ -449,32 +420,32 @@ gulp.task('prod:scss', function(done) {
 			cascade: false,
 			remove: true
 		}))
-		.pipe(gulp.dest(path.build.css));
+		.pipe(dest(paths.build.css));
 	done();
 });
 
-gulp.task('prod:js', function(done) {
-	gulp.src(path.src.js)
+task('prod:js', function(done) {
+	src(paths.src.js)
 		.pipe(rigger()) // собрать в одном файле код из скриптов
 		.pipe(uglify()) // минификация
-		.pipe(gulp.dest(path.build.js));
+		.pipe(dest(paths.build.js));
 	done();
 });
 
 // Отслеживание изменений в проекте
 
-gulp.task('watch', function(done) {
-	gulp.watch(path.watch.html, gulp.series('dev:html'), reload({ stream: true }));
-	gulp.watch(path.watch.scss, gulp.series('dev:scss'), reload({ stream: true }));
-	gulp.watch(path.watch.js, gulp.series('dev:js'), reload({ stream: true }));
+task('watch', function(done) {
+	watch(paths.watch.html, series('dev:html'), reload({ stream: true }));
+	watch(paths.watch.scss, series('dev:scss'), reload({ stream: true }));
+	watch(paths.watch.js, series('dev:js'), reload({ stream: true }));
 	done();
 });
 
 // Execution
 
-gulp.task('dev', gulp.series('clean', gulp.parallel('dev:scss', 'dev:js', 'dev:img'/* , 'generate-favicon' */), 'dev:html', 'webserver', 'watch'));
+task('dev', series('clean', parallel('dev:scss', 'dev:js', 'dev:img'/* , 'generate-favicon' */), 'dev:html', 'webserver', 'watch'));
 
-gulp.task('prod', gulp.series('clean', gulp.parallel('prod:html', 'prod:scss', 'prod:js', 'dev:img')));
+task('prod', series('clean', parallel('prod:html', 'prod:scss', 'prod:js', 'dev:img')));
 
 // задача по умолчанию
-gulp.task('build:dev', gulp.series('dev'));
+task('build:dev', series('dev'));
