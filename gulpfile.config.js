@@ -6,12 +6,12 @@ const src = path.resolve(root, 'src')
 module.exports = {
 	build,
 	src,
-	buildPath: path.resolve(root, 'build'),
-		pug2html: {
+	buildPath: path.join(root, '/build'),
+	pug2html: {
 		beautifyHtml: false
 	},
 	lighthouse: {
-		reportPath: path.resolve(root, 'reports'),
+		reportPath: path.join(root, 'reports'),
 		PORT: 8080,
 		chromeLauncherPort: 9222,
 		config: {
@@ -24,6 +24,6 @@ module.exports = {
 		}
 	},
 	copyDependencies: {
-		dist: path.resolve(src, 'local_modules')
+		dist: path.join(src, 'local_modules')
 	}
 }

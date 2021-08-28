@@ -12,10 +12,10 @@ const lighthouse = require('./gulp/tasks/lighthouse')
 const svgSprite = require('./gulp/tasks/svgSprite')
 
 function setMode(isProd = false) {
-  return cb => {
-    process.env.NODE_ENV = isProd ? 'production' : 'development'
-    cb()
-  }
+	return cb => {
+		process.env.NODE_ENV = isProd ? 'production' : 'development'
+		cb()
+	}
 }
 
 const dev = gulp.parallel(pug2html, styles, scripts, fonts, imageMinify, svgSprite)
