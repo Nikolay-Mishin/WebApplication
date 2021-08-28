@@ -1,21 +1,33 @@
-const { watch, series } = require('gulp'),
-	{ serverConfig } = require('../gulpfile.config'),
-	//{ server } = require('./helpers/helpers');
-	browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	server = browserSync.create();
+const gulp = require('gulp'),
+	server = require('browser-sync').create();
 
-function reload(done) {
+const imageMinify = require('./imageMinify'),
+	svgSprite = require('./svgSprite'),
+	styles = require('./styles'),
+	pug2html = require('./pug2html'),
+	scripts = require('./scripts'),
+	copyDependencies = require('./copyDependencies');
+
+function readyReload(cb) {
 	server.reload();
-	done();
+	cb();
 }
 
-module.exports = function server_task(done) {
-	server.init(serverConfig);
-	//browserSync(serverConfig); // локальный сервер
+module.exports = function server(cb) {
+	server.init({
+		server: 'build',
+		notify: false,
+		open: true,
+		cors: true
+	});
 
-	//watch(paths.watch.html, series('dev:html'), reload);
-	//watch(paths.watch.scss, series('dev:scss'), reload);
-	//watch(paths.watch.js, series('dev:js'), reload);
+	gulp.watch('src/img/*.{gif,png,jpg,svg,webp}', gulp.series(imageMinify, readyReload));
+	gulp.watch('src/img/sprite/*.svg', gulp.series(svgSprite, readyReload));
+	gulp.watch('src/styles/**/*.scss', gulp.series(styles, cb => gulp.src('build/css').pipe(server.stream()).on('end', cb)));
+	gulp.watch('src/js/**/*.js', gulp.series(scripts, readyReload));
+	gulp.watch('src/pages/**/*.pug', gulp.series(pug2html, readyReload));
 
-	done();
+	gulp.watch('package.json', gulp.series(copyDependencies, readyReload));
+
+	return cb();
 };

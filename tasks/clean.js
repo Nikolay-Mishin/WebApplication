@@ -1,6 +1,7 @@
-const { paths } = require('../gulpfile.config'),
-	rimraf = require('rimraf'); // удаление файлов
+const del = require('del');
 
-module.exports = function clean(done) {
-	rimraf(paths.clean.build, done);
+module.exports = function clean(cb) {
+	return del('build').then(() => {
+		cb();
+	});
 };
