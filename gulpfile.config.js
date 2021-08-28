@@ -5,6 +5,9 @@ const { join } = require('path'),
 	port = process.env.PORT || 8080,
 	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment = process.env
 
+const build = path.resolve(__dirname, 'build')
+const src = path.resolve(root, 'src')
+
 module.exports = {
 	root,
 	build,
@@ -48,7 +51,7 @@ module.exports = {
 			faviconDataFile: join(src, 'favicon/faviconData.json'),
 			faviconInject: join(build, '**/*.html'),
 			img: join(build, 'img/')
-		},
+	},
 		src: { // пути размещения исходных файлов проекта
 			all: src,
 			html: join(src, 'html/**/*.{html,htm}'),
@@ -64,12 +67,12 @@ module.exports = {
 			html: join(src, 'html/**/*.{html,htm}'),
 			scss: join(src, 'scss/**/*.scss'),
 			js: join(src, 'js/**/*.js')
-		},
+	},
 		clean: { // путь очистки директории для сборки
 			build: join(build, '**/*'),
 			html: join(build, 'html'),
 			css: join(build, 'css'),
 			js: join(build, 'js')
-		}
 	}
+}
 };
