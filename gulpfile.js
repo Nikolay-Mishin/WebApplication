@@ -3,7 +3,7 @@
 
 // Подключаемые плагины
 
-const dir = require('path'); // pat,
+const dir = require('path'), // pat,
 	gulp = require('gulp'), // сам gulp 
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
