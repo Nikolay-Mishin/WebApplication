@@ -131,16 +131,16 @@ gulp.task('build:js', function(done) {
 gulp.task('scripts', function(done) {
 	gulp.src(paths.src.js)
 		.pipe(sourcemaps.init())
-		
 		.pipe(babel({
 			//presets: ['env']
 			presets: ['@babel/preset-env']
 		}).on('error', babel.logError))
 		.pipe(concat('app.js'))
 		.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest(paths.build.js))
 		//.pipe(gulpTerser())
-		//.pipe(gulpTerser({}, terser.minify))
-		//.pipe(rename({ suffix: '.min' }))
+		.pipe(rename({ suffix: '.min' }))
+		.pipe(gulpTerser({}, terser.minify))
 		.pipe(gulp.dest(paths.build.js));
 	done();
 });
