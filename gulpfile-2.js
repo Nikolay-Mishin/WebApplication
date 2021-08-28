@@ -5,7 +5,7 @@
 
 const config = require('./gulpfile.config'),
 	path = require('path'), // path
-	{ task, src, dest, watch, lastRun, series, parallel } = require('gulp'), // сам gulp
+	{ task, src, dest, watch, series, parallel, lastRun } = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
 	rimraf = require('rimraf'), // удаление файлов
@@ -39,88 +39,93 @@ const config = require('./gulpfile.config'),
 const { paths, serverConfig, site } = config;
 
 //const clean = require('./tasks/clean');
-//task('clean', clean);
-function clean(done) {
-	rimraf(paths.clean.build, done);
-};
-exports.clean = clean;
+//exports.clean = clean;
+task('clean', require('./tasks/clean'));
 
-task('clean:html', function(done) {
-	rimraf(paths.clean.html, done);
-});
+//task('clean:html', function(done) {
+//	rimraf(paths.clean.html, done);
+//});
+task('clean:html', require('./tasks/clean-'));
 
-task('clean:js', function(done) {
-	rimraf(paths.clean.js, done);
-});
+//task('clean:js', function(done) {
+//	rimraf(paths.clean.js, done);
+//});
+task('clean:js', require('./tasks/clean-js'));
 
-task('clean:webpack', function(done) {
-	rimraf(paths.clean.webpack, done);
-});
+//task('clean:webpack', function(done) {
+//	rimraf(paths.clean.webpack, done);
+//});
+task('clean:webpack', require('./tasks/clean-webpack'));
 
-task('build:html', function(done) {
-	src(paths.src.html)
-		.pipe(sourcemaps.init()) // Инициализируем sourcemap
-		.pipe(htmlclean())
-		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(dest(paths.build.html));
-	done();
-});
+//task('build:html', function(done) {
+//	src(paths.src.html)
+//		.pipe(sourcemaps.init()) // Инициализируем sourcemap
+//		.pipe(htmlclean())
+//		.pipe(sourcemaps.write('.')) // Пропишем карты
+//		.pipe(dest(paths.build.html));
+//	done();
+//});
+task('build:html', require('./tasks/build-html'));
 
-task('build:js', function(done) {
-	src(paths.src.js)
-		.pipe(dest(paths.build.js))
-		.pipe(sourcemaps.init()) // Инициализируем sourcemap
-		.pipe(uglify().on('error', getError))
-		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(dest(paths.build.js))
-		.pipe(getNotify('build:js'));
-	done();
-});
+//task('build:js', function(done) {
+//	src(paths.src.js)
+//		.pipe(dest(paths.build.js))
+//		.pipe(sourcemaps.init()) // Инициализируем sourcemap
+//		.pipe(uglify().on('error', getError))
+//		.pipe(sourcemaps.write('.')) // Пропишем карты
+//		.pipe(rename({ suffix: '.min' }))
+//		.pipe(dest(paths.build.js))
+//		.pipe(getNotify('build:js'));
+//	done();
+//});
+task('build:js', require('./tasks/build-js'));
 
-task('scripts', function(done) {
-	src(paths.src.js)
-		.pipe(sourcemaps.init())
-		.pipe(babel({
-			//presets: ['env']
-			presets: ['@babel/preset-env']
-		}).on('error', babel.logError))
-		.pipe(concat('app.js'))
-		.pipe(sourcemaps.write('.'))
-		.pipe(dest(paths.build.js))
-		//.pipe(gulpTerser())
-		.pipe(rename({ suffix: '.min' }))
-		.pipe(gulpTerser({}, terser.minify))
-		.pipe(dest(paths.build.js));
-	done();
-});
+//task('scripts', function(done) {
+//	src(paths.src.js)
+//		.pipe(sourcemaps.init())
+//		.pipe(babel({
+//			//presets: ['env']
+//			presets: ['@babel/preset-env']
+//		}).on('error', babel.logError))
+//		.pipe(concat('app.js'))
+//		.pipe(sourcemaps.write('.'))
+//		.pipe(dest(paths.build.js))
+//		//.pipe(gulpTerser())
+//		.pipe(rename({ suffix: '.min' }))
+//		.pipe(gulpTerser({}, terser.minify))
+//		.pipe(dest(paths.build.js));
+//	done();
+//});
+task('scripts', require('./tasks/scripts'));
 
-task('build:webpack', function(done) {
-	src(paths.src.all)
-		.pipe(webpackStream(webpackConfig), webpack)
-		.pipe(dest(paths.build.js))
-		.pipe(getNotify('build:webpack'));
-	done();
-});
+//task('build:webpack', function(done) {
+//	src(paths.src.all)
+//		.pipe(webpackStream(webpackConfig), webpack)
+//		.pipe(dest(paths.build.js))
+//		.pipe(getNotify('build:webpack'));
+//	done();
+//});
+task('build:webpack', require('./tasks/build-webpack'));
 
-function getError(err) {
-	gutil.log(gutil.colors.red('[Error]'), err.toString());
-}
+//function getError(err) {
+//	gutil.log(gutil.colors.red('[Error]'), err.toString());
+//}
 
-function getNotify(title, message = 'Scripts Done') {
-	return notify({
-		title: title,
-		message: message
-	});
-}
+//function getNotify(title, message = 'Scripts Done') {
+//	return notify({
+//		title: title,
+//		message: message
+//	});
+//}
 
 // Отслеживание изменений в проекте
 
-task('watch:webpack', function(done) {
-	//watch(paths.watch.js, series('build'));
-	watch(paths.watch.js);
-	done();
-});
+//task('watch:webpack', function(done) {
+//	//watch(paths.watch.js, series('build'));
+//	watch(paths.watch.js);
+//	done();
+//});
+task('watch:webpack', require('./tasks/watch-webpack'));
 
 // Execution
 
