@@ -1,12 +1,13 @@
-const { src, dest, watch, lastRun, series, parallel } = require('gulp');
+const { task, src, dest, watch, lastRun, series, parallel } = require('gulp');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create(); // сервер + перезагрузка 
 const babel = require('gulp-babel');                  // для работы с JS 
 const concat = require('gulp-concat');                // объединение файлов в один 
 
-const clean = require('./tasks/clean');
-exports.clean = clean;
+//const clean = require('./tasks/clean');
+//exports.clean = clean;
+task('clean', require('./tasks/clean'));
 
 function HTML() {
 	return src('app/**/*.html', { since: lastRun(HTML) })
@@ -59,4 +60,4 @@ function myServer() {
 	watch('app/assets/js/**/*.js', { usePolling: true }, scripts)  // следим за JS 
 }
 
-exports.default = series(parallel(HTML, SASS, scripts), myServer);
+exports.default = series('clean', parallel(HTML, SASS, scripts), myServer);
