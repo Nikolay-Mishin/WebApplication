@@ -1,6 +1,5 @@
-const path = require('path');
-
-const root = __dirname,
+const path = require('path'),
+	root = __dirname,
 	build = path.resolve(root, 'build'),
 	src = path.resolve(root, 'src');
 
@@ -8,6 +7,7 @@ module.exports = {
 	root,
 	build,
 	src,
+	webpackConfig: require('./webpack.config'), // webpack.config
 	// конфигурация browser sync
 	serverConfig: {
 		server: {
