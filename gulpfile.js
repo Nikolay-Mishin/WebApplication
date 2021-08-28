@@ -1,4 +1,4 @@
-/// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
+// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 //'use strict';
 
 function HTML() {
