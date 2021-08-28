@@ -1,6 +1,5 @@
-const path = require('path');
-
-const root = __dirname,
+const path = require('path'),
+	root = __dirname,
 	build = path.resolve(root, 'build'),
 	src = path.resolve(root, 'src');
 
