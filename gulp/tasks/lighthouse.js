@@ -17,54 +17,54 @@ async function getNameHTMLFiles() {
 }
 
 function startServer() {
-  return server.init({
-    server: config.buildPath,
-    port: config.lighthouse.PORT,
-    notify: false,
-    open: false,
-    cors: true
-  })
+	return server.init({
+		server: config.buildPath,
+		port: config.lighthouse.PORT,
+		notify: false,
+		open: false,
+		cors: true
+	})
 }
 
 async function launchChromeAndRunLighthouse(url) {
-  const chrome = await chromeLauncher.launch()
-  config.lighthouse.chromeLauncherPort = chrome.port
+	const chrome = await chromeLauncher.launch()
+	config.lighthouse.chromeLauncherPort = chrome.port
 
-  const result = await lighthouse(url, {
-    ...config.lighthouse.flags,
-    port: config.lighthouse.chromeLauncherPort
-  }, config.lighthouse.config)
-  await chrome.kill()
+	const result = await lighthouse(url, {
+		...config.lighthouse.flags,
+		port: config.lighthouse.chromeLauncherPort
+		}, config.lighthouse.config)
+	await chrome.kill()
 
-  return result
+	return result
 }
 
 async function runLighthouse(fileName) {
-  console.log(fileName)
-  const result = await launchChromeAndRunLighthouse(`http://localhost:${config.lighthouse.PORT}/${fileName}`)
+	console.log(fileName)
+	const result = await launchChromeAndRunLighthouse(`http://localhost:${config.lighthouse.PORT}/${fileName}`)
 
-  await write(reportGenerator.generateReportHtml(result.lhr), 'html', path.join(config.lighthouse.reportPath, fileName))
+	await write(reportGenerator.generateReportHtml(result.lhr), 'html', path.join(config.lighthouse.reportPath, fileName))
 }
 
 module.exports = async function lighthouse(cb) {
-  await del(config.lighthouse.reportPath)
-  await fs.mkdir(config.lighthouse.reportPath)
+	await del(config.lighthouse.reportPath)
+	await fs.mkdir(config.lighthouse.reportPath)
 
-  startServer()
-  const files = await getNameHTMLFiles()
+	startServer()
+	const files = await getNameHTMLFiles()
 
-  try {
-    for (const file of files) {
-      await runLighthouse(file)
-    }
+	try {
+		for (const file of files) {
+			await runLighthouse(file)
+		}
 
-    for (const file of files) {
-      await open(path.join(config.lighthouse.reportPath, file))
-    }
-    cb()
-    process.exit(0) //browser-sync API server.exit() do not work
-  } catch (e) {
-    cb(e.message)
-    process.exit(1) //browser-sync API server.exit() do not work
-  }
+		for (const file of files) {
+			await open(path.join(config.lighthouse.reportPath, file))
+		}
+		cb()
+			process.exit(0) //browser-sync API server.exit() do not work
+	} catch (e) {
+		cb(e.message)
+		process.exit(1) //browser-sync API server.exit() do not work
+	}
 }

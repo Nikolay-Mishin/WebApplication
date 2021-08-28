@@ -6,34 +6,34 @@ const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack
 const eslint = require('gulp-eslint')
 
 module.exports = function scripts() {
-  return gulp.src('src/js/main.js')
-    .pipe(plumber())
-    .pipe(eslint())
-    .pipe(eslint.format())
-    .pipe(webpack({
-      mode: process.env.NODE_ENV,
-      output: {
-        filename: '[name].min.js',
-      },
-      module: {
-        rules: [
-          {
-            test: /\.m?js$/,
-            exclude: /(node_modules|bower_components)/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                presets: ['@babel/preset-env']
-              }
-            }
-          }
-        ]
-      },
-      plugins: [
-        new CircularDependencyPlugin(),
-        new DuplicatePackageCheckerPlugin()
-      ]
-    }))
-    .pipe(gulp.dest('build/js'))
+	return gulp.src('src/js/main.js')
+		.pipe(plumber())
+		.pipe(eslint())
+		.pipe(eslint.format())
+		.pipe(webpack({
+			mode: process.env.NODE_ENV,
+			output: {
+				filename: '[name].min.js',
+			},
+			module: {
+				rules: [
+					{
+						test: /\.m?js$/,
+						exclude: /(node_modules|bower_components)/,
+						use: {
+							loader: 'babel-loader',
+							options: {
+							presets: ['@babel/preset-env']
+							}
+						}
+					}
+				]
+			},
+			plugins: [
+				new CircularDependencyPlugin(),
+				new DuplicatePackageCheckerPlugin()
+			]
+		}))
+		.pipe(gulp.dest('build/js'))
 }
 
