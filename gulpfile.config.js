@@ -1,17 +1,18 @@
-const path = require('path')
+const path = require('path');
 
-const build = path.resolve(__dirname, 'build')
-const src = path.resolve(root, 'src')
+const root = __dirname;
+const build = path.resolve(root, 'build');
+const src = path.resolve(root, 'src');
 
 module.exports = {
+	root,
 	build,
 	src,
-	buildPath: path.join(root, '/build'),
 	pug2html: {
 		beautifyHtml: false
 	},
 	lighthouse: {
-		reportPath: path.join(root, 'reports'),
+		reportPath: path.resolve(root, 'reports'),
 		PORT: 8080,
 		chromeLauncherPort: 9222,
 		config: {
@@ -24,6 +25,6 @@ module.exports = {
 		}
 	},
 	copyDependencies: {
-		dist: path.join(src, 'local_modules')
+		dist: path.resolve(src, 'local_modules')
 	}
-}
+};
