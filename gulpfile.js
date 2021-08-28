@@ -35,15 +35,15 @@ function scripts() {
 		'app/assets/js/script_2.js',
 		'app/assets/js/main.js'
 	], { since: lastRun(HTML) })
-		.pipe(sourcemaps.init())
-		.pipe(babel({
-			presets: ['@babel/preset-env']
-		}))
-		.pipe(concat('app.js'))
-		.pipe(sourcemaps.write("."))
-		.pipe(dest('app/assets/js/'))
-		.pipe(dest('dist/assets/js/'))
-		.pipe(browserSync.stream())
+	.pipe(sourcemaps.init())
+	.pipe(babel({
+		presets: ['@babel/preset-env']
+	}))
+	.pipe(concat('app.js'))
+	.pipe(sourcemaps.write("."))
+	.pipe(dest('app/assets/js/'))
+	.pipe(dest('dist/assets/js/'))
+	.pipe(browserSync.stream())
 }
 exports.scripts = scripts;
 
