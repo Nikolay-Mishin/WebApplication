@@ -1,9 +1,7 @@
 // <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 //'use strict';
 
-// Подключаемые плагины
-
-const config = require('./gulpfile.config'),
+const { paths, serverConfig, site } = require('./gulpfile.config'),
 	path = require('path'), // path
 	{ task, src, dest, watch, series, parallel, lastRun } = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
@@ -33,10 +31,6 @@ const config = require('./gulpfile.config'),
 	babel = require('gulp-babel'),
 	terser = require('terser'),
 	gulpTerser = require('gulp-terser');
-
-// Переменные проекта
-
-const { paths, serverConfig, site } = config;
 
 //const clean = require('./tasks/clean');
 //exports.clean = clean;
