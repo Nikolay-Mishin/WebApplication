@@ -3,7 +3,8 @@
 
 // Подключаемые плагины
 
-const gulp = require('gulp'), // сам gulp 
+const dir = require('path'); // pat,
+	gulp = require('gulp'), // сам gulp 
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
 	rimraf = require('rimraf'),// удаление файлов
@@ -28,7 +29,9 @@ const gulp = require('gulp'), // сам gulp
 	webpack = require('webpack'), // webpack
 	webpackStream = require('webpack-stream'), // webpack
 	webpackConfig = require('./webpack.config.js'), // webpack.config
-	dir = require('path'); // path
+	babel = require('gulp-babel'),
+	terser = require('terser'),
+	gulpTerser = require('gulp-terser');
 
 // Переменные проекта
 
@@ -88,7 +91,7 @@ const build = './wwwroot/',
 		folder: ''
 	};
 
-gulp.task('clean', function (done) {
+gulp.task('clean', function(done) {
 	rimraf(path.clean.build, done);
 });
 
@@ -100,7 +103,7 @@ gulp.task('clean:js', function(done) {
 	rimraf(path.clean.js, done);
 });
 
-gulp.task('clean:webpack', function (done) {
+gulp.task('clean:webpack', function(done) {
 	rimraf(path.clean.webpack, done);
 });
 
@@ -125,7 +128,24 @@ gulp.task('build:js', function(done) {
 	done();
 });
 
-gulp.task('build:webpack', function (done) {
+gulp.task('scripts', function(done) {
+	gulp.src(path.src.js)
+		.pipe(sourcemaps.init())
+		
+		.pipe(babel({
+			//presets: ['env']
+			presets: ['@babel/preset-env']
+		}).on('error', babel.logError))
+		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('.'))
+		//.pipe(gulpTerser())
+		//.pipe(gulpTerser({}, terser.minify))
+		//.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest(path.build.js));
+	done();
+});
+
+gulp.task('build:webpack', function(done) {
 	gulp.src(path.src.all)
 		.pipe(webpackStream(webpackConfig), webpack)
 		.pipe(gulp.dest(path.build.js))
@@ -146,7 +166,7 @@ function getNotify(title, message = 'Scripts Done') {
 
 // Отслеживание изменений в проекте
 
-gulp.task('watch:webpack', function (done) {
+gulp.task('watch:webpack', function(done) {
 	//gulp.watch(path.watch.js, gulp.series('build'));
 	gulp.watch(path.watch.js);
 	done();
