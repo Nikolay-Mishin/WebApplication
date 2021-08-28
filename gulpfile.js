@@ -3,8 +3,9 @@
 
 // Подключаемые плагины
 
-const dir = require('path'), // path
-	gulp = require('gulp'), // сам gulp 
+const path = require('path'), // paths
+	{ src, dest, watch, lastRun, series, parallel } = require('gulp'),
+	//gulp = require('gulp'), // сам gulp
 	browserSync = require("browser-sync"), // плагин перезагрузки браузера
 	reload = browserSync.reload,
 	rimraf = require('rimraf'),// удаление файлов
@@ -35,7 +36,7 @@ const dir = require('path'), // path
 
 const build = './wwwroot/',
 	src = './src/',
-	path = {
+	paths = {
 		build: { // пути для сборки проектов
 			all: build,
 			html: build + 'html/',
@@ -89,47 +90,64 @@ const build = './wwwroot/',
 		folder: ''
 	};
 
-gulp.task('clean', function (done) {
-	rimraf(path.clean.build, done);
+gulp.task('clean', function(done) {
+	rimraf(paths.clean.build, done);
 });
 
 gulp.task('clean:html', function(done) {
-	rimraf(path.clean.html, done);
+	rimraf(paths.clean.html, done);
 });
 
 gulp.task('clean:js', function(done) {
-	rimraf(path.clean.js, done);
+	rimraf(paths.clean.js, done);
 });
 
-gulp.task('clean:webpack', function (done) {
-	rimraf(path.clean.webpack, done);
+gulp.task('clean:webpack', function(done) {
+	rimraf(paths.clean.webpack, done);
 });
 
 gulp.task('build:html', function(done) {
-	gulp.src(path.src.html)
+	gulp.src(paths.src.html)
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(htmlclean())
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(gulp.dest(path.build.html));
+		.pipe(gulp.dest(paths.build.html));
 	done();
 });
 
 gulp.task('build:js', function(done) {
-	gulp.src(path.src.js)
-		.pipe(gulp.dest(path.build.js))
+	gulp.src(paths.src.js)
+		.pipe(gulp.dest(paths.build.js))
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(uglify().on('error', getError))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' }))
-		.pipe(gulp.dest(path.build.js))
+		.pipe(gulp.dest(paths.build.js))
 		.pipe(getNotify('build:js'));
 	done();
 });
 
-gulp.task('build:webpack', function (done) {
-	gulp.src(path.src.all)
+gulp.task('scripts', function(done) {
+	gulp.src(paths.src.js)
+		.pipe(sourcemaps.init())
+		
+		.pipe(babel({
+			//presets: ['env']
+			presets: ['@babel/preset-env']
+		}).on('error', babel.logError))
+		.pipe(concat('app.js'))
+		.pipe(sourcemaps.write('.'))
+		//.pipe(gulpTerser())
+		//.pipe(gulpTerser({}, terser.minify))
+		//.pipe(rename({ suffix: '.min' }))
+		.pipe(gulp.dest(paths.build.js));
+	done();
+});
+
+gulp.task('build:webpack', function(done) {
+	gulp.src(paths.src.all)
 		.pipe(webpackStream(webpackConfig), webpack)
-		.pipe(gulp.dest(path.build.js))
+		.pipe(gulp.dest(paths.build.js))
 		.pipe(getNotify('build:webpack'));
 	done();
 });
@@ -147,9 +165,9 @@ function getNotify(title, message = 'Scripts Done') {
 
 // Отслеживание изменений в проекте
 
-gulp.task('watch:webpack', function (done) {
-	//gulp.watch(path.watch.js, gulp.series('build'));
-	gulp.watch(path.watch.js);
+gulp.task('watch:webpack', function(done) {
+	//gulp.watch(paths.watch.js, gulp.series('build'));
+	gulp.watch(paths.watch.js);
 	done();
 });
 
@@ -174,7 +192,7 @@ gulp.task('move:test', function(done) {
 		.on('data', function(file) {
 			console.log({
 				contents: file.contents, // содержимое файла
-				path: file.path, // путь до файла
+				path: file.paths, // путь до файла
 				cwd: file.cwd, // основная директория
 				base: file.base, // базовая директория
 				// helpers
@@ -194,11 +212,11 @@ gulp.task('move:test', function(done) {
 });
 
 gulp.task('move:files', function(done) {
-	gulp.src('files/**/*.{html,htm}').pipe(gulp.dest(path.build.all));
-	gulp.src('files/**/*.pug').pipe(gulp.dest(path.build.pug));
-	gulp.src('files/**/*.css').pipe(gulp.dest(path.build.css));
-	gulp.src('files/**/*.js').pipe(gulp.dest(path.build.js));
-	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest(path.build.img));
+	gulp.src('files/**/*.{html,htm}').pipe(gulp.dest(paths.build.all));
+	gulp.src('files/**/*.pug').pipe(gulp.dest(paths.build.pug));
+	gulp.src('files/**/*.css').pipe(gulp.dest(paths.build.css));
+	gulp.src('files/**/*.js').pipe(gulp.dest(paths.build.js));
+	gulp.src('files/assets/**/*.{jpeg,jpg,png,svg,gif}').pipe(gulp.dest(paths.build.img));
 	done();
 });
 
@@ -239,9 +257,9 @@ gulp.task('args', function(done) {
 // package (see the check-for-favicon-update task below).
 gulp.task('generate-favicon', function(done) {
 	realFavicon.generateFavicon({
-		masterPicture: path.src.favicon,
-		dest: path.build.favicon,
-		iconsPath: path.src.iconsPath,
+		masterPicture: paths.src.favicon,
+		dest: paths.build.favicon,
+		iconsPath: paths.src.iconsPath,
 		design: {
 			ios: {
 				pictureAspect: 'backgroundAndMargin',
@@ -296,7 +314,7 @@ gulp.task('generate-favicon', function(done) {
 			htmlCodeFile: false,
 			usePathAsIs: false
 		},
-		markupFile: path.build.faviconDataFile
+		markupFile: paths.build.faviconDataFile
 	},
 		function() {
 			done();
@@ -308,7 +326,7 @@ gulp.task('generate-favicon', function(done) {
 // Run this task from time to time. Ideally, make it part of your
 // continuous integration system.
 gulp.task('check-for-favicon-update', function(done) {
-	var currentVersion = JSON.parse(fs.readFileSync(path.build.faviconDataFile)).version;
+	var currentVersion = JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).version;
 	realFavicon.checkForUpdates(currentVersion, function(err) {
 		if (err) {
 			throw err;
@@ -323,28 +341,28 @@ gulp.task('check-for-favicon-update', function(done) {
 // Очистка дериктории для компиляции
 
 //gulp.task('clean', function(done) {
-//	rimraf(path.clean.build, done);
+//	rimraf(paths.clean.build, done);
 //});
 
 gulp.task('dev:html', function(done) {
-	gulp.src(path.src.html)
-		.pipe(gulpif(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code)))
-		.pipe(gulp.dest(path.build.all))
+	gulp.src(paths.src.html)
+		.pipe(gulpif(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code)))
+		.pipe(gulp.dest(paths.build.all))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
 gulp.task('dev:pug', function(done) {
-	gulp.src(path.src.pug)
+	gulp.src(paths.src.pug)
 		.pipe(pug({
 			pretty: true
 		}))
-		.pipe(gulp.dest(path.build.all));
+		.pipe(gulp.dest(paths.build.all));
 	done();
 });
 
 gulp.task('dev:scss', function(done) {
-	gulp.src(path.src.scss) // main файл
+	gulp.src(paths.src.scss) // main файл
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(sass({
 			outputStyle: 'compressed', // минимиация файла
@@ -357,27 +375,27 @@ gulp.task('dev:scss', function(done) {
 			remove: true // удаление лишних стилей при обработке
 		}))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(gulp.dest(path.build.css)) // готовый файл min в build
+		.pipe(gulp.dest(paths.build.css)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
 gulp.task('dev:js', function(done) {
-	gulp.src(path.src.js) // main файл
+	gulp.src(paths.src.js) // main файл
 		.pipe(rigger()) // rigger
-		.pipe(gulp.dest(path.build.js)) // готовый файл в build
+		.pipe(gulp.dest(paths.build.js)) // готовый файл в build
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(uglify()) // сжатие js
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
-		.pipe(gulp.dest(path.build.js)) // готовый файл min в build
+		.pipe(gulp.dest(paths.build.js)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
 let imgminify = new ImgMinify()
-	.src(path.src.img)
-	.dest(path.build.img)
+	.src(paths.src.img)
+	.dest(paths.build.img)
 	.use(ImgMinify.gifsicle({ interlaced: true }))
 	.use(ImgMinify.jpegoptim({ progressive: true, max: 60 }))
 	.use(ImgMinify.jpegtran({ progressive: true }))
@@ -396,14 +414,14 @@ gulp.task('dev:img', function(done) {
 });
 
 gulp.task('dev:imgmin', function(done) {
-	gulp.src(path.src.img)
+	gulp.src(paths.src.img)
 		.pipe(imagemin({
 			interlaced: true,
 			progressive: true,
 			optimizationLevel: 5,
 			svgoPlugins: [{ removeViewBox: true }]
 		}))
-		.pipe(gulp.dest(path.build.img));
+		.pipe(gulp.dest(paths.build.img));
 	done();
 });
 
@@ -419,7 +437,7 @@ gulp.task('webserver', function(done) {
 ********************************** */
 
 gulp.task('sftp:push', function(done) {
-	gulp.src(path.build.all)
+	gulp.src(paths.build.all)
 		.pipe(sftp({
 			host: site.server,
 			user: site.user,
@@ -431,16 +449,16 @@ gulp.task('sftp:push', function(done) {
 });
 
 gulp.task('prod:html', function(done) {
-	gulp.src(path.src.html)
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code))
+	gulp.src(paths.src.html)
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code))
 		.pipe(htmlmin({ collapseWhitespace: true }))
-		.pipe(gulp.dest(path.build.all))
+		.pipe(gulp.dest(paths.build.all))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 	done();
 });
 
 gulp.task('prod:scss', function(done) {
-	gulp.src(path.src.scss)
+	gulp.src(paths.src.scss)
 		.pipe(sass({
 			outputStyle: "compressed",
 			sourcemaps: false
@@ -450,24 +468,24 @@ gulp.task('prod:scss', function(done) {
 			cascade: false,
 			remove: true
 		}))
-		.pipe(gulp.dest(path.build.css));
+		.pipe(gulp.dest(paths.build.css));
 	done();
 });
 
 gulp.task('prod:js', function(done) {
-	gulp.src(path.src.js)
+	gulp.src(paths.src.js)
 		.pipe(rigger()) // собрать в одном файле код из скриптов
 		.pipe(uglify()) // минификация
-		.pipe(gulp.dest(path.build.js));
+		.pipe(gulp.dest(paths.build.js));
 	done();
 });
 
 // Отслеживание изменений в проекте
 
 gulp.task('watch', function(done) {
-	gulp.watch(path.watch.html, gulp.series('dev:html'), reload({ stream: true }));
-	gulp.watch(path.watch.scss, gulp.series('dev:scss'), reload({ stream: true }));
-	gulp.watch(path.watch.js, gulp.series('dev:js'), reload({ stream: true }));
+	gulp.watch(paths.watch.html, gulp.series('dev:html'), reload({ stream: true }));
+	gulp.watch(paths.watch.scss, gulp.series('dev:scss'), reload({ stream: true }));
+	gulp.watch(paths.watch.js, gulp.series('dev:js'), reload({ stream: true }));
 	done();
 });
 

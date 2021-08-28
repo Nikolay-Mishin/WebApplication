@@ -1,29 +1,29 @@
 const path = require('path')
 
-const root = path.join(__dirname, '../')
-const src = path.join(root, 'src')
+const build = path.resolve(__dirname, 'build')
+const src = path.resolve(root, 'src')
 
 module.exports = {
-  root,
-  src,
-  buildPath: path.join(root, '/build'),
-  pug2html: {
-    beautifyHtml: false
-  },
-  lighthouse: {
-    reportPath: path.join(root, 'reports'),
-    PORT: 8080,
-    chromeLauncherPort: 9222,
-    config: {
-      extends: 'lighthouse:default'
-    },
-    flags: {
-      // available options - https://github.com/GoogleChrome/lighthouse/#cli-options
-      chromeFlags: ['--show-paint-rects'],
-      output: 'html'
-    }
-  },
-  copyDependencies: {
-    dist: path.join(src, 'local_modules')
-  }
+	build,
+	src,
+	buildPath: path.resolve(root, 'build'),
+		pug2html: {
+		beautifyHtml: false
+	},
+	lighthouse: {
+		reportPath: path.resolve(root, 'reports'),
+		PORT: 8080,
+		chromeLauncherPort: 9222,
+		config: {
+			extends: 'lighthouse:default'
+		},
+		flags: {
+			// available options - https://github.com/GoogleChrome/lighthouse/#cli-options
+			chromeFlags: ['--show-paint-rects'],
+			output: 'html'
+		}
+	},
+	copyDependencies: {
+		dist: path.resolve(src, 'local_modules')
+	}
 }
