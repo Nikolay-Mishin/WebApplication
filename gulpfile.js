@@ -1,8 +1,9 @@
 /// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 //'use strict';
 
-const clean = require('./tasks/clean');
-exports.clean = clean;
+//const clean = require('./tasks/clean');
+//exports.clean = clean;
+task('clean', require('./tasks/clean'));
 
 function HTML() {
 	return src('app/**/*.html', { since: lastRun(HTML) })
@@ -72,4 +73,4 @@ function myServer() {
 	watch('app/assets/js/**/*.js', { usePolling: true }, scripts)  // следим за JS 
 }
 
-exports.default = series(parallel(HTML, SASS, scripts), myServer);
+exports.default = series('clean', parallel(HTML, SASS, scripts), myServer);
