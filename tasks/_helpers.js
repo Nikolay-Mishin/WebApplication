@@ -44,5 +44,11 @@ module.exports = {
 		.use(ImgMinify.jpegtran({ progressive: true }))
 		.use(ImgMinify.optipng({ optimizationLevel: 3 }))
 		.use(ImgMinify.pngquant({ speed: 1 }))
-		.use(ImgMinify.svgo())
+		.use(ImgMinify.svgo()),
+	setMode: function setMode(isProd = false) {
+		return done => {
+			process.env.NODE_ENV = isProd ? 'production' : 'development';
+			done();
+		}
+	}
 };
