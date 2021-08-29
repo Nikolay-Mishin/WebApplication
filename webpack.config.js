@@ -1,5 +1,4 @@
 // Подключаемые плагины
-
 const webpack = require('webpack'),
 	path = require('path'),
 	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
