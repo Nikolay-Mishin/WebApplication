@@ -12,8 +12,7 @@ const server = require('./gulp/tasks/server'),
 	lighthouse = require('./gulp/tasks/lighthouse'),
 	svgSprite = require('./gulp/tasks/svgSprite');
 
-const dev = parallel(pug2html, styles, scripts, fonts, imageMinify, svgSprite),
-	build = series(clean, copyDependencies, dev);
+const build = series(clean, copyDependencies, parallel(pug2html, styles, scripts, fonts, imageMinify, svgSprite));
 
 exports.start = series(setMode(), build, server);
 exports.build = series(setMode(true), build);

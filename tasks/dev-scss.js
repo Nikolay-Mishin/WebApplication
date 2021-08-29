@@ -1,5 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
+	//{ server } = require('./_helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
@@ -21,4 +22,5 @@ module.exports = function dev_scss() {
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(dest(paths.build.css)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe(server.stream());
 };
