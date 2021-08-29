@@ -1,19 +1,21 @@
-/// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
-//'use strict';
+const { src, dest, watch, lastRun, series, parallel } = require('gulp'),
+	sass = require('gulp-sass'),
+	sourcemaps = require('gulp-sourcemaps'),
+	browserSync = require('browser-sync').create(), // сервер + перезагрузка 
+	babel = require('gulp-babel'),                  // для работы с JS 
+	concat = require('gulp-concat');                // объединение файлов в один
 
-//const clean = require('./tasks/clean');
-//exports.clean = clean;
-task('clean', require('./tasks/clean'));
+exports.clean = require('./tasks/clean');
 
 function html() {
-	return src('app/**/*.html', { since: lastRun(HTML) })
+	return src('app/**/*.html', { since: lastRun(html) })
 		.pipe(dest('dist/'))
 		.pipe(browserSync.stream());
 }
 exports.html = html;
 
 function Sass() {
-	return src('app/assets/sass/**/*.sass')
+	return src('app/assets/sass/**/*.sass', { since: lastRun(Sass) })
 		.pipe(sourcemaps.init())
 		.pipe(sass({
 			outputStyle: 'nested'
@@ -30,7 +32,7 @@ function scripts() {
 		'app/assets/js/script_1.js',
 		'app/assets/js/script_2.js',
 		'app/assets/js/main.js'
-	], { since: lastRun(HTML) })
+	], { since: lastRun(scripts) })
 		.pipe(sourcemaps.init())
 		.pipe(babel({
 			presets: ['@babel/preset-env']
@@ -51,10 +53,10 @@ function server() {
 		notify: false
 	});
 
-	watch('app/**/*.html', { usePolling: true }, HTML);             // следим за HTML 
-	watch('app/assets/sass/**/*.sass', { usePolling: true }, SASS); // следим за SASS
+	watch('app/**/*.html', { usePolling: true }, html);             // следим за HTML
+	watch('app/assets/sass/**/*.sass', { usePolling: true }, Sass); // следим за SASS
 	watch('app/assets/js/**/*.js', { usePolling: true }, scripts);  // следим за JS
 }
 
-exports.default = series('clean', parallel(html, Sass, scripts), server);
-//exports.default = series(clean, parallel(html, Sass, scripts), server);
+const { clean } = exports;
+exports.default = series(clean, parallel(html, Sass, scripts), server);

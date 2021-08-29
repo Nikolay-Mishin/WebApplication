@@ -1,13 +1,14 @@
-const server = require('browser-sync').create(),
+const //server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'), // отладка
 	ImgMinify = require('imgminify'); // оптимизация картинок
 
 module.exports = {
-	readyReload: function readyReload(done) {
-		server.reload();
-		done();
-	},
+	//server: server,
+	//reload: function reload(done) {
+	//	server.reload();
+	//	done();
+	//},
 	error: function(err) {
 		gutil.log(gutil.colors.red('[Error]'), err.toString());
 	},
