@@ -1,5 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
+	//{ server } = require('./_helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	rigger = require('gulp-rigger'), // плагин объединения js
 	uglify = require('gulp-uglify'); // плагин сжатия js
@@ -10,4 +11,5 @@ module.exports = function prod_js() {
 		.pipe(uglify()) // минификация
 		.pipe(dest(paths.build.js))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe(server.stream());
 };
