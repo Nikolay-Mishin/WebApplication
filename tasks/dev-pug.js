@@ -1,9 +1,10 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
+	{ lastRun } = require('./_helpers'),
 	pug = require('gulp-pug'); // плагин перезагрузки браузера
 	
 module.exports = function dev_pug() {
-	return src(paths.src.pug)
+	return src(paths.src.pug, lastRun(dev_pug))
 		.pipe(pug({
 			pretty: true
 		}))
