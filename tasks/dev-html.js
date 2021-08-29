@@ -6,7 +6,7 @@ const { src, dest } = require('gulp'),
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	htmlclean = require('gulp-htmlclean'), // collapse whitespace
 	realFavicon = require('gulp-real-favicon'); // генератор фавиконок
-
+	
 module.exports = function dev_html() {
 	return src(paths.src.html, lastRun(dev_html))
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap

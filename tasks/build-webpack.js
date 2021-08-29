@@ -1,5 +1,5 @@
-const { paths, webpackConfig } = require('../gulpfile.config'),
-	{ src, dest } = require('gulp'),
+const { src, dest } = require('gulp'),
+	{ paths, webpackConfig } = require('../gulpfile.config'),
 	{ notify } = require('./_helpers'),
 	webpack = require('webpack'), // webpack
 	webpackStream = require('webpack-stream'); // webpack stream
