@@ -86,7 +86,7 @@ task('sftp:push', require('./tasks/sftp-push'));
 task('prod:html', require('./tasks/prod-html'));
 task('prod:scss', require('./tasks/prod-scss'));
 task('prod:js', require('./tasks/prod-js'));
-task('watch', require('./tasks/watch-all'));
+task('watch', require('./tasks/watch'));
 
 /* Execution */
 task('dev', series('clean', parallel('dev:html', 'dev:scss', 'dev:js', 'dev:img'/*, 'generate-favicon'*/), 'server', 'watch'));
