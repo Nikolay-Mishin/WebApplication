@@ -16,7 +16,7 @@ module.exports = function move_test() {
 			extname: file.extname // расширение файла
 		});
 	})
-	.pipe(dest(function (file) {
+	.pipe(dest(function(file) {
 		return file.extname == '.html' ? 'files/html' :
 			file.extname == '.css' ? 'files/css' :
 				file.extname == '.js' ? 'files/js' : 'files'
