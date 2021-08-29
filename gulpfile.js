@@ -9,14 +9,14 @@ const { task, src, dest, watch, lastRun, series, parallel } = require('gulp'),
 //exports.clean = clean;
 task('clean', require('./tasks/clean'));
 
-function HTML() {
+function html() {
 	return src('app/**/*.html', { since: lastRun(HTML) })
 		.pipe(dest('dist/'))
 		.pipe(browserSync.stream());
 }
-exports.HTML = HTML;
+exports.html = html;
 
-function SASS() {
+function Sass() {
 	return src('app/assets/sass/**/*.sass')
 		.pipe(sourcemaps.init())
 		.pipe(sass({
@@ -27,7 +27,7 @@ function SASS() {
 		.pipe(dest('dist/assets/css/'))
 		.pipe(browserSync.stream());
 }
-exports.SASS = SASS;
+exports.sass = Sass;
 
 function scripts() {
 	return src([
@@ -47,7 +47,7 @@ function scripts() {
 }
 exports.scripts = scripts;
 
-function myServer() {
+function server() {
 	browserSync.init({
 		server: {
 			baseDir: 'app' // папка для локального сервера 
@@ -60,4 +60,5 @@ function myServer() {
 	watch('app/assets/js/**/*.js', { usePolling: true }, scripts);  // следим за JS
 }
 
-exports.default = series('clean', parallel(HTML, SASS, scripts), myServer);
+exports.default = series('clean', parallel(html, Sass, scripts), server);
+//exports.default = series(clean, parallel(html, Sass, scripts), server);
