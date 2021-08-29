@@ -20,7 +20,7 @@ module.exports = {
 		logPrefix: "WebDev"
 	},
 	site: {
-		server: 'site.ru',
+		host: 'site.ru',
 		user: 'tstv',
 		pass: '112121',
 		port: '10000',
