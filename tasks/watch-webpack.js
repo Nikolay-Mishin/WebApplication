@@ -1,8 +1,8 @@
-const { paths } = require('../gulpfile.config'),
-	{ watch, series } = require('gulp');
+const { watch, series } = require('gulp'),
+	{ paths } = require('../gulpfile.config');
 
 module.exports = function watch_webpack(done) {
 	//watch(paths.watch.js, series('build'));
-	watch(paths.watch.js);
-	done();
+	return watch(paths.watch.js);
+	//done();
 };

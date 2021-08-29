@@ -1,8 +1,8 @@
-const { paths } = require('../gulpfile.config'),
-	{ src, dest } = require('gulp'),
+const { src, dest } = require('gulp'),
+	{ paths } = require('../gulpfile.config'),
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	concat = require('concat'),
 	rename = require('gulp-rename'), // плагин переименования файлов
+	concat = require('concat'),
 	babel = require('gulp-babel'),
 	terser = require('terser'),
 	gulpTerser = require('gulp-terser');
