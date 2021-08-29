@@ -1,4 +1,5 @@
 const { lastRun } = require('gulp'), // отладка
+	{ paths } = require('../gulpfile.config'),
 	//server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'), // отладка
@@ -25,7 +26,6 @@ module.exports = {
 		for (a = 0; a < argList.length; a++) {
 			thisOpt = argList[a].trim();
 			opt = thisOpt.replace(/^\-+/, '');
-
 			if (opt === thisOpt) {
 				// argument value
 				if (curOpt) arg[curOpt] = opt;
