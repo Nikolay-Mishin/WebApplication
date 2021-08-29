@@ -3,7 +3,7 @@ const path = require('path'),
 	build = path.resolve(root, 'build'),
 	src = path.resolve(root, 'src'),
 	port = process.env.PORT || 8080,
-	//customDomain = environment.DEV_DOMAIN ? `${environment.DEV_DOMAIN}` : 'localhost';
+	//customDomain = process.env.DEV_DOMAIN ? `${process.env.DEV_DOMAIN}` : 'localhost'; // environment = process.env
 	customDomain = 'localhost';
 
 module.exports = {
