@@ -1,7 +1,8 @@
-const { src, dest } = require('gulp');
+const { src, dest } = require('gulp'),
+	{ lastRun } = require('./_helpers');
 
 module.exports = function move_test() {
-	return src('src/**/*').on('data', function(file) {
+	return src('src/**/*', lastRun(move_test)).on('data', function(file) {
 		console.log({
 			contents: file.contents, // содержимое файла
 			path: file.paths, // путь до файла

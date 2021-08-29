@@ -1,91 +1,64 @@
-const { src, dest, watch, lastRun, series, parallel } = require('gulp'),
-	sass = require('gulp-sass'),
-	sourcemaps = require('gulp-sourcemaps'),
-	browserSync = require('browser-sync').create(), // сервер + перезагрузка 
-	babel = require('gulp-babel'),                  // для работы с JS 
-	concat = require('gulp-concat'),                // объединение файлов в один
-	rSync = require('gulp-rsync');
+// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
+//'use strict';
 
-exports.clean = require('./tasks/clean');
+const { task, series, parallel } = require('gulp'); // сам gulp
 
-function html() {
-	return src('app/**/*.html', { since: lastRun(html) })
-		.pipe(dest('dist/'))
-		.pipe(browserSync.stream());
-}
-exports.html = html;
+/* Очистка директории проекта */
 
-function Sass() {
-	return src('app/assets/sass/**/*.sass', { since: lastRun(Sass) })
-		.pipe(sourcemaps.init())
-		.pipe(sass({
-			outputStyle: 'nested'
-		}).on('error', sass.logError))
-		.pipe(sourcemaps.write('.'))
-		.pipe(dest('app/assets/css/'))
-		.pipe(dest('dist/assets/css/'))
-		.pipe(browserSync.stream());
-}
-exports.sass = Sass;
+task('clean', require('./tasks/clean'));
+task('clean:html', require('./tasks/clean-html'));
+task('clean:js', require('./tasks/clean-js'));
+task('clean:webpack', require('./tasks/clean-webpack'));
 
-function scripts() {
-	return src([
-		'app/assets/js/script_1.js',
-		'app/assets/js/script_2.js',
-		'app/assets/js/main.js'
-	], { since: lastRun(scripts) })
-		.pipe(sourcemaps.init())
-		.pipe(babel({
-			presets: ['@babel/preset-env']
-		}))
-		.pipe(concat('app.js'))
-		.pipe(sourcemaps.write("."))
-		.pipe(dest('app/assets/js/'))
-		.pipe(dest('dist/assets/js/'))
-		.pipe(browserSync.stream());
-}
-exports.scripts = scripts;
+/* Основные задачи */
+task('build:html', require('./tasks/build-html'));
+task('build:js', require('./tasks/build-js'));
+task('scripts', require('./tasks/scripts'));
+task('build:webpack', require('./tasks/build-webpack'));
+task('watch:webpack', require('./tasks/watch-webpack'));
 
-function server() {
-	browserSync.init({
-		server: {
-			baseDir: 'app' // папка для локального сервера 
-		},
-		notify: false
-	});
+/* Execution */
 
-	watch('app/**/*.html', { usePolling: true }, html);             // следим за HTML
-	watch('app/assets/sass/**/*.sass', { usePolling: true }, Sass); // следим за SASS
-	watch('app/assets/js/**/*.js', { usePolling: true }, scripts);  // следим за JS
-}
+task('html', series('clean:html', 'build:html'));
+task('js', series('clean:js', 'build:js'));
+task('webpack', series('clean:webpack', 'build:webpack'));
 
-const { clean } = exports;
-exports.default = series(clean, parallel(html, Sass, scripts), server);
+task('build:all', series('html', parallel('webpack')));
+task('build', series('clean', parallel('build:html', 'build:webpack')));
+//exports.build = series('clean', parallel('build:html', 'build:webpack'));
 
-//root - выбор папки для деплоя
-//hostname - ваш SSH - логин @ip или адрес вашего сайта(например, user2583@sitename.ru)
-//destination - выбор папки на хостинге, куда будет загружаться сайт
-//port - эта строчка нужна лишь в том случае, если для SSH доступа нужен нестандартный порт(например, 25212)
-//include - какие файлы включать для переноса на хостинг
-//exclude - какие файлы не включать
-//recursive: true - рекурсивно передавать все файлы и каталоги
-//archive: true - режим архива
-//silent: false - отключение ведения журнала
-//compress: true - сжатие данных во время передачи
-function rs() {
-	return gulp.src('site/**')
-		.pipe(rSync({
-			root: 'site/**',
-			hostname: 'yourLogin@yourIp',
-			destination: 'sitePath',
-			port: 25212,
-			include: ['*.htaccess'],
-			exclude: ['**/Thumbs.db', '**/*.DS_Store'],
-			recursive: true,
-			archive: true,
-			silent: false,
-			compress: true
-		}));
-}
+/* Files Tasks */
+task('move:test', require('./tasks/move-test'));
+task('move:files', require('./tasks/move-files'));
+task('move', series('clean', 'move:files'));
 
-exports.deploy = series(parallel(html, Sass, scripts), rs);
+/* Check Cmd Arguments */
+task('args', require('./tasks/args'));
+
+/* Images Tasks */
+task('generate-favicon', require('./tasks/generate-favicon'));
+task('check-for-favicon-update', require('./tasks/check-for-favicon-update'));
+
+/* Development Tasks */
+task('dev:html', require('./tasks/dev-html'));
+task('dev:pug', require('./tasks/dev-pug'));
+task('dev:scss', require('./tasks/dev-scss'));
+task('dev:js', require('./tasks/dev-js'));
+task('dev:img', require('./tasks/dev-img'));
+task('dev:imgmin', require('./tasks/dev-imgmin'));
+// Webserver
+task('server', require('./tasks/server'));
+
+/* Production Tasks */
+task('sftp:push', require('./tasks/sftp-push'));
+task('prod:html', require('./tasks/prod-html'));
+task('prod:scss', require('./tasks/prod-scss'));
+task('prod:js', require('./tasks/prod-js'));
+task('watch', require('./tasks/watch'));
+
+/* Execution */
+task('dev', series('clean', parallel('dev:html', 'dev:scss', 'dev:js', 'dev:img'/*, 'generate-favicon'*/), 'server', 'watch'));
+task('prod', series('clean', parallel('prod:html', 'prod:scss', 'prod:js', 'dev:img')));
+
+// задача по умолчанию
+task('default', series('build'));
