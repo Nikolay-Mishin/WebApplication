@@ -5,24 +5,31 @@ const { src, dest, watch, series, parallel/*, lastRun*/ } = require('gulp'),
 	browserSync = require('browser-sync').create(), // сервер + перезагрузка 
 	babel = require('gulp-babel'),                  // для работы с JS 
 	concat = require('gulp-concat'),                // объединение файлов в один
+	imagemin = require('gulp-imagemin'),
+	del = require('del'),
 	rSync = require('gulp-rsync');
 
 exports.clean = require('./tasks/clean');
 
 function html() {
 	return src('app/**/*.html', lastRun(html))
-		.pipe(dest('dist/'))
-		.pipe(browserSync.stream());
+		.pipe(dest('dist/'))         // перенос HTML в папку деплоя
+		.pipe(browserSync.stream()); // обновление страницы
 }
 exports.html = html;
 
+/* outputStyle */
+//expanded - полностью развёрнутый CSS;
+//nested - показывает вложенность(по умолчанию);
+//compact - каждый селектор на новой строке;
+//compressed - всё в одну строку.
 function Sass() {
 	return src('app/assets/sass/**/*.sass', lastRun(Sass))
-		.pipe(sourcemaps.init())
+		.pipe(sourcemaps.init())       // активируем gulp-sourcemaps
 		.pipe(sass({
-			outputStyle: 'nested'
-		}).on('error', sass.logError))
-		.pipe(sourcemaps.write('.'))
+			outputStyle: 'nested'      // вложенный (по умолчанию)
+		}).on('error', sass.logError)) // уведомление об ошибках
+		.pipe(sourcemaps.write('.'))   // создание карты css.map в текущей папке
 		.pipe(dest('app/assets/css/'))
 		.pipe(dest('dist/assets/css/'))
 		.pipe(browserSync.stream());
@@ -47,23 +54,39 @@ function scripts() {
 }
 exports.scripts = scripts;
 
+function images() {
+	return src('app/assets/images/**/*.jpg', { since: lastRun(images) })
+		.pipe(imagemin())
+		.pipe(dest('dist/assets/img/'));
+}
+exports.images = images;
+
+// Если вы ведете разработку, для CMS, например, WordPress, то вам вместо 'server' необходимо использовать 'proxy'
 function server() {
 	browserSync.init({
 		server: {
-			baseDir: 'app' // папка для локального сервера 
+			baseDir: 'app' // здесь указываем корневую папку для локального сервера
 		},
-		notify: false
+		//proxy: 'http://only-to-top.loc/'
+		notify: false      // отключаем уведомления
 	});
 
 	watch('app/**/*.html', { usePolling: true }, html);             // следим за HTML
 	watch('app/assets/sass/**/*.sass', { usePolling: true }, Sass); // следим за SASS
 	watch('app/assets/js/**/*.js', { usePolling: true }, scripts);  // следим за JS
+	watch('app/assets/images/**/*.jpg', images);
 }
+
+// Удаление папки «dist» 
+function clean() {
+	return del('./dist/');
+}
+exports.clean = clean;
 
 const { clean } = exports;
 exports.default = series(
 	clean,
-	parallel(html, Sass, scripts),
+	parallel(html, Sass, scripts, images),
 	server
 );
 
