@@ -86,6 +86,6 @@ function rs() {
 			silent: false,
 			compress: true
 		}));
-});
+}
 
 exports.deploy = series(parallel(html, Sass, scripts), rs);
