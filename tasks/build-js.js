@@ -1,9 +1,9 @@
-const { paths } = require('../gulpfile.config'),
-	{ src, dest } = require('gulp'),
+const { src, dest } = require('gulp'),
+	{ paths } = require('../gulpfile.config'),
 	{ error, notify } = require('./_helpers'),
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	uglify = require('gulp-uglify'), // плагин сжатия js
-	rename = require('gulp-rename'); // плагин переименования файлов
+	rename = require('gulp-rename'), // плагин переименования файлов
+	uglify = require('gulp-uglify'); // плагин сжатия js
 
 module.exports = function build_js() {
 	return src(paths.src.js)
