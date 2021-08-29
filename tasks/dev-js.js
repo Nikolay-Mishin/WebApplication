@@ -1,5 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
+	//{ server } = require('./_helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	rename = require('gulp-rename'), // плагин переименования файлов
@@ -16,4 +17,5 @@ module.exports = function dev_js() {
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe(server.stream());
 };

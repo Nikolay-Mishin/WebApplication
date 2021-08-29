@@ -3,6 +3,6 @@ const { watch, series } = require('gulp'),
 
 module.exports = function watch_webpack(done) {
 	//watch(paths.watch.js, series('build'));
-	return watch(paths.watch.js);
+	watch(paths.watch.js);
 	//done();
 };

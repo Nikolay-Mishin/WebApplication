@@ -1,23 +1,35 @@
 const path = require('path'),
 	root = __dirname,
 	build = path.resolve(root, 'build'),
-	src = path.resolve(root, 'src');
+	src = path.resolve(root, 'src'),
+	port = process.env.PORT || 8080,
+	//customDomain = environment.DEV_DOMAIN ? `${environment.DEV_DOMAIN}` : 'localhost';
+	customDomain = 'localhost';
 
 module.exports = {
 	root,
 	build,
 	src,
 	webpackConfig: require('./webpack.config'), // webpack.config
-	// конфигурация browser sync
+	// конфигурация browserSync
 	serverConfig: {
 		server: {
 			baseDir: build,
 			index: 'index.html'
 		},
 		tunnel: true,
-		host: 'localhost',
-		port: 7787,
-		logPrefix: "WebDev"
+		proxy: `localhost:${port}`,
+		open: false,
+		host: customDomain,
+		port: 3000, // 7787
+		logPrefix: "WebDev",
+		//ghostMode: false, /* don't mirror interactions in other browsers */
+		//snippetOptions: {
+		//	rule: {
+		//		match: /<\/body>/i,
+		//		fn: snippet => snippet,
+		//	},
+		//},
 	},
 	site: {
 		host: 'site.ru',
