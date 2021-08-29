@@ -12,6 +12,12 @@ module.exports = {
 	//	done();
 	//},
 	lastRun: func => { since: lastRun(func) },
+	setMode: function setMode(isProd = false) {
+		return done => {
+			process.env.NODE_ENV = isProd ? 'production' : 'development';
+			done();
+		}
+	},
 	error: function(err) {
 		gutil.log(gutil.colors.red('[Error]'), err.toString());
 	},
@@ -47,11 +53,5 @@ module.exports = {
 		.use(ImgMinify.jpegtran({ progressive: true }))
 		.use(ImgMinify.optipng({ optimizationLevel: 3 }))
 		.use(ImgMinify.pngquant({ speed: 1 }))
-		.use(ImgMinify.svgo()),
-	setMode: function setMode(isProd = false) {
-		return done => {
-			process.env.NODE_ENV = isProd ? 'production' : 'development';
-			done();
-		}
-	}
+		.use(ImgMinify.svgo())
 };
