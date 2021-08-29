@@ -1,4 +1,5 @@
-const //server = require('browser-sync').create(),
+const { lastRun } = require('gulp'), // отладка
+	//server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'), // отладка
 	ImgMinify = require('imgminify'); // оптимизация картинок
@@ -9,6 +10,7 @@ module.exports = {
 	//	server.reload();
 	//	done();
 	//},
+	lastRun: func => { since: lastRun(func) },
 	error: function(err) {
 		gutil.log(gutil.colors.red('[Error]'), err.toString());
 	},
