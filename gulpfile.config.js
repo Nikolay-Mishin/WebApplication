@@ -9,6 +9,7 @@ module.exports = {
 	root,
 	build,
 	src,
+	jsModule: 'es6',
 	webpackConfig: require('./webpack.config'), // webpack.config
 	// конфигурация browserSync
 	serverConfig: {
@@ -68,8 +69,7 @@ module.exports = {
 			build: join(build, '**/*'),
 			html: join(build, 'html'),
 			css: join(build, 'css'),
-			js: join(build, 'js'),
-			webpack: join(build, 'webpack')
+			js: join(build, 'js')
 		}
 	}
 };
