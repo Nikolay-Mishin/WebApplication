@@ -1,5 +1,4 @@
-/// <binding ProjectOpened='_test' />
-// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
+// <binding ProjectOpened='_test' />
 
 const { task, series, parallel } = require('gulp'); // сам gulp
 
