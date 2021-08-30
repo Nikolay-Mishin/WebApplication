@@ -1,31 +1,24 @@
 const { lastRun } = require('gulp'), // отладка
-	{ paths } = require('../gulpfile.config'),
 	//server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
-	notify = require('gulp-notify'), // отладка
-	ImgMinify = require('imgminify'); // оптимизация картинок
+	notify = require('gulp-notify'); // отладка
 
 module.exports = {
-	//server: server,
-	//reload: function reload(done) {
-	//	server.reload();
-	//	done();
-	//},
-	lastRun: func => { since: lastRun(func) },
-	setMode: function setMode(isProd = false) {
+	get mode() {
+		return process.env.NODE_ENV;
+	},
+	get dev() {
+		return this.mode ? this.mode === 'development' : true;
+	},
+	get prod() {
+		return !this.dev;
+	},
+	setMode: (prod = false) => {
+		return process.env.NODE_ENV = prod ? 'production' : 'development';
 		return done => {
-			process.env.NODE_ENV = isProd ? 'production' : 'development';
+			process.env.NODE_ENV = prod ? 'production' : 'development';
 			done();
 		}
-	},
-	error: function(err) {
-		gutil.log(gutil.colors.red('[Error]'), err.toString());
-	},
-	notify: function(title, message = 'Scripts Done') {
-		return notify({
-			title: title,
-			message: message
-		});
 	},
 	arg: (argList => {
 		let arg = {}, a, opt, thisOpt, curOpt;
@@ -45,13 +38,15 @@ module.exports = {
 		}
 		return arg;
 	})(process.argv),
-	imgMinify: new ImgMinify()
-		.src(paths.src.img)
-		.dest(paths.build.img)
-		.use(ImgMinify.gifsicle({ interlaced: true }))
-		.use(ImgMinify.jpegoptim({ progressive: true, max: 60 }))
-		.use(ImgMinify.jpegtran({ progressive: true }))
-		.use(ImgMinify.optipng({ optimizationLevel: 3 }))
-		.use(ImgMinify.pngquant({ speed: 1 }))
-		.use(ImgMinify.svgo())
+	lastRun: func => { since: lastRun(func) },
+	//server: server,
+	//reload: done => {
+	//	server.reload();
+	//	done();
+	//},
+	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
+	notify: (title, message = 'Scripts Done') => notify({
+		title: title,
+		message: message
+	})
 };
