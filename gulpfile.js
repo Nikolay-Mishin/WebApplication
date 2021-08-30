@@ -1,9 +1,6 @@
 // <binding ProjectOpened='_test' />
 
-const { task, series, parallel } = require('gulp'), // сам gulp
-	env = process.env.NODE_ENV || 'development',
-	isDev = env === 'development',
-	isProd = !isDev;
+const { task, series, parallel } = require('gulp'); // сам gulp
 
 //module.exports.start = gulp.series(setMode(), build, server);
 //module.exports.build = gulp.series(setMode(true), build);
