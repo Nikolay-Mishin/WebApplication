@@ -29,7 +29,7 @@ module.exports = function test(done) {
 
 	console.log('log\n', log);
 
-module.exports = function _test(done) {
+module.exports = function test(done) {
 	console.log(config);
 
 	//console.log(process);
