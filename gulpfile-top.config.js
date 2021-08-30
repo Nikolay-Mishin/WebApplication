@@ -1,7 +1,7 @@
-const path = require('path'),
+const { join } = require('path'),
 	root = __dirname,
-	build = path.resolve(root, 'build'),
-	src = path.resolve(root, 'src'),
+	build = join(root, 'build'),
+	src = join(root, 'src'),
 	port = process.env.PORT || 8080,
 	//customDomain = environment.DEV_DOMAIN ? `${environment.DEV_DOMAIN}` : 'localhost';
 	customDomain = 'localhost';
