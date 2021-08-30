@@ -45,12 +45,6 @@
 		<TypeScriptCompile Include="src\ts\main.ts" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Update="gulpfile.config.js">
-	    <DependentUpon>gulpfile.config.js</DependentUpon>
-	  </None>
-	</ItemGroup>
-
 	<!--<ItemGroup>
 	  <Folder Include="src\js\" />
 	</ItemGroup>-->
