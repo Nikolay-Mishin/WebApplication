@@ -1,10 +1,9 @@
-const path = require('path'),
+const { join } = require('path'),
 	root = __dirname,
-	build = path.resolve(root, 'build'),
-	src = path.resolve(root, 'src'),
+	build = join(root, 'build'),
+	src = join(root, 'src'),
 	port = process.env.PORT || 8080,
-	//customDomain = process.env.DEV_DOMAIN ? `${process.env.DEV_DOMAIN}` : 'localhost'; // environment = process.env
-	customDomain = 'localhost';
+	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment = process.env
 
 module.exports = {
 	root,
@@ -41,36 +40,36 @@ module.exports = {
 	paths: {
 		build: { // пути для сборки проектов
 			all: build,
-			html: build + 'html/',
-			css: build + 'css/',
-			js: build + 'js/',
-			favicon: build + 'favicon/',
-			faviconDataFile: src + 'favicon/faviconData.json',
-			faviconInject: build + '**/*.html',
-			img: build + 'img/'
+			html: join(build, 'html/'),
+			css: join(build, 'css/'),
+			js: join(build, 'js/'),
+			favicon: join(build, 'favicon/'),
+			faviconDataFile: join(src, 'favicon/faviconData.json'),
+			faviconInject: join(build, '**/*.html'),
+			img: join(build, 'img/')
 		},
 		src: { // пути размещения исходных файлов проекта
 			all: src,
-			html: src + 'html/**/*.{html,htm}',
-			pug: src + 'pug/*.pug',
-			scss: src + 'scss/*.scss',
-			js: src + 'js/*.{js,js.map}',
-			webpack: src + 'js/**/*.js',
-			favicon: src + 'favicon/icon.png',
+			html: join(src, 'html/**/*.{html,htm}'),
+			pug: join(src, 'pug/*.pug'),
+			scss: join(src, 'scss/*.{scss,sass}'),
+			js: join(src, 'js/*.{js,js.map}'),
+			webpack: join(src, 'js/**/*.js'),
+			favicon: join(src, 'favicon/icon.png'),
 			iconsPath: '/favicon',
-			img: src + 'img/**/*.{jpeg,jpg,png,svg,gif}'
+			img: join(src, 'img/**/*.{jpeg,jpg,png,svg,gif}')
 		},
 		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: src + 'html/**/*.{html,htm}',
-			scss: src + 'scss/**/*.scss',
-			js: src + 'js/**/*.js'
+			html: join(src, 'html/**/*.{html,htm}'),
+			scss: join(src, 'scss/**/*.scss'),
+			js: join(src, 'js/**/*.js')
 		},
 		clean: { // путь очистки директории для сборки
-			build: build + '**/*',
-			html: build + 'html',
-			css: build + 'css',
-			js: build + 'js',
-			webpack: build + 'webpack'
+			build: join(build, '**/*'),
+			html: join(build, 'html'),
+			css: join(build, 'css'),
+			js: join(build, 'js'),
+			webpack: join(build, 'webpack')
 		}
 	}
 };
