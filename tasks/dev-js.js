@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun/*, server*/ } = require('./_helpers'),
+	{ lastRun/*, server*/ } = require('./helpers/helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	rename = require('gulp-rename'), // плагин переименования файлов

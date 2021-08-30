@@ -1,6 +1,6 @@
 const { watch, series } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	//{ server, reload } = require('./_helpers');
+	//{ server, reload } = require('./helpers/helpers');
 	reload = require('browser-sync').reload; // плагин перезагрузки браузера
 
 module.exports = function watch_all(done) {

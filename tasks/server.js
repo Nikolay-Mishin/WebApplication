@@ -1,6 +1,6 @@
 const { watch, series } = require('gulp'),
 	{ serverConfig } = require('../gulpfile.config'),
-	//{ server } = require('./_helpers');
+	//{ server } = require('./helpers/helpers');
 	browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
 
