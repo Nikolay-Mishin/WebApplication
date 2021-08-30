@@ -28,28 +28,4 @@ module.exports = function test(done) {
 	}
 
 	console.log('log\n', log);
-
-module.exports = function test(done) {
-	console.log(config);
-
-	const log = { [h.mode]: {} };
-
-	if (h.dev) {
-		log[h.mode].NODE_ENV = process.env.NODE_ENV;
-		log[h.mode].dev = h.dev;
-		log[h.mode].prod = h.prod;
-	}
-
-	setMode(true);
-	log[h.mode] = {};
-
-	if (h.prod) {
-		log[h.mode].NODE_ENV = process.env.NODE_ENV;
-		log[h.mode].dev = h.dev;
-		log[h.mode].prod = h.prod;
-	}
-
-	console.log('log\n', log);
-
-	done();
 };
