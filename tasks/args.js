@@ -1,6 +1,5 @@
 const { arg } = require('./helpers/helpers');
 
-module.exports = function args(done) {
+module.exports = async function args() {
 	console.log(arg);
-	done();
 };

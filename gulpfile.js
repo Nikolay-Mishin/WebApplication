@@ -73,6 +73,7 @@ exports.prod = series('clean', parallel('prod:html', 'prod:scss', 'prod:js', 'de
 const { build } = exports;
 exports.default = series(build);
 
-exports._test = require('./tasks/helpers/test');
+//exports._test = require('./tasks/helpers/test');
+exports._test = require('./tasks/helpers/test')(exports);
 
 console.log('exports\n', exports);

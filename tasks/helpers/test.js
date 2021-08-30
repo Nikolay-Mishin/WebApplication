@@ -2,7 +2,7 @@ const config = require('../../gulpfile.config'),
 	h = require('./helpers'),
 	{ arg, setMode } = h;
 
-module.exports = function test(done) {
+module.exports = async function test(done) {
 	//console.log('process\n', process);
 	console.log('config\n', config);
 	//console.log('env\n', process.env);
@@ -35,5 +35,12 @@ module.exports = function test(done) {
 
 	console.log('exports\n', exports);
 
-	done();
+	console.log('test\n', test);
+
+	console.log('this\n', this);
+
+	console.log('done\n', done);
+
+	//done();
+	return this;
 };

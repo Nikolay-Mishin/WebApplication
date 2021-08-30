@@ -14,10 +14,9 @@ const imgMinify = (function imgMinify() {
 		.use(ImgMinify.svgo());
 })();
 
-module.exports = function dev_img(done) {
+module.exports = async function dev_img() {
 	imgMinify.run(function(err, files) {
 		if (err) throw err;
 		console.log('Images optimized successfully!');
 	});
-	done();
 };
