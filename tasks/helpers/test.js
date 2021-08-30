@@ -29,5 +29,11 @@ module.exports = function test(done) {
 
 	console.log('log\n', log);
 
+	for (let key in log) {
+		console.log(`${key}: `, log[key]);
+	}
+
+	console.log('exports\n', exports);
+
 	done();
 };
