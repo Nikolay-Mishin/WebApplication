@@ -1,8 +1,8 @@
 const config = require('../../gulpfile.config'),
 	h = require('./helpers'),
-	{ setMode, arg } = require('./helpers');
+	{ arg, setMode } = h;
 
-module.exports = function _test(done) {
+module.exports = function test(done) {
 	console.log(config);
 
 	//console.log(process);
