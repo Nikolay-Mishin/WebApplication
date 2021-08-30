@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun, arg/*, server*/ } = require('./_helpers'),
+	{ lastRun, arg/*, server*/ } = require('./helpers/helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	gulpif = require('gulp-if'), // плагин для условий
 	realFavicon = require('gulp-real-favicon'); // генератор фавиконок

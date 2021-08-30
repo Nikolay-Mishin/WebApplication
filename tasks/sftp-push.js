@@ -1,6 +1,6 @@
 const { src } = require('gulp'),
 	{ paths, site } = require('../gulpfile.config'),
-	{ lastRun } = require('./_helpers');
+	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function sftp_push() {
 	return src(paths.build.all, lastRun(sftp_push))
