@@ -24,6 +24,15 @@ module.exports = {
 			done();
 		}
 	},
+	error: function(err) {
+		gutil.log(gutil.colors.red('[Error]'), err.toString());
+	},
+	notify: function(title, message = 'Scripts Done') {
+		return notify({
+			title: title,
+			message: message
+		});
+	},
 	arg: (argList => {
 		let arg = {}, a, opt, thisOpt, curOpt;
 		for (a = 0; a < argList.length; a++) {

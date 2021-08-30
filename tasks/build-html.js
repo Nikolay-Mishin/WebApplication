@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun } = require('./_helpers'),
+	{ lastRun } = require('./helpers/helpers'),
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	htmlclean = require('gulp-htmlclean');
 
