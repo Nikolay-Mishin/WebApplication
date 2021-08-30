@@ -9,7 +9,7 @@ module.exports = {
 		return jsModule === 'es6';
 	},
 	get mode() {
-		return process.env.NODE_ENV;
+		return process.env.NODE_ENV || 'dev';
 	},
 	get dev() {
 		return this.mode ? this.mode === 'dev' : true;
