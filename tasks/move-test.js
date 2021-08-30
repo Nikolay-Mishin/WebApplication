@@ -1,5 +1,5 @@
 const { src, dest } = require('gulp'),
-	{ lastRun } = require('./_helpers');
+	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function move_test() {
 	return src('src/**/*', lastRun(move_test)).on('data', function(file) {

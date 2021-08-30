@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun, error, notify } = require('./_helpers'),
+	{ lastRun, error, notify } = require('./helpers/helpers'),
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	rename = require('gulp-rename'), // плагин переименования файлов
 	uglify = require('gulp-uglify'); // плагин сжатия js

@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun } = require('./_helpers');
+	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function move_files() {
 	src('files/**/*.{html,htm}', lastRun(move_files)).pipe(dest(paths.build.all));

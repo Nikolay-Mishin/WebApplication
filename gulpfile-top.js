@@ -1,5 +1,5 @@
 const { src, dest, watch, series, parallel/*, lastRun*/ } = require('gulp'),
-	{ lastRun } = require('./_helpers'),
+	{ lastRun } = require('./helpers/helpers'),
 	sass = require('gulp-sass'),
 	sourcemaps = require('gulp-sourcemaps'),
 	browserSync = require('browser-sync').create(), // сервер + перезагрузка 

@@ -1,4 +1,4 @@
-const { imgMinify } = require('./_helpers'); // плагин расстановки префиксов
+const { imgMinify } = require('./helpers/helpers');
 
 module.exports = function dev_img(done) {
 	imgMinify.run(function(err, files) {
