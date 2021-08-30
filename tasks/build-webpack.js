@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths, webpackConfig } = require('../gulpfile.config'),
-	{ lastRun, notify } = require('./_helpers'),
+	{ lastRun, notify } = require('./helpers/helpers'),
 	webpack = require('webpack'), // webpack
 	webpackStream = require('webpack-stream'); // webpack stream
 
