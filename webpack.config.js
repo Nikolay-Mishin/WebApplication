@@ -1,6 +1,6 @@
 // Подключаемые плагины
 const webpack = require('webpack'),
-	path = require('path'),
+	{ join } = require('path'),
 	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
 	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
 	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
@@ -14,12 +14,12 @@ const webpack = require('webpack'),
 
 const root = __dirname,
 	publicPath = 'wwwroot',
-	build = path.resolve(root, publicPath),
-	src = path.resolve(root, 'src'),
-	isDev = true,
-	//isDev = process.env.NODE_ENV === 'development',
-	isProd = !isDev,
-	filename = ext => isDev ? `[name].${ext}` : `[name].[hash].${ext}`,
+	build = join(root, publicPath),
+	src = join(root, 'src'),
+	dev = true,
+	//dev = process.env.NODE_ENV === 'development',
+	prod = !dev,
+	filename = ext => dev ? `[name].${ext}` : `[name].[hash].${ext}`,
 	optimization = () => {
 		const config = {
 			minimize: false
@@ -28,7 +28,7 @@ const root = __dirname,
 			//}
 		};
 
-		if (isProd) {
+		if (prod) {
 			config.minimizer = [
 				new OptimizeCssAssetWebpackPlugin(),
 				new TerserWebpackPlugin()
@@ -55,7 +55,7 @@ const root = __dirname,
 			//new HTMLWebpackPlugin({
 			//	template: './index.html',
 			//	minify: {
-			//		collapseWhitespace: isProd
+			//		collapseWhitespace: prod
 			//	}
 			//}),
 			//new CleanWebpackPlugin(),
@@ -74,7 +74,7 @@ const root = __dirname,
 			})
 		]
 
-		if (isProd) {
+		if (prod) {
 			base.push(new BundleAnalyzerPlugin())
 		}
 
@@ -96,7 +96,7 @@ const root = __dirname,
 			{
 				loader: MiniCssExtractPlugin.loader,
 				options: {
-					hmr: isDev,
+					hmr: dev,
 					reloadAll: true
 				},
 			},
@@ -132,7 +132,7 @@ const root = __dirname,
 			options: babelOptions()
 		}];
 
-		if (isDev) {
+		if (dev) {
 			//loaders.push('eslint-loader');
 		}
 
@@ -155,7 +155,7 @@ module.exports = {
 	},
 	//devServer: {
 	//	port: 8080,
-	//	hot: isDev,
+	//	hot: dev,
 	//	contentBase: './build' // Будет запускать сервер на localhost:8080 в этой папке
 	//},
 	resolve: {
@@ -165,14 +165,14 @@ module.exports = {
 		alias: {
 			'^@': build,
 			'^/': src,
-			//'jQuery': path.resolve(__dirname, './../../../jquery')
+			//'jQuery':join(__dirname, './../../../jquery')
 		}
 	},
 	externals: {
 		jquery: 'jQuery'
 	},
 	optimization: optimization(),
-	devtool: isDev ? 'source-map' : '',
+	devtool: dev ? 'source-map' : '',
 	plugins: plugins(),
 	module: {
 		rules: [
