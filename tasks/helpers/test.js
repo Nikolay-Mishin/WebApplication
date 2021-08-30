@@ -28,4 +28,6 @@ module.exports = function test(done) {
 	}
 
 	console.log('log\n', log);
+
+	done();
 };
