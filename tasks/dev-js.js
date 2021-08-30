@@ -3,7 +3,6 @@ const { src, dest } = require('gulp'),
 	{ lastRun, error, notify/*, server*/ } = require('./helpers/helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	rename = require('gulp-rename'), // плагин переименования файлов
 	rigger = require('gulp-rigger'), // плагин объединения js
 	uglify = require('gulp-uglify'); // плагин сжатия js
 
