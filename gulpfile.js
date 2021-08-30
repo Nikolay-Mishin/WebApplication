@@ -1,71 +1,185 @@
-/// <binding ProjectOpened='_test' />
-// <binding AfterBuild='build' ProjectOpened='watch:webpack' />
+/// <binding ProjectOpened='watch:webpack' />
+//'use strict';
 
-const { task, series, parallel } = require('gulp'); // сам gulp
+function HTML() {
+	return src('app/**/*.html', { since: lastRun(HTML) })
+		.pipe(dest('dist/'))
+		.pipe(browserSync.stream())
+}
+exports.HTML = HTML;
 
-//module.exports.start = gulp.series(setMode(), build, server);
-//module.exports.build = gulp.series(setMode(true), build);
+// Check for updates on RealFaviconGenerator (think: Apple has just
+// released a new Touch icon along with the latest version of iOS).
+// Run this task from time to time. Ideally, make it part of your
+// continuous integration system.
+gulp.task('check-for-favicon-update', function(done) {
+	var currentVersion = JSON.parse(fs.readFileSync(path.build.faviconDataFile)).version;
+	realFavicon.checkForUpdates(currentVersion, function(err) {
+		if (err) {
+			throw err;
+		}
+	});
+});
 
-/* Очистка директории проекта */
+/* *******************************
+	* Development Tasks
+********************************** */
 
-task('clean', require('./tasks/clean'));
-task('clean:html', require('./tasks/clean-html'));
-task('clean:js', require('./tasks/clean-js'));
+// Очистка дериктории для компиляции
 
-/* Основные задачи */
+//gulp.task('clean', function(done) {
+//	rimraf(path.clean.build, done);
+//});
 
-//exports.html = series('clean:html', 'build:html');
-//exports.js = series('clean:js', 'build:js');
+gulp.task('dev:html', function(done) {
+	gulp.src(path.src.html)
+		.pipe(gulpif(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code)))
+		.pipe(gulp.dest(path.build.all))
+		.pipe(reload({ stream: true })); // И перезагрузим сервер
+	done();
+});
 
-task('html', require('./tasks/html'));
-task('scss', require('./tasks/scss'));
-task('js', require('./tasks/js'));
-task('scripts', require('./tasks/scripts'));
+gulp.task('dev:pug', function(done) {
+	gulp.src(path.src.pug)
+		.pipe(pug({
+			pretty: true
+		}))
+		.pipe(gulp.dest(path.build.all));
+	done();
+});
 
-/* Execution */
+gulp.task('dev:scss', function(done) {
+	gulp.src(path.src.scss) // main файл
+		.pipe(sourcemaps.init()) // Инициализируем sourcemap
+		.pipe(sass({
+			outputStyle: 'compressed', // минимиация файла
+			sourcemaps: true
+		}
+		).on('error', sass.logError))
+		.pipe(prefixer({
+			browsers: ['> 1%'], // last 5 versions
+			cascade: false, // запрет на разворот кода
+			remove: true // удаление лишних стилей при обработке
+		}))
+		.pipe(sourcemaps.write('.')) // Пропишем карты
+		.pipe(gulp.dest(path.build.css)) // готовый файл min в build
+		.pipe(reload({ stream: true })); // И перезагрузим сервер
+	done();
+});
 
-exports.build = series('clean', parallel('html', 'js'));
+gulp.task('dev:js', function(done) {
+	gulp.src(path.src.js) // main файл
+		.pipe(rigger()) // rigger
+		.pipe(gulp.dest(path.build.js)) // готовый файл в build
+		.pipe(sourcemaps.init()) // Инициализируем sourcemap
+		.pipe(uglify()) // сжатие js
+		.pipe(sourcemaps.write('.')) // Пропишем карты
+		.pipe(rename({ suffix: '.min' })) // переименовывание файла
+		.pipe(gulp.dest(path.build.js)) // готовый файл min в build
+		.pipe(reload({ stream: true })); // И перезагрузим сервер
+	done();
+});
 
-/* Files Tasks */
+let imgminify = new ImgMinify()
+	.src(path.src.img)
+	.dest(path.build.img)
+	.use(ImgMinify.gifsicle({ interlaced: true }))
+	.use(ImgMinify.jpegoptim({ progressive: true, max: 60 }))
+	.use(ImgMinify.jpegtran({ progressive: true }))
+	.use(ImgMinify.optipng({ optimizationLevel: 3 }))
+	.use(ImgMinify.pngquant({ speed: 1 }))
+	.use(ImgMinify.svgo());
 
-task('move:test', require('./tasks/move-test'));
-task('move:files', require('./tasks/move-files'));
-exports.move = series('clean', 'move:files');
+gulp.task('dev:img', function(done) {
+	imgminify.run(function(err, files) {
+		if (err) {
+			throw err;
+		}
+		console.log('Files optimized successfully!');
+	});
+	done();
+});
 
-/* Check Cmd Arguments */
-exports.args = require('./tasks/args');
+gulp.task('dev:imgmin', function(done) {
+	gulp.src(path.src.img)
+		.pipe(imagemin({
+			interlaced: true,
+			progressive: true,
+			optimizationLevel: 5,
+			svgoPlugins: [{ removeViewBox: true }]
+		}))
+		.pipe(gulp.dest(path.build.img));
+	done();
+});
 
-/* Images Tasks */
+/* Webserver */
 
-task('generate-favicon', require('./tasks/generate-favicon'));
-task('check-for-favicon-update', require('./tasks/check-for-favicon-update'));
+gulp.task('webserver', function(done) {
+	browserSync(config); // локальный сервер
+	done();
+});
 
-/* Development Tasks */
+/* *******************************
+	* Production Tasks
+********************************** */
 
-task('dev:html', require('./tasks/dev-html'));
-task('dev:pug', require('./tasks/dev-pug'));
-task('dev:scss', require('./tasks/dev-scss'));
-task('dev:js', require('./tasks/dev-js'));
-task('dev:img', require('./tasks/dev-img'));
-task('dev:imgmin', require('./tasks/dev-imgmin'));
-// Webserver
-task('server', require('./tasks/server'));
+gulp.task('sftp:push', function(done) {
+	gulp.src(path.build.all)
+		.pipe(sftp({
+			host: site.server,
+			user: site.user,
+			pass: site.pass,
+			port: site.port,
+			remotePath: site.folder
+		}));
+	done();
+});
 
-/* Production Tasks */
+gulp.task('prod:html', function(done) {
+	gulp.src(path.src.html)
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(path.build.faviconDataFile)).favicon.html_code))
+		.pipe(htmlmin({ collapseWhitespace: true }))
+		.pipe(gulp.dest(path.build.all))
+		.pipe(reload({ stream: true })); // И перезагрузим сервер
+	done();
+});
 
-task('sftp:push', require('./tasks/sftp-push'));
-task('prod:html', require('./tasks/prod-html'));
-task('prod:scss', require('./tasks/prod-scss'));
-task('prod:js', require('./tasks/prod-js'));
-task('watch', require('./tasks/watch'));
+gulp.task('prod:scss', function(done) {
+	gulp.src(path.src.scss)
+		.pipe(sass({
+			outputStyle: "compressed",
+			sourcemaps: false
+		}))
+		.pipe(prefixer({
+			browsers: ['> 1%'],
+			cascade: false,
+			remove: true
+		}))
+		.pipe(gulp.dest(path.build.css));
+	done();
+});
 
-/* Execution */
+gulp.task('prod:js', function(done) {
+	gulp.src(path.src.js)
+		.pipe(rigger()) // собрать в одном файле код из скриптов
+		.pipe(uglify()) // минификация
+		.pipe(gulp.dest(path.build.js));
+	done();
+});
 
-exports.dev = series('clean', parallel('dev:html', 'dev:scss', 'dev:js', 'dev:img'/*, 'generate-favicon'*/), 'server', 'watch');
-exports.prod = series('clean', parallel('prod:html', 'prod:scss', 'prod:js', 'dev:img'));
+// Отслеживание изменений в проекте
 
-// задача по умолчанию
-const { build } = exports;
-exports.default = series(build);
+gulp.task('watch', function(done) {
+	gulp.watch(path.watch.html, gulp.series('dev:html'), reload({ stream: true }));
+	gulp.watch(path.watch.scss, gulp.series('dev:scss'), reload({ stream: true }));
+	gulp.watch(path.watch.js, gulp.series('dev:js'), reload({ stream: true }));
+	done();
+});
 
-exports._test = require('./tasks/helpers/test');
+// Execution
+
+gulp.task('dev', gulp.series('clean', gulp.parallel('dev:scss', 'dev:js', 'dev:img'/* , 'generate-favicon' */), 'dev:html', 'webserver', 'watch'));
+
+gulp.task('prod', gulp.series('clean', gulp.parallel('prod:html', 'prod:scss', 'prod:js', 'dev:img')));
+
+exports.default = series(HTML, SASS, scripts, myServer);
