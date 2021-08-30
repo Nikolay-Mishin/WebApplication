@@ -1,7 +1,8 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun/*, server*/ } = require('./helpers/helpers'),
+	{ lastRun, notify/*, server*/ } = require('./helpers/helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
+	rename = require('gulp-rename'), // плагин переименования файлов
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
 	prefixer = require('gulp-autoprefixer'); // плагин расстановки префиксов
@@ -12,8 +13,7 @@ module.exports = function dev_scss() {
 		.pipe(sass({
 			outputStyle: 'compressed', // минимиация файла
 			sourcemaps: true
-		}
-		).on('error', sass.logError))
+		}).on('error', sass.logError))
 		.pipe(prefixer({
 			browsers: ['> 1%'], // last 5 versions
 			cascade: false, // запрет на разворот кода
@@ -21,6 +21,7 @@ module.exports = function dev_scss() {
 		}))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(dest(paths.build.css)) // готовый файл min в build
+		.pipe(notify('dev:scss'))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());
 };

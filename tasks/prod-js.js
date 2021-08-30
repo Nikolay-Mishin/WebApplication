@@ -6,10 +6,10 @@ const { src, dest } = require('gulp'),
 	uglify = require('gulp-uglify'); // плагин сжатия js
 
 module.exports = function prod_js() {
-	return src(paths.src.js, lastRun(prod_js))
-		.pipe(rigger()) // собрать в одном файле код из скриптов
-		.pipe(uglify().on('error', error)) // минификация
-		.pipe(dest(paths.build.js))
+	return src(paths.src.js, lastRun(dev_js)) // main файл
+		.pipe(rigger()) // rigger
+		.pipe(uglify().on('error', error)) // сжатие js
+		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify('prod:js'))
 		.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());

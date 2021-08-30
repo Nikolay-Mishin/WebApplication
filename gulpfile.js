@@ -1,10 +1,7 @@
 /// <binding ProjectOpened='_test' />
 // <binding AfterBuild='build' ProjectOpened='watch:webpack' />
 
-const { task, series, parallel } = require('gulp'), // сам gulp
-	env = process.env.NODE_ENV || 'development',
-	isDev = env === 'development',
-	isProd = !isDev;
+const { task, series, parallel } = require('gulp'); // сам gulp
 
 //module.exports.start = gulp.series(setMode(), build, server);
 //module.exports.build = gulp.series(setMode(true), build);
@@ -14,24 +11,20 @@ const { task, series, parallel } = require('gulp'), // сам gulp
 task('clean', require('./tasks/clean'));
 task('clean:html', require('./tasks/clean-html'));
 task('clean:js', require('./tasks/clean-js'));
-task('clean:webpack', require('./tasks/clean-webpack'));
 
 /* Основные задачи */
 
-task('build:html', require('./tasks/build-html'));
-task('build:js', require('./tasks/build-js'));
+//exports.html = series('clean:html', 'build:html');
+//exports.js = series('clean:js', 'build:js');
+
+task('html', require('./tasks/html'));
+task('scss', require('./tasks/scss'));
+task('js', require('./tasks/js'));
 task('scripts', require('./tasks/scripts'));
-task('build:webpack', require('./tasks/build-webpack'));
-task('watch:webpack', require('./tasks/watch-webpack'));
 
 /* Execution */
 
-exports.html = series('clean:html', 'build:html');
-exports.js = series('clean:js', 'build:js');
-exports.webpack = series('clean:webpack', 'build:webpack');
-
-exports['build:all'] = series('clean', parallel('build:html', 'build:webpack'));
-exports.build = series('clean', parallel('build:html', 'build:webpack'));
+exports.build = series('clean', parallel('html', 'js'));
 
 /* Files Tasks */
 
