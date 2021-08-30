@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun/*, server*/ } = require('./_helpers'),
+	{ lastRun/*, server*/ } = require('./helpers/helpers'),
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	rigger = require('gulp-rigger'), // плагин объединения js
 	uglify = require('gulp-uglify'); // плагин сжатия js
