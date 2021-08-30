@@ -1,6 +1,6 @@
 const { paths } = require('../gulpfile.config'),
 	{ lastRun } = require('./helpers/helpers'),
-	ImgMinify = require('imgminify'); // оптимизация картинок;
+	ImgMinify = require('imgminify'); // РѕРїС‚РёРјРёР·Р°С†РёСЏ РєР°СЂС‚РёРЅРѕРє;
 
 const imgMinify = (function imgMinify() {
 	return new ImgMinify()
