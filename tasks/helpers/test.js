@@ -4,43 +4,39 @@ const config = require('../../gulpfile.config'),
 
 module.exports = async function test(done) {
 	//console.log('process\n', process);
-	console.log('config\n', config);
-	//console.log('env\n', process.env);
-	//console.log('argv\n', process.argv);
-	console.log('arg\n', arg);
-	console.log('useWebpack: ', h.useWebpack);
+	//console.log('config\n', config);
+	////console.log('env\n', process.env);
+	////console.log('argv\n', process.argv);
+	//console.log('arg\n', arg);
+	//console.log('useWebpack: ', h.useWebpack);
 
-	const log = { [h.mode]: {} };
+	//const log = { [h.mode]: {} };
 
-	if (h.dev) {
-		log[h.mode].NODE_ENV = process.env.NODE_ENV;
-		log[h.mode].dev = h.dev;
-		log[h.mode].prod = h.prod;
-	}
+	//if (h.dev) {
+	//	log[h.mode].NODE_ENV = process.env.NODE_ENV;
+	//	log[h.mode].dev = h.dev;
+	//	log[h.mode].prod = h.prod;
+	//}
 
-	setMode(true);
-	log[h.mode] = {};
+	//setMode(true);
+	//log[h.mode] = {};
 
-	if (h.prod) {
-		log[h.mode].NODE_ENV = process.env.NODE_ENV;
-		log[h.mode].dev = h.dev;
-		log[h.mode].prod = h.prod;
-	}
+	//if (h.prod) {
+	//	log[h.mode].NODE_ENV = process.env.NODE_ENV;
+	//	log[h.mode].dev = h.dev;
+	//	log[h.mode].prod = h.prod;
+	//}
 
-	console.log('log\n', log);
+	//console.log('log\n', log);
 
-	for (let key in log) {
-		console.log(`${key}: `, log[key]);
-	}
+	//for (let key in log) {
+	//	console.log(`${key}: `, log[key]);
+	//}
 
-	console.log('exports\n', exports);
+	//console.log('this\n', this);
 
-	console.log('test\n', test);
+	console.log('exports\n', h.exports);
 
-	console.log('this\n', this);
-
-	console.log('done\n', done);
-
-	//done();
-	return this;
+	h.setFiles('tasks/helpers', exports);
+	console.log('files\n', h.files);
 };

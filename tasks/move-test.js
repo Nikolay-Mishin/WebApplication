@@ -5,7 +5,7 @@ module.exports = function move_test() {
 	return src('src/**/*', lastRun(move_test)).on('data', function(file) {
 		console.log({
 			contents: file.contents, // содержимое файла
-			path: file.paths, // путь до файла
+			path: file.path, // путь до файла
 			cwd: file.cwd, // основная директория
 			base: file.base, // базовая директория
 			// helpers
