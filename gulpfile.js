@@ -77,3 +77,5 @@ exports.default = series(build);
 exports._test = require('./tasks/helpers/test');
 
 h.exports = exports;
+
+console.log('tasks\n', h.tasks);

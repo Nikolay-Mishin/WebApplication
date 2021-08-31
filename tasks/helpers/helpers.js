@@ -1,7 +1,8 @@
 const { lastRun } = require('gulp'), // отладка
-	{ jsModule } = require('../../gulpfile.config'),
+	{ jsModule, tasksPath } = require('../../gulpfile.config'),
 	fs = require('fs'),
 	path = require('path'),
+	{ join } = path,
 	//server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'); // отладка
@@ -71,7 +72,7 @@ module.exports = {
 	get tasks() {
 		if (this._tasks.length > 0) return this._tasks;
 		this.getFiles('tasks').forEach(file => {
-			this._tasks[path.basename(file, '.js').replace(/\-+/g, '_')] = `./tasks/${file}`;
+			this._tasks[path.basename(file, '.js').replace(/\-+/g, '_')] = require(join(tasksPath, file));
 		})
 		return this._tasks;
 	}

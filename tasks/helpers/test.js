@@ -32,8 +32,5 @@ module.exports = async function test() {
 	//console.log('log\n', log);
 
 	//console.log('exports\n', h.exports);
-
-	console.log('tasks\n', h.tasks);
-	//const args = require(join(root, h.tasks.args));
-	//console.log('args\n', args);
+	//console.log('tasks\n', h.tasks);
 };
