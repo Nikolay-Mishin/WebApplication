@@ -1,5 +1,7 @@
 const { lastRun, src } = require('gulp'), // отладка
 	{ jsModule } = require('../../gulpfile.config'),
+	fs = require('fs'),
+	path = require('path'),
 	//server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'); // отладка
@@ -56,26 +58,15 @@ module.exports = {
 	get exports() {
 		return process.NODE_EXPORTS;
 	},
+	set exports(value) {
+		process.NODE_EXPORTS = value;
+	},
 	get files() {
 		return process.NODE_FILES;
 	},
-	setFiles: (path, exports = {}, read = false) => {
-		process.NODE_FILES = {};
-		return src(`${path}/*`, { read: read }).on('data', file => {
-			console.log(file);
-			if (file.stem !== file.basename && file.extname !== '') {
-				process.NODE_FILES[file.stem] = {
-					file: file,
-					contents: file.contents, // содержимое файла
-					path: file.path, // путь до файла
-					name: file.stem, // имя файла
-					basename: file.basename, // название файла
-					ext: file.extname, // расширение файла
-					dir: file.dirname, // имя текущей директории
-					parent_dir: file.cwd, // основная директория
-				};
-				//console.log(process.NODE_FILES);
-			}
-		});
+	getFiles: _path => {
+		const files = fs.readdirSync(_path);
+		console.log('name: ', path.basename(files[0], '.js'));
+		return files;
 	}
 };

@@ -35,8 +35,8 @@ module.exports = async function test(done) {
 
 	//console.log('this\n', this);
 
-	console.log('exports\n', h.exports);
+	//console.log('exports\n', h.exports);
 
-	h.setFiles('tasks/helpers', exports);
-	console.log('files\n', h.files);
+	//h.setFiles('tasks/helpers', exports);
+	console.log('files\n', h.getFiles('tasks'));
 };

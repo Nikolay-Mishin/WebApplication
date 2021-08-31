@@ -1,6 +1,7 @@
 // <binding ProjectOpened='_test' />
 
-const { task, series, parallel } = require('gulp'); // сам gulp
+const { task, series, parallel } = require('gulp'), // сам gulp
+	h = require('./tasks/helpers/helpers');
 
 //module.exports.start = gulp.series(setMode(), build, server);
 //module.exports.build = gulp.series(setMode(true), build);
@@ -75,4 +76,4 @@ exports.default = series(build);
 
 exports._test = require('./tasks/helpers/test');
 
-process.NODE_EXPORTS = exports;
+h.exports = exports;
