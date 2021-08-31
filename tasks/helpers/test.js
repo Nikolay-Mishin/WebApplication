@@ -4,7 +4,7 @@ const config = require('../../gulpfile.config'),
 
 module.exports = async function test(done) {
 	//console.log('process\n', process);
-	//console.log('config\n', config);
+	console.log('config\n', config);
 	////console.log('env\n', process.env);
 	////console.log('argv\n', process.argv);
 	//console.log('arg\n', arg);
@@ -37,6 +37,7 @@ module.exports = async function test(done) {
 
 	//console.log('exports\n', h.exports);
 
-	//h.setFiles('tasks/helpers', exports);
-	console.log('files\n', h.getFiles('tasks'));
+	console.log('tasks\n', h.tasks);
+	const args = require(h.tasks.args);
+	console.log('args\n', args);
 };

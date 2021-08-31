@@ -1,5 +1,6 @@
 const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
+	{ paths, _webpackConfig } = require('../gulpfile.config'),
+	webpackConfig = require(_webpackConfig),
 	h = require('./helpers/helpers'),
 	{ lastRun, error, notify/*, server*/ } = h,
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера

@@ -1,4 +1,4 @@
-const { lastRun, src } = require('gulp'), // отладка
+const { lastRun } = require('gulp'), // отладка
 	{ jsModule } = require('../../gulpfile.config'),
 	fs = require('fs'),
 	path = require('path'),
@@ -65,8 +65,14 @@ module.exports = {
 		return process.NODE_FILES;
 	},
 	getFiles: _path => {
-		const files = fs.readdirSync(_path);
-		console.log('name: ', path.basename(files[0], '.js'));
-		return files;
+		return fs.readdirSync(_path).filter(file => path.extname(file) == '.js');
+	},
+	_tasks: {},
+	get tasks() {
+		if (this._tasks.length > 0) return this._tasks;
+		this.getFiles('tasks').forEach(file => {
+			this._tasks[path.basename(file, '.js')] = `./tasks/${file}`;
+		})
+		return this._tasks;
 	}
 };
