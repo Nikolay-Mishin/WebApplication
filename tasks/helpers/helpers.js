@@ -71,7 +71,7 @@ module.exports = {
 	get tasks() {
 		if (this._tasks.length > 0) return this._tasks;
 		this.getFiles('tasks').forEach(file => {
-			this._tasks[path.basename(file, '.js')] = `./tasks/${file}`;
+			this._tasks[path.basename(file, '.js').replace(/\-+/g, '_')] = `./tasks/${file}`;
 		})
 		return this._tasks;
 	}

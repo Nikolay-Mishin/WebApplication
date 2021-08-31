@@ -1,10 +1,12 @@
 const config = require('../../gulpfile.config'),
+	{ root } = config,
 	h = require('./helpers'),
-	{ arg, setMode } = h;
+	{ arg, setMode } = h,
+	{ join } = require('path');
 
-module.exports = async function test(done) {
+module.exports = async function test() {
 	//console.log('process\n', process);
-	console.log('config\n', config);
+	//console.log('config\n', config);
 	////console.log('env\n', process.env);
 	////console.log('argv\n', process.argv);
 	//console.log('arg\n', arg);
@@ -29,15 +31,9 @@ module.exports = async function test(done) {
 
 	//console.log('log\n', log);
 
-	//for (let key in log) {
-	//	console.log(`${key}: `, log[key]);
-	//}
-
-	//console.log('this\n', this);
-
 	//console.log('exports\n', h.exports);
 
 	console.log('tasks\n', h.tasks);
-	const args = require(h.tasks.args);
-	console.log('args\n', args);
+	//const args = require(join(root, h.tasks.args));
+	//console.log('args\n', args);
 };

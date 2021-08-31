@@ -1,6 +1,6 @@
 const { src, dest } = require('gulp'),
-	{ paths, _webpackConfig } = require('../gulpfile.config'),
-	webpackConfig = require(_webpackConfig),
+	{ paths, webpackConfig } = require('../gulpfile.config'),
+	_webpackConfig = require(webpackConfig),
 	h = require('./helpers/helpers'),
 	{ lastRun, error, notify/*, server*/ } = h,
 	reload = require('browser-sync').reload, // плагин перезагрузки браузера
@@ -13,7 +13,7 @@ const { src, dest } = require('gulp'),
 module.exports = function js() {
 	if (h.useWebpack) {
 		return src(paths.src.webpack, lastRun(js))
-			.pipe(webpackStream(webpackConfig), webpack)
+			.pipe(webpackStream(_webpackConfig), webpack)
 			.pipe(dest(paths.build.js))
 			.pipe(notify(`${h.mode}:js`));
 	}

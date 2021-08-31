@@ -9,7 +9,6 @@ module.exports = {
 	root,
 	build,
 	src,
-	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	jsModule: 'es6',
 	// конфигурация browserSync
