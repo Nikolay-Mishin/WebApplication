@@ -10,7 +10,7 @@ module.exports = async function test() {
 	//console.log('config\n', config);
 	//console.log('env\n', process.env);
 	//console.log('argv\n', process.argv);
-	//console.log('arg\n', arg);
+	console.log('arg\n', arg);
 	//console.log('useWebpack: ', h.useWebpack);
 
 	//console.log('helpers\n', h);

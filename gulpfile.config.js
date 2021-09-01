@@ -93,19 +93,16 @@ module.exports = {
 	},
 	// конфигурация browserSync
 	serverConfig: {
-		server: {
+		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}/` : {
 			baseDir: build,
 			index: 'app.html'
 		},
-		// `localhost:${port}`
-		proxy: `http://${domain}/`, // "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
 		host: domain, // 'example.com' - можно использовать ip сервера
 		port: port, // порт через который будет проксироваться сервер
 		open: domain == 'localhost' ? true : 'external', // указываем, что наш url внешний
 		notify: true,
-		logPrefix: "WebDev", // префикс для лога bs, маловажная настройка
-		//ghost: true,
-		//files: [/*массив с путями к файлам и папкам за которыми вам нужно следить*/]
+		logPrefix: "WebApplication", // префикс для лога bs, маловажная настройка
 	},
 	serverPHP: {
 		base: build,

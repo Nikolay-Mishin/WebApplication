@@ -37,7 +37,7 @@ module.exports = {
 		return arg;
 	})(process.argv),
 	get useWebpack() { return jsModule === 'es6'; },
-	get domain(value) { return process.env.DEV_DOMAIN; },
+	get domain() { return process.env.DEV_DOMAIN; },
 	set domain(value) { process.env.DEV_DOMAIN = value; },
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },
