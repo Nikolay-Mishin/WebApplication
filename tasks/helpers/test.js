@@ -30,7 +30,9 @@ module.exports = async function test() {
 	//}
 
 	//console.log('log\n', log);
-
-	//console.log('exports\n', h.exports);
-	//console.log('tasks\n', h.tasks);
+	
+	console.log('helpers\n', h);
+	console.log('modules\n', h.modules);
+	console.log('tasks\n', h.tasks);
+	console.log('exports\n', h.exports);
 };

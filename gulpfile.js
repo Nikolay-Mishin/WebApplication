@@ -6,12 +6,6 @@ const { task, series, parallel } = require('gulp'), // сам gulp
 //module.exports.start = gulp.series(setMode(), build, server);
 //module.exports.build = gulp.series(setMode(true), build);
 
-//module.exports.start = gulp.series(setMode(), build, server);
-//module.exports.build = gulp.series(setMode(true), build);
-
-//module.exports.start = gulp.series(setMode(), build, server);
-//module.exports.build = gulp.series(setMode(true), build);
-
 /* Очистка директории проекта */
 
 task('clean', require('./tasks/clean'));
@@ -54,8 +48,10 @@ task('dev:scss', require('./tasks/dev-scss'));
 task('dev:js', require('./tasks/dev-js'));
 task('dev:img', require('./tasks/dev-img'));
 task('dev:imgmin', require('./tasks/dev-imgmin'));
+
 // Webserver
 task('server', require('./tasks/server'));
+task('watch', require('./tasks/watch'));
 
 /* Production Tasks */
 
@@ -63,7 +59,6 @@ task('sftp:push', require('./tasks/sftp-push'));
 task('prod:html', require('./tasks/prod-html'));
 task('prod:scss', require('./tasks/prod-scss'));
 task('prod:js', require('./tasks/prod-js'));
-task('watch', require('./tasks/watch'));
 
 /* Execution */
 
@@ -77,5 +72,3 @@ exports.default = series(build);
 exports._test = require('./tasks/helpers/test');
 
 h.exports = exports;
-
-console.log('tasks\n', h.tasks);

@@ -1,4 +1,4 @@
-// Подключаемые плагины
+// Подключаемые модули
 const webpack = require('webpack'),
 	{ join } = require('path'),
 	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
