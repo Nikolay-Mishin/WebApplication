@@ -1,16 +1,18 @@
-const { join } = require('path'),
+const h = require('./tasks/helpers/helpers'),
+	{ join } = require('path'),
 	root = __dirname,
-	build = join(root, 'build'),
+	build = join(root, 'wwwroot'),
 	src = join(root, 'src');
 
-//process.env.DEV_DOMAIN = 'WebApplication';
+//h.domain = 'WebApplication';
 
-const port = process.env.PORT || 8080,
-	domain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment: process.env
+const domain = h.domain ? h.domain : 'localhost',
+	port = h.port || 8080;
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
 
+//console.log('domain\n', h.domain);
 //console.log('server-config\n', server);
 //console.log('name\n', server.name);
 //console.log('devIp\n', server.instance.utils.devIp());
@@ -94,9 +96,9 @@ module.exports = {
 	// конфигурация browserSync
 	serverConfig: {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
-		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}/` : {
-			baseDir: build,
-			index: "app.html"
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : {
+			baseDir: `${build}/html`,
+			index: 'app.html'
 		},
 		host: domain, // 'example.com' - можно использовать ip сервера
 		port: port, // порт через который будет проксироваться сервер

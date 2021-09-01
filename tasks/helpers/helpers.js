@@ -39,6 +39,8 @@ module.exports = {
 	get useWebpack() { return jsModule === 'es6'; },
 	get domain() { return process.env.DEV_DOMAIN; },
 	set domain(value) { process.env.DEV_DOMAIN = value; },
+	get port() { return process.env.PORT; },
+	set port(value) { process.env.PORT = value; },
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },
 	get prod() { return !this.dev; },
