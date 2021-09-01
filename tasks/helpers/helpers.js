@@ -9,23 +9,9 @@ const { lastRun } = require('gulp'), // отладка
 	notify = require('gulp-notify'); // отладка
 
 module.exports = {
-	lastRun(func) { return { since: lastRun(func) }; },
+	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
-	notify(title, message = 'Scripts Done') { return notify({
-		title: title,
-		message: message
-	})},
-	get useWebpack() { return jsModule === 'es6'; },
-	get mode() { return process.env.NODE_ENV || 'dev'; },
-	get dev() { return this.mode ? this.mode === 'development' : true; },
-	get prod() { return !this.dev; },
-	async setMode(prod = false) {
-		return process.env.NODE_ENV = prod ? 'production' : 'development';
-		//return done => {
-		//	process.env.NODE_ENV = prod ? 'production' : 'development';
-		//	done();
-		//}
-	},
+	notify(title, message = 'Scripts Done') { return notify({title: title, message: message})},
 	arg: (argList => {
 		let arg = {}, a, opt, thisOpt, curOpt;
 		for (a = 0; a < argList.length; a++) {
@@ -44,12 +30,14 @@ module.exports = {
 		}
 		return arg;
 	})(process.argv),
-	get exports() {
-		return process.NODE_EXPORTS;
-	},
-	set exports(value) {
-		process.NODE_EXPORTS = value;
-	},
+	get useWebpack() { return jsModule === 'es6'; },
+	get mode() { return this.dev ? 'dev' : 'prod'; },
+	get dev() { return this.getMode === 'development'; },
+	get prod() { return !this.dev; },
+	get getMode() { return process.env.NODE_ENV || this.setMode(); },
+	setMode(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
+	get exports() { return process.NODE_EXPORTS; },
+	set exports(value) { process.NODE_EXPORTS = value; },
 	getFiles(_path, exclude = []) {
 		return fs.readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
 	},
@@ -61,14 +49,9 @@ module.exports = {
 		});
 		return this._tasks;
 	},
+	get modules() { return config.modules || {}; },
 	addModule(name, module) {
-		return this.modules[name] = module;
-	},
-	get modules() {
-		return config.modules || {};
-	},
-	set modules(value) {
 		if (!config.modules) config.modules = {};
-		return config.modules;
+		return this.modules[name] = module;
 	}
 };

@@ -12,27 +12,27 @@ module.exports = async function test() {
 	//console.log('arg\n', arg);
 	//console.log('useWebpack: ', h.useWebpack);
 
-	//const log = { [h.mode]: {} };
+	const log = { [h.mode]: {} };
 
-	//if (h.dev) {
-	//	log[h.mode].NODE_ENV = process.env.NODE_ENV;
-	//	log[h.mode].dev = h.dev;
-	//	log[h.mode].prod = h.prod;
-	//}
+	if (h.dev) {
+		log[h.mode].mode = h.mode;
+		log[h.mode].dev = h.dev;
+		log[h.mode].prod = h.prod;
+	}
 
-	//setMode(true);
-	//log[h.mode] = {};
+	setMode(true);
+	log[h.mode] = {};
 
-	//if (h.prod) {
-	//	log[h.mode].NODE_ENV = process.env.NODE_ENV;
-	//	log[h.mode].dev = h.dev;
-	//	log[h.mode].prod = h.prod;
-	//}
+	if (h.prod) {
+		log[h.mode].mode = h.mode;
+		log[h.mode].dev = h.dev;
+		log[h.mode].prod = h.prod;
+	}
 
-	//console.log('log\n', log);
+	console.log('log\n', log);
 	
-	console.log('helpers\n', h);
-	console.log('modules\n', h.modules);
-	console.log('tasks\n', h.tasks);
-	console.log('exports\n', h.exports);
+	//console.log('helpers\n', h);
+	//console.log('modules\n', h.modules);
+	//console.log('tasks\n', h.tasks);
+	//console.log('exports\n', h.exports);
 };
