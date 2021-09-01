@@ -3,6 +3,8 @@ const { join } = require('path'),
 	build = join(root, 'build'),
 	src = join(root, 'src');
 
+//process.env.DEV_DOMAIN = 'WebApplication';
+
 const port = process.env.PORT || 8080,
 	domain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment: process.env
 
@@ -93,7 +95,7 @@ module.exports = {
 	serverConfig: {
 		server: {
 			baseDir: build,
-			index: 'index.html'
+			index: 'app.html'
 		},
 		// `localhost:${port}`
 		proxy: `http://${domain}/`, // "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
