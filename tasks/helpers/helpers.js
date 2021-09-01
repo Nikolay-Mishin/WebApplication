@@ -35,6 +35,7 @@ module.exports = {
 	get dev() { return this.getMode === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV || this.setMode(); },
+	async setModeAsync(prod = false) { return this.setMode(prod); },
 	setMode(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
 	get exports() { return process.NODE_EXPORTS; },
 	set exports(value) { process.NODE_EXPORTS = value; },
