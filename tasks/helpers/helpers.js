@@ -11,7 +11,13 @@ const { lastRun } = require('gulp'), // отладка
 module.exports = {
 	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
-	notify(title, message = 'Scripts Done') { return notify({title: title, message: message})},
+	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
+	errorHandler: {
+		errorHandler: notify.onError({
+			title: 'Ошибка в плагине <%= error.plugin %>',
+			message: "Ошибка: <%= error.message %>"
+		})
+	},
 	arg: (argList => {
 		let arg = {}, a, opt, thisOpt, curOpt;
 		for (a = 0; a < argList.length; a++) {
@@ -31,6 +37,7 @@ module.exports = {
 		return arg;
 	})(process.argv),
 	get useWebpack() { return jsModule === 'es6'; },
+	set domain(value) { process.env.DEV_DOMAIN = value; },
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },
 	get prod() { return !this.dev; },

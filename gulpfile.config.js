@@ -4,7 +4,7 @@ const { join } = require('path'),
 	src = join(root, 'src');
 
 const port = process.env.PORT || 8080,
-	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment: process.env
+	domain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment: process.env
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
@@ -95,19 +95,22 @@ module.exports = {
 			baseDir: build,
 			index: 'index.html'
 		},
-		tunnel: true,
-		proxy: `localhost:${port}`,
-		open: false,
-		host: customDomain,
-		port: 3000, // 7787
-		logPrefix: "WebDev",
-		//ghostMode: false, /* don't mirror interactions in other browsers */
-		//snippetOptions: {
-		//	rule: {
-		//		match: /<\/body>/i,
-		//		fn: snippet:> snippet,
-		//	},
-		//},
+		// `localhost:${port}`
+		proxy: `http://${domain}/`, // "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
+		host: domain, // 'example.com' - можно использовать ip сервера
+		port: port, // порт через который будет проксироваться сервер
+		open: domain == 'localhost' ? true : 'external', // указываем, что наш url внешний
+		notify: true,
+		logPrefix: "WebDev", // префикс для лога bs, маловажная настройка
+		//ghost: true,
+		//files: [/*массив с путями к файлам и папкам за которыми вам нужно следить*/]
+	},
+	serverPHP: {
+		base: build,
+		keepalive: true,
+		hostname: domain,
+		port: port,
+		open: false
 	},
 	site: {
 		host: 'site.ru',
