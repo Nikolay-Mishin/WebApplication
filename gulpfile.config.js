@@ -96,7 +96,7 @@ module.exports = {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
 		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}/` : {
 			baseDir: build,
-			index: 'app.html'
+			index: "app.html"
 		},
 		host: domain, // 'example.com' - можно использовать ip сервера
 		port: port, // порт через который будет проксироваться сервер
