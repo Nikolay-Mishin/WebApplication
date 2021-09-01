@@ -1,45 +1,54 @@
 const { join } = require('path'),
 	root = __dirname,
 	build = join(root, 'build'),
-	src = join(root, 'src'),
-	port = process.env.PORT || 8080,
+	src = join(root, 'src');
+
+const port = process.env.PORT || 8080,
 	customDomain = process.env.DEV_DOMAIN ? process.env.DEV_DOMAIN : 'localhost'; // environment: process.env
+
+const browserSync = require('browser-sync'), // плагин перезагрузки браузера
+	server = browserSync.create();
+
+//console.log('server-config\n', server);
+//console.log('name\n', server.name);
+//console.log('devIp\n', server.instance.utils.devIp());
 
 module.exports = {
 	// Подключаемые модули
-	//modules: {
-	//	gulp: require('gulp'), // сам gulp
-	//	fs: require('fs'), // работа с файловой системой
-	//	browserSync: require('browser-sync'), // плагин перезагрузки браузера
-	//	reload: browserSync.reload,
-	//	server: browserSync.create(),
-	//	stream: server.stream,
-	//	gulpif: require('gulp-if'), // плагин для условий
-	//	gutil: require('gulp-util'), // отладка
-	//	notify: require('gulp-notify'), // отладка
-	//	plumber: require('gulp-plumber'), // отладка
-	//	rimraf: require('rimraf'), // удаление файлов
-	//	rename: require('gulp-rename'), // плагин переименования файлов
-	//	sourcemaps: require('gulp-sourcemaps'), // плагин создания map-файлов
-	//	htmlmin: require('gulp-htmlmin'), // плагин сжатия html
-	//	htmlclean: require('gulp-htmlclean'),
-	//	pug: require('gulp-pug'), // плагин компиляции pug
-	//	inlineCss: require('gulp-inline-css'),
-	//	sass: require('gulp-sass'), // плагин компиляции scss (+ node-sass)
-	//	prefixer: require('gulp-autoprefixer'), // плагин расстановки префиксов
-	//	rigger: require('gulp-rigger'), // плагин объединения js
-	//	concat: require('concat'),
-	//	uglify: require('gulp-uglify'), // плагин сжатия js
-	//	webpack: require('webpack'), // webpack
-	//	webpackStream: require('webpack-stream'), // webpack
-	//	webpackConfig: require('./webpack.config'), // webpack.config
-	//	babel: require('gulp-babel'),
-	//	terser: require('terser'),
-	//	gulpTerser: require('gulp-terser'),
-	//	realFavicon: require('gulp-real-favicon'), // генератор фавиконок
-	//	imageMin: require('gulp-imagemin'), // оптимизация картинок
-	//	imgMinify: require('imgminify') // оптимизация картинок
-	//},
+	modules: {
+		gulp: require('gulp'), // сам gulp
+		fs: require('fs'), // работа с файловой системой
+		path: require('path'), // работа с путями
+		browserSync: browserSync, // плагин перезагрузки браузера
+		reload: browserSync.reload,
+		server,
+		stream: server.stream,
+		gulpif: require('gulp-if'), // плагин для условий
+		gutil: require('gulp-util'), // отладка
+		notify: require('gulp-notify'), // отладка
+		plumber: require('gulp-plumber'), // отладка
+		rimraf: require('rimraf'), // удаление файлов
+		rename: require('gulp-rename'), // плагин переименования файлов
+		sourcemaps: require('gulp-sourcemaps'), // плагин создания map-файлов
+		htmlmin: require('gulp-htmlmin'), // плагин сжатия html
+		htmlclean: require('gulp-htmlclean'),
+		pug: require('gulp-pug'), // плагин компиляции pug
+		inlineCss: require('gulp-inline-css'),
+		sass: require('gulp-sass'), // плагин компиляции scss (+ node-sass)
+		prefixer: require('gulp-autoprefixer'), // плагин расстановки префиксов
+		rigger: require('gulp-rigger'), // плагин объединения js
+		concat: require('concat'),
+		uglify: require('gulp-uglify'), // плагин сжатия js
+		webpack: require('webpack'), // webpack
+		webpackStream: require('webpack-stream'), // webpack
+		webpackConfig: require('./webpack.config'), // webpack.config
+		babel: require('gulp-babel'),
+		terser: require('terser'),
+		gulpTerser: require('gulp-terser'),
+		realFavicon: require('gulp-real-favicon'), // генератор фавиконок
+		imageMin: require('gulp-imagemin'), // оптимизация картинок
+		imgMinify: require('imgminify') // оптимизация картинок
+	},
 	root,
 	build,
 	src,

@@ -4,7 +4,7 @@ const { lastRun } = require('gulp'), // отладка
 	fs = require('fs'),
 	path = require('path'),
 	{ join, basename, extname } = path,
-	//server = require('browser-sync').create(),
+	server = require('browser-sync').create(),
 	gutil = require('gulp-util'), // отладка
 	notify = require('gulp-notify'); // отладка
 

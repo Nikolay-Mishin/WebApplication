@@ -1,7 +1,7 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun, error, notify/*, server*/ } = require('./helpers/helpers'),
-	reload = require('browser-sync').reload, // плагин перезагрузки браузера
+	{ lastRun, error, notify } = require('./helpers/helpers'),
+	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	rigger = require('gulp-rigger'), // плагин объединения js
 	uglify = require('gulp-uglify'); // плагин сжатия js
@@ -15,7 +15,7 @@ module.exports = function dev_js() {
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
 		.pipe(dest(paths.build.js)) // готовый файл min в build
-		.pipe(notify('dev:js'))
-		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		.pipe(notify('dev:js'));
+		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());
 };

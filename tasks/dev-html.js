@@ -1,7 +1,7 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun, arg, notify/*, server*/ } = require('./helpers/helpers'),
-	reload = require('browser-sync').reload, // плагин перезагрузки браузера
+	{ lastRun, arg, notify } = require('./helpers/helpers'),
+	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	_if = require('gulp-if'), // плагин для условий
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	htmlclean = require('gulp-htmlclean'), // collapse whitespace
@@ -14,7 +14,7 @@ module.exports = function dev_html() {
 		.pipe(htmlclean())
 		.pipe(dest(paths.build.all))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
-		.pipe(notify('dev:html'))
-		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		.pipe(notify('dev:html'));
+		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());
 };

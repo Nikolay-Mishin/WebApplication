@@ -1,13 +1,8 @@
 const { watch, series } = require('gulp'),
 	{ serverConfig } = require('../gulpfile.config'),
-	//{ server } = require('./helpers/helpers');
 	browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	server = browserSync.create();
-
-function reload(done) {
-	server.reload();
-	done();
-}
+	server = browserSync.create(),
+	reload = async () => server.reload();
 
 module.exports = function server_task() {
 	return server.init(serverConfig);

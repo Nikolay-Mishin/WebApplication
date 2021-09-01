@@ -1,7 +1,7 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
-	{ lastRun, notify/*, server*/ } = require('./helpers/helpers'),
-	reload = require('browser-sync').reload, // плагин перезагрузки браузера
+	{ lastRun, notify } = require('./helpers/helpers'),
+	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
 	prefixer = require('gulp-autoprefixer'); // плагин расстановки префиксов
 
@@ -17,7 +17,7 @@ module.exports = function prod_scss() {
 			remove: true
 		}))
 		.pipe(dest(paths.build.css))
-		.pipe(notify('prod:scss'))
-		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		.pipe(notify('prod:scss'));
+		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());
 };

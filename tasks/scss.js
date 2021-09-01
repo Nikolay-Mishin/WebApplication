@@ -1,8 +1,8 @@
 const { src, dest } = require('gulp'),
 	{ paths } = require('../gulpfile.config'),
 	h = require('./helpers/helpers'),
-	{ lastRun, notify/*, server*/ } = h,
-	reload = require('browser-sync').reload, // плагин перезагрузки браузера
+	{ lastRun, notify } = h,
+	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
 	_if = require('gulp-if'), // плагин для условий
 	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
 	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
@@ -22,7 +22,7 @@ module.exports = function scss() {
 		}))
 		.pipe(_if(h.dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.css)) // готовый файл min в build
-		.pipe(notify(`${h.mode}:scss`))
-		.pipe(reload({ stream: true })); // И перезагрузим сервер
+		.pipe(notify(`${h.mode}:scss`));
+		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(server.stream());
 };
