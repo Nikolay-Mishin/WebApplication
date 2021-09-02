@@ -1,7 +1,7 @@
 const config = require('../../gulpfile.config'),
 	{ root } = config,
 	h = require('./helpers'),
-	{ arg, setMode } = h,
+	{ arg, setModeSync } = h,
 	{ join } = require('path'),
 	server = require('browser-sync').create();
 
@@ -28,7 +28,7 @@ module.exports = async function test() {
 	//	log[h.mode].dev = h.dev;
 	//	log[h.mode].prod = h.prod;
 	//}
-	//setMode(true);
+	//setModeSync(true);
 	//log[h.mode] = {};
 	//if (h.prod) {
 	//	log[h.mode].mode = h.mode;
