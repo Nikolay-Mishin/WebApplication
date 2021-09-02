@@ -8,12 +8,12 @@ const { src, dest } = require('gulp'),
 
 module.exports = function dev_js() {
 	return src(paths.src.js, lastRun(dev_js)) // main файл
+		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(rigger()) // rigger
 		.pipe(dest(paths.build.js)) // готовый файл в build
-		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(uglify().on('error', error)) // сжатие js
-		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(rename({ suffix: '.min' })) // переименовывание файла
+		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify('dev:js'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
