@@ -9,7 +9,8 @@ const config = (() => process.node_config || require('../../gulpfile.config'))()
 		excludeTasks = []
 	} = config;
 
-module.exports = {
+//module.exports = {
+export default {
 	get config() { return config; },
 	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
