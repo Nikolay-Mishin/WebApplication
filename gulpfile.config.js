@@ -12,10 +12,6 @@ const { join } = require('path'),
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
 
-//console.log('server-config\n', server);
-//console.log('name\n', server.name);
-//console.log('devIp\n', server.instance.utils.devIp());
-
 const config = {
 	// Подключаемые модули
 	modules: {

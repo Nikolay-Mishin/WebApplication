@@ -1,12 +1,13 @@
-const { lastRun } = require('gulp'), // отладка
-	config = (() => process.node_config || require('../../gulpfile.config'))(),
-	{ excludeTasks = [] } = config,
-	fs = require('fs'),
-	path = require('path'),
-	{ join, basename, extname, dirname } = path,
-	server = require('browser-sync').create(),
-	gutil = require('gulp-util'), // отладка
-	notify = require('gulp-notify'); // отладка
+const config = (() => process.node_config || require('../../gulpfile.config'))(),
+	{
+		modules: {
+			gulp: { lastRun },
+			fs: { readdirSync },
+			path: { join, basename, extname, dirname },
+			gutil, notify
+		},
+		excludeTasks = []
+	} = config;
 
 module.exports = {
 	get config() { return config; },
@@ -20,32 +21,27 @@ module.exports = {
 		})
 	},
 	arg: (argList => {
-		let arg = {}, a, opt, thisOpt, curOpt;
-		for (a = 0; a < argList.length; a++) {
-			thisOpt = argList[a].trim();
+		let args = {}, opt, thisOpt, curOpt;
+		argList.forEach(arg => {
+			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
-			if (opt === thisOpt) {
-				// argument value
-				if (curOpt) arg[curOpt] = opt;
+			if (thisOpt === opt) {
+				if (curOpt) args[curOpt] = opt; // argument value
 				curOpt = null;
 			}
-			else {
-				// argument name
-				curOpt = opt;
-				arg[curOpt] = true;
-			}
-		}
-		return arg;
+			else args[curOpt = opt] = true; // argument name
+		});
+		return args;
 	})(process.argv),
 	get useWebpack() { return this.config.esModule === 'es6'; },
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV || this.setModeSync(); },
-	async setMode(prod = false) { return this.setModeSync(prod); },
+	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
 	getFiles(_path, exclude = []) {
-		return fs.readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
+		return readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
 	},
 	get tasks() {
 		const tasks = {};
@@ -54,7 +50,7 @@ module.exports = {
 		});
 		return tasks;
 	},
-	get modules() { return this.config.modules || {}; },
+	get modules() { return this.config.modules; },
 	get exports() { return process.node_exports; },
 	set exports(value) { process.node_exports = value; }
 };
