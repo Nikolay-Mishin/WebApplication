@@ -1,14 +1,14 @@
 const { src } = require('gulp'),
-	{ paths, site } = require('../gulpfile.config'),
+	{ paths, deploy } = require('../gulpfile.config'),
 	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function sftp_push() {
-	return src(paths.build.all, lastRun(sftp_push))
+	return src(paths.build.root, lastRun(sftp_push))
 		.pipe(sftp({
-			host: site.host,
-			user: site.user,
-			pass: site.pass,
-			port: site.port,
-			remotePath: site.folder
+			host: deploy.host,
+			user: deploy.user,
+			pass: deploy.pass,
+			port: deploy.port,
+			remotePath: deploy.folder
 		}));
 };

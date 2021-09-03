@@ -1,62 +1,83 @@
-const { join } = require('path'),
-	root = __dirname,
+import gulp from 'gulp'; // сам gulp
+import fs from 'fs'; // работа с файловой системой
+import path from 'path'; // работа с путями
+import browserSync from 'browser-sync'; // плагин перезагрузки браузера
+import gulpif from 'gulp-if'; // плагин для условий
+import gutil from 'gulp-util'; // отладка
+import notify from 'gulp-notify'; // отладка
+import plumber from 'gulp-plumber'; // errorHandler
+import rimraf from 'rimraf'; // удаление файлов
+import rename from 'gulp-rename'; // плагин переименования файлов
+import sourcemaps from 'gulp-sourcemaps'; // плагин создания map-файлов
+import htmlmin from 'gulp-htmlmin'; // плагин сжатия html
+import htmlclean from 'gulp-htmlclean';
+import pug from 'gulp-pug'; // плагин компиляции pug
+import inlineCss from 'gulp-inline-css';
+import sass from 'gulp-sass'; // плагин компиляции scss (+ node-sass)
+import prefixer from 'gulp-autoprefixer'; // плагин расстановки префиксов
+import rigger from 'gulp-rigger'; // плагин объединения js
+import concat from 'concat';
+import uglify from 'gulp-uglify'; // плагин сжатия js
+import webpack from 'webpack'; // webpack
+import webpackStream from 'webpack-stream'; // webpack
+import babel from 'gulp-babel';
+import terser from 'terser';
+import gulpTerser from 'gulp-terser';
+import realFavicon from 'gulp-real-favicon'; // генератор фавиконок
+import imageMin from 'gulp-imagemin'; // оптимизация картинок
+import imgMinify from 'imgminify'; // оптимизация картинок
+
+console.log('url\n', import.meta.url);
+
+const { join, dirname } = path,
+	root = dirname(import.meta.url), // __dirname
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
-	serverPath = {
-		baseDir: join(build, 'html'),
-		index: 'app.html'
-	};
+	serverPHP = false,
+	baseDir = join(build, 'html'),
+	index = 'app.html';
 
-const browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	server = browserSync.create();
+const { reload } = browserSync,
+	server = browserSync.create(),
+	{ stream } = server;
 
 const config = {
-	// Подключаемые модули
-	modules: {
-		gulp: require('gulp'), // сам gulp
-		fs: require('fs'), // работа с файловой системой
-		path: require('path'), // работа с путями
-		browserSync: browserSync, // плагин перезагрузки браузера
-		reload: browserSync.reload,
-		server,
-		stream: server.stream,
-		gulpif: require('gulp-if'), // плагин для условий
-		gutil: require('gulp-util'), // отладка
-		notify: require('gulp-notify'), // отладка
-		plumber: require('gulp-plumber'), // отладка
-		rimraf: require('rimraf'), // удаление файлов
-		rename: require('gulp-rename'), // плагин переименования файлов
-		sourcemaps: require('gulp-sourcemaps'), // плагин создания map-файлов
-		htmlmin: require('gulp-htmlmin'), // плагин сжатия html
-		htmlclean: require('gulp-htmlclean'),
-		pug: require('gulp-pug'), // плагин компиляции pug
-		inlineCss: require('gulp-inline-css'),
-		sass: require('gulp-sass'), // плагин компиляции scss (+ node-sass)
-		prefixer: require('gulp-autoprefixer'), // плагин расстановки префиксов
-		rigger: require('gulp-rigger'), // плагин объединения js
-		concat: require('concat'),
-		uglify: require('gulp-uglify'), // плагин сжатия js
-		webpack: require('webpack'), // webpack
-		webpackStream: require('webpack-stream'), // webpack
-		webpackConfig: require('./webpack.config'), // webpack.config
-		babel: require('gulp-babel'),
-		terser: require('terser'),
-		gulpTerser: require('gulp-terser'),
-		realFavicon: require('gulp-real-favicon'), // генератор фавиконок
-		imageMin: require('gulp-imagemin'), // оптимизация картинок
-		imgMinify: require('imgminify') // оптимизация картинок
-	},
-	root,
-	build,
-	src,
+	serverPHP,
 	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	esModule: 'es6',
+	deploy: {
+		host: 'site.ru',
+		user: 'tstv',
+		pass: '112121',
+		port: '7070',
+		folder: '',
+		include: ['*.htaccess'],
+		exclude: [
+			'.git', '.vs', 'bin', 'obj', 'Properties', '**/node_modules', '**/bower_components',
+			'**/Thumbs.db', '**/*.DS_Store', '.gitattributes', '.gitignore', '*.sln', '*.cs',
+			'*.doc.*', 'appsettings.json', 'appsettings.Development.json'
+		]
+	},
+	// Подключаемые модули
+	modules: {
+		gulp,
+		fs, path,
+		browserSync, reload, server, stream,
+		gulpif, gutil, notify, plumber,
+		rimraf, rename, sourcemaps,
+		htmlmin, htmlclean, pug,
+		inlineCss, sass, prefixer,
+		rigger, concat, uglify, webpack, webpackStream,
+		babel, terser, gulpTerser,
+		realFavicon, imageMin, imgMinify
+	},
 	paths: {
+		root,
 		build: { // пути для сборки проектов
-			all: build,
+			root: build,
 			html: join(build, 'html/'),
 			css: join(build, 'css/'),
 			js: join(build, 'js/'),
@@ -66,8 +87,9 @@ const config = {
 			img: join(build, 'img/')
 		},
 		src: { // пути размещения исходных файлов проекта
-			all: src,
+			root: src,
 			html: join(src, 'html/**/*.{html,htm}'),
+			html: join(src, 'php/**/*.php'),
 			pug: join(src, 'pug/*.pug'),
 			scss: join(src, 'scss/*.{scss,sass}'),
 			js: join(src, 'js/**/*.js'),
@@ -90,29 +112,26 @@ const config = {
 	// конфигурация browserSync
 	serverConfig: {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
-		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : serverPath,
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` :  {
+			baseDir: baseDir,
+			index: `${index}.${serverPHP ? 'php' : 'html'}`
+		},
 		host: domain, // 'example.com' - можно использовать ip сервера
 		port: port, // порт через который будет проксироваться сервер
 		open: domain == 'localhost' ? true : 'external', // указываем, что наш url внешний
 		notify: true,
 		logPrefix: domain, // префикс для лога bs, маловажная настройка
 	},
-	serverPHP: {
+	serverPHPconfig: {
 		base: build,
 		keepalive: true,
 		hostname: domain,
 		port: port,
 		open: false
-	},
-	site: {
-		host: 'site.ru',
-		user: 'tstv',
-		pass: '112121',
-		port: '10000',
-		folder: ''
 	}
 };
 
 if (!process.node_config) process.node_config = config;
 
-module.exports = config;
+//module.exports = 
+export default process.node_config || config;

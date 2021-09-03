@@ -8,5 +8,5 @@ module.exports = function dev_pug() {
 		.pipe(pug({
 			pretty: true
 		}))
-		.pipe(dest(paths.build.all));
+		.pipe(dest(paths.build.root));
 };

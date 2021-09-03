@@ -1,6 +1,6 @@
-const { serverPHP } = require('../gulpfile.config'),
+const { serverPHPconfig } = require('../gulpfile.config'),
 	connectPHP = require('gulp-connect-php');
 
-module.exports = async function server_task() {
-	connectPHP.server(serverPHP);
+module.exports = function serverPHP() {
+	return connectPHP.server(serverPHPconfig);
 };

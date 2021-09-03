@@ -1,10 +1,10 @@
-const config = (() => process.node_config || require('../../gulpfile.config'))(),
-	{
+import config from 'server';
+const {
 		modules: {
 			gulp: { lastRun },
 			fs: { readdirSync },
 			path: { join, basename, extname, dirname },
-			gutil, notify
+			gutil, notify, plumber
 		},
 		excludeTasks = []
 	} = config;
@@ -15,11 +15,13 @@ export default {
 	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
 	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
-	errorHandler: {
-		errorHandler: notify.onError({
-			title: 'Ошибка в плагине <%= error.plugin %>',
-			message: "Ошибка: <%= error.message %>"
-		})
+	get errorHandler() {
+		return plumber({
+			errorHandler: notify.onError({
+				title: 'Ошибка в плагине <%= error.plugin %>',
+				message: "Ошибка: <%= error.message %>"
+			})
+		});
 	},
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -47,7 +49,7 @@ export default {
 	get tasks() {
 		const tasks = {};
 		this.getFiles(dirname(__dirname), excludeTasks).forEach(file => {
-			tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(join(dirname(__dirname), file));
+			tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname), file));
 		});
 		return tasks;
 	},

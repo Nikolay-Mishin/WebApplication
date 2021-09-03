@@ -12,7 +12,7 @@ module.exports = function dev_html() {
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
 		.pipe(_if(arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code)))
 		.pipe(htmlclean())
-		.pipe(dest(paths.build.all))
+		.pipe(dest(paths.build.root))
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(notify('dev:html'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
