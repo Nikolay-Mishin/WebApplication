@@ -7,7 +7,6 @@ const h = require('./helpers'),
 
 module.exports = async function test() {
 	const { exports: _exports } = h;
-	console.log('_h: ', _h);
 
 	//console.log('process\n', process);
 
