@@ -7,15 +7,12 @@ export default async () => {
 	console.log('__dirname: ', process.__dirname(import.meta));
 	watch([`${root}/*.js`, `${root}/*.json`, `${root}/tasks/**/*`], function gulpfile() {
 		src([`${root}/../../../*.package.*json`, `${root}/gulpfile.js`, `${root}/*.config.js`], { since: lastRun(gulpfile) })
-			.on('data', file => {
-				console.log(file.relative);
-			})
-			//.pipe(dest(`${root}/../_server`))
-			//.pipe(dest(`${root}/../../..`));
-		return src([`${root}/tasks/**/*`], { since: lastRun(gulpfile) }).on('data', file => {
-			console.log(`tasks/${file.relative}`);
-		})
-			//.pipe(dest(`${root}/../_server/tasks`))
-			//.pipe(dest(`${root}/../../../tasks`));
+			.on('data', file => console.log(file.relative))
+			//.pipe(dest(`${root}/../_server/gulpfile`))
+			//.pipe(dest(`${root}/../../../gulpfile`));
+		return src([`${root}/tasks/**/*`], { since: lastRun(gulpfile) })
+			.on('data', file => console.log(`tasks/${file.relative}`))
+			//.pipe(dest(`${root}/../_server/gulpfile/tasks`))
+			//.pipe(dest(`${root}/../../../gulpfile/tasks`));
 	})
 };
