@@ -1,10 +1,10 @@
 // <binding ProjectOpened='_test' />
-// gulp
+
 import gulp from 'gulp';
 const { series, parallel } = gulp;
 
 import config from './gulpfile.config.js'; // 'server'
-import { root } from './gulpfile.config.js'; // 'server'
+import { root } from './gulpfile.config.js'; // 'root'
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
 

@@ -13,9 +13,10 @@ export default async function tasksWatch() {
 	console.log('watch:', _package);
 	//watch(`${root}/*.js`, function jsWatch() {
 	//	console.log('jsWatch');
-	//	return src(`${root}/*.js`/*, { since: lastRun(jsWatch) }*/).on('data', file => console.log(file.relative))
-	//		.pipe(dest(`${root}/../_server/tasksWatch/tasks`));
-	//		//.pipe(dest(`${root}/../../../tasksWatch/tasks`));
+	//	return src(`${root}/*.js`/*, { since: lastRun(jsWatch) }*/)
+	//		.on('data', file => console.log(file.relative))
+	//		.pipe(dest(`${root}/../_server/tasksWatch`));
+	//		//.pipe(dest(`${root}/../../../tasksWatch`));
 	//});
 	//watch(`${root}/tasks/**/*`, function tasks() {
 	//	console.log('tasksWatch');
@@ -26,17 +27,26 @@ export default async function tasksWatch() {
 	//});
 	//watch(_package, function packageWatch() {
 	//	console.log('jsWatch');
-	//	return src(_package, { since: lastRun(packageWatch) }).on('data', file => console.log(file.relative))
-	//		.pipe(dest(`${root}/../_server/tasksWatch/tasks`));
-	//		//.pipe(dest(`${root}/../../../tasksWatch/tasks`));
+	//	return src(_package, { since: lastRun(packageWatch) })
+	//		.on('data', file => console.log(file.relative))
+	//		.pipe(dest(`${root}/../_server/tasksWatch`));
+	//		//.pipe(dest(`${root}/../../../tasksWatch`));
 	//});
-	watch(`${root}/*.js`, function jsWatch() {
-		console.log('jsWatch');
-		return src(`${root}/*.js`, { since: lastRun(jsWatch) }).on('data', file => console.log(file.relative))
-			.pipe(dest(`${root}/../_server/tasksWatch/tasks`));
-			//.pipe(dest(`${root}/../../../tasksWatch/tasks`));
+	
+	watch(`${root}/*.js`, function jsWatch1() {
+		console.log('jsWatch1');
 	});
-	return src(`${root}/*.js`, { since: lastRun(tasksWatch) }).on('data', file => console.log(file.relative))
+	watch(join(root, '*.js'), function jsWatch2() {
+		console.log('jsWatch2');
+	});
+	watch(`${root}/gulpfile.js`, function jsWatch3() {
+		console.log('jsWatch3');
+	});
+	console.log('js:', `${root}/*.js`);
+	console.log('join:', join(root, '*.js'));
+
+	return src(`${root}/*.js`, { since: lastRun(tasksWatch) })
+		.on('data', file => console.log(file.relative))
 		.pipe(dest(`${root}/../_server/tasksWatch`));
 		//.pipe(dest(`${root}/../../../tasksWatch`));
 };
