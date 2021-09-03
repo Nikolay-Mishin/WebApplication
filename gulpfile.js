@@ -1,40 +1,25 @@
 // <binding ProjectOpened='_test' />
 
-import gulp from 'gulp';
-import h from 'server/_helpers';
+const h = require('./tasks/helpers/helpers'),
+	{ tasks, setMode, modules } = h,
+	{ series, parallel } = modules.gulp;
 
-const { series, parallel } = gulp;
-	//{ tasks, setMode, modules } = h;
+Object.assign(exports, tasks);
 
-console.log('gulp\n', gulp);
-console.log('series\n', series);
-console.log('parallel\n', parallel);
+const { clean, html, js } = exports;
+exports.build = series(clean, parallel(html, js));
 
-//console.log('h\n', h);
-//console.log('tasks\n', tasks);
-//console.log('setMode\n', setMode);
-//console.log('modules\n', modules);
+exports.move = series(clean, exports.move_files);
 
-//const h = require('./tasks/helpers/helpers'),
-//	{ tasks, setMode, modules } = h,
-//	{ series, parallel } = modules.gulp;
+const { dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js } = exports;
+exports.dev = series(setMode(), clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
+exports.prod = series(setMode(true), clean, parallel(prod_html, prod_scss, prod_js, dev_img));
 
-//Object.assign(exports, tasks);
+// задача по умолчанию
+//exports.default = series(exports.build);
 
-//const { clean, html, js } = exports;
-//exports.build = series(clean, parallel(html, js));
+exports._test = require('./tasks/helpers/test');
 
-//exports.move = series(clean, exports.move_files);
+h.exports = exports;
 
-//const { dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js } = exports;
-//exports.dev = series(setMode(), clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
-//exports.prod = series(setMode(true), clean, parallel(prod_html, prod_scss, prod_js, dev_img));
-
-//// задача по умолчанию
-////exports.default = series(exports.build);
-
-//exports._test = require('./tasks/helpers/test');
-
-//h.exports = exports;
-
-//console.log('exports\n', exports);
+console.log('exports\n', exports);
