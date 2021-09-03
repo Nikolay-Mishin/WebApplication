@@ -1,15 +1,15 @@
 import config from './gulpfile.config.js'; // 'server'
 const {
-		modules: {
-			gulp: { lastRun },
-			fs: { readdirSync },
-			path: { join, basename, extname, dirname },
-			gutil, notify, plumber
-		},
-		excludeTasks = []
-	} = config;
+	excludeTasks = [], helpers: _helpers = {},
+	modules: {
+		gulp: { lastRun },
+		fs: { readdirSync },
+		path: { join, basename, extname, dirname },
+		gutil, notify, plumber
+	}
+} = config;
 
-export default {
+const helpers = {
 	get config() { return config; },
 	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
@@ -56,3 +56,7 @@ export default {
 	get exports() { return process.node_exports; },
 	set exports(value) { process.node_exports = value; }
 };
+
+Object.assign(helpers, _helpers);
+
+export default helpers;

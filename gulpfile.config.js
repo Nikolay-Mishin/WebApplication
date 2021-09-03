@@ -1,7 +1,4 @@
-import { fileURLToPath } from 'url';;
-
-const __dirname = (meta) => dirname(fileURLToPath(meta.url));
-process.__dirname = __dirname;
+import { fileURLToPath } from 'url';
 
 import gulp from 'gulp'; // сам gulp
 import fs from 'fs'; // работа с файловой системой
@@ -32,7 +29,8 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const { join, dirname } = path,
+const __dirname = (meta) => dirname(fileURLToPath(meta.url)),
+	{ join, dirname } = path,
 	root = __dirname(import.meta), // __dirname
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
@@ -43,10 +41,10 @@ const { join, dirname } = path,
 	index = 'app';
 
 process.root = root;
-console.log('root-config: ', root);
+process.__dirname = __dirname;
 
-const { reload } = browserSync,
-	server = browserSync.create(),
+const server = browserSync.create(),
+	{ reload } = browserSync,
 	{ stream } = server;
 
 const config = {
@@ -138,5 +136,8 @@ const config = {
 	}
 };
 
+const { root: _root } = config
+export { _root as root };
+
 if (!process.node_config) process.node_config = config;
-export default config;
+export default process.node_config;
