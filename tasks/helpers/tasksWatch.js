@@ -1,7 +1,6 @@
 import gulp from 'gulp';
 const { src, dest, watch, lastRun } = gulp;
 
-//module.exports = 
 export default async () => {
 	const root = process.root;
 	console.log('root: ', root);

@@ -3,7 +3,7 @@
 import gulp from 'gulp';
 const { series, parallel } = gulp;
 
-import config from './gulpfile.config.js'; // 'server'
+import { config } from './gulpfile.config.js'; // 'server'
 
 //11
 import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
@@ -11,6 +11,7 @@ import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
 export { _tasksWatch };
 
 console.log('config\n', config.paths);
+console.log('_tasksWatch\n', _tasksWatch);
 
 //import h from './tasks/helpers/helpers.js';
 
@@ -32,14 +33,14 @@ console.log('config\n', config.paths);
 
 //exports.move = series(clean, exports.move_files);
 
-//const { dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js } = exports;
+//const { dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js, deploy } = exports;
 //exports.dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
 //exports.prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img));
 
 //// задача по умолчанию
-////exports.default = series(exports.build);
+//exports.default = series(exports.build);
 
-//exports.deploy = series(prod, rs);
+//exports.deploy = series(exports.prod, deploy);
 
 //exports._test = require('./tasks/helpers/test');
 

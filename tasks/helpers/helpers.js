@@ -9,7 +9,6 @@ const {
 		excludeTasks = []
 	} = config;
 
-//module.exports = {
 export default {
 	get config() { return config; },
 	lastRun(func) { return {since: lastRun(func)}; },

@@ -36,11 +36,11 @@ const { join, dirname } = path,
 	root = __dirname(import.meta), // __dirname
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
+	serverPHP = false,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
-	serverPHP = false,
 	baseDir = join(build, 'html'),
-	index = 'app.html';
+	index = 'app';
 
 process.root = root;
 console.log('root: ', root);
@@ -139,6 +139,4 @@ const config = {
 };
 
 if (!process.node_config) process.node_config = config;
-
-//module.exports = 
-export default process.node_config || config;
+export default config;
