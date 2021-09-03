@@ -29,7 +29,7 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const __dirname = (meta) => dirname(fileURLToPath(meta.url)),
+const __dirname = meta => dirname(fileURLToPath(meta.url)),
 	{ join, dirname } = path,
 	root = __dirname(import.meta), // __dirname
 	build = join(root, 'wwwroot'),
