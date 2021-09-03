@@ -1,3 +1,8 @@
+import { fileURLToPath } from 'url';;
+
+const __dirname = (meta) => dirname(fileURLToPath(meta.url));
+process.__dirname = __dirname;
+
 import gulp from 'gulp'; // сам gulp
 import fs from 'fs'; // работа с файловой системой
 import path from 'path'; // работа с путями
@@ -27,10 +32,8 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-console.log('url\n', import.meta.url);
-
 const { join, dirname } = path,
-	root = dirname(import.meta.url), // __dirname
+	root = __dirname(import.meta), // __dirname
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
 	domain = 'localhost', // WebApplication / localhost
@@ -39,12 +42,16 @@ const { join, dirname } = path,
 	baseDir = join(build, 'html'),
 	index = 'app.html';
 
+process.root = root;
+console.log('root: ', root);
+
 const { reload } = browserSync,
 	server = browserSync.create(),
 	{ stream } = server;
 
 const config = {
 	serverPHP,
+	helpers: { __dirname },
 	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	esModule: 'es6',

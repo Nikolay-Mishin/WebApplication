@@ -1,4 +1,4 @@
-import config from 'server';
+import config from './gulpfile.config.js'; // 'server'
 const {
 		modules: {
 			gulp: { lastRun },

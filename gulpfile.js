@@ -1,37 +1,25 @@
 // <binding ProjectOpened='_test' />
 
 import gulp from 'gulp';
-import { dirname } from 'path';
-const { series, parallel, watch, src, dest, lastRun } = gulp;
+const { series, parallel } = gulp;
 
-const gulpfile = async () => watch(['*.js', '*.json', 'tasks/**/*'], function gulpfile() {
-	src(['gulpfile.js', '*.config.js'], { since: lastRun(gulpfile) }).on('data', file => {
-		console.log(file.relative);
-	})
-		.pipe(dest('../_server'))
-		.pipe(dest('../../..'));
-	return src(['tasks/**/*'], { since: lastRun(gulpfile) }).on('data', file => {
-		console.log(`tasks/${file.relative}`);
-	})
-		.pipe(dest('../_server/tasks'))
-		.pipe(dest('../../../tasks'));
-});
+import config from './gulpfile.config.js'; // 'server'
 
-export { gulpfile };
+//11
+import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
 
-//import h from 'server/_helpers';
-//import config from 'server';
+export { _tasksWatch };
+
+console.log('config\n', config.paths);
+
+//import h from './tasks/helpers/helpers.js';
 
 //const { tasks, setMode, modules } = h;
-
-console.log('url\n', import.meta.url);
 
 //console.log('h\n', h);
 //console.log('tasks\n', tasks);
 //console.log('setMode\n', setMode);
 //console.log('modules\n', modules);
-
-//console.log('config\n', config);
 
 //const h = require('./tasks/helpers/helpers'),
 //	{ tasks, setMode, modules } = h,
