@@ -3,7 +3,7 @@ const { src, dest } = require('gulp'),
 	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function move_files() {
-	src('files/**/*.{html,htm}', lastRun(move_files)).pipe(dest(paths.build.all));
+	src('files/**/*.{html,htm}', lastRun(move_files)).pipe(dest(paths.build.root));
 	src('files/**/*.pug', lastRun(move_files)).pipe(dest(paths.build.pug));
 	src('files/**/*.css', lastRun(move_files)).pipe(dest(paths.build.css));
 	src('files/**/*.js', lastRun(move_files)).pipe(dest(paths.build.js));

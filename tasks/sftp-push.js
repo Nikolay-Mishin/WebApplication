@@ -3,7 +3,7 @@ const { src } = require('gulp'),
 	{ lastRun } = require('./helpers/helpers');
 
 module.exports = function sftp_push() {
-	return src(paths.build.all, lastRun(sftp_push))
+	return src(paths.build.root, lastRun(sftp_push))
 		.pipe(sftp({
 			host: site.host,
 			user: site.user,

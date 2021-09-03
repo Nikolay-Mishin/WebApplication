@@ -2,17 +2,33 @@ const { join } = require('path'),
 	root = __dirname,
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
+	serverPHP = true,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
-	serverPath = {
-		baseDir: join(build, 'html'),
-		index: 'app.html'
-	};
+	baseDir = join(build, 'html'),
+	index = 'app';
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
 
 const config = {
+	serverPHP,
+	tasksPath: join(root, 'tasks'),
+	webpackConfig: join(root, 'webpack.config'), // webpack.config
+	esModule: 'es6',
+	deploy: {
+		host: 'site.ru',
+		user: 'tstv',
+		pass: '112121',
+		port: '7070',
+		folder: '',
+		include: ['*.htaccess'],
+		exclude: [
+			'.git', '.vs', 'bin', 'obj', 'Properties', '**/node_modules', '**/bower_components',
+			'**/Thumbs.db', '**/*.DS_Store', '.gitattributes', '.gitignore', '*.sln', '*.cs',
+			'*.doc.*', 'appsettings.json', 'appsettings.Development.json'
+		]
+	},
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
@@ -40,7 +56,6 @@ const config = {
 		uglify: require('gulp-uglify'), // плагин сжатия js
 		webpack: require('webpack'), // webpack
 		webpackStream: require('webpack-stream'), // webpack
-		webpackConfig: require('./webpack.config'), // webpack.config
 		babel: require('gulp-babel'),
 		terser: require('terser'),
 		gulpTerser: require('gulp-terser'),
@@ -48,15 +63,9 @@ const config = {
 		imageMin: require('gulp-imagemin'), // оптимизация картинок
 		imgMinify: require('imgminify') // оптимизация картинок
 	},
-	root,
-	build,
-	src,
-	tasksPath: join(root, 'tasks'),
-	webpackConfig: join(root, 'webpack.config'), // webpack.config
-	esModule: 'es6',
 	paths: {
 		build: { // пути для сборки проектов
-			all: build,
+			root: build,
 			html: join(build, 'html/'),
 			css: join(build, 'css/'),
 			js: join(build, 'js/'),
@@ -66,7 +75,7 @@ const config = {
 			img: join(build, 'img/')
 		},
 		src: { // пути размещения исходных файлов проекта
-			all: src,
+			root: src,
 			html: join(src, 'html/**/*.{html,htm}'),
 			pug: join(src, 'pug/*.pug'),
 			scss: join(src, 'scss/*.{scss,sass}'),
@@ -90,26 +99,22 @@ const config = {
 	// конфигурация browserSync
 	serverConfig: {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
-		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : serverPath,
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : {
+			baseDir: baseDir,
+			index: `${index}.${serverPHP ? 'php' : 'html'}`
+		},
 		host: domain, // 'example.com' - можно использовать ip сервера
 		port: port, // порт через который будет проксироваться сервер
 		open: domain == 'localhost' ? true : 'external', // указываем, что наш url внешний
 		notify: true,
 		logPrefix: domain, // префикс для лога bs, маловажная настройка
 	},
-	serverPHP: {
+	serverPHPconfig: {
 		base: build,
 		keepalive: true,
 		hostname: domain,
 		port: port,
 		open: false
-	},
-	site: {
-		host: 'site.ru',
-		user: 'tstv',
-		pass: '112121',
-		port: '10000',
-		folder: ''
 	}
 };
 
