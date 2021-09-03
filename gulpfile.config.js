@@ -43,7 +43,7 @@ const { join, dirname } = path,
 	index = 'app';
 
 process.root = root;
-console.log('root: ', root);
+console.log('root-config: ', root);
 
 const { reload } = browserSync,
 	server = browserSync.create(),

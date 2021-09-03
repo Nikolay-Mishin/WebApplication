@@ -4,7 +4,7 @@ import { join, dirname } from 'path';
 const { src, dest, watch, lastRun } = gulp,
 	root = join(dirname(import.meta.url), '../..');
 
-console.log('root: ', root);
+console.log('root-watch: ', root);
 
 export default async () => {
 	const root = process.root;

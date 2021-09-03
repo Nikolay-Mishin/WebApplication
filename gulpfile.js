@@ -9,8 +9,7 @@ import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
 
 export { _tasksWatch };
 
-console.log('config\n', config.paths);
-console.log('_tasksWatch\n', _tasksWatch);
+//console.log('config\n', config.paths);
 
 //import h from './tasks/helpers/helpers.js';
 
