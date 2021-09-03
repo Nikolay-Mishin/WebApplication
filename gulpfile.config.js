@@ -50,7 +50,7 @@ const { reload } = browserSync,
 	{ stream } = server;
 
 const config = {
-	serverPHP,
+	root, build, src, serverPHP,
 	helpers: { __dirname },
 	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
