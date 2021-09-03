@@ -44,7 +44,7 @@ console.log('root:', root);
 
 //exports._test = require('./tasks/helpers/test');
 
-h.exports = exports;
+//h.exports = exports;
 
 //console.log('exports\n', exports);
 
