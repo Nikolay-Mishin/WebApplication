@@ -1,7 +1,7 @@
 const { src, dest, watch, lastRun } = require('gulp'),
 	{ join } = require('path');
 
-export default async function tasksWatch() {
+module.exports = async function tasksWatch() {
 	watch('tasks/**/*', function tasks() {
 		return src('tasks/**/*.js', { since: lastRun(tasks) })
 			.on('data', file => console.log({ relative: join('tasks', file.relative), path: file.path }))

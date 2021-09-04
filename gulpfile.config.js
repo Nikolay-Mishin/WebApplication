@@ -36,7 +36,7 @@ module.exports = process.node_config = process.node_config || {
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
-		fs, // работа с файловой системой
+		fs: require('fs'), // работа с файловой системой
 		path, // работа с путями
 		browserSync: browserSync, // плагин перезагрузки браузера
 		reload: browserSync.reload,

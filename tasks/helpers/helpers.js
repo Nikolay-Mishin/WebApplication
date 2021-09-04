@@ -51,6 +51,7 @@ Object.assign(helpers, {
 		console.log(process.node_tasks);
 		process.node_tasks = {};
 		this.getFiles('tasks', excludeTasks).forEach(file => {
+			console.log(file);
 			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(join(dirname(__dirname), file));
 		});
 		return process.node_tasks;
