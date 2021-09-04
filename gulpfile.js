@@ -3,8 +3,8 @@
 import gulp from 'gulp';
 const { series, parallel } = gulp;
 
-import config from './gulpfile.config.js'; // 'server'
-import { root } from './gulpfile.config.js'; // 'root'
+import config from './gulpfile.config.js'; // 'server2'
+import { root } from './gulpfile.config.js'; // 'config-root2'
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js'; // 'server/_tasksWatch'
 

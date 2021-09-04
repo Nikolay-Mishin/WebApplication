@@ -1,3 +1,4 @@
+import { cwd } from 'process';
 import { fileURLToPath } from 'url';
 
 import gulp from 'gulp'; // сам gulp
@@ -29,9 +30,10 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const __dirname = meta => dirname(fileURLToPath(meta.url)),
-	{ join, dirname } = path,
-	root = __dirname(import.meta), // __dirname
+const { join, dirname, relative } = path,
+	root = cwd(), // __dirname
+	__dirname = meta => dirname(fileURLToPath(meta.url)),
+	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root),
 	build = join(root, 'wwwroot'),
 	src = join(root, 'src'),
 	serverPHP = false,
@@ -40,8 +42,8 @@ const __dirname = meta => dirname(fileURLToPath(meta.url)),
 	baseDir = join(build, 'html'),
 	index = 'app';
 
-process.root = root;
 process.__dirname = __dirname;
+process.__relative = __relative;
 
 const server = browserSync.create(),
 	{ reload } = browserSync,
@@ -49,7 +51,7 @@ const server = browserSync.create(),
 
 export default process.node_config = process.node_config || {
 	root, build, src, serverPHP,
-	helpers: { __dirname },
+	helpers: { __dirname, __relative },
 	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	esModule: 'es6',

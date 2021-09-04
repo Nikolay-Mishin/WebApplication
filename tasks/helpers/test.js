@@ -1,7 +1,9 @@
+import process from 'process';
 const h = require('./helpers'),
 	{ config, arg, useWebpack, modules, tasks, setModeSync, mode, dev, prod } = h,
 	{ paths, serverConfig } = config,
-	{ server } = modules;
+	{ server } = modules,
+	{ cwd, __dirname, __relative } = process;
 
 module.exports = async function test() {
 	const { exports: _exports } = h;
@@ -10,7 +12,7 @@ module.exports = async function test() {
 	//console.log('process\n', process);
 
 	//console.log('config\n', config);
-	//console.log('paths\n', paths);
+	console.log('paths\n', paths);
 	//console.log('serverConfig\n', serverConfig);
 	console.log('useWebpack: ', useWebpack);
 
@@ -18,6 +20,9 @@ module.exports = async function test() {
 	//console.log('argv\n', process.argv);
 	console.log('arg\n', arg);
 	
+	console.log('root:', root);
+	console.log('__dirname:', __dirname(import.meta));
+	console.log('relative:', __relative(import.meta));
 
 	//console.log('modules\n', modules);
 	//console.log('tasks\n', tasks);

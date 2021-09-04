@@ -1,52 +1,28 @@
 import gulp from 'gulp';
-import { join, dirname } from 'path';
+import { join } from 'path';
 
 const { src, dest, watch, lastRun } = gulp;
 
 export default async function tasksWatch() {
-	const root = process.root;
-	console.log('root:', root);
-	console.log('__dirname:', process.__dirname(import.meta));
-	const server = join(root, '../../..'),
-		_package = join(server, 'package.json'),
-		_package_doc = join(server, 'package.doc.json');
-	console.log('watch:', _package);
-	//watch(`${root}/*.js`, function jsWatch() {
-	//	console.log('jsWatch');
-	//	return src(`${root}/*.js`/*, { since: lastRun(jsWatch) }*/)
-	//		.on('data', file => console.log(file.relative))
-	//		.pipe(dest(`${root}/../_server/tasksWatch`));
-	//		//.pipe(dest(`${root}/../../../tasksWatch`));
-	//});
-	//watch(`${root}/tasks/**/*`, function tasks() {
-	//	console.log('tasksWatch');
-	//	return src([`${root}/tasks/**/*`]/*, { since: lastRun(tasks) }*/)
-	//		.on('data', file => console.log(`tasks/${file.relative}`))
-	//		.pipe(dest(`${root}/../_server/tasksWatch/tasks`));
-	//		//.pipe(dest(`${root}/../../../tasksWatch/tasks`));
-	//});
-	//watch(_package, function packageWatch() {
-	//	console.log('jsWatch');
-	//	return src(_package, { since: lastRun(packageWatch) })
-	//		.on('data', file => console.log(file.relative))
-	//		.pipe(dest(`${root}/../_server/tasksWatch`));
-	//		//.pipe(dest(`${root}/../../../tasksWatch`));
-	//});
-	
-	watch(`${root}/*.js`, function jsWatch1() {
-		console.log('jsWatch1');
+	watch('tasks/**/*', function tasks() {
+		return src('tasks/**/*.js', { since: lastRun(tasks) })
+			.on('data', file => console.log({ relative: join('tasks', file.relative), path: file.path }))
+			//.pipe(dest('tasksWatch/tasks'));
+			//.pipe(dest('../_server/tasksWatch/tasks'))
+			//.pipe(dest('../../../tasksWatch/tasks'));
 	});
-	watch(join(root, '*.js'), function jsWatch2() {
-		console.log('jsWatch2');
+	watch('*.js', function jsWatch() {
+		return src('*.js', { since: lastRun(jsWatch) })
+			.on('data', file => console.log({ relative: file.relative, path: file.path }))
+			//.pipe(dest('tasksWatch'));
+			//.pipe(dest('../_server/tasksWatch'));
+			//.pipe(dest('../../../tasksWatch'));
 	});
-	watch(`${root}/gulpfile.js`, function jsWatch3() {
-		console.log('jsWatch3');
+	watch(['../../../package.json', '../../../package.doc.json'], function packageWatch() {
+		return src(['../../../package.json', '../../../package.doc.json'], { since: lastRun(packageWatch) })
+			.on('data', file => console.log({ relative: file.relative, path: file.path }))
+			//.pipe(dest('tasksWatch'));
+			//.pipe(dest('../_server/tasksWatch'))
+			//.pipe(dest('../../../tasksWatch'));
 	});
-	console.log('js:', `${root}/*.js`);
-	console.log('join:', join(root, '*.js'));
-
-	return src(`${root}/*.js`, { since: lastRun(tasksWatch) })
-		.on('data', file => console.log(file.relative))
-		.pipe(dest(`${root}/../_server/tasksWatch`));
-		//.pipe(dest(`${root}/../../../tasksWatch`));
 };
