@@ -12,8 +12,6 @@ const { tasks, setMode, modules } = h,
 		deploy: _deploy
 	} = tasks;
 
-console.log('exports\n', tasks);
-
 const build = series(clean, parallel(html, js)),
 	move = series(clean, tasks.move_files),
 	dev = tasks.dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
@@ -25,3 +23,5 @@ export { build, move, dev, prod, deploy, _test };
 
 // задача по умолчанию
 //export default tasks.default = series(tasks.build);
+
+console.log('exports\n', tasks);
