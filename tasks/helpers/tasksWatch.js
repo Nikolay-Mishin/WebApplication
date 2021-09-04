@@ -17,9 +17,8 @@ export default async function tasksWatch() {
 			.pipe(dest('../../..'));
 	});
 	watch('../../../package.json', function packageWatch() {
-		return src(['../../../package.json', '../../../package.doc.json'], { since: lastRun(packageWatch) })
+		return src('../../../package.json', { since: lastRun(packageWatch) })
 			.on('data', file => console.log({ relative: file.relative, path: file.path }))
-			.pipe(dest('../_server'))
-			.pipe(dest('../../..'));
+			.pipe(dest('../_server'));
 	});
 };
