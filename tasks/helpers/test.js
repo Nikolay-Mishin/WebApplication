@@ -5,9 +5,6 @@ const h = require('./helpers'),
 	{ cwd, __dirname, __relative } = process;
 
 module.exports = async function test() {
-	const { exports: _exports } = h;
-	console.log('_h: ', _h);
-
 	//console.log('process\n', process);
 
 	//console.log('config\n', config);
@@ -25,7 +22,6 @@ module.exports = async function test() {
 
 	//console.log('modules\n', modules);
 	//console.log('tasks\n', tasks);
-	//console.log('exports\n', _exports);
 
 	//console.log('server\n', server);
 	//console.log('name\n', server.name);

@@ -52,9 +52,7 @@ Object.assign(helpers, {
 		});
 		return tasks;
 	},
-	get modules() { return this.config.modules; },
-	get exports() { return process.node_exports; },
-	set exports(value) { process.node_exports = value; }
+	get modules() { return this.config.modules; }
 });
 
 export default helpers;
