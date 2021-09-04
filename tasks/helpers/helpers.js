@@ -51,7 +51,7 @@ Object.assign(helpers, {
 		if (process.node_tasks) return process.node_tasks;
 		console.log(process.node_tasks);
 		process.node_tasks = {};
-		this.getFiles(dirname(__dirname(import.meta)), excludeTasks).forEach(file => {
+		this.getFiles('tasks', excludeTasks).forEach(file => {
 			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname(import.meta)), file));
 		});
 		return process.node_tasks;
