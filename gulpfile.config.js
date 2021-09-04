@@ -47,7 +47,7 @@ const server = browserSync.create(),
 	{ reload } = browserSync,
 	{ stream } = server;
 
-const config = {
+export default process.node_config = process.node_config || {
 	root, build, src, serverPHP,
 	helpers: { __dirname },
 	tasksPath: join(root, 'tasks'),
@@ -136,8 +136,5 @@ const config = {
 	}
 };
 
-const { root: _root } = config
+const { root: _root } = process.node_config;
 export { _root as root };
-
-if (!process.node_config) process.node_config = config;
-export default process.node_config;
