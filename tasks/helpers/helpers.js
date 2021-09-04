@@ -1,6 +1,6 @@
 import config from './gulpfile.config.js'; // 'server'
 const {
-	excludeTasks = [], helpers: _helpers = {},
+	excludeTasks = [], helpers = {},
 	modules: {
 		gulp: { lastRun },
 		fs: { readdirSync },
@@ -9,7 +9,7 @@ const {
 	}
 } = config;
 
-const helpers = {
+Object.assign(helpers, {
 	get config() { return config; },
 	lastRun(func) { return {since: lastRun(func)}; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
@@ -55,8 +55,6 @@ const helpers = {
 	get modules() { return this.config.modules; },
 	get exports() { return process.node_exports; },
 	set exports(value) { process.node_exports = value; }
-};
-
-Object.assign(helpers, _helpers);
+});
 
 export default helpers;

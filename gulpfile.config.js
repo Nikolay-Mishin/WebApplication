@@ -1,4 +1,3 @@
-import { cwd } from 'process';
 import { fileURLToPath } from 'url';
 
 import gulp from 'gulp'; // сам gulp
@@ -30,12 +29,14 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const { join, dirname, relative } = path,
+const { cwd } = process,
+	{ join, dirname, relative } = path,
 	root = cwd(), // __dirname
 	__dirname = meta => dirname(fileURLToPath(meta.url)),
 	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root),
 	build = join(root, 'wwwroot'),
-	src = join(root, 'src'),
+	srcRoot = 'src',
+	src = join(root, srcRoot),
 	serverPHP = false,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
@@ -83,7 +84,8 @@ export default process.node_config = process.node_config || {
 	},
 	paths: {
 		root,
-		build: { // пути для сборки проектов
+		// пути для сборки проекта
+		build: {
 			root: build,
 			html: join(build, 'html/'),
 			css: join(build, 'css/'),
@@ -93,7 +95,8 @@ export default process.node_config = process.node_config || {
 			faviconInject: join(build, '**/*.html'),
 			img: join(build, 'img/')
 		},
-		src: { // пути размещения исходных файлов проекта
+		// пути размещения исходных файлов проекта
+		src: {
 			root: src,
 			html: join(src, 'html/**/*.{html,htm}'),
 			html: join(src, 'php/**/*.php'),
@@ -104,12 +107,14 @@ export default process.node_config = process.node_config || {
 			iconsPath: '/favicon',
 			img: join(src, 'img/**/*.{jpeg,jpg,png,svg,gif}')
 		},
-		watch: { // пути файлов, за изменением которых мы хотим наблюдать
-			html: join(src, 'html/**/*.{html,htm}'),
-			scss: join(src, 'scss/**/*.scss'),
-			js: join(src, 'js/**/*.js')
+		// пути файлов, за изменением которых мы хотим наблюдать
+		watch: {
+			html: join(srcRoot, 'html/**/*.{html,htm}'),
+			scss: join(srcRoot, 'scss/**/*.scss'),
+			js: join(srcRoot, 'js/**/*.js')
 		},
-		clean: { // путь очистки директории для сборки
+		// путь очистки директории для сборки
+		clean: {
 			build: join(build, '**/*'),
 			html: join(build, 'html'),
 			css: join(build, 'css'),

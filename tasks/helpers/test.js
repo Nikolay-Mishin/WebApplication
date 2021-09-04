@@ -1,4 +1,3 @@
-import process from 'process';
 const h = require('./helpers'),
 	{ config, arg, useWebpack, modules, tasks, setModeSync, mode, dev, prod } = h,
 	{ paths, serverConfig } = config,
@@ -20,7 +19,7 @@ module.exports = async function test() {
 	//console.log('argv\n', process.argv);
 	console.log('arg\n', arg);
 	
-	console.log('root:', root);
+	console.log('root:', cwd());
 	console.log('__dirname:', __dirname(import.meta));
 	console.log('relative:', __relative(import.meta));
 
