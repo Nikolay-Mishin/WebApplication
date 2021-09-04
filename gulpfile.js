@@ -13,9 +13,9 @@ export { _tasksWatch };
 //console.log('paths\n', config.paths);
 console.log('root:', root);
 
-//import h from './tasks/helpers/helpers.js';
+import h from './tasks/helpers/helpers.js';
 
-//const { tasks, setMode, modules } = h;
+const { tasks, setMode, modules } = h;
 
 //console.log('h\n', h);
 //console.log('tasks\n', tasks);

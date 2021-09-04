@@ -1,4 +1,4 @@
-import config from './gulpfile.config.js'; // 'server'
+import config from '../../gulpfile.config.js'; // 'server'
 const {
 	excludeTasks = [], helpers = {},
 	modules: {
@@ -7,7 +7,8 @@ const {
 		path: { join, basename, extname, dirname },
 		gutil, notify, plumber
 	}
-} = config;
+} = config,
+{ __dirname } = helpers;
 
 Object.assign(helpers, {
 	get config() { return config; },
@@ -45,14 +46,16 @@ Object.assign(helpers, {
 	getFiles(_path, exclude = []) {
 		return readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
 	},
-	//get tasks() {
-	//	const tasks = {};
-	//	this.getFiles(dirname(__dirname), excludeTasks).forEach(file => {
-	//		tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname), file));
-	//	});
-	//	return tasks;
-	//},
-	get tasks() { return this.config.tasks; },
+	get tasks() {
+		console.log(process.node_tasks);
+		if (process.node_tasks) return process.node_tasks;
+		console.log(process.node_tasks);
+		process.node_tasks = {};
+		this.getFiles(dirname(__dirname(import.meta)), excludeTasks).forEach(file => {
+			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname(import.meta)), file));
+		});
+		return process.node_tasks;
+	},
 	get modules() { return this.config.modules; }
 });
 

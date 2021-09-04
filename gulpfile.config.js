@@ -30,8 +30,7 @@ import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
 const { cwd } = process,
-	{ readdirSync } = fs,
-	{ join, dirname, relative, basename, extname } = path,
+	{ join, dirname, relative } = path,
 	root = cwd(), // __dirname
 	__dirname = meta => dirname(fileURLToPath(meta.url)),
 	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root),
@@ -52,19 +51,6 @@ const server = browserSync.create(),
 	{ stream } = server;
 
 export default process.node_config = process.node_config || {
-	getFiles(_path, exclude = []) {
-		return readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
-	},
-	get tasks() {
-		console.log(process.node_tasks);
-		if (process.node_tasks) return process.node_tasks;
-		console.log(process.node_tasks);
-		process.node_tasks = {};
-		this.getFiles('tasks', this.excludeTasks || []).forEach(file => {
-			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(`./tasks/${file}`);
-		});
-		return process.node_tasks;
-	},
 	root, build, src, serverPHP,
 	helpers: { __dirname, __relative },
 	tasksPath: join(root, 'tasks'),
