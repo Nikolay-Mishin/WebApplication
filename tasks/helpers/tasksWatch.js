@@ -1,7 +1,5 @@
-import gulp from 'gulp';
-import { join } from 'path';
-
-const { src, dest, watch, lastRun } = gulp;
+const { src, dest, watch, lastRun } = require('gulp'),
+	{ join } = require('path');
 
 export default async function tasksWatch() {
 	watch('tasks/**/*', function tasks() {

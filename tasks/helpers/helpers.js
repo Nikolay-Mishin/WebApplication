@@ -1,14 +1,13 @@
-import config from '../../gulpfile.config.js'; // 'server'
-const {
-	excludeTasks = [], helpers = {},
-	modules: {
-		gulp: { lastRun },
-		fs: { readdirSync },
-		path: { join, basename, extname, dirname },
-		gutil, notify, plumber
-	}
-} = config,
-{ __dirname } = helpers;
+const config = require('../../gulpfile.config'), // 'server'
+	{
+		excludeTasks = [], helpers = {},
+		modules: {
+			gulp: { lastRun },
+			fs: { readdirSync },
+			path: { join, basename, extname, dirname },
+			gutil, notify, plumber
+		}
+	} = config;
 
 Object.assign(helpers, {
 	get config() { return config; },
@@ -52,11 +51,11 @@ Object.assign(helpers, {
 		console.log(process.node_tasks);
 		process.node_tasks = {};
 		this.getFiles('tasks', excludeTasks).forEach(file => {
-			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname(import.meta)), file));
+			process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(join(dirname(__dirname), file));
 		});
 		return process.node_tasks;
 	},
 	get modules() { return this.config.modules; }
 });
 
-export default helpers;
+module.exports = helpers;

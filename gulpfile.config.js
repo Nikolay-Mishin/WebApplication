@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'url';
-
 import gulp from 'gulp'; // сам gulp
 import fs from 'fs'; // работа с файловой системой
 import path from 'path'; // работа с путями
@@ -29,11 +27,9 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const { cwd } = process,
-	{ join, dirname, relative } = path,
-	root = cwd(), // __dirname
-	__dirname = meta => dirname(fileURLToPath(meta.url)),
-	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root),
+const { join, dirname, relative } = path,
+	root = __dirname, // __dirname
+	__relative = (from, to = '') => relative(from, to ? to : root),
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
 	src = join(root, srcRoot),
@@ -43,14 +39,9 @@ const { cwd } = process,
 	baseDir = join(build, 'html'),
 	index = 'app';
 
-process.__dirname = __dirname;
 process.__relative = __relative;
 
-const server = browserSync.create(),
-	{ reload } = browserSync,
-	{ stream } = server;
-
-export default process.node_config = process.node_config || {
+module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP,
 	helpers: { __dirname, __relative },
 	tasksPath: join(root, 'tasks'),
@@ -142,6 +133,3 @@ export default process.node_config = process.node_config || {
 		open: false
 	}
 };
-
-const { root: _root } = process.node_config;
-export { _root as root };
