@@ -45,13 +45,14 @@ Object.assign(helpers, {
 	getFiles(_path, exclude = []) {
 		return readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
 	},
-	get tasks() {
-		const tasks = {};
-		this.getFiles(dirname(__dirname), excludeTasks).forEach(file => {
-			tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname), file));
-		});
-		return tasks;
-	},
+	//get tasks() {
+	//	const tasks = {};
+	//	this.getFiles(dirname(__dirname), excludeTasks).forEach(file => {
+	//		tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(join(dirname(__dirname), file));
+	//	});
+	//	return tasks;
+	//},
+	get tasks() { return this.config.tasks; },
 	get modules() { return this.config.modules; }
 });
 
