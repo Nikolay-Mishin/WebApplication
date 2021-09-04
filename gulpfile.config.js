@@ -1,34 +1,6 @@
-import gulp from 'gulp'; // сам gulp
-import fs from 'fs'; // работа с файловой системой
-import path from 'path'; // работа с путями
-import browserSync from 'browser-sync'; // плагин перезагрузки браузера
-import gulpif from 'gulp-if'; // плагин для условий
-import gutil from 'gulp-util'; // отладка
-import notify from 'gulp-notify'; // отладка
-import plumber from 'gulp-plumber'; // errorHandler
-import rimraf from 'rimraf'; // удаление файлов
-import rename from 'gulp-rename'; // плагин переименования файлов
-import sourcemaps from 'gulp-sourcemaps'; // плагин создания map-файлов
-import htmlmin from 'gulp-htmlmin'; // плагин сжатия html
-import htmlclean from 'gulp-htmlclean';
-import pug from 'gulp-pug'; // плагин компиляции pug
-import inlineCss from 'gulp-inline-css';
-import sass from 'gulp-sass'; // плагин компиляции scss (+ node-sass)
-import prefixer from 'gulp-autoprefixer'; // плагин расстановки префиксов
-import rigger from 'gulp-rigger'; // плагин объединения js
-import concat from 'concat';
-import uglify from 'gulp-uglify'; // плагин сжатия js
-import webpack from 'webpack'; // webpack
-import webpackStream from 'webpack-stream'; // webpack
-import babel from 'gulp-babel';
-import terser from 'terser';
-import gulpTerser from 'gulp-terser';
-import realFavicon from 'gulp-real-favicon'; // генератор фавиконок
-import imageMin from 'gulp-imagemin'; // оптимизация картинок
-import imgMinify from 'imgminify'; // оптимизация картинок
-
-const { join, dirname, relative } = path,
-	root = __dirname, // __dirname
+const path = require('path'),
+	{ join, relative } = path,
+	root = __dirname,
 	__relative = (from, to = '') => relative(from, to ? to : root),
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
@@ -39,11 +11,12 @@ const { join, dirname, relative } = path,
 	baseDir = join(build, 'html'),
 	index = 'app';
 
-process.__relative = __relative;
+const browserSync = require('browser-sync'), // плагин перезагрузки браузера
+	server = browserSync.create();
 
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP,
-	helpers: { __dirname, __relative },
+	helpers: { __relative },
 	tasksPath: join(root, 'tasks'),
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	esModule: 'es6',
@@ -62,16 +35,37 @@ module.exports = process.node_config = process.node_config || {
 	},
 	// Подключаемые модули
 	modules: {
-		gulp,
-		fs, path,
-		browserSync, reload, server, stream,
-		gulpif, gutil, notify, plumber,
-		rimraf, rename, sourcemaps,
-		htmlmin, htmlclean, pug,
-		inlineCss, sass, prefixer,
-		rigger, concat, uglify, webpack, webpackStream,
-		babel, terser, gulpTerser,
-		realFavicon, imageMin, imgMinify
+		gulp: require('gulp'), // сам gulp
+		fs, // работа с файловой системой
+		path, // работа с путями
+		browserSync: browserSync, // плагин перезагрузки браузера
+		reload: browserSync.reload,
+		server,
+		stream: server.stream,
+		gulpif: require('gulp-if'), // плагин для условий
+		gutil: require('gulp-util'), // отладка
+		notify: require('gulp-notify'), // отладка
+		plumber: require('gulp-plumber'), // отладка
+		rimraf: require('rimraf'), // удаление файлов
+		rename: require('gulp-rename'), // плагин переименования файлов
+		sourcemaps: require('gulp-sourcemaps'), // плагин создания map-файлов
+		htmlmin: require('gulp-htmlmin'), // плагин сжатия html
+		htmlclean: require('gulp-htmlclean'),
+		pug: require('gulp-pug'), // плагин компиляции pug
+		inlineCss: require('gulp-inline-css'),
+		sass: require('gulp-sass'), // плагин компиляции scss (+ node-sass)
+		prefixer: require('gulp-autoprefixer'), // плагин расстановки префиксов
+		rigger: require('gulp-rigger'), // плагин объединения js
+		concat: require('concat'),
+		uglify: require('gulp-uglify'), // плагин сжатия js
+		webpack: require('webpack'), // webpack
+		webpackStream: require('webpack-stream'), // webpack
+		babel: require('gulp-babel'),
+		terser: require('terser'),
+		gulpTerser: require('gulp-terser'),
+		realFavicon: require('gulp-real-favicon'), // генератор фавиконок
+		imageMin: require('gulp-imagemin'), // оптимизация картинок
+		imgMinify: require('imgminify') // оптимизация картинок
 	},
 	paths: {
 		root,
@@ -101,7 +95,7 @@ module.exports = process.node_config = process.node_config || {
 		// пути файлов, за изменением которых мы хотим наблюдать
 		watch: {
 			html: join(srcRoot, 'html/**/*.{html,htm}'),
-			scss: join(srcRoot, 'scss/**/*.scss'),
+			scss: join(srcRoot, 'scss/**/*.{scss, sass}'),
 			js: join(srcRoot, 'js/**/*.js')
 		},
 		// путь очистки директории для сборки
@@ -115,7 +109,7 @@ module.exports = process.node_config = process.node_config || {
 	// конфигурация browserSync
 	serverConfig: {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
-		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` :  {
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : {
 			baseDir: baseDir,
 			index: `${index}.${serverPHP ? 'php' : 'html'}`
 		},
