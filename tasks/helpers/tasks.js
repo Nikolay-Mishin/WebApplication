@@ -1,4 +1,4 @@
-import h from 'helpers.js';
+import h from './helpers.js';
 const { config, getFiles, __dirname } = h,
 	{
 		tasksPath, excludeTasks = [],
