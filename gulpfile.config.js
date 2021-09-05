@@ -4,7 +4,6 @@ const path = require('path'),
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
 	src = join(root, srcRoot),
-	tasksPath = 'tasks',
 	serverPHP = false,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
@@ -16,8 +15,9 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	server = browserSync.create();
 
 module.exports = process.node_config = process.node_config || {
-	root, build, src, tasksPath, serverPHP,
+	root, build, src, serverPHP,
 	helpers: { relativeRoot },
+	tasksPath: join(root, 'tasks'),
 	esModule: 'es6',
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	deploy: {

@@ -1,4 +1,4 @@
-const { config, getFiles } = require('helpers'),
+const { config, getFiles } = require('./helpers'),
 	{
 		tasksPath, excludeTasks = [],
 		modules: {
@@ -8,9 +8,9 @@ const { config, getFiles } = require('helpers'),
 
 module.exports = process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;
-	process.node_tasks = {};
+	const tasks = {};
 	getFiles(tasksPath, excludeTasks).forEach(file => {
-		process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(`${relative(tasksPath, __dirname)}/${file}`);
+		tasks[basename(file, '.js').replace(/\-+/g, '_')] = require(`${relative(tasksPath, tasksPath) ? '.' : '..'}/${file}`);
 	});
-	return process.node_tasks;
+	return process.node_tasks = tasks;
 })();
