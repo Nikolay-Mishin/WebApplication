@@ -4,19 +4,20 @@ const path = require('path'),
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
 	src = join(root, srcRoot),
+	tasksPath = 'tasks',
 	serverPHP = false,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
 	baseDir = join(build, 'html'),
 	index = 'app',
-	__relative = (from, to = '') => relative(from, to ? to : root);
+	relativeRoot = (from, to = '') => relative(from, root);
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
 
 module.exports = process.node_config = process.node_config || {
-	root, build, src, serverPHP,
-	helpers: { __relative },
+	root, build, src, tasksPath, serverPHP,
+	helpers: { relativeRoot },
 	esModule: 'es6',
 	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	deploy: {

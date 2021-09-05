@@ -2,7 +2,7 @@ const h = require('./helpers'),
 	{ config, arg, useWebpack, modules, tasks, setModeSync, mode, dev, prod } = h,
 	{ paths, serverConfig } = config,
 	{ server } = modules,
-	{ cwd, __relative } = process;
+	{ cwd, relativeRoot } = process;
 
 module.exports = async function test() {
 	//console.log('process\n', process);
@@ -18,7 +18,7 @@ module.exports = async function test() {
 	
 	console.log('root:', cwd());
 	console.log('__dirname:', __dirname);
-	console.log('relative:', __relative(__dirname));
+	console.log('relative:', relativeRoot(__dirname));
 
 	//console.log('modules\n', modules);
 	//console.log('tasks\n', tasks);
