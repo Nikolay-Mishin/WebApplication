@@ -10,7 +10,7 @@ const path = require('path'),
 	port = 8080,
 	baseDir = join(build, 'html'),
 	index = 'app',
-	relativeRoot = (from, to = '') => relative(from, root);
+	relativeRoot = from => relative(from, root);
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create();
