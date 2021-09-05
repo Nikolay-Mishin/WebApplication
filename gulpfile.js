@@ -4,7 +4,7 @@ import _tasksWatch from './tasks/helpers/tasksWatch.js';
 export { _tasksWatch };
 import tasks from './tasks/helpers/tasks.js';
 //import h from './tasks/helpers/helpers.js';
-//const { setMode, modules } = h,
+//const { modules, setMode } = h,
 //	{ series, parallel } = modules.gulp,
 //	{
 //		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
