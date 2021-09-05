@@ -1,9 +1,8 @@
 import tasks from './tasks.js';
-const h = require('./helpers'),
-	{ config, modules, __dirname, relativeRoot, useWebpack, arg, setModeSync, mode, dev, prod } = h,
-	{ paths, serverConfig } = config,
-	{ server } = modules,
-	{ cwd } = process;
+import h from './helpers.js';
+const { config, modules, __dirname, relativeRoot, useWebpack, arg, setModeSync, mode, dev, prod } = h,
+	{ root, paths, serverConfig } = config,
+	{ server } = modules;
 
 module.exports = async function test() {
 	//console.log('process\n', process);
@@ -17,7 +16,7 @@ module.exports = async function test() {
 	//console.log('argv\n', process.argv);
 	console.log('arg\n', arg);
 	
-	console.log('root:', cwd());
+	console.log('root:', root);
 	console.log('__dirname:', __dirname(import.meta));
 	console.log('relative:', relativeRoot(import.meta));
 
