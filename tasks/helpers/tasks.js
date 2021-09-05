@@ -7,10 +7,10 @@ const { config, getFiles, __dirname } = h,
 		}
 	} = config;
 
-export default process.node_tasks = process.node_tasks || (function tasks() {
+export default process.node_tasks = process.node_tasks || (async function tasks() {
 	if (process.node_tasks) return process.node_tasks;
 	const tasks = {};
-	getFiles(tasksPath, excludeTasks).forEach(file => {
+	getFiles(tasksPath, excludeTasks).forEach(async file => {
 		const path = relative(__dirname(import.meta), tasksPath);
 		tasks[base(file, '.js').replace(/\-+/g, '_')] = (await import(`${path ? path : '.'}/${file}`)).default;
 	});
