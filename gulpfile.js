@@ -1,6 +1,7 @@
 /// <binding ProjectOpened='_tasksWatch, _test' />
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
+export { _tasksWatch };
 import tasks from './tasks/helpers/tasks.js';
 import h from './tasks/helpers/helpers.js';
 const { modules, setMode } = h,
