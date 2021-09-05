@@ -35,27 +35,27 @@ const { cwd } = process,
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
 	src = join(root, srcRoot),
+	tasksPath = 'tasks',
 	serverPHP = false,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
 	baseDir = join(build, 'html'),
 	index = 'app',
-	__dirname = meta => dirname(fileURLToPath(meta.url))
-	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root);
+	__dirname = meta => dirname(fileURLToPath(meta.url)),
+	relativeRoot = from => relative(from.url ? __dirname(from) : from, root);
 
 process.__dirname = __dirname;
-process.__relative = __relative;
+process.relativeRoot = relativeRoot;
 
 const server = browserSync.create(),
 	{ reload } = browserSync,
 	{ stream } = server;
 
 export default process.node_config = process.node_config || {
-	root, build, src, serverPHP,
-	helpers: { __dirname, __relative },
-	tasksPath: join(root, 'tasks'),
-	webpackConfig: join(root, 'webpack.config'), // webpack.config
+	root, build, src, tasksPath, serverPHP,
+	helpers: { __dirname, relativeRoot },
 	esModule: 'es6',
+	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	deploy: {
 		host: 'site.ru',
 		user: 'tstv',
