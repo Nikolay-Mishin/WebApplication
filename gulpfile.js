@@ -3,7 +3,7 @@
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 export { _tasksWatch };
 
-//import tasks from './tasks/helpers/tasks.js';
+import tasks from './tasks/helpers/tasks.js';
 //console.log('exports\n', tasks);
 
 //import h from './tasks/helpers/helpers.js';

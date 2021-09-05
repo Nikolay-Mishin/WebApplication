@@ -3,15 +3,15 @@ const { config, getFiles, __dirname } = h,
 	{
 		tasksPath, excludeTasks = [],
 		modules: {
-			path: { basename, relative },
+			path: { basename: base, relative },
 		}
 	} = config;
 
 export default process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;
-	process.node_tasks = {};
+	const tasks = {};
 	getFiles(tasksPath, excludeTasks).forEach(file => {
-		process.node_tasks[basename(file, '.js').replace(/\-+/g, '_')] = import(`${relative(tasksPath, __dirname)}/${file}`);
+		tasks[base(file, '.js').replace(/\-+/g, '_')] = import(`${p = relative(__dirname, tasksPath) ? p : '.'}/${file}`);
 	});
-	return process.node_tasks;
+	return process.node_tasks = tasks;
 })();
