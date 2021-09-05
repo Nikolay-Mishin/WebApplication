@@ -1,9 +1,13 @@
-const { watch, series } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	reload = require('browser-sync').reload; // плагин перезагрузки браузера
+const {
+	config: { paths },
+	modules: {
+		gulp: { watch, series },
+		_reload
+	}
+} = require('./helpers/helpers');
 
 module.exports = async function watch_all() {
-	watch(paths.watch.html, series('dev:html'), reload({ stream: true }));
-	watch(paths.watch.scss, series('dev:scss'), reload({ stream: true }));
-	watch(paths.watch.js, series('dev:js'), reload({ stream: true }));
+	watch(paths.watch.html, series('dev:html'), _reload({ stream: true }));
+	watch(paths.watch.scss, series('dev:scss'), _reload({ stream: true }));
+	watch(paths.watch.js, series('dev:js'), _reload({ stream: true }));
 };

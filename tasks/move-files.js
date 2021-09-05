@@ -1,6 +1,11 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	{ lastRun } = require('./helpers/helpers');
+const {
+	lastRun,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		realFavicon
+	}
+} = require('./helpers/helpers');
 
 module.exports = function move_files() {
 	src('files/**/*.{html,htm}', lastRun(move_files)).pipe(dest(paths.build.root));

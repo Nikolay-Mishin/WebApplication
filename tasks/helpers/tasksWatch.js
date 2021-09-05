@@ -1,5 +1,9 @@
-const { src, dest, watch, lastRun } = require('gulp'),
-	{ join } = require('path');
+const {
+	modules: {
+		gulp: { src, dest, watch, lastRun },
+		path: { join }
+	}
+} = require('./helpers');
 
 module.exports = async function tasksWatch() {
 	watch('tasks/**/*', function tasks() {

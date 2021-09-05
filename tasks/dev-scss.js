@@ -1,10 +1,11 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	{ lastRun, notify } = require('./helpers/helpers'),
-	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
-	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
-	prefixer = require('gulp-autoprefixer'); // плагин расстановки префиксов
+const {
+	lastRun, notify,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		reload, stream, sourcemaps, sass, prefixer
+	}
+} = require('./helpers/helpers');
 
 module.exports = function dev_scss() {
 	return src(paths.src.scss, lastRun(dev_scss)) // main файл
@@ -22,5 +23,5 @@ module.exports = function dev_scss() {
 		.pipe(dest(paths.build.css)) // готовый файл min в build
 		.pipe(notify('dev:scss'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
-		//.pipe(server.stream());
+		//.pipe(stream());
 };

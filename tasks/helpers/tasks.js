@@ -1,10 +1,7 @@
-const { config, getFiles } = require('./helpers'),
-	{
-		tasksPath, excludeTasks = [],
-		modules: {
-			path: { basename: base, relative },
-		}
-	} = config;
+const { config, getFiles } = require('./helpers'), {
+	modules: { path: { basename: base, relative } },
+	tasksPath, excludeTasks = [],
+} = config;
 
 module.exports = process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;

@@ -1,12 +1,11 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	{ lastRun } = require('./helpers/helpers'),
-	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	rename = require('gulp-rename'), // плагин переименования файлов
-	concat = require('concat'),
-	babel = require('gulp-babel'),
-	terser = require('terser'),
-	gulpTerser = require('gulp-terser');
+const {
+	lastRun,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		sourcemaps, rename, concat, babel, terser, gulpTerser
+	}
+} = require('./helpers/helpers');
 
 module.exports = function scripts() {
 	return src(paths.src.js, lastRun(scripts))

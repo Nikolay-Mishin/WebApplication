@@ -12,7 +12,8 @@ const path = require('path'),
 	relativeRoot = from => relative(from, root);
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	server = browserSync.create();
+	server = browserSync.create(),
+	reload = async () => server.reload();
 
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP,
@@ -50,7 +51,7 @@ module.exports = process.node_config = process.node_config || {
 		src: {
 			root: src,
 			html: join(src, 'html/**/*.{html,htm}'),
-			html: join(src, 'php/**/*.php'),
+			php: join(src, 'php/**/*.php'),
 			pug: join(src, 'pug/*.pug'),
 			scss: join(src, 'scss/*.{scss,sass}'),
 			js: join(src, 'js/**/*.js'),
@@ -78,8 +79,9 @@ module.exports = process.node_config = process.node_config || {
 		fs: require('fs'), // работа с файловой системой
 		path, // работа с путями
 		browserSync: browserSync, // плагин перезагрузки браузера
-		reload: browserSync.reload,
+		_reload: browserSync.reload,
 		server,
+		reload,
 		stream: server.stream,
 		gulpif: require('gulp-if'), // плагин для условий
 		gutil: require('gulp-util'), // отладка

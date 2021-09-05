@@ -1,9 +1,9 @@
-const tasks = require('./tasks'),
+const { cwd } = process,
+	tasks = require('./tasks'),
 	h = require('./helpers'),
 	{ config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
 	{ paths, serverConfig } = config,
-	{ server } = modules,
-	{ cwd } = process;
+	{ server } = modules;
 
 module.exports = async function test() {
 	//console.log('process\n', process);

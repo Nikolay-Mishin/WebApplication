@@ -1,13 +1,12 @@
-const config = require('../../gulpfile.config'), // 'server'
-	{
-		helpers = {},
-		modules: {
-			gulp: { lastRun },
-			fs: { readdirSync },
-			path: { basename, extname },
-			gutil, notify, plumber
-		}
-	} = config;
+const config = require('../../gulpfile.config'),  {
+	helpers = {},
+	modules: {
+		gulp: { lastRun },
+		fs: { readdirSync },
+		path: { basename, extname },
+		gutil, notify, plumber
+	}
+} = config;
 
 Object.assign(helpers, {
 	get config() { return config; },

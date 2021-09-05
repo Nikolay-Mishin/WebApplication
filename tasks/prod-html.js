@@ -1,9 +1,11 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	{ lastRun, notify } = require('./helpers/helpers'),
-	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
-	htmlmin = require('gulp-htmlmin'), // плагин сжатия html
-	realFavicon = require('gulp-real-favicon'); // генератор фавиконок
+const {
+	lastRun, notify,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		reload, stream, htmlmin, realFavicon
+	}
+} = require('./helpers/helpers');
 
 module.exports = function prod_html() {
 	return src(paths.src.html, lastRun(prod_html))
@@ -12,5 +14,5 @@ module.exports = function prod_html() {
 		.pipe(dest(paths.build.root))
 		.pipe(notify('prod:html'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
-		//.pipe(server.stream());
+		//.pipe(stream());
 };

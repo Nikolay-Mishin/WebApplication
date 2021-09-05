@@ -1,7 +1,11 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	{ lastRun } = require('./helpers/helpers'),
-	imageMin = require('gulp-imagemin'); // оптимизация картинок
+const {
+	lastRun,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		imageMin
+	}
+} = require('./helpers/helpers');
 
 module.exports = function dev_imgmin() {
 	return src(paths.src.img, lastRun(dev_imgmin))
