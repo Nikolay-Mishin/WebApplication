@@ -32,8 +32,6 @@ import imgMinify from 'imgminify'; // оптимизация картинок
 const { cwd } = process,
 	{ join, dirname, relative } = path,
 	root = cwd(), // __dirname
-	__dirname = meta => dirname(fileURLToPath(meta.url)),
-	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root),
 	build = join(root, 'wwwroot'),
 	srcRoot = 'src',
 	src = join(root, srcRoot),
@@ -41,7 +39,9 @@ const { cwd } = process,
 	domain = 'localhost', // WebApplication / localhost
 	port = 8080,
 	baseDir = join(build, 'html'),
-	index = 'app';
+	index = 'app',
+	__dirname = meta => dirname(fileURLToPath(meta.url))
+	__relative = (from, to = '') => relative(from.url ? __dirname(from) : from, to ? to : root);
 
 process.__dirname = __dirname;
 process.__relative = __relative;
@@ -68,19 +68,6 @@ export default process.node_config = process.node_config || {
 			'**/Thumbs.db', '**/*.DS_Store', '.gitattributes', '.gitignore', '*.sln', '*.cs',
 			'*.doc.*', 'appsettings.json', 'appsettings.Development.json'
 		]
-	},
-	// Подключаемые модули
-	modules: {
-		gulp,
-		fs, path,
-		browserSync, reload, server, stream,
-		gulpif, gutil, notify, plumber,
-		rimraf, rename, sourcemaps,
-		htmlmin, htmlclean, pug,
-		inlineCss, sass, prefixer,
-		rigger, concat, uglify, webpack, webpackStream,
-		babel, terser, gulpTerser,
-		realFavicon, imageMin, imgMinify
 	},
 	paths: {
 		root,
@@ -121,10 +108,23 @@ export default process.node_config = process.node_config || {
 			js: join(build, 'js')
 		}
 	},
+	// Подключаемые модули
+	modules: {
+		gulp,
+		fs, path,
+		browserSync, reload, server, stream,
+		gulpif, gutil, notify, plumber,
+		rimraf, rename, sourcemaps,
+		htmlmin, htmlclean, pug,
+		inlineCss, sass, prefixer,
+		rigger, concat, uglify, webpack, webpackStream,
+		babel, terser, gulpTerser,
+		realFavicon, imageMin, imgMinify
+	},
 	// конфигурация browserSync
 	serverConfig: {
 		// "http://example.com/" - проксирование вашего удаленного сервера, не важно на чем back-end
-		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` :  {
+		[domain != 'localhost' ? 'proxy' : 'server']: domain != 'localhost' ? `http://${domain}` : {
 			baseDir: baseDir,
 			index: `${index}.${serverPHP ? 'php' : 'html'}`
 		},
@@ -143,5 +143,4 @@ export default process.node_config = process.node_config || {
 	}
 };
 
-const { root: _root } = process.node_config;
-export { _root as root };
+export const { root: _root } = process.node_config;
