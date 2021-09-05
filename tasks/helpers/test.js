@@ -1,10 +1,10 @@
-import tasks from './tasks.js';
+//import tasks from './tasks.js';
 import h from './helpers.js';
 const { config, modules, __dirname, relativeRoot, useWebpack, arg, setModeSync, mode, dev, prod } = h,
 	{ root, paths, serverConfig } = config,
 	{ server } = modules;
 
-module.exports = async function test() {
+export default async function test() {
 	//console.log('process\n', process);
 
 	//console.log('config\n', config);
