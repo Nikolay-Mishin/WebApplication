@@ -22,4 +22,4 @@ Object.assign(exports, tasks);
 //// задача по умолчанию
 ////exports.default = series(exports.build);
 
-console.log('exports\n', exports);
+//console.log('exports\n', exports);
