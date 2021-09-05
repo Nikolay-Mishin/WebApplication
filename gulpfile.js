@@ -3,7 +3,7 @@
 exports._tasksWatch = require('./tasks/helpers/tasksWatch');
 
 const tasks = require('./tasks/helpers/tasks'),
-	{ setMode, modules } = require('./tasks/helpers/helpers'),
+	{ modules, setMode } = require('./tasks/helpers/helpers'),
 	{ series, parallel } = modules.gulp,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
