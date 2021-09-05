@@ -1,11 +1,7 @@
 /// <binding ProjectOpened='_tasksWatch' />
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
-export { _tasksWatch };
-
 import tasks from './tasks/helpers/tasks.js';
-console.log('exports\n', tasks);
-
 //import h from './tasks/helpers/helpers.js';
 //const { setMode, modules } = h,
 //	{ series, parallel } = modules.gulp,
@@ -20,7 +16,9 @@ console.log('exports\n', tasks);
 //	deploy = tasks.deploy = series(tasks.prod, _deploy),
 //	_test = tasks._test = require('./tasks/helpers/test');
 
-//export { build, move, dev, prod, deploy, _test };
+//export { _tasksWatch, build, move, dev, prod, deploy, _test };
 
 // задача по умолчанию
 //export default tasks.default = series(tasks.build);
+
+console.log('exports\n', tasks);
