@@ -1,13 +1,12 @@
+import h from 'helpers.js';
 import config from '../../gulpfile.config.js';
-import h from 'helpers.js'; // 'server'
-const
+const { getFiles } = h,
 	{
 		excludeTasks = [],
 		modules: {
 			path: { basename },
 		}
-	} = config,
-	{ getFiles } = h;
+	} = config
 
 export default process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;

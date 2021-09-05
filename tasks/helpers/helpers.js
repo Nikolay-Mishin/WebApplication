@@ -1,4 +1,4 @@
-import config from '../../gulpfile.config.js'; // 'server'
+import config from '../../gulpfile.config.js';
 const {
 	helpers = {},
 	modules: {
