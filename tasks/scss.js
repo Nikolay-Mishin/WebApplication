@@ -1,4 +1,4 @@
-const h = require('./helpers'), {
+const h = require('./helpers/helpers'), {
 	lastRun, notify,
 	config: { paths },
 	modules: {
