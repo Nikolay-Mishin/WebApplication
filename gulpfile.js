@@ -1,4 +1,4 @@
-/// <binding ProjectOpened='_tasksWatch' />
+/// <binding ProjectOpened='_tasksWatch, _test' />
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 export { _tasksWatch };
