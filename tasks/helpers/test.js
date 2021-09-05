@@ -1,8 +1,9 @@
+import tasks from './tasks.js';
 const h = require('./helpers'),
-	{ config, arg, useWebpack, modules, tasks, setModeSync, mode, dev, prod } = h,
+	{ config, modules, __dirname, relativeRoot, useWebpack, arg, setModeSync, mode, dev, prod } = h,
 	{ paths, serverConfig } = config,
 	{ server } = modules,
-	{ cwd, __dirname, relativeRoot } = process;
+	{ cwd } = process;
 
 module.exports = async function test() {
 	//console.log('process\n', process);
