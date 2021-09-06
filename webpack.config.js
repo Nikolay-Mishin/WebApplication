@@ -12,6 +12,8 @@ const webpack = require('webpack'),
 
 // Переменные проекта
 
+console.log(process.env.NODE_ENV);
+
 const dev = process.env.NODE_ENV || 'development' === 'development',
 	prod = !dev,
 	root = __dirname,
