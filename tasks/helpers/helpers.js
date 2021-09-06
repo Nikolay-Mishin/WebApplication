@@ -1,14 +1,15 @@
-const config = require('../../gulpfile.config'), {
-	esModuleDefault, esModule = esModuleDefault, root, helpers = {}, useWebpack,
-	modules: {
-		gulp: { lastRun },
-		fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
-		path: { join, basename: base, extname: ext },
-		gutil, notify, plumber
-	},
-	webpackConfig = join(root, 'webpack.config'),
-	tsconfig = join(root, 'tsconfig.json')
-} = config;
+const config = require('../../gulpfile.config'),
+	{
+		esModuleDefault, esModule = esModuleDefault, root, helpers = {}, useWebpack,
+		modules: {
+			gulp: { lastRun },
+			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
+			path: { join, basename: base, extname: ext },
+			gutil, notify, plumber
+		},
+		webpackConfig = join(root, 'webpack.config'),
+		tsconfig = join(root, 'tsconfig.json')
+	} = config;
 
 Object.assign(helpers, {
 	get config() { return config; },

@@ -1,17 +1,18 @@
-const h = require('./helpers/helpers'), {
-	lastRun, error, notify,
-	config: { paths, webpackConfig },
-	modules: {
-		gulp: { src, dest },
-		reload, stream, _if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
-	}
-} = h;
+const h = require('./helpers/helpers'),
+	{
+		lastRun, error, notify,
+		config: { paths, webpackConfig },
+		modules: {
+			gulp: { src, dest },
+			reload, stream, _if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
+		}
+	} = h;
 
 module.exports = function js() {
 	const { dev, mode, useWebpack } = h;
 	if (useWebpack) {
 		return src(paths.src.js, lastRun(js))
-			.pipe(webpackStream(require(webpackConfig)), webpack)
+			.pipe(webpackStream(webpackConfig), webpack)
 			.pipe(dest(paths.build.js))
 			.pipe(notify(`${mode}:js`));
 	}

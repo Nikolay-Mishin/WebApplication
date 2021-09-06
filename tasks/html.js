@@ -1,13 +1,14 @@
-const h = require('./helpers/helpers'), {
-	lastRun, notify,
-	arg: { fav },
-	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		fs: { readFileSync: readFile },
-		reload, stream, _if, sourcemaps, htmlclean, htmlmin, realFavicon: { injectFaviconMarkups }
-	}
-} = h;
+const h = require('./helpers/helpers'),
+	{
+		lastRun, notify,
+		arg: { fav },
+		config: { paths },
+		modules: {
+			gulp: { src, dest },
+			fs: { readFileSync: readFile },
+			reload, stream, _if, sourcemaps, htmlclean, htmlmin, realFavicon: { injectFaviconMarkups }
+		}
+	} = h;
 
 module.exports = function html() {
 	const { dev, prod, mode } = h;

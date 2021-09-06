@@ -1,13 +1,13 @@
-const {
-	config: { paths: { tasks: {
-		root, deploy, watch: { tasks, doc, package, editor, root: _root }
-	}}},
-	modules: {
-		gulp: { src, dest, watch, lastRun },
-		path: { join }
-	}
-} = require('./helpers'),
-	{ log } = console;
+const { log } = console,
+	{
+		config: { paths: { tasks: {
+			root, deploy, watch: { tasks, doc, package, editor, root: _root }
+		} } },
+		modules: {
+			gulp: { src, dest, watch, lastRun },
+			path: { join }
+		}
+	} = require('./helpers');
 
 module.exports = async function tasksWatch() {
 	watch(tasks, function _tasksWatch() {

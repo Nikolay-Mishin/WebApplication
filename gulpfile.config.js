@@ -118,7 +118,7 @@ module.exports = process.node_config = process.node_config || {
 		gulpTerser: require('gulp-terser'),
 		realFavicon: require('gulp-real-favicon'), // генератор фавиконок
 		imageMin: require('gulp-imagemin'), // оптимизация картинок
-		imgMinify: require('imgminify') // оптимизация картинок
+		ImgMinify: require('imgminify') // оптимизация картинок
 	},
 	// конфигурация browserSync
 	serverConfig: {

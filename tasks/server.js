@@ -1,11 +1,12 @@
-const h = require('./helpers/helpers'), {
-	config: { serverConfig, serverPHP: serverPHPrun },
-	modules: {
-		gulp: { watch, series },
-		server: { init },
-		reload, _reload, browserSync
-	}
-} = h;
+const h = require('./helpers/helpers'),
+	{
+		config: { serverConfig, serverPHP: serverPHPrun },
+		modules: {
+			gulp: { watch, series },
+			server: { init },
+			reload, _reload, browserSync
+		}
+	} = h;
 
 module.exports = function server_task() {
 	return serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks); // локальный сервер

@@ -1,11 +1,12 @@
-const h = require('./helpers/helpers'), {
-	lastRun, notify,
-	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		reload, stream, _if, sourcemaps, sass, prefixer
-	}
-} = h;
+const h = require('./helpers/helpers'),
+	{
+		lastRun, notify,
+		config: { paths },
+		modules: {
+			gulp: { src, dest },
+			reload, stream, _if, sourcemaps, sass, prefixer
+		}
+	} = h;
 
 module.exports = function scss() {
 	const { dev, mode } = h;
