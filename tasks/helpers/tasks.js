@@ -1,10 +1,8 @@
 import h from './helpers.js';
-const { config, getFiles, __dirname } = h,
+const { config, __dirname, getFiles } = h,
 	{
 		tasksPath, excludeTasks = [],
-		modules: {
-			path: { basename: base, relative },
-		}
+		modules: { path: { basename: base, relative } },
 	} = config;
 
 export default process.node_tasks = process.node_tasks || (async function tasks() {
@@ -12,6 +10,7 @@ export default process.node_tasks = process.node_tasks || (async function tasks(
 	const tasks = {};
 	getFiles(tasksPath, excludeTasks).forEach(async file => {
 		const path = relative(__dirname(import.meta), tasksPath);
+		console.log(file);
 		tasks[base(file, '.js').replace(/\-+/g, '_')] = (await import(`${path ? path : '.'}/${file}`)).default;
 	});
 	return process.node_tasks = tasks;

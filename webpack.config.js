@@ -1,14 +1,14 @@
 // Подключаемые модули
-const webpack = require('webpack'),
-	{ join } = require('path'),
-	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
-	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона
-	{ CleanWebpackPlugin } = require('clean-webpack-plugin'), // удаляет/очищает директорию сборки проекта
-	CopyWebpackPlugin  = require('copy-webpack-plugin'),
-	MiniCssExtractPlugin = require('mini-css-extract-plugin'),
-	OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin'),
-	TerserWebpackPlugin = require('terser-webpack-plugin'),
-	{ BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+import webpack from 'webpack';
+import { join } from 'path';
+import HtmlWebpackExternalsPlugin from 'html-webpack-externals-plugin';
+import HTMLWebpackPlugin from 'html-webpack-plugin'; // создает HTML-файл на основе шаблона
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'; // удаляет/очищает директорию сборки проекта
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import OptimizeCssAssetWebpackPlugin from 'optimize-css-assets-webpack-plugin';
+import TerserWebpackPlugin from 'terser-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // Переменные проекта
 
@@ -139,7 +139,7 @@ const root = __dirname,
 		return loaders;
 	};
 
-module.exports = {
+export default exports = {
 	context: src,
 	mode: 'development', //none | development | production
 	entry: {
@@ -240,5 +240,5 @@ module.exports = {
 console.log(__dirname);
 console.log(build);
 
-console.log(module.exports.entry.app);
-console.log(module.exports.output.path);
+console.log(exports.entry.app);
+console.log(exports.output.path);

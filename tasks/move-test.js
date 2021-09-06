@@ -1,7 +1,10 @@
-const { src, dest } = require('gulp'),
-	{ lastRun } = require('./helpers/helpers');
+import h from './helpers/helpers.js';
+const {
+	lastRun,
+	modules: { gulp: { src, dest } }
+} = h;
 
-module.exports = function move_test() {
+export default function move_test() {
 	return src('src/**/*', lastRun(move_test)).on('data', function(file) {
 		console.log({
 			contents: file.contents, // содержимое файла

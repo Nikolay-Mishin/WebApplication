@@ -1,28 +1,29 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	h = require('./helpers/helpers'),
-	{ lastRun, notify } = h,
-	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
-	_if = require('gulp-if'), // плагин для условий
-	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	sass = require('gulp-sass'), // плагин компиляции scss (+ node-sass)
-	prefixer = require('gulp-autoprefixer'); // плагин расстановки префиксов
+import h from './helpers/helpers.js';
+const {
+	lastRun, notify,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		reload, stream, _if, sourcemaps, sass, prefixer
+	}
+} = h;
 
-module.exports = function scss() {
+export default function scss() {
+	const { dev, mode } = h;
 	return src(paths.src.scss, lastRun(scss)) // main файл
-		.pipe(_if(h.dev, sourcemaps.init())) // Инициализируем sourcemap
+		.pipe(_if(dev, sourcemaps.init())) // Инициализируем sourcemap
 		.pipe(sass({
 			outputStyle: 'compressed', // минимиация файла
-			sourcemaps: h.dev
+			sourcemaps: dev
 		}).on('error', sass.logError))
 		.pipe(prefixer({
 			browsers: ['> 1%'], // last 5 versions
 			cascade: false, // запрет на разворот кода
 			remove: true // удаление лишних стилей при обработке
 		}))
-		.pipe(_if(h.dev, sourcemaps.write('.'))) // Пропишем карты
+		.pipe(_if(dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.css)) // готовый файл min в build
-		.pipe(notify(`${h.mode}:scss`));
+		.pipe(notify(`${mode}:scss`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
-		//.pipe(server.stream());
+		//.pipe(stream());
 };

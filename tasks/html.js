@@ -1,24 +1,25 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	h = require('./helpers/helpers'),
-	{ lastRun, arg, notify } = h,
-	fs = require('fs'),
-	//reload = require('browser-sync').reload, // плагин перезагрузки браузера
-	_if = require('gulp-if'), // плагин для условий
-	sourcemaps = require('gulp-sourcemaps'), // плагин создания map-файлов
-	htmlclean = require('gulp-htmlclean'), // collapse whitespace
-	htmlmin = require('gulp-htmlmin'), // плагин сжатия html
-	realFavicon = require('gulp-real-favicon'); // генератор фавиконок
+import h from './helpers/helpers.js';
+const {
+	lastRun, notify,
+	arg: { fav },
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		fs: { readFileSync: readFile },
+		reload, stream, _if, sourcemaps, htmlclean, htmlmin, realFavicon: { injectFaviconMarkups }
+	}
+} = h;
 
-module.exports = function html() {
+export default function html() {
+	const { dev, prod, mode } = h;
 	return src(paths.src.html, lastRun(html))
-		.pipe(_if(h.dev, sourcemaps.init())) // Инициализируем sourcemap
-		//.pipe(_if(h.dev && arg.fav, realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code)))
-		.pipe(_if(h.dev, htmlclean()))
-		.pipe(_if(h.prod, htmlmin({ collapseWhitespace: true })))
-		.pipe(_if(h.dev, sourcemaps.write('.'))) // Пропишем карты
+		.pipe(_if(dev, sourcemaps.init())) // Инициализируем sourcemap
+		.pipe(_if(dev && fav, injectFaviconMarkups(JSON.parse(readFile(paths.build.faviconDataFile)).favicon.html_code)))
+		.pipe(_if(dev, htmlclean()))
+		.pipe(_if(prod, htmlmin({ collapseWhitespace: true })))
+		.pipe(_if(dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.html))
-		.pipe(notify(`${h.mode}:html`));
+		.pipe(notify(`${mode}:html`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
-		//.pipe(server.stream());
+		//.pipe(stream());
 };

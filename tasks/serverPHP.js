@@ -1,6 +1,9 @@
-const { serverPHPconfig } = require('../gulpfile.config'),
-	connectPHP = require('gulp-connect-php');
+import h from './helpers/helpers.js';
+const {
+	config: { serverPHPconfig },
+	modules: { connectPHP }
+} = h;
 
-module.exports = function serverPHP() {
+export default function serverPHP() {
 	return connectPHP.server(serverPHPconfig);
 };

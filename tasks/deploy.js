@@ -1,10 +1,14 @@
-const { src } = require('gulp'),
-	{ paths, deploy } = require('../gulpfile.config'),
-	{ lastRun } = require('./helpers/helpers'),
-	{ include, exclude } = deploy,
-	rs = require('gulp-rsync');
+import h from './helpers/helpers.js';
+const {
+	lastRun,
+	config: { paths, deploy: { include, exclude } },
+	modules: {
+		gulp: { src },
+		rs
+	}
+} = h;
 
-module.exports = function deploy() {
+export default function deploy() {
 	return src(paths.build.root, lastRun(deploy))
 		.pipe(rs({
 			root: paths.build.root,

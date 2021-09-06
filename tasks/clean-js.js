@@ -1,6 +1,7 @@
-const { paths } = require('../gulpfile.config'),
-	rimraf = require('rimraf'); // удаление файлов
+import h from './helpers/helpers.js';
+const {
+	config: { paths },
+	modules: { rimraf }
+} = h;
 
-module.exports = function clean_js(done) {
-	rimraf(paths.clean.js, done);
-};
+export default function clean_js(done) { rimraf(paths.clean.js, done); };

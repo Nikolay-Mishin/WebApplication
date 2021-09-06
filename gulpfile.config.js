@@ -29,7 +29,8 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import imgMinify from 'imgminify'; // оптимизация картинок
 
-const { cwd } = process,
+const esModuleDefault = 'es6',
+	{ cwd } = process,
 	{ join, dirname, relative } = path,
 	root = cwd(), // __dirname
 	build = join(root, 'wwwroot'),
@@ -48,14 +49,17 @@ process.__dirname = __dirname;
 process.relativeRoot = relativeRoot;
 
 const server = browserSync.create(),
-	{ reload } = browserSync,
-	{ stream } = server;
+	reload = async () => server.reload(),
+	{ stream } = server,
+	{ reload: _reload } = browserSync;
 
 export default process.node_config = process.node_config || {
-	root, build, src, tasksPath, serverPHP,
+	esModuleDefault, root, build, src, serverPHP,
+	tasksPath: join(root, 'tasks'),
+	//useWebpack: true,
+	//esModule: esModuleDefault,
+	//webpackConfig: join(root, 'webpack.config'), // webpack.config
 	helpers: { __dirname, relativeRoot },
-	esModule: 'es6',
-	webpackConfig: join(root, 'webpack.config'), // webpack.config
 	deploy: {
 		host: 'site.ru',
 		user: 'tstv',
@@ -86,7 +90,7 @@ export default process.node_config = process.node_config || {
 		src: {
 			root: src,
 			html: join(src, 'html/**/*.{html,htm}'),
-			html: join(src, 'php/**/*.php'),
+			php: join(src, 'php/**/*.php'),
 			pug: join(src, 'pug/*.pug'),
 			scss: join(src, 'scss/*.{scss,sass}'),
 			js: join(src, 'js/**/*.js'),
@@ -97,7 +101,7 @@ export default process.node_config = process.node_config || {
 		// пути файлов, за изменением которых мы хотим наблюдать
 		watch: {
 			html: join(srcRoot, 'html/**/*.{html,htm}'),
-			scss: join(srcRoot, 'scss/**/*.scss'),
+			scss: join(srcRoot, 'scss/**/*.{scss, sass}'),
 			js: join(srcRoot, 'js/**/*.js')
 		},
 		// путь очистки директории для сборки
@@ -106,13 +110,23 @@ export default process.node_config = process.node_config || {
 			html: join(build, 'html'),
 			css: join(build, 'css'),
 			js: join(build, 'js')
+		},
+		tasks: {
+			watch: {
+				tasks: 'tasks/**/*',
+				root: ['*.js', '*config*', '*lint*', '!*doc*'],
+				doc: 'doc/**/*',
+				server: ['../../../package.json', '../../../.editorconfig'],
+			},
+			root: '../../..',
+			deploy: '../_server'
 		}
 	},
 	// Подключаемые модули
 	modules: {
 		gulp,
 		fs, path,
-		browserSync, reload, server, stream,
+		browserSync, reload, server, stream, _reload,
 		gulpif, gutil, notify, plumber,
 		rimraf, rename, sourcemaps,
 		htmlmin, htmlclean, pug,

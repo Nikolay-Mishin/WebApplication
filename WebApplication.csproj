@@ -68,9 +68,7 @@
 
 	<ProjectExtensions>
 		<!--<VisualStudio AllowExistingFolder="true" />-->
-		<VisualStudio>
-			<UserProperties tsconfig_1json__JsonSchema="" />
-		</VisualStudio>
+		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>
 
 </Project>

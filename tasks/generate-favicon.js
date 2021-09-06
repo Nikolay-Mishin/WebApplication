@@ -1,7 +1,10 @@
-const { paths } = require('../gulpfile.config'),
-	realFavicon = require('gulp-real-favicon'); // генератор фавиконок
+import h from './helpers/helpers.js';
+const {
+	config: { paths },
+	modules: { realFavicon }
+} = h;
 
-module.exports = function generate_favicon(done) {
+export default function generate_favicon(done) {
 	realFavicon.generateFavicon({
 		masterPicture: paths.src.favicon,
 		dest: paths.build.favicon,

@@ -1,16 +1,19 @@
-const { watch, series } = require('gulp'),
-	{ serverConfig, serverPHPconfig, serverPHP: serverPHPrun } = require('../gulpfile.config'),
-	browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	server = browserSync.create(),
-	{ init } = server,
-	reload = async () => server.reload();
+import h from './helpers/helpers.js';
+const {
+	config: { serverConfig, serverPHP: serverPHPrun },
+	modules: {
+		gulp: { watch, series },
+		server: { init },
+		reload, _reload, browserSync
+	}
+} = h;
 
-module.exports = function server_task() {
-	return serverPHPrun ? init(serverConfig) : series(async () => init(serverConfig), serverPHP); // локальный сервер
+export default function server_task() {
+	return serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks); // локальный сервер
 	//browserSync(serverConfig);
 
-	//watch(paths.watch.js, series('dev:js', server.reload));
-	//watch(paths.watch.js).on('change', server.reload);
+	//watch(paths.watch.js, series('dev:js', _reload));
+	//watch(paths.watch.js).on('change', _reload);
 
 	//watch(paths.watch.html, series('dev:html', reload));
 	//watch(paths.watch.scss, series('dev:scss', reload));

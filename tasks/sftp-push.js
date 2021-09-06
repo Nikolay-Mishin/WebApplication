@@ -1,8 +1,11 @@
-const { src } = require('gulp'),
-	{ paths, deploy } = require('../gulpfile.config'),
-	{ lastRun } = require('./helpers/helpers');
+import h from './helpers/helpers.js';
+const {
+	lastRun,
+	config: { paths, deploy },
+	modules: { gulp: { src } }
+} = h;
 
-module.exports = function sftp_push() {
+export default function sftp_push() {
 	return src(paths.build.root, lastRun(sftp_push))
 		.pipe(sftp({
 			host: deploy.host,

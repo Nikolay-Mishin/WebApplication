@@ -1,13 +1,17 @@
-const { src, dest } = require('gulp'),
-	{ paths } = require('../gulpfile.config'),
-	h = require('./helpers/helpers'),
-	{ lastRun, notify } = h;
-	//reload = require('browser-sync').reload; // плагин перезагрузки браузера
+import h from './helpers/helpers.js';
+const {
+	lastRun, notify,
+	config: { paths },
+	modules: {
+		gulp: { src, dest },
+		reload, stream
+	}
+} = h;
 
-module.exports = function php() {
+export default function php() {
 	return src(paths.src.php, lastRun(php))
 		.pipe(dest(paths.build.html))
 		.pipe(notify(`${h.mode}:php`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
-		//.pipe(server.stream());
+		//.pipe(stream());
 };

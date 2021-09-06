@@ -1,5 +1,4 @@
-const { arg } = require('./helpers/helpers');
+import h from './helpers/helpers.js';
+const { arg } = h;
 
-module.exports = async function args() {
-	console.log(arg);
-};
+export default async function args() { console.log(arg); };

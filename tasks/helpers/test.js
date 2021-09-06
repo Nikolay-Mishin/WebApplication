@@ -1,6 +1,6 @@
-//import tasks from './tasks.js';
+import tasks from './tasks.js';
 import h from './helpers.js';
-const { config, modules, __dirname, relativeRoot, useWebpack, arg, setModeSync, mode, dev, prod } = h,
+const { config, modules, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
 	{ root, paths, serverConfig } = config,
 	{ server } = modules;
 
