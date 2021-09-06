@@ -27,7 +27,7 @@ Object.assign(tasks, { /*build, dev, prod, deploy, move, _tasksWatch, _test*/ })
 console.log('exports\n', tasks);
 console.log('build\n', clean, html, js);
 
-const { existsSync: exist, readFileSync: readFile } = require('fs');
+import { existsSync as exist, readFileSync as readFile } from 'fs';
 console.log('exist:', exist('tsconfig.json'));
 console.log('module:', JSON.parse(readFile('tsconfig.json')).compilerOptions.module);
 
