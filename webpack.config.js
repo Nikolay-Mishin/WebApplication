@@ -12,13 +12,14 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // Переменные проекта
 
-const root = __dirname,
+console.log(process.env.NODE_ENV);
+
+const dev = process.env.NODE_ENV || 'development' === 'development',
+	prod = !dev,
+	root = __dirname,
 	publicPath = 'wwwroot',
 	build = join(root, publicPath),
 	src = join(root, 'src'),
-	dev = true,
-	//dev = process.env.NODE_ENV === 'development',
-	prod = !dev,
 	filename = ext => dev ? `[name].${ext}` : `[name].[hash].${ext}`,
 	optimization = () => {
 		const config = {
@@ -141,7 +142,7 @@ const root = __dirname,
 
 export default exports = {
 	context: src,
-	mode: 'development', //none | development | production
+	mode: dev ? 'development' : 'production', //none | development | production
 	entry: {
 		app: './js/app.js'
 	},
@@ -242,3 +243,4 @@ console.log(build);
 
 console.log(exports.entry.app);
 console.log(exports.output.path);
+console.log(exports.mode);

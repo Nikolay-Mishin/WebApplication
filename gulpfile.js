@@ -27,10 +27,9 @@ Object.assign(tasks, { /*build, dev, prod, deploy, move, _tasksWatch, _test*/ })
 console.log('exports\n', tasks);
 console.log('build\n', clean, html, js);
 
-import fs from 'fs';
-console.log('exists:', fs.existsSync('tsconfig.json'));
-console.log('module:', JSON.parse(fs.readFileSync('tsconfig.json')).compilerOptions.module);
+const { existsSync: exist, readFileSync: readFile } = require('fs');
+console.log('exist:', exist('tsconfig.json'));
+console.log('module:', JSON.parse(readFile('tsconfig.json')).compilerOptions.module);
 
-import config from './gulpfile.config.js';
-const { useWebpack } = config;
+const { useWebpack } = h;
 console.log('useWebpack:', (useWebpack) ? useWebpack : '');
