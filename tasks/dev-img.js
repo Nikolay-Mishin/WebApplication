@@ -5,7 +5,7 @@ const {
 	modules: { ImgMinify }
 } = h;
 
-const imgMinify = function imgMinify() {
+const imgMinify = (function imgMinify() {
 	return new ImgMinify()
 		.src(paths.src.img, lastRun(imgMinify))
 		.dest(paths.build.img)
@@ -15,10 +15,10 @@ const imgMinify = function imgMinify() {
 		.use(ImgMinify.optipng({ optimizationLevel: 3 }))
 		.use(ImgMinify.pngquant({ speed: 1 }))
 		.use(ImgMinify.svgo());
-};
+})();
 
 export default async function dev_img() {
-	imgMinify().run(function(err, files) {
+	imgMinify.run(function(err, files) {
 		if (err) throw err;
 		console.log('Images optimized successfully!');
 	});

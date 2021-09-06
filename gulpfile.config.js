@@ -27,7 +27,7 @@ import terser from 'terser';
 import gulpTerser from 'gulp-terser';
 import realFavicon from 'gulp-real-favicon'; // генератор фавиконок
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
-import imgMinify from 'imgminify'; // оптимизация картинок
+import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const esModuleDefault = 'es6',
 	{ cwd } = process,
@@ -133,7 +133,7 @@ export default process.node_config = process.node_config || {
 		inlineCss, sass, prefixer,
 		rigger, concat, uglify, webpack, webpackStream,
 		babel, terser, gulpTerser,
-		realFavicon, imageMin, imgMinify
+		realFavicon, imageMin, ImgMinify
 	},
 	// конфигурация browserSync
 	serverConfig: {

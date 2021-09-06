@@ -17,8 +17,8 @@ Object.assign(helpers, {
 	get tasks() { return process.node_tasks; },
 	get useWebpack() {
 		if (useWebpack) return useWebpack;
-		//if (exist(webpackConfig)) process.node_config.webpackConfig = import(webpackConfig);
-		//const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
+		//if (exist(webpackConfig)) process.node_config.webpackConfig = (await import(webpackConfig)).default;
+		const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
 		return process.node_config.useWebpack = esModule === 'es6';
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },

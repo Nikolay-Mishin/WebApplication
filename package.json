@@ -1,11 +1,29 @@
 {
 	"name": "web-app",
-	"version": "1.0.0",
+	"version": "3.0.0",
 	"main": "gulpfile.js",
 	"type": "module",
 	"exports": {
 		".": "./gulpfile.config.js",
 		"./*": "./tasks/*.js",
 		"./_*": "./tasks/helpers/*.js"
+	},
+	"license": "ISC",
+	"author": {
+		"name": "Nikolay Mishin",
+		"url": "https://github.com/Nikolay-Mishin"
+	},
+	"description": "Library of development tools",
+	"keywords": [
+		"gulp",
+		"webpack"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Nikolay-Mishin/WebApplication",
+		"directory": ""
+	},
+	"engines": {
+		"node": ">=12.22.5"
 	}
 }

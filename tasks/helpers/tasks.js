@@ -5,7 +5,7 @@ const { config, __dirname, getFiles } = h,
 		modules: { path: { basename: base, relative } },
 	} = config;
 
-export default process.node_tasks = process.node_tasks || (async function tasks() {
+export default process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;
 	const tasks = {};
 	getFiles(tasksPath, excludeTasks).forEach(async file => {
