@@ -1,10 +1,12 @@
 /// <binding ProjectOpened='_tasksWatch, _test' />
 
 const tasks = require('./tasks/helpers/tasks'),
-	{ modules: { gulp: { series, parallel } }, setMode } = require('./tasks/helpers/helpers'), {
-	clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
-	move_files, deploy: _deploy
-} = tasks;
+	h = require('./tasks/helpers/helpers'),
+	{ modules: { gulp: { series, parallel } }, setMode } = h,
+	{
+		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
+		move_files, deploy: _deploy
+	} = tasks;
 
 Object.assign(exports, tasks);
 
@@ -22,9 +24,9 @@ exports._test = require('./tasks/helpers/test');
 
 console.log('exports\n', exports);
 
-const fs = require('fs');
-console.log('exists:', fs.existsSync('tsconfig.json'));
-console.log('module:', JSON.parse(fs.readFileSync('tsconfig.json')).compilerOptions.module);
+const { existsSync: exist, readFileSync: readFile } = require('fs');
+console.log('exist:', exist('tsconfig.json'));
+console.log('module:', JSON.parse(readFile('tsconfig.json')).compilerOptions.module);
 
-const config = require('./gulpfile.config'), { useWebpack } = config;
+const { useWebpack } = h;
 console.log('useWebpack:', (useWebpack) ? useWebpack : '');
