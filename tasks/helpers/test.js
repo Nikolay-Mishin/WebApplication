@@ -29,12 +29,16 @@ module.exports = async function test() {
 	//console.log('devIp\n', server.instance.utils.devIp());
 
 	//const log = { [mode]: {} };
+	//console.log('mode:', mode);
+	//console.log('dev:', dev);
 	//if (dev) {
 	//	log[mode].mode = mode;
 	//	log[mode].dev = dev;
 	//	log[mode].prod = prod;
 	//}
+	
 	//setModeSync(true);
+
 	//log[h.mode] = {};
 	//if (h.prod) {
 	//	log[h.mode].mode = h.mode;

@@ -22,11 +22,7 @@ exports.move = series(clean, move_files);
 exports._tasksWatch = require('./tasks/helpers/tasksWatch');
 exports._test = require('./tasks/helpers/test');
 
-console.log('exports\n', exports);
+//console.log('exports\n', exports);
 
-const { existsSync: exist, readFileSync: readFile } = require('fs');
-console.log('exist:', exist('tsconfig.json'));
-console.log('module:', JSON.parse(readFile('tsconfig.json')).compilerOptions.module);
-
-const { useWebpack } = h;
-console.log('useWebpack:', (useWebpack) ? useWebpack : '');
+const { setModeSync } = h;
+setModeSync();

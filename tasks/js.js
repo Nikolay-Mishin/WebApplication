@@ -12,7 +12,7 @@ module.exports = function js() {
 	const { dev, mode, useWebpack } = h;
 	if (useWebpack) {
 		return src(paths.src.js, lastRun(js))
-			.pipe(webpackStream(webpackConfig), webpack)
+			.pipe(webpackStream(require(webpackConfig)), webpack)
 			.pipe(dest(paths.build.js))
 			.pipe(notify(`${mode}:js`));
 	}

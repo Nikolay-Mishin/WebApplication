@@ -12,7 +12,7 @@ const webpack = require('webpack'),
 
 // Переменные проекта
 
-console.log(process.env.NODE_ENV);
+console.log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
 
 const dev = process.env.NODE_ENV || 'development' === 'development',
 	prod = !dev,
@@ -238,9 +238,8 @@ module.exports = {
 	}
 };
 
-console.log(__dirname);
-console.log(build);
-
-console.log(module.exports.entry.app);
-console.log(module.exports.output.path);
-console.log(module.exports.output.mode);
+//console.log('webpackConfig.__dirname:', __dirname);
+//console.log('webpackConfig.build:', build);
+//console.log('webpackConfig.entry.app:', module.exports.entry.app);
+//console.log('webpackConfig.output.path:', module.exports.output.path);
+console.log('webpackConfig.mode:', module.exports.mode);

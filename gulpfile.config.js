@@ -21,7 +21,7 @@ module.exports = process.node_config = process.node_config || {
 	tasksPath: join(root, 'tasks'),
 	//useWebpack: true,
 	//esModule: esModuleDefault,
-	//webpackConfig: join(root, 'webpack.config'), // webpack.config
+	//webpackConfig: join(root, 'webpack.config.js'),
 	helpers: { relativeRoot },
 	deploy: {
 		host: 'site.ru',
