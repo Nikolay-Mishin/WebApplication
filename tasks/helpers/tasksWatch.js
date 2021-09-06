@@ -1,6 +1,6 @@
 const {
 	config: { paths: { tasks: {
-		root, deploy, watch: { tasks, doc, package, root: _root }
+		root, deploy, watch: { tasks, doc, package, editor, root: _root }
 	}}},
 	modules: {
 		gulp: { src, dest, watch, lastRun },
@@ -16,8 +16,8 @@ module.exports = async function tasksWatch() {
 			.pipe(dest(`${root}/tasks`))
 			.pipe(dest(`${deploy}/tasks`));
 	});
-	watch(_root, function jsWatch() {
-		return src(_root, { since: lastRun(jsWatch) })
+	watch(_root, function rootWatch() {
+		return src(_root, { since: lastRun(rootWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(root))
 			.pipe(dest(deploy));
@@ -27,8 +27,8 @@ module.exports = async function tasksWatch() {
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(`${deploy}/doc`));
 	});
-	watch(package, function packageWatch() {
-		return src(package, { since: lastRun(packageWatch) })
+	watch(server, function serverWatch() {
+		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(deploy));
 	});

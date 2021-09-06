@@ -79,7 +79,7 @@ module.exports = process.node_config = process.node_config || {
 				tasks: 'tasks/**/*',
 				root: ['*.js', '*config*', '*lint*', '!*doc*'],
 				doc: '*doc*',
-				package: '../../../package.json'
+				server: ['../../../package.json', '../../../.editorconfig'],
 			},
 			root: '../../..',
 			deploy: '../_server'
