@@ -3,13 +3,14 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
-		reload, stream, htmlmin, realFavicon
+		fs: { readFileSync: readFile },
+		reload, stream, htmlmin, realFavicon: { injectFaviconMarkups }
 	}
 } = require('./helpers/helpers');
 
 module.exports = function prod_html() {
 	return src(paths.src.html, lastRun(prod_html))
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code))
+		.pipe(injectFaviconMarkups(JSON.parse(readFile(paths.build.faviconDataFile)).favicon.html_code))
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(dest(paths.build.root))
 		.pipe(notify('prod:html'));

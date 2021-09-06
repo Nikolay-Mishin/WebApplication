@@ -4,16 +4,15 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
-		reload, stream, _if, sourcemaps, htmlclean, realFavicon
+		fs: { readFileSync: readFile },
+		reload, stream, _if, sourcemaps, htmlclean, realFavicon: { injectFaviconMarkups }
 	}
 } = require('./helpers/helpers');
 
 module.exports = function dev_html() {
 	return src(paths.src.html, lastRun(dev_html))
 		.pipe(sourcemaps.init()) // Инициализируем sourcemap
-		.pipe(_if(fav, realFavicon.injectFaviconMarkups(
-			JSON.parse(fs.readFileSync(paths.build.faviconDataFile)).favicon.html_code
-		)))
+		.pipe(_if(fav, injectFaviconMarkups(JSON.parse(readFile(paths.build.faviconDataFile)).favicon.html_code)))
 		.pipe(htmlclean())
 		.pipe(dest(paths.build.root))
 		.pipe(sourcemaps.write('.')) // Пропишем карты

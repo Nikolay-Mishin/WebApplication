@@ -1,17 +1,25 @@
-const config = require('../../gulpfile.config'),  {
-	helpers = {},
+const config = require('../../gulpfile.config'), {
+	esModuleDefault, esModule = esModuleDefault, root, helpers = {}, useWebpack,
 	modules: {
 		gulp: { lastRun },
-		fs: { readdirSync },
-		path: { basename, extname },
+		fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
+		path: { join, basename: base, extname: ext },
 		gutil, notify, plumber
-	}
+	},
+	webpackConfig = join(root, 'webpack.config'),
+	tsconfig = join(root, 'tsconfig.json')
 } = config;
 
 Object.assign(helpers, {
 	get config() { return config; },
 	get modules() { return this.config.modules; },
-	get useWebpack() { return this.config.esModule === 'es6'; },
+	get tasks() { return process.node_tasks; },
+	get useWebpack() {
+		if (useWebpack) return useWebpack;
+		if (exist(webpackConfig)) process.node_config.webpackConfig = require(webpackConfig);
+		const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
+		return process.node_config.useWebpack = esModule === 'es6';
+	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },
 	get prod() { return !this.dev; },
@@ -19,7 +27,7 @@ Object.assign(helpers, {
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
 	getFiles(_path, exclude = []) {
-		return readdirSync(_path).filter(file => extname(file) == '.js' && !exclude.includes(basename(file, '.js')));
+		return readDir(_path).filter(file => ext(file) == '.js' && !exclude.includes(base(file, '.js')));
 	},
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -44,7 +52,7 @@ Object.assign(helpers, {
 				message: "Ошибка: <%= error.message %>"
 			})
 		});
-	},
+	}
 });
 
 module.exports = helpers;

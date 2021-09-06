@@ -1,4 +1,5 @@
-const path = require('path'),
+const esModuleDefault = 'es6',
+	path = require('path'),
 	{ join, relative } = path,
 	root = __dirname,
 	build = join(root, 'wwwroot'),
@@ -16,11 +17,12 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	reload = async () => server.reload();
 
 module.exports = process.node_config = process.node_config || {
-	root, build, src, serverPHP,
-	helpers: { relativeRoot },
+	esModuleDefault, root, build, src, serverPHP,
 	tasksPath: join(root, 'tasks'),
-	esModule: 'es6',
-	webpackConfig: join(root, 'webpack.config'), // webpack.config
+	//useWebpack: true,
+	//esModule: esModuleDefault,
+	//webpackConfig: join(root, 'webpack.config'), // webpack.config
+	helpers: { relativeRoot },
 	deploy: {
 		host: 'site.ru',
 		user: 'tstv',
@@ -71,6 +73,16 @@ module.exports = process.node_config = process.node_config || {
 			html: join(build, 'html'),
 			css: join(build, 'css'),
 			js: join(build, 'js')
+		},
+		tasks: {
+			watch: {
+				tasks: 'tasks/**/*',
+				root: ['*.js', '*config*', '*lint*', '!*doc*'],
+				doc: '*doc*',
+				package: '../../../package.json'
+			},
+			root: '../../..',
+			deploy: '../_server'
 		}
 	},
 	// Подключаемые модули
