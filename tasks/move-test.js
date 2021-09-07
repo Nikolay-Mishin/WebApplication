@@ -1,11 +1,12 @@
-const {
-	lastRun,
-	modules: { gulp: { src, dest } }
-} = require('./helpers/helpers');
+const { log } = console,
+	{
+		lastRun,
+		modules: { gulp: { src, dest } }
+	} = require('./helpers/helpers');
 
 module.exports = function move_test() {
 	return src('src/**/*', lastRun(move_test)).on('data', function(file) {
-		console.log({
+		log({
 			contents: file.contents, // содержимое файла
 			path: file.path, // путь до файла
 			cwd: file.cwd, // основная директория

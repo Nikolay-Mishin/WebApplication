@@ -1,6 +1,7 @@
-const config = require('../../gulpfile.config'),
+const { log } = console,
+	config = require('../../gulpfile.config'),
 	{
-		esModuleDefault, esModule = esModuleDefault, root, helpers: _helpers = {}, useWebpack,
+		root, useWebpack, esModule, helpers: _helpers = {},
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
@@ -16,12 +17,12 @@ const helpers = {
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get useWebpack() {
-		//if (useWebpack) return useWebpack;
-		if (exist(webpackConfig)) process.node_config.webpackConfig = webpackConfig;
+		if (useWebpack = useWebpack || this.config.useWebpack) return useWebpack;
+		if (exist(webpackConfig) && process.env.NODE_ENV) process.node_config.webpackConfig = require(webpackConfig);
 		const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
-		console.log('useWebpack.NODE_ENV:', process.env.NODE_ENV);
-		console.log('useWebpack.mode:', this.config.webpackConfig.mode);
-		return process.node_config.useWebpack = esModule === 'es6';
+		log('NODE_ENV:', process.env.NODE_ENV);
+		log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
+		return process.node_config.useWebpack = module === 'es6';
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return this.getMode === 'development'; },

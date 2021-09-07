@@ -1,5 +1,4 @@
-const esModuleDefault = 'es6',
-	path = require('path'),
+const path = require('path'),
 	{ join, relative } = path,
 	root = __dirname,
 	build = join(root, 'wwwroot'),
@@ -17,10 +16,10 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	reload = async () => server.reload();
 
 module.exports = process.node_config = process.node_config || {
-	esModuleDefault, root, build, src, serverPHP,
+	root, build, src, serverPHP,
 	tasksPath: join(root, 'tasks'),
 	//useWebpack: true,
-	//esModule: esModuleDefault,
+	//esModule: 'es6',
 	//webpackConfig: join(root, 'webpack.config.js'),
 	helpers: { relativeRoot },
 	deploy: {

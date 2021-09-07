@@ -1,4 +1,5 @@
-const { cwd } = process,
+const { log } = console,
+	{ cwd } = process,
 	tasks = require('./tasks'),
 	h = require('./helpers'),
 	{ config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
@@ -6,31 +7,31 @@ const { cwd } = process,
 	{ server } = modules;
 
 module.exports = async function test() {
-	//console.log('process\n', process);
+	//log('process\n', process);
 
-	//console.log('config\n', config);
-	console.log('paths\n', paths);
-	//console.log('serverConfig\n', serverConfig);
-	console.log('useWebpack: ', useWebpack);
+	//log('config\n', config);
+	log('paths\n', paths);
+	//log('serverConfig\n', serverConfig);
+	log('useWebpack: ', useWebpack);
 
-	//console.log('env\n', process.env);
-	//console.log('argv\n', process.argv);
-	console.log('arg\n', arg);
+	//log('env\n', process.env);
+	//log('argv\n', process.argv);
+	log('arg\n', arg);
 	
-	console.log('root:', cwd());
-	console.log('__dirname:', __dirname);
-	console.log('relative:', relativeRoot(__dirname));
+	log('root:', cwd());
+	log('__dirname:', __dirname);
+	log('relative:', relativeRoot(__dirname));
 
-	//console.log('modules\n', modules);
-	//console.log('tasks\n', tasks);
+	//log('modules\n', modules);
+	//log('tasks\n', tasks);
 
-	//console.log('server\n', server);
-	//console.log('name\n', server.name);
-	//console.log('devIp\n', server.instance.utils.devIp());
+	//log('server\n', server);
+	//log('name\n', server.name);
+	//log('devIp\n', server.instance.utils.devIp());
 
 	//const log = { [mode]: {} };
-	//console.log('mode:', mode);
-	//console.log('dev:', dev);
+	//log('mode:', mode);
+	//log('dev:', dev);
 	//if (dev) {
 	//	log[mode].mode = mode;
 	//	log[mode].dev = dev;
@@ -45,5 +46,5 @@ module.exports = async function test() {
 	//	log[h.mode].dev = h.dev;
 	//	log[h.mode].prod = h.prod;
 	//}
-	//console.log('log\n', log);
+	//log('log\n', log);
 };

@@ -1,8 +1,9 @@
-const {
-	lastRun,
-	config: { paths },
-	modules: { ImgMinify }
-} = require('./helpers/helpers');
+const { log } = console,
+	{
+		lastRun,
+		config: { paths },
+		modules: { ImgMinify }
+	} = require('./helpers/helpers');
 
 const imgMinify = (function imgMinify() {
 	return new ImgMinify()
@@ -19,6 +20,6 @@ const imgMinify = (function imgMinify() {
 module.exports = async function dev_img() {
 	imgMinify.run(function(err, files) {
 		if (err) throw err;
-		console.log('Images optimized successfully!');
+		log('Images optimized successfully!');
 	});
 };

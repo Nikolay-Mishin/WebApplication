@@ -1,7 +1,7 @@
 const { config, getFiles } = require('./helpers'),
 	{
-		modules: { path: { basename: base, relative } },
 		tasksPath, excludeTasks = [],
+		modules: { path: { basename: base, relative } },
 	} = config;
 
 module.exports = process.node_tasks = process.node_tasks || (function tasks() {

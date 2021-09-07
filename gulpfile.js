@@ -1,8 +1,9 @@
 /// <binding ProjectOpened='_tasksWatch, _test' />
 
-const tasks = require('./tasks/helpers/tasks'),
+const { log } = console,
+	tasks = require('./tasks/helpers/tasks'),
 	h = require('./tasks/helpers/helpers'),
-	{ modules: { gulp: { series, parallel } }, setMode } = h,
+	{ setMode, modules: { gulp: { series, parallel } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy
@@ -22,7 +23,10 @@ exports.move = series(clean, move_files);
 exports._tasksWatch = require('./tasks/helpers/tasksWatch');
 exports._test = require('./tasks/helpers/test');
 
-//console.log('exports\n', exports);
+//log('exports\n', exports);
 
 const { setModeSync } = h;
-setModeSync();
+setModeSync(true);
+log('useWebpack:', h.useWebpack);
+
+log('includes:', 'es6'.includes('es'));

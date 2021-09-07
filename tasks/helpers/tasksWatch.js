@@ -2,7 +2,7 @@ const { log } = console,
 	{
 		config: { paths: { tasks: {
 			root, deploy, watch: { tasks, doc, package, editor, root: _root }
-		} } },
+		}}},
 		modules: {
 			gulp: { src, dest, watch, lastRun },
 			path: { join }
