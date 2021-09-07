@@ -28,5 +28,4 @@ exports._test = require('./tasks/helpers/test');
 const { setModeSync } = h;
 setModeSync(true);
 log('useWebpack:', h.useWebpack);
-
-log('includes:', 'es6'.includes('es'));
+log('config.useWebpack:', h.config.useWebpack);
