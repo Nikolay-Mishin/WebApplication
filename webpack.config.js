@@ -15,7 +15,7 @@ const { log } = console,
 
 log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
 
-const dev = process.env.NODE_ENV || 'development' === 'development',
+const dev = (process.env.NODE_ENV || 'development') === 'development',
 	prod = !dev,
 	root = __dirname,
 	publicPath = 'wwwroot',

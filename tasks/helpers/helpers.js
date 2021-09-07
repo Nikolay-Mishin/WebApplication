@@ -17,11 +17,11 @@ const helpers = {
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get useWebpack() {
-		if (useWebpack = useWebpack || this.config.useWebpack) return useWebpack;
 		if (exist(webpackConfig) && process.env.NODE_ENV) process.node_config.webpackConfig = require(webpackConfig);
 		const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
 		log('NODE_ENV:', process.env.NODE_ENV);
 		log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
+		if (_useWebpack = useWebpack || this.config.useWebpack) return _useWebpack;
 		return process.node_config.useWebpack = module === 'es6';
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
