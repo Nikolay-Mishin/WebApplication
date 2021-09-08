@@ -31,8 +31,7 @@ setModeSync(true);
 h.webpackConfig;
 log('useWebpack:', h.useWebpack);
 
-src('tasks/helpers/helpers.js').on('data', function (file) {
-	log('file\n', file);
+exports.data = () => src('tasks/**/*').on('data', function (file) {
 	log({
 		contents: file.contents, // содержимое файла
 		path: file.path, // путь до файла
@@ -43,5 +42,18 @@ src('tasks/helpers/helpers.js').on('data', function (file) {
 		basename: file.basename, // название файла
 		stem: file.stem, // имя файла
 		extname: file.extname // расширение файла
+		/*
+		contents: <Buffer>,
+		path: 'D:\\YandexDisk\\__Web_dev\\_.server\\Open Server\\domains\\WebApplication\\tasks\\helpers\\helpers.js',
+		cwd: 'D:\\YandexDisk\\__Web_dev\\_.server\\Open Server\\domains\\WebApplication',
+		base: 'D:\\YandexDisk\\__Web_dev\\_.server\\Open Server\\domains\\WebApplication\\tasks',
+		dirname: 'D:\\YandexDisk\\__Web_dev\\_.server\\Open Server\\domains\\WebApplication\\tasks\\helpers',
+		relative: 'helpers\\helpers.js',
+		basename: 'helpers.js',
+		stem: 'helpers',
+		extname: '.js'
+		*/
 	});
-})
+		//.pipe(changed('www', { hasChanged: changed.compareContents }))
+		//.pipe(dest('www'));
+});

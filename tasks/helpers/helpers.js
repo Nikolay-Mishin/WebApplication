@@ -32,7 +32,7 @@ const helpers = {
 			esNext = replace.toLowerCase() === 'next',
 			higher5 = Number(replace) >= 6,
 			higher2014 = Number(replace) >= 2015;
-		return this.config = { useWebpack: !includes || esNext || higher5 || higher2014 };
+		return (this.config = { useWebpack: !includes || esNext || higher5 || higher2014 }).useWebpack;
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
 	get dev() { return (this.getMode || this.setModeSync()) === 'development'; },

@@ -4,31 +4,18 @@ const { log } = console,
 	config = JSON.parse(readFile('config.json')),
 	path = require('path'), // работа с путями
 	{ join, relative } = path,
-	root = __dirname,
-	build = join(root, 'wwwroot'),
-	srcRoot = 'src',
+	root = join(__dirname, config.paths.root),
+	build = join(root, config.paths.build),
+	srcRoot = config.paths.src,
 	src = join(root, srcRoot),
-	serverPHP = false,
-	domain = 'localhost', // WebApplication / localhost
-	port = 8080,
-	baseDir = join(build, 'html'),
-	index = 'app',
+	serverPHP = config.server.serverPHP,
+	domain = config.server.domain,
+	port = config.server.port,
+	baseDir = join(build, config.server.baseDir),
+	index = config.server.index,
 	relativeRoot = from => relative(from, root);
 
-//log('gulpfile.const\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
-
-//log('config\n', config);
-//log('gulpfile.config\n', {
-//	root: join(__dirname, config.paths.root),
-//	build: join(root, config.paths.build),
-//	srcRoot: config.paths.src,
-//	src: join(root, config.paths.src),
-//	serverPHP: config.server.serverPHP,
-//	domain: config.server.domain,
-//	port: config.server.port,
-//	baseDir: join(build, config.server.baseDir),
-//	index: config.server.index
-//});
+log('config\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create(),
@@ -96,8 +83,9 @@ module.exports = process.node_config = process.node_config || {
 			watch: {
 				tasks: 'tasks/**/*',
 				root: ['*.js', '*config*', '*lint*', '!*doc*'],
-				doc: '*doc*',
-				server: ['../../../package.json', '../../../.editorconfig'],
+				doc: 'doc/**/*',
+				package: 'package.json',
+				server: ['../../../package.json', '../../../package.json', '../../../.editorconfig']
 			},
 			root: '../../..',
 			deploy: '../_server'
@@ -115,6 +103,7 @@ module.exports = process.node_config = process.node_config || {
 		gutil: require('gulp-util'), // отладка
 		notify: require('gulp-notify'), // отладка
 		plumber: require('gulp-plumber'), // отладка
+		changed: require('gulp-changed'), // плагин переименования файлов
 		rimraf: require('rimraf'), // удаление файлов
 		rename: require('gulp-rename'), // плагин переименования файлов
 		sourcemaps: require('gulp-sourcemaps'), // плагин создания map-файлов
