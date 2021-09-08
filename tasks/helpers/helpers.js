@@ -10,19 +10,21 @@ const { log } = console,
 		},
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
-	} = config;
+	} = config,
+	fileName = (file) => base(file, ext(file));
 
 const helpers = {
 	get config() { return process.node_config; },
-	set config(value) {
-		process.node_config[name = Object.keys(value)[0]] = value[name];
-	},
+	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
-	get useWebpack() {
+	get webpackConfig() {
+		log('NODE_ENV:', process.env.NODE_ENV);
 		if (exist(wc = webpackConfig) && this.getMode) this.config = { webpackConfig: require(wc) };
-		const _esModule = esModule || !exist(ts = tsconfig) ? 'es5' : JSON.parse(readFile(ts)).compilerOptions.module;
 		log('mode:', (wc = this.config.webpackConfig) ? wc.mode : null);
+	},
+	get useWebpack() {
+		const _esModule = esModule || !exist(ts = tsconfig) ? 'es5' : JSON.parse(readFile(ts)).compilerOptions.module;
 		if (_useWebpack = useWebpack || this.config.useWebpack) return _useWebpack;
 		const search = 'es',
 			includes = _esModule.includes(search),
@@ -38,8 +40,9 @@ const helpers = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
+	fileName,
 	getFiles(_path, exclude = []) {
-		return readDir(_path).filter(file => ext(file) == '.js' && !exclude.includes(base(file, '.js')));
+		return readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)));
 	},
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
