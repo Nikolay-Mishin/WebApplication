@@ -1,14 +1,15 @@
-/// <binding ProjectOpened='_tasksWatch, _test' />
+// <binding ProjectOpened='_tasksWatch, _test' />
 
 //import _tasksWatch from './tasks/helpers/tasksWatch.js';
 //import _test from './tasks/helpers/test.js';
 
 import h from './tasks/helpers/helpers.js';
 import tasks from './tasks/helpers/tasks.js';
-const { log } = console,
-	{ setMode, modules: { gulp: { series, parallel } } } = h;
 
-console.log('exports\n', tasks);
+const { log } = console,
+	{ setMode, modules: { gulp: { series, parallel, src } } } = h;
+
+log('exports\n', tasks);
 
 export const {
 	clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,

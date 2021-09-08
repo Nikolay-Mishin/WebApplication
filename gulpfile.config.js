@@ -8,6 +8,7 @@ import gulpif from 'gulp-if'; // плагин для условий
 import gutil from 'gulp-util'; // отладка
 import notify from 'gulp-notify'; // отладка
 import plumber from 'gulp-plumber'; // errorHandler
+import changed from 'gulp-changed';
 import rimraf from 'rimraf'; // удаление файлов
 import rename from 'gulp-rename'; // плагин переименования файлов
 import sourcemaps from 'gulp-sourcemaps'; // плагин создания map-файлов
@@ -31,10 +32,8 @@ import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { log } = console,
 	{ cwd } = process,
-	fs = require('fs'), // работа с файловой системой
 	{ readFileSync: readFile } = fs,
 	config = JSON.parse(readFile('config.json')),
-	path = require('path'), // работа с путями
 	{ join, relative, dirname } = path,
 	root = join(cwd(), config.paths.root), // __dirname
 	build = join(root, config.paths.build),
@@ -130,7 +129,7 @@ export default process.node_config = process.node_config || {
 		gulp,
 		fs, path,
 		browserSync, reload, server, stream, _reload,
-		gulpif, gutil, notify, plumber,
+		gulpif, gutil, notify, plumber, changed,
 		rimraf, rename, sourcemaps,
 		htmlmin, htmlclean, pug,
 		inlineCss, sass, prefixer,
