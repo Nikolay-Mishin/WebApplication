@@ -1,14 +1,14 @@
 import h from './helpers/helpers.js';
 const {
-	lastRun, notify,
-	arg: { fav },
-	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		fs: { readFileSync: readFile },
-		reload, stream, _if, sourcemaps, htmlclean, htmlmin, realFavicon: { injectFaviconMarkups }
-	}
-} = h;
+		lastRun, notify,
+		arg: { fav },
+		config: { paths },
+		modules: {
+			gulp: { src, dest },
+			fs: { readFileSync: readFile },
+			reload, stream, _if, sourcemaps, htmlclean, htmlmin, realFavicon: { injectFaviconMarkups }
+		}
+	} = h;
 
 export default function html() {
 	const { dev, prod, mode } = h;

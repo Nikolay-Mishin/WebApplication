@@ -2,11 +2,12 @@ import h from './helpers.js';
 const { log } = console,
 	{
 		config: { paths: { tasks: {
-			root, deploy, watch: { tasks, doc, package, editor, root: _root }
-		} } },
+			root, deploy, watch: { tasks, doc, package, server, root: _root }
+		}}},
 		modules: {
 			gulp: { src, dest, watch, lastRun },
-			path: { join }
+			path: { join },
+			changed
 		}
 	} = h;
 
@@ -20,6 +21,7 @@ export default async function tasksWatch() {
 	watch(_root, function rootWatch() {
 		return src(_root, { since: lastRun(rootWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
+			//.pipe(changed('app', { hasChanged: changed.compareContents }))
 			.pipe(dest(root))
 			.pipe(dest(deploy));
 	});
@@ -28,7 +30,9 @@ export default async function tasksWatch() {
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(`${deploy}/doc`));
 	});
-	watch(server, function serverWatch() {
+	const _watch = server;
+	_watch.push(package);
+	watch(_watch, function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(deploy));

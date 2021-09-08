@@ -1,5 +1,5 @@
 import h from './helpers.js';
-const { config, __dirname, getFiles } = h,
+const { config, getFiles, __dirname } = h,
 	{
 		tasksPath, excludeTasks = [],
 		modules: { path: { basename: base, relative } },

@@ -1,12 +1,12 @@
 import h from './helpers/helpers.js';
 const {
-	lastRun, notify,
-	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		reload, stream, _if, sourcemaps, sass, prefixer
-	}
-} = h;
+		lastRun, notify,
+		config: { paths },
+		modules: {
+			gulp: { src, dest },
+			reload, stream, _if, sourcemaps, sass, prefixer
+		}
+	} = h;
 
 export default function scss() {
 	const { dev, mode } = h;

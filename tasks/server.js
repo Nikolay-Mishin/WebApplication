@@ -1,12 +1,12 @@
 import h from './helpers/helpers.js';
 const {
-	config: { serverConfig, serverPHP: serverPHPrun },
-	modules: {
-		gulp: { watch, series },
-		server: { init },
-		reload, _reload, browserSync
-	}
-} = h;
+		config: { serverConfig, serverPHP: serverPHPrun },
+		modules: {
+			gulp: { watch, series },
+			server: { init },
+			reload, _reload, browserSync
+		}
+	} = h;
 
 export default function server_task() {
 	return serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks); // локальный сервер

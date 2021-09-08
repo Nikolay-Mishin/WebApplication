@@ -29,24 +29,26 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
-const esModuleDefault = 'es6',
+const { log } = console,
 	{ cwd } = process,
-	{ join, dirname, relative } = path,
-	root = cwd(), // __dirname
-	build = join(root, 'wwwroot'),
-	srcRoot = 'src',
+	fs = require('fs'), // работа с файловой системой
+	{ readFileSync: readFile } = fs,
+	config = JSON.parse(readFile('config.json')),
+	path = require('path'), // работа с путями
+	{ join, relative, dirname } = path,
+	root = join(cwd(), config.paths.root), // __dirname
+	build = join(root, config.paths.build),
+	srcRoot = config.paths.src,
 	src = join(root, srcRoot),
-	tasksPath = 'tasks',
-	serverPHP = false,
-	domain = 'localhost', // WebApplication / localhost
-	port = 8080,
-	baseDir = join(build, 'html'),
-	index = 'app',
+	serverPHP = config.server.serverPHP,
+	domain = config.server.domain,
+	port = config.server.port,
+	baseDir = join(build, config.server.baseDir),
+	index = config.server.index,
 	__dirname = meta => dirname(fileURLToPath(meta.url)),
 	relativeRoot = from => relative(from.url ? __dirname(from) : from, root);
 
-process.__dirname = __dirname;
-process.relativeRoot = relativeRoot;
+log('config\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
 
 const server = browserSync.create(),
 	reload = async () => server.reload(),
@@ -54,11 +56,11 @@ const server = browserSync.create(),
 	{ reload: _reload } = browserSync;
 
 export default process.node_config = process.node_config || {
-	esModuleDefault, root, build, src, serverPHP,
+	root, build, src, serverPHP,
 	tasksPath: join(root, 'tasks'),
-	//useWebpack: true,
-	//esModule: esModuleDefault,
-	//webpackConfig: join(root, 'webpack.config'), // webpack.config
+	//useWebpack: config.es.useWebpack,
+	//esModule: config.es.module,
+	//webpackConfig: join(root, config.es.webpackConfig),
 	helpers: { __dirname, relativeRoot },
 	deploy: {
 		host: 'site.ru',
@@ -116,7 +118,8 @@ export default process.node_config = process.node_config || {
 				tasks: 'tasks/**/*',
 				root: ['*.js', '*config*', '*lint*', '!*doc*'],
 				doc: 'doc/**/*',
-				server: ['../../../package.json', '../../../.editorconfig'],
+				package: 'package.json',
+				server: ['../../../package.json', '../../../package.json', '../../../.editorconfig']
 			},
 			root: '../../..',
 			deploy: '../_server'
@@ -156,5 +159,3 @@ export default process.node_config = process.node_config || {
 		open: false
 	}
 };
-
-export const { root: _root } = process.node_config;

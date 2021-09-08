@@ -12,9 +12,11 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // Переменные проекта
 
-console.log(process.env.NODE_ENV);
+const { log } = console;
 
-const dev = process.env.NODE_ENV || 'development' === 'development',
+log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
+
+const dev = (process.env.NODE_ENV || 'development') === 'development',
 	prod = !dev,
 	root = __dirname,
 	publicPath = 'wwwroot',
@@ -140,7 +142,7 @@ const dev = process.env.NODE_ENV || 'development' === 'development',
 		return loaders;
 	};
 
-export default exports = {
+export default {
 	context: src,
 	mode: dev ? 'development' : 'production', //none | development | production
 	entry: {
@@ -238,9 +240,8 @@ export default exports = {
 	}
 };
 
-console.log(__dirname);
-console.log(build);
-
-console.log(exports.entry.app);
-console.log(exports.output.path);
-console.log(exports.mode);
+//log('webpackConfig.__dirname:', __dirname);
+//log('webpackConfig.build:', build);
+//log('webpackConfig.entry.app:', module.exports.entry.app);
+//log('webpackConfig.output.path:', module.exports.output.path);
+log('webpackConfig.mode:', module.exports.mode);

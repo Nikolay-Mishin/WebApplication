@@ -1,44 +1,51 @@
 import tasks from './tasks.js';
 import h from './helpers.js';
-const { config, modules, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
-	{ root, paths, serverConfig } = config,
-	{ server } = modules;
+const { log } = console,
+	{ cwd } = process;
 
 export default async function test() {
-	//console.log('process\n', process);
+	const { config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+		{ paths, serverConfig } = config,
+		{ server } = modules;
 
-	//console.log('config\n', config);
-	console.log('paths\n', paths);
-	//console.log('serverConfig\n', serverConfig);
-	console.log('useWebpack: ', useWebpack);
+	//log('process\n', process);
 
-	//console.log('env\n', process.env);
-	//console.log('argv\n', process.argv);
-	console.log('arg\n', arg);
+	//log('config\n', config);
+	log('paths\n', paths);
+	//log('serverConfig\n', serverConfig);
+	log('useWebpack: ', useWebpack);
+
+	//log('env\n', process.env);
+	//log('argv\n', process.argv);
+	log('arg\n', arg);
 	
-	console.log('root:', root);
-	console.log('__dirname:', __dirname(import.meta));
-	console.log('relative:', relativeRoot(import.meta));
+	log('root:', cwd());
+	log('__dirname:', __dirname);
+	log('relative:', relativeRoot(__dirname));
 
-	//console.log('modules\n', modules);
-	//console.log('tasks\n', tasks);
+	//log('modules\n', modules);
+	//log('tasks\n', tasks);
 
-	//console.log('server\n', server);
-	//console.log('name\n', server.name);
-	//console.log('devIp\n', server.instance.utils.devIp());
+	//log('server\n', server);
+	//log('name\n', server.name);
+	//log('devIp\n', server.instance.utils.devIp());
 
 	//const log = { [mode]: {} };
+	//log('mode:', mode);
+	//log('dev:', dev);
 	//if (dev) {
 	//	log[mode].mode = mode;
 	//	log[mode].dev = dev;
 	//	log[mode].prod = prod;
 	//}
+	
 	//setModeSync(true);
+
 	//log[h.mode] = {};
 	//if (h.prod) {
 	//	log[h.mode].mode = h.mode;
 	//	log[h.mode].dev = h.dev;
 	//	log[h.mode].prod = h.prod;
 	//}
-	//console.log('log\n', log);
+	//log('log\n', log);
 };

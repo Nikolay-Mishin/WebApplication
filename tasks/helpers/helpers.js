@@ -1,34 +1,48 @@
 import config from '../../gulpfile.config.js';
-const {
-	esModuleDefault, esModule = esModuleDefault, root, helpers = {}, useWebpack,
-	modules: {
-		gulp: { lastRun },
-		fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
-		path: { join, basename: base, extname: ext },
-		gutil, notify, plumber
-	},
-	webpackConfig = join(root, 'webpack.config.js'),
-	tsconfig = join(root, 'tsconfig.json')
-} = config;
+const { log } = console,
+	{
+		root, useWebpack, esModule, helpers: _helpers = {},
+		modules: {
+			gulp: { lastRun },
+			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
+			path: { join, basename: base, extname: ext },
+			gutil, notify, plumber
+		},
+		webpackConfig = join(root, 'webpack.config.js'),
+		tsconfig = join(root, 'tsconfig.json')
+	} = config,
+	fileName = (file) => base(file, ext(file));
 
-Object.assign(helpers, {
-	get config() { return config; },
+const helpers = {
+	get config() { return process.node_config; },
+	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
+	get webpackConfig() {
+		log('NODE_ENV:', process.env.NODE_ENV);
+		//if (exist(wc = webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(wc)).default; };
+		log('mode:', (wc = this.config.webpackConfig) ? wc.mode : null);
+	},
 	get useWebpack() {
-		if (useWebpack) return useWebpack;
-		//if (exist(webpackConfig)) process.node_config.webpackConfig = (await import(webpackConfig)).default;
-		const module = esModule || !exist(tsconfig) ? 'es6' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
-		return process.node_config.useWebpack = esModule === 'es6';
+		const _esModule = esModule || !exist(ts = tsconfig) ? 'es5' : JSON.parse(readFile(ts)).compilerOptions.module;
+		if (_useWebpack = useWebpack || this.config.useWebpack) return _useWebpack;
+		const search = 'es',
+			includes = _esModule.includes(search),
+			replace = _esModule.replace(new RegExp(search), ''),
+			esNext = replace.toLowerCase() === 'next',
+			higher5 = Number(replace) >= 6,
+			higher2014 = Number(replace) >= 2015;
+		return (this.config = { useWebpack: !includes || esNext || higher5 || higher2014 }).useWebpack;
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
-	get dev() { return this.getMode === 'development'; },
+	get dev() { return (this.getMode || this.setModeSync()) === 'development'; },
 	get prod() { return !this.dev; },
-	get getMode() { return process.env.NODE_ENV || this.setModeSync(); },
+	get getMode() { return process.env.NODE_ENV; },
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
+	fileName,
 	getFiles(_path, exclude = []) {
-		return readDir(_path).filter(file => ext(file) == '.js' && !exclude.includes(base(file, '.js')));
+		return readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)));
 	},
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -54,6 +68,8 @@ Object.assign(helpers, {
 			})
 		});
 	}
-});
+};
+
+Object.assign(helpers, _helpers);
 
 export default helpers;

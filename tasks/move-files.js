@@ -2,10 +2,7 @@ import h from './helpers/helpers.js';
 const {
 	lastRun,
 	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		realFavicon
-	}
+	modules: { gulp: { src, dest } }
 } = h;
 
 export default function move_files() {

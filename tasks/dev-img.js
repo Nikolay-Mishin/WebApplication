@@ -1,9 +1,10 @@
 import h from './helpers/helpers.js';
-const {
-	lastRun,
-	config: { paths },
-	modules: { ImgMinify }
-} = h;
+const { log } = console,
+	{
+		lastRun,
+		config: { paths },
+		modules: { ImgMinify }
+	} = h;
 
 const imgMinify = (function imgMinify() {
 	return new ImgMinify()
@@ -20,6 +21,6 @@ const imgMinify = (function imgMinify() {
 export default async function dev_img() {
 	imgMinify.run(function(err, files) {
 		if (err) throw err;
-		console.log('Images optimized successfully!');
+		log('Images optimized successfully!');
 	});
 };
