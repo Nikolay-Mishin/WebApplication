@@ -1,10 +1,7 @@
 const {
 	lastRun,
 	config: { paths },
-	modules: {
-		gulp: { src, dest },
-		realFavicon
-	}
+	modules: { gulp: { src, dest } }
 } = require('./helpers/helpers');
 
 module.exports = function move_files() {

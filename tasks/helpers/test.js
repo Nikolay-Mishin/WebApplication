@@ -1,10 +1,10 @@
 const { log } = console,
-	{ cwd } = process;
+	{ cwd } = process,
+	tasks = require('./tasks'),
+	h = require('./helpers');
 
 module.exports = async function test() {
-	const tasks = require('./tasks'),
-		h = require('./helpers'),
-		{ config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
