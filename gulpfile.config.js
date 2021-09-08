@@ -1,4 +1,8 @@
-const path = require('path'),
+const { log } = console,
+	fs = require('fs'), // работа с файловой системой
+	{ readFileSync: readFile } = fs,
+	config = JSON.parse(readFile('config.json')),
+	path = require('path'), // работа с путями
 	{ join, relative } = path,
 	root = __dirname,
 	build = join(root, 'wwwroot'),
@@ -11,6 +15,21 @@ const path = require('path'),
 	index = 'app',
 	relativeRoot = from => relative(from, root);
 
+//log('gulpfile.const\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
+
+//log('config\n', config);
+//log('gulpfile.config\n', {
+//	root: join(__dirname, config.paths.root),
+//	build: join(root, config.paths.build),
+//	srcRoot: config.paths.src,
+//	src: join(root, config.paths.src),
+//	serverPHP: config.server.serverPHP,
+//	domain: config.server.domain,
+//	port: config.server.port,
+//	baseDir: join(build, config.server.baseDir),
+//	index: config.server.index
+//});
+
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create(),
 	reload = async () => server.reload();
@@ -18,9 +37,9 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP,
 	tasksPath: join(root, 'tasks'),
-	//useWebpack: true,
-	//esModule: 'es6',
-	//webpackConfig: join(root, 'webpack.config.js'),
+	//useWebpack: config.es.useWebpack,
+	//esModule: config.es.module,
+	//webpackConfig: join(root, config.es.webpackConfig),
 	helpers: { relativeRoot },
 	deploy: {
 		host: 'site.ru',
@@ -87,12 +106,10 @@ module.exports = process.node_config = process.node_config || {
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
-		fs: require('fs'), // работа с файловой системой
-		path, // работа с путями
+		fs, path,
 		browserSync: browserSync, // плагин перезагрузки браузера
 		_reload: browserSync.reload,
-		server,
-		reload,
+		server, reload,
 		stream: server.stream,
 		gulpif: require('gulp-if'), // плагин для условий
 		gutil: require('gulp-util'), // отладка

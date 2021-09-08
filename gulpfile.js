@@ -3,7 +3,7 @@
 const { log } = console,
 	tasks = require('./tasks/helpers/tasks'),
 	h = require('./tasks/helpers/helpers'),
-	{ setMode, modules: { gulp: { series, parallel } } } = h,
+	{ setMode, modules: { gulp: { series, parallel, src } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy
@@ -26,6 +26,22 @@ exports._test = require('./tasks/helpers/test');
 //log('exports\n', exports);
 
 const { setModeSync } = h;
+h.webpackConfig;
 setModeSync(true);
+h.webpackConfig;
 log('useWebpack:', h.useWebpack);
-log('config.useWebpack:', h.config.useWebpack);
+
+src('tasks/helpers/helpers.js').on('data', function (file) {
+	log('file\n', file);
+	log({
+		contents: file.contents, // содержимое файла
+		path: file.path, // путь до файла
+		cwd: file.cwd, // основная директория
+		base: file.base, // базовая директория
+		dirname: file.dirname, // имя текущей директории
+		relative: file.relative, // имя файла относительно текущей директории
+		basename: file.basename, // название файла
+		stem: file.stem, // имя файла
+		extname: file.extname // расширение файла
+	});
+})

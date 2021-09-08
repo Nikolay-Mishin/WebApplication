@@ -1,0 +1,20 @@
+{
+	"es": {
+		"useWebpack": true,
+		"module": "es6",
+		"webpackConfig": "webpack.config.js"
+	},
+	"paths": {
+		"root": ".",
+		"build": "wwwroot",
+		"src": "src"
+
+	},
+	"server": {
+		"serverPHP": false,
+		"domain": "localhost",
+		"port": 8080,
+		"baseDir": "html",
+		"index": "app"
+	}
+}
