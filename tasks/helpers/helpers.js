@@ -15,17 +15,20 @@ const { log } = console,
 
 const helpers = {
 	get config() { return process.node_config; },
-	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
+	set config(value) {
+		const name = Object.keys(value)[0];
+		process.node_config[name] = value[name];
+	},
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
 		log('NODE_ENV:', process.env.NODE_ENV);
-		//if (exist(wc = webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(wc)).default; };
-		log('mode:', (wc = this.config.webpackConfig) ? wc.mode : null);
+		//if (exist(webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(webpackConfig)).default; };
+		log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
 	},
 	get useWebpack() {
-		const _esModule = esModule || !exist(ts = tsconfig) ? 'es5' : JSON.parse(readFile(ts)).compilerOptions.module;
-		if (_useWebpack = useWebpack || this.config.useWebpack) return _useWebpack;
+		const _esModule = esModule || !exist(tsconfig) ? 'es5' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
+		if (useWebpack || this.config.useWebpack) return useWebpack || this.config.useWebpack;
 		const search = 'es',
 			includes = _esModule.includes(search),
 			replace = _esModule.replace(new RegExp(search), ''),
@@ -73,3 +76,5 @@ const helpers = {
 Object.assign(helpers, _helpers);
 
 export default helpers;
+
+log('helpers\n', helpers);
