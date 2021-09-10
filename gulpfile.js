@@ -26,9 +26,8 @@ exports.move = series(clean, move_files);
 //log('exports\n', exports);
 
 const { setModeSync } = h;
-//h.webpackConfig;
 setModeSync(true);
-log('webpackConfig:', h.webpackConfig);
+log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 
 exports.data = () => src('tasks/**/*').on('data', function (file) {
