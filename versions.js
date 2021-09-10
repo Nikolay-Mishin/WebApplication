@@ -20,10 +20,9 @@
  * 3.5 - add log to src.on('data')
  * 3.6 - add config.json
  * 4.0 - merge changes from cjs to esm
+ * 4.1 - fix async/await to tasks in gulpfile
 */
 
 /* new versions
- * 3.7 - add get webpackConfig & useWebpack in gulpfile.config
- * 4.1 - fix async/await to tasks in gulpfile
  * 4.2 - fix versions
 */
