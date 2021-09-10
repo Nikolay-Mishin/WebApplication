@@ -31,6 +31,7 @@ module.exports = async function tasksWatch() {
 	});
 	const _watch = server;
 	_watch.push(package);
+	log('watch-server', server);
 	watch(_watch, function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
