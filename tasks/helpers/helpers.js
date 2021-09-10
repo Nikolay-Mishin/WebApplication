@@ -28,7 +28,6 @@ const helpers = {
 	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
 		return (async () => {
-			log('NODE_ENV:', process.env.NODE_ENV);
 			const file = _relative(import.meta, webpackConfig);
 			log('file:', file);
 			if (exist(webpackConfig) && this.getMode) {

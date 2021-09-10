@@ -1,7 +1,6 @@
 import { pathToFileURL as toUrl } from 'url';
 import h from './helpers.js';
-const { log } = console,
-	{ config, getFiles } = h,
+const { config, getFiles } = h,
 	{
 		tasksPath, excludeTasks = [],
 		modules: { path: { basename: base } },

@@ -28,8 +28,7 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
-const { log } = console,
-	{ cwd } = process,
+const { cwd } = process,
 	{ readFileSync: readFile } = fs,
 	config = JSON.parse(readFile('config.json')),
 	{ join, relative, dirname } = path,
@@ -42,8 +41,6 @@ const { log } = console,
 	port = config.server.port,
 	baseDir = join(build, config.server.baseDir),
 	index = config.server.index;
-
-//log('config\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
 
 const server = browserSync.create(),
 	reload = async () => server.reload(),

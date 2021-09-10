@@ -13,10 +13,6 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // Переменные проекта
 
-const { log } = console;
-
-log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
-
 const dev = (process.env.NODE_ENV || 'development') === 'development',
 	prod = !dev,
 	root = cwd(), // __dirname
@@ -143,7 +139,7 @@ const dev = (process.env.NODE_ENV || 'development') === 'development',
 		return loaders;
 	};
 
-const module = {
+export default {
 	context: src,
 	mode: dev ? 'development' : 'production', //none | development | production
 	entry: {
@@ -240,11 +236,3 @@ const module = {
 		],
 	}
 };
-
-export default module;
-
-//log('webpackConfig.__dirname:', root);
-//log('webpackConfig.build:', build);
-//log('webpackConfig.entry.app:', module.entry.app);
-//log('webpackConfig.output.path:', module.output.path);
-log('webpackConfig.mode:', module.mode);
