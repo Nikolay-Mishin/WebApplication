@@ -1,6 +1,5 @@
 // Подключаемые модули
-const { log } = console,
-	webpack = require('webpack'),
+const webpack = require('webpack'),
 	{ join } = require('path'),
 	HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin'),
 	HTMLWebpackPlugin = require('html-webpack-plugin'), // создает HTML-файл на основе шаблона

@@ -1,5 +1,4 @@
-const { log } = console,
-	fs = require('fs'), // работа с файловой системой
+const fs = require('fs'), // работа с файловой системой
 	{ readFileSync: readFile } = fs,
 	config = JSON.parse(readFile('config.json')),
 	path = require('path'), // работа с путями

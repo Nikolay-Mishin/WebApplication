@@ -1,5 +1,4 @@
-const { log } = console,
-	config = require('../../gulpfile.config'),
+const config = require('../../gulpfile.config'),
 	{
 		root, useWebpack, esModule,
 		modules: {
