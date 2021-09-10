@@ -1,7 +1,7 @@
 const { log } = console,
 	config = require('../../gulpfile.config'),
 	{
-		root, useWebpack, esModule, helpers: _helpers = {},
+		root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
@@ -11,9 +11,11 @@ const { log } = console,
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
-	fileName = (file) => base(file, ext(file));
+	relativeRoot = from => relative(from, root),
+	fileName = file => base(file, ext(file));
 
-const helpers = {
+module.exports = {
+	relativeRoot,
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
@@ -70,7 +72,3 @@ const helpers = {
 		});
 	}
 };
-
-Object.assign(helpers, _helpers);
-
-module.exports = helpers;
