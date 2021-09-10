@@ -8,11 +8,11 @@ const {
 		}
 	} = h;
 
-export default function js() {
-	const { dev, mode, useWebpack } = h;
+export default async function js() {
+	const { dev, mode, useWebpack, webpackConfig } = h;
 	if (useWebpack) {
 		return src(paths.src.js, lastRun(js))
-			.pipe(webpackStream(require(webpackConfig)), webpack)
+			.pipe(webpackStream(await webpackConfig), webpack)
 			.pipe(dest(paths.build.js))
 			.pipe(notify(`${mode}:js`));
 	}

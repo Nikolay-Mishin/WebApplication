@@ -1,7 +1,6 @@
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
-const { log } = console,
-	{
+const {
 		root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
@@ -13,12 +12,12 @@ const { log } = console,
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
 	__dirname = meta => dirname(toPath(meta.url)),
-	_relative = (from, to) => relative(from.url ? toPath(from.url) : from, to),
+	_relative = (from, to) => relative(from.url ? __dirname(from) : from, to),
 	relativeRoot = from => _relative(from, root),
 	fileName = file => base(file, ext(file));
 
 const helpers = {
-	__dirname, relativeRoot, _relative,
+	__dirname, _relative, relativeRoot,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -27,15 +26,8 @@ const helpers = {
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
-		return (async () => {
-			const file = _relative(import.meta, webpackConfig);
-			log('file:', file);
-			if (exist(webpackConfig) && this.getMode) {
-				this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default };
-			}
-			log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
-			return await this.config.webpackConfig;
-		})();
+		return (async () => !(exist(webpackConfig) && this.getMode) ? {} :
+			(this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default }).webpackConfig)();
 	},
 	get useWebpack() {
 		const _esModule = esModule || !exist(tsconfig) ? 'es5' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
@@ -83,5 +75,3 @@ const helpers = {
 };
 
 export default helpers;
-
-//log('helpers\n', helpers);
