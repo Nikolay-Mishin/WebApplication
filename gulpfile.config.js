@@ -15,8 +15,6 @@ const { log } = console,
 	index = config.server.index,
 	relativeRoot = from => relative(from, root);
 
-//log('config\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
-
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create(),
 	reload = async () => server.reload();
