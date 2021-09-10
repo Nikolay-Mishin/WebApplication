@@ -112,7 +112,7 @@ export default process.node_config = process.node_config || {
 				root: ['*.js', '*config*', '*lint*', '!*doc*'],
 				doc: 'doc/**/*',
 				package: 'package.json',
-				server: ['../../../package.json', '../../../package.json', '../../../.editorconfig']
+				server: ['../../../package.json', '../../../.editorconfig']
 			}
 		}
 	},
