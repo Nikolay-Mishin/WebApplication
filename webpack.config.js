@@ -13,7 +13,7 @@ const { log } = console,
 
 // Переменные проекта
 
-log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
+//log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
 
 const dev = (process.env.NODE_ENV || 'development') === 'development',
 	prod = !dev,
@@ -243,4 +243,4 @@ module.exports = {
 //log('webpackConfig.build:', build);
 //log('webpackConfig.entry.app:', module.exports.entry.app);
 //log('webpackConfig.output.path:', module.exports.output.path);
-log('webpackConfig.mode:', module.exports.mode);
+//log('webpackConfig.mode:', module.exports.mode);
