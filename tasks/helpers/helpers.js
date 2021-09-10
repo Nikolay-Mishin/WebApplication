@@ -26,6 +26,7 @@ const helpers = {
 			log('NODE_ENV:', process.env.NODE_ENV);
 			//if (exist(webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(webpackConfig)).default; };
 			log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
+			//return this.config.webpackConfig;
 		})();
 	},
 	get useWebpack() {
