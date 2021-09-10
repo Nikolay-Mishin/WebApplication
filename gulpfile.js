@@ -2,13 +2,13 @@
 
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/helpers/test.js';
-export { _tasksWatch, _test };
-
 import h from './tasks/helpers/helpers.js';
 import tasks from './tasks/helpers/tasks.js';
 
 const { log } = console,
 	{ setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h;
+
+export { _tasksWatch, _test };
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
