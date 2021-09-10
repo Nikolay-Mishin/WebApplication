@@ -1,5 +1,8 @@
 // <binding ProjectOpened='_tasksWatch, _test' />
 
+exports._tasksWatch = require('./tasks/helpers/tasksWatch');
+exports._test = require('./tasks/helpers/test');
+
 const { log } = console,
 	tasks = require('./tasks/helpers/tasks'),
 	h = require('./tasks/helpers/helpers'),
@@ -19,9 +22,6 @@ exports.move = series(clean, move_files);
 
 // задача по умолчанию
 //exports.default = series(exports.build);
-
-exports._tasksWatch = require('./tasks/helpers/tasksWatch');
-exports._test = require('./tasks/helpers/test');
 
 //log('exports\n', exports);
 
