@@ -10,32 +10,26 @@ import tasks from './tasks/helpers/tasks.js';
 const { log } = console,
 	{ setMode, modules: { gulp: { series, parallel, src } } } = h;
 
-log('tasks\n', tasks);
-
-export const //_tasksWatch = (await import('./tasks/helpers/tasksWatch.js')).default,
-	//_test = (await import('./tasks/helpers/test.js')).default,
-	{
+export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy
-	} = tasks;
-	//build = series(clean, parallel(html, js)),
-	//dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
-	//prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img)),
-	//deploy = series(prod, _deploy),
-	//move = series(clean, move_files);
+	} = tasks,
+	build = series(clean, parallel(html, js)),
+	dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
+	prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img)),
+	deploy = series(prod, _deploy),
+	move = series(clean, move_files);
 
 // задача по умолчанию
-//export default tasks.build;
+//export default build;
 
-Object.assign(tasks, { /*build, dev, prod, deploy, move, */_tasksWatch, _test });
-
-console.log('exports\n', tasks);
-console.log('build\n', clean, html, js);
+//Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
+//console.log('exports\n', tasks);
 
 const { setModeSync } = h;
-//h.webpackConfig;
+h.webpackConfig;
 setModeSync(true);
-//h.webpackConfig;
+log('webpackConfig\n', h.webpackConfig);
 //log('useWebpack:', h.useWebpack);
 
 export const data = () => src('tasks/**/*').on('data', function (file) {

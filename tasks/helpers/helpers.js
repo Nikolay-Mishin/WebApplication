@@ -22,9 +22,11 @@ const helpers = {
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
-		log('NODE_ENV:', process.env.NODE_ENV);
-		//if (exist(webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(webpackConfig)).default; };
-		log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
+		return (async () => {
+			log('NODE_ENV:', process.env.NODE_ENV);
+			//if (exist(webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(webpackConfig)).default; };
+			log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
+		})();
 	},
 	get useWebpack() {
 		const _esModule = esModule || !exist(tsconfig) ? 'es5' : JSON.parse(readFile(tsconfig)).compilerOptions.module;

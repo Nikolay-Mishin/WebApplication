@@ -1,4 +1,3 @@
-'use strict';
 import h from './helpers.js';
 const { log } = console,
 	{
