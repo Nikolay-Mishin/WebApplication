@@ -77,4 +77,4 @@ Object.assign(helpers, _helpers);
 
 export default helpers;
 
-log('helpers\n', helpers);
+//log('helpers\n', helpers);

@@ -1,7 +1,7 @@
 // <binding ProjectOpened='_tasksWatch, _test' />
 
-//import _tasksWatch from './tasks/helpers/tasksWatch.js';
-//import _test from './tasks/helpers/test.js';
+import _tasksWatch from './tasks/helpers/tasksWatch.js';
+import _test from './tasks/helpers/test.js';
 
 import h from './tasks/helpers/helpers.js';
 import tasks from './tasks/helpers/tasks.js';
@@ -9,17 +9,19 @@ import tasks from './tasks/helpers/tasks.js';
 const { log } = console,
 	{ setMode, modules: { gulp: { series, parallel, src } } } = h;
 
-log('exports\n', tasks);
+log('tasks\n', tasks);
 
-export const {
-	clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
-	move_files, deploy: _deploy
-} = tasks;
+export { _tasksWatch, _test };
+export const //_tasksWatch = (await import('./tasks/helpers/tasksWatch.js')).default,
+	{
+		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
+		move_files, deploy: _deploy
+	} = tasks;
 	//build = series(clean, parallel(html, js)),
 	//dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
 	//prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img)),
 	//deploy = series(tasks.prod, _deploy),
-	//move = series(clean, move_files),
+	//move = series(clean, move_files);
 	//_tasksWatch = (await import('./tasks/helpers/tasksWatch.js')).default,
 	//_test = (await import('./tasks/helpers/test.js')).default;
 
@@ -34,10 +36,10 @@ console.log('exports\n', tasks);
 console.log('build\n', clean, html, js);
 
 const { setModeSync } = h;
-h.webpackConfig;
+//h.webpackConfig;
 setModeSync(true);
-h.webpackConfig;
-log('useWebpack:', h.useWebpack);
+//h.webpackConfig;
+//log('useWebpack:', h.useWebpack);
 
 export const data = () => src('tasks/**/*').on('data', function (file) {
 	log({

@@ -1,8 +1,9 @@
+'use strict';
 import h from './helpers.js';
 const { log } = console,
 	{
 		config: { paths: { tasks: {
-			root, deploy, watch: { tasks, doc, package, server, root: _root }
+			root, deploy, watch: { tasks, root: _root, doc, package: _package, server }
 		}}},
 		modules: {
 			gulp: { src, dest, watch, lastRun },
@@ -31,7 +32,7 @@ export default async function tasksWatch() {
 			.pipe(dest(`${deploy}/doc`));
 	});
 	const _watch = server;
-	_watch.push(package);
+	_watch.push(_package);
 	watch(_watch, function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
