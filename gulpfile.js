@@ -1,4 +1,4 @@
-// <binding ProjectOpened='_tasksWatch, _test' />
+/// <binding ProjectOpened='_tasksWatch' />
 
 exports._tasksWatch = require('./tasks/helpers/tasksWatch');
 exports._test = require('./tasks/helpers/test');
