@@ -1,19 +1,24 @@
+import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 const { log } = console,
 	{
-		root, useWebpack, esModule, helpers: _helpers = {},
+		root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
-			path: { join, basename: base, extname: ext },
+			path: { join, dirname, relative, basename: base, extname: ext },
 			gutil, notify, plumber
 		},
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
-	fileName = (file) => base(file, ext(file));
+	__dirname = meta => dirname(toPath(meta.url)),
+	_relative = (from, to) => relative(from.url ? toPath(from.url) : from, to),
+	relativeRoot = from => _relative(from, root),
+	fileName = file => base(file, ext(file));
 
 const helpers = {
+	__dirname, relativeRoot, _relative,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -24,9 +29,13 @@ const helpers = {
 	get webpackConfig() {
 		return (async () => {
 			log('NODE_ENV:', process.env.NODE_ENV);
-			//if (exist(webpackConfig) && this.getMode) this.config = { webpackConfig: (await import(webpackConfig)).default; };
+			const file = _relative(import.meta, webpackConfig);
+			log('file:', file);
+			if (exist(webpackConfig) && this.getMode) {
+				this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default };
+			}
 			log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
-			//return this.config.webpackConfig;
+			return this.config.webpackConfig;
 		})();
 	},
 	get useWebpack() {
@@ -44,12 +53,10 @@ const helpers = {
 	get dev() { return (this.getMode || this.setModeSync()) === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV; },
-	setMode(prod = false) { return async () => this.setModeSync(prod); },
-	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
+	setMode: (prod = false) => async () => this.setModeSync(prod),
+	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	fileName,
-	getFiles(_path, exclude = []) {
-		return readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)));
-	},
+	getFiles: (_path, exclude = []) => readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file))),
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
@@ -63,9 +70,9 @@ const helpers = {
 		});
 		return args;
 	})(process.argv),
-	lastRun(func) { return { since: lastRun(func) }; },
-	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
-	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
+	lastRun: func => { since: lastRun(func) },
+	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
+	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
 	get errorHandler() {
 		return plumber({
 			errorHandler: notify.onError({
@@ -75,8 +82,6 @@ const helpers = {
 		});
 	}
 };
-
-Object.assign(helpers, _helpers);
 
 export default helpers;
 

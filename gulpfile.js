@@ -29,7 +29,7 @@ export const {
 const { setModeSync } = h;
 h.webpackConfig;
 setModeSync(true);
-log('webpackConfig\n', h.webpackConfig);
+log('webpackConfig\n', await h.webpackConfig);
 //log('useWebpack:', h.useWebpack);
 
 export const data = () => src('tasks/**/*').on('data', function (file) {

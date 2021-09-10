@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'url';
-
 import gulp from 'gulp'; // сам gulp
 import fs from 'fs'; // работа с файловой системой
 import path from 'path'; // работа с путями
@@ -43,9 +41,7 @@ const { log } = console,
 	domain = config.server.domain,
 	port = config.server.port,
 	baseDir = join(build, config.server.baseDir),
-	index = config.server.index,
-	__dirname = meta => dirname(fileURLToPath(meta.url)),
-	relativeRoot = from => relative(from.url ? __dirname(from) : from, root);
+	index = config.server.index;
 
 //log('config\n', {root, build, srcRoot, src, serverPHP, domain, port, baseDir, index});
 
@@ -60,7 +56,6 @@ export default process.node_config = process.node_config || {
 	//useWebpack: config.es.useWebpack,
 	//esModule: config.es.module,
 	//webpackConfig: join(root, config.es.webpackConfig),
-	helpers: { __dirname, relativeRoot },
 	deploy: {
 		host: 'site.ru',
 		user: 'tstv',

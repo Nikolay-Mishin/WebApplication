@@ -1,4 +1,5 @@
 // Подключаемые модули
+import { cwd } from 'process';
 import webpack from 'webpack';
 import { join } from 'path';
 import HtmlWebpackExternalsPlugin from 'html-webpack-externals-plugin';
@@ -18,7 +19,7 @@ log('webpackConfig.NODE_ENV:', process.env.NODE_ENV);
 
 const dev = (process.env.NODE_ENV || 'development') === 'development',
 	prod = !dev,
-	root = __dirname,
+	root = cwd(), // __dirname
 	publicPath = 'wwwroot',
 	build = join(root, publicPath),
 	src = join(root, 'src'),
@@ -142,7 +143,7 @@ const dev = (process.env.NODE_ENV || 'development') === 'development',
 		return loaders;
 	};
 
-export default {
+const module = {
 	context: src,
 	mode: dev ? 'development' : 'production', //none | development | production
 	entry: {
@@ -240,8 +241,10 @@ export default {
 	}
 };
 
-//log('webpackConfig.__dirname:', __dirname);
+export default module;
+
+//log('webpackConfig.__dirname:', root);
 //log('webpackConfig.build:', build);
-//log('webpackConfig.entry.app:', module.exports.entry.app);
-//log('webpackConfig.output.path:', module.exports.output.path);
-log('webpackConfig.mode:', module.exports.mode);
+//log('webpackConfig.entry.app:', module.entry.app);
+//log('webpackConfig.output.path:', module.output.path);
+log('webpackConfig.mode:', module.mode);

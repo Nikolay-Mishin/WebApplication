@@ -4,7 +4,7 @@ const { log } = console,
 	{ cwd } = process;
 
 export default async function test() {
-	const { config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
