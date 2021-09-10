@@ -29,8 +29,7 @@ module.exports = async function tasksWatch() {
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(`${deploy}/doc`));
 	});
-	const _watch = server.concat(package);
-	watch(_watch, function serverWatch() {
+	watch(server.concat(package), function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
 			.pipe(dest(deploy));
