@@ -4,8 +4,8 @@ exports._tasksWatch = require('./tasks/helpers/tasksWatch');
 exports._test = require('./tasks/helpers/test');
 
 const { log } = console,
-	tasks = require('./tasks/helpers/tasks'),
 	h = require('./tasks/helpers/helpers'),
+	tasks = require('./tasks/helpers/tasks'),
 	{ setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,

@@ -1,7 +1,7 @@
 const { log } = console,
 	{ cwd } = process,
-	tasks = require('./tasks'),
-	h = require('./helpers');
+	h = require('./helpers'),
+	tasks = require('./tasks');
 
 module.exports = async function test() {
 	const { config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
