@@ -34,7 +34,7 @@ const helpers = {
 				this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default };
 			}
 			log('mode:', this.config.webpackConfig ? this.config.webpackConfig.mode : null);
-			return this.config.webpackConfig;
+			return await this.config.webpackConfig;
 		})();
 	},
 	get useWebpack() {
