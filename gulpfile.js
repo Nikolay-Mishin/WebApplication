@@ -6,7 +6,7 @@ exports._test = require('./tasks/helpers/test');
 const { log } = console,
 	tasks = require('./tasks/helpers/tasks'),
 	h = require('./tasks/helpers/helpers'),
-	{ setMode, modules: { gulp: { series, parallel, src } } } = h,
+	{ setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy
@@ -25,7 +25,7 @@ exports.move = series(clean, move_files);
 
 //log('exports\n', exports);
 
-h.setModeSync(true);
+setModeSync(true);
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 
