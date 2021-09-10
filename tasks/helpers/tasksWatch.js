@@ -1,7 +1,7 @@
 const { log } = console,
 	{
 		config: { paths: { tasks: {
-			root, deploy, watch: { tasks, doc, package, server, root: _root }
+			root, deploy, watch: { tasks, root: _root, doc, package, server }
 		}}},
 		modules: {
 			gulp: { src, dest, watch, lastRun },

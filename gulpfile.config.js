@@ -80,15 +80,15 @@ module.exports = process.node_config = process.node_config || {
 			js: join(build, 'js')
 		},
 		tasks: {
+			root: '../../..',
+			deploy: '../_server',
 			watch: {
 				tasks: 'tasks/**/*',
 				root: ['*.js', '*config*', '*lint*', '!*doc*'],
 				doc: 'doc/**/*',
 				package: 'package.json',
 				server: ['../../../package.json', '../../../package.json', '../../../.editorconfig']
-			},
-			root: '../../..',
-			deploy: '../_server'
+			}
 		}
 	},
 	// Подключаемые модули
