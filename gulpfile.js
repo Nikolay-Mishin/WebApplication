@@ -1,7 +1,5 @@
 // <binding ProjectOpened='_tasksWatch, _test' />
 
-const { log } = console;
-
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/helpers/test.js';
 export { _tasksWatch, _test };
@@ -9,7 +7,8 @@ export { _tasksWatch, _test };
 import h from './tasks/helpers/helpers.js';
 import tasks from './tasks/helpers/tasks.js';
 
-const { setMode, modules: { gulp: { series, parallel, src } } } = h;
+const { log } = console,
+	{ setMode, modules: { gulp: { series, parallel, src } } } = h;
 
 log('tasks\n', tasks);
 
@@ -25,10 +24,10 @@ export const //_tasksWatch = (await import('./tasks/helpers/tasksWatch.js')).def
 	//deploy = series(prod, _deploy),
 	//move = series(clean, move_files);
 
-Object.assign(tasks, { /*build, dev, prod, deploy, move, */_tasksWatch, _test });
-
 // задача по умолчанию
 //export default tasks.build;
+
+Object.assign(tasks, { /*build, dev, prod, deploy, move, */_tasksWatch, _test });
 
 console.log('exports\n', tasks);
 console.log('build\n', clean, html, js);
