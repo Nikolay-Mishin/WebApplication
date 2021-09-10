@@ -20,7 +20,7 @@ module.exports = {
 	get modules() { return this.config.modules; },
 	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
-		return exist(wc = webpackConfig) && this.getMode ? (this.config = { webpackConfig: require(wc) }).webpackConfig : null;
+		return !(exist(wc = webpackConfig) && this.getMode) ? {} : (this.config = { webpackConfig: require(wc) }).webpackConfig;
 	},
 	get useWebpack() {
 		const _esModule = esModule || !exist(ts = tsconfig) ? 'es5' : JSON.parse(readFile(ts)).compilerOptions.module;

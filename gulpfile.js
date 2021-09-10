@@ -25,8 +25,7 @@ exports.move = series(clean, move_files);
 
 //log('exports\n', exports);
 
-const { setModeSync } = h;
-setModeSync(true);
+h.setModeSync(true);
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 

@@ -9,10 +9,10 @@ const h = require('./helpers/helpers'),
 	} = h;
 
 module.exports = function js() {
-	const { dev, mode, useWebpack } = h;
+	const { dev, mode, useWebpack, webpackConfig } = h;
 	if (useWebpack) {
 		return src(paths.src.js, lastRun(js))
-			.pipe(webpackStream(require(webpackConfig)), webpack)
+			.pipe(webpackStream(webpackConfig), webpack)
 			.pipe(dest(paths.build.js))
 			.pipe(notify(`${mode}:js`));
 	}
