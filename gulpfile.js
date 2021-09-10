@@ -22,7 +22,8 @@ export const //_tasksWatch = (await import('./tasks/helpers/tasksWatch.js')).def
 	//build = series(clean, parallel(html, js)),
 	//dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
 	//prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img)),
-	//deploy = series(tasks.prod, _deploy);
+	//deploy = series(prod, _deploy),
+	//move = series(clean, move_files);
 
 Object.assign(tasks, { /*build, dev, prod, deploy, move, */_tasksWatch, _test });
 
