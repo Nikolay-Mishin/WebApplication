@@ -14,6 +14,31 @@ const { argv } = process,
 	relativeRoot = from => relative(from, root),
 	fileName = file => base(file, ext(file));
 
+const options = {
+	project: 'app-' + getDefaultContext('canonium')
+};
+
+function getDefaultContext(defaultName) {
+	const argv = process.argv[2] || process.argv[3];
+	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = process.argv[3];
+	return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
+}
+
+function runInContext(filepath, cb) {
+	const context = path.relative(process.cwd(), filepath),
+		projectName = context.split(path.sep)[0];
+
+	//console.log(
+	//	'[' + chalk.green(projectName.replace('app-', '')) + ']' +
+	//	' has been changed: ' + chalk.cyan(context)
+	//);
+	log(`[${projectName.replace('app-', '')}] has been changed:  + ${context}`);
+
+	options.project = projectName; // Set project
+
+	cb(); // Task call
+}
+
 module.exports = {
 	relativeRoot,
 	get config() { return process.node_config; },
@@ -74,5 +99,30 @@ module.exports = {
 				message: "Ошибка: <%= error.message %>"
 			})
 		});
+	},
+	options: {
+		project: 'app-' + getDefaultContext('canonium')
+	},
+	getDefaultContext(defaultName) {
+		const argv = process.argv[2] || process.argv[3];
+		if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) {
+			argv = process.argv[3];
+		}
+		return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
+	},
+	runInContext(filepath, cb) {
+		const context = path.relative(process.cwd(), filepath),
+			projectName = context.split(path.sep)[0];
+
+		// Console
+		console.log(
+			'[' + chalk.green(projectName.replace('app-', '')) + ']' +
+			' has been changed: ' + chalk.cyan(context)
+		);
+
+		// Set project
+		options.project = projectName;
+
+		cb();
 	}
 };

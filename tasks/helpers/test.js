@@ -1,5 +1,5 @@
 const { log } = console,
-	{ cwd, title, env, argv, execArgv } = process,
+	{ cwd, title, env, argv, execArgv, moduleName } = process,
 	{ HOMEDRIVE, INIT_CWD } = env,
 	{ argv: _argv } = require('yargs'),
 	h = require('./helpers');
@@ -17,7 +17,7 @@ module.exports = async function test() {
 	//log('useWebpack: ', useWebpack);
 
 	//log('env\n', env);
-	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, currTask, _argv });
+	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, moduleName, currTask, _argv });
 
 	//log('argv\n', argv);
 	log('arg\n', arg);
