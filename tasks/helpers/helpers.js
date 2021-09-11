@@ -62,6 +62,7 @@ const helpers = {
 		});
 		return args;
 	})(argv),
+	currTask: (argList => argList[argList.length - 1])(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),

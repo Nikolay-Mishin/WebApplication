@@ -1,11 +1,11 @@
 import { log } from 'console';
-import { cwd, env, argv, stdout, stdin, execArgv } from 'process';
+import { cwd, title, env, argv, execArgv } from 'process';
 import h from './helpers.js';
 
 const { HOMEDRIVE, INIT_CWD } = env;
 
 export default async function test() {
-	const { config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
@@ -17,9 +17,7 @@ export default async function test() {
 	//log('useWebpack: ', useWebpack);
 
 	//log('env\n', env);
-	log('env-list\n', {
-		HOMEDRIVE, INIT_CWD, stdout, stdin, argv, execArgv
-	});
+	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, currTask });
 
 	//log('argv\n', argv);
 	log('arg\n', arg);
