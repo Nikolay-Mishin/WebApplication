@@ -1,6 +1,6 @@
+import { log } from 'console';
 import h from './helpers/helpers.js';
-const { log } = console,
-	{
+const {
 		lastRun,
 		modules: { gulp: { src } }
 	} = h;

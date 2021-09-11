@@ -1,27 +1,32 @@
+import { log } from 'console';
+import { cwd, env, argv, stdout, stdin, execArgv } from 'process';
 import h from './helpers.js';
-import tasks from './tasks.js';
-const { log } = console,
-	{ cwd } = process;
+
+const { HOMEDRIVE, INIT_CWD } = env;
 
 export default async function test() {
-	const { config, modules, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
-	//log('process\n', process);
+	log('process\n', process);
 
 	//log('config\n', config);
 	log('paths\n', paths);
 	//log('serverConfig\n', serverConfig);
-	log('useWebpack: ', useWebpack);
+	//log('useWebpack: ', useWebpack);
 
-	//log('env\n', process.env);
-	//log('argv\n', process.argv);
+	//log('env\n', env);
+	log('env-list\n', {
+		HOMEDRIVE, INIT_CWD, stdout, stdin, argv, execArgv
+	});
+
+	//log('argv\n', argv);
 	log('arg\n', arg);
 	
-	log('root:', cwd());
-	log('__dirname:', __dirname);
-	log('relative:', relativeRoot(__dirname));
+	//log('root:', cwd());
+	//log('__dirname:', __dirname);
+	//log('relative:', relativeRoot(__dirname));
 
 	//log('modules\n', modules);
 	//log('tasks\n', tasks);

@@ -1,3 +1,4 @@
+import { argv } from 'process';
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 const {
@@ -60,7 +61,7 @@ const helpers = {
 			else args[curOpt = opt] = true; // argument name
 		});
 		return args;
-	})(process.argv),
+	})(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),

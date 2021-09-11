@@ -1,3 +1,4 @@
+import { cwd } from 'process';
 import gulp from 'gulp'; // сам gulp
 import fs from 'fs'; // работа с файловой системой
 import path from 'path'; // работа с путями
@@ -28,8 +29,7 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
-const { cwd } = process,
-	{ readFileSync: readFile } = fs,
+const { readFileSync: readFile } = fs,
 	{ join } = path,
 	config = JSON.parse(readFile('config.json')),
 	{

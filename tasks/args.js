@@ -1,5 +1,5 @@
+import { log } from 'console';
 import h from './helpers/helpers.js';
-const { log } = console,
-	{ arg } = h;
+const { arg } = h;
 
 export default async function args() { log(arg); };

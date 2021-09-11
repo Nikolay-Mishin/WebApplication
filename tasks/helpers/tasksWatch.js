@@ -1,6 +1,6 @@
+import { log } from 'console';
 import h from './helpers.js';
-const { log } = console,
-	{
+const {
 		config: { paths: { tasks: {
 			root, deploy, watch: { tasks, root: _root, doc, package: _package, server }
 		}}},
