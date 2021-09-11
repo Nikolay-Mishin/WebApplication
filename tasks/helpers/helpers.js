@@ -17,7 +17,32 @@ const {
 	relativeRoot = from => _relative(from, root),
 	fileName = file => base(file, ext(file));
 
-const helpers = {
+function getDefaultContext(defaultName) {
+	const argv = process.argv[2] || process.argv[3];
+	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = process.argv[3];
+	return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
+}
+
+const options = {
+	project: 'app-' + getDefaultContext('canonium')
+};
+
+function runInContext(filepath, cb) {
+	const context = path.relative(process.cwd(), filepath),
+		projectName = context.split(path.sep)[0];
+
+	//console.log(
+	//	'[' + chalk.green(projectName.replace('app-', '')) + ']' +
+	//	' has been changed: ' + chalk.cyan(context)
+	//);
+	log(`[${projectName.replace('app-', '')}] has been changed:  + ${context}`);
+
+	options.project = projectName; // Set project
+
+	cb(); // Task call
+}
+
+export default {
 	__dirname, _relative, relativeRoot,
 	get config() { return process.node_config; },
 	set config(value) {
@@ -79,7 +104,6 @@ const helpers = {
 				message: "Ошибка: <%= error.message %>"
 			})
 		});
-	}
+	},
+	getDefaultContext, options, runInContext
 };
-
-export default helpers;
