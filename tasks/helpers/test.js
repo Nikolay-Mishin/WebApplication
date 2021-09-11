@@ -1,26 +1,26 @@
 const { log } = console,
-	{ cwd, title, env, argv, execArgv, moduleName } = process,
-	{ HOMEDRIVE, INIT_CWD } = env,
+	{ cwd, title, env, argv } = process,
+	{ INIT_CWD, HOMEDRIVE } = env,
 	{ argv: _argv } = require('yargs'),
 	h = require('./helpers');
 
 module.exports = async function test() {
-	const { config, modules, tasks, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
+	const { config, modules, tasks, useWebpack, currTask, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
-	log('process\n', process);
+	//log('process\n', process);
 
 	//log('config\n', config);
-	log('paths\n', paths);
+	//log('paths\n', paths);
 	//log('serverConfig\n', serverConfig);
 	//log('useWebpack: ', useWebpack);
 
 	//log('env\n', env);
-	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, moduleName, currTask, _argv });
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
 
 	//log('argv\n', argv);
-	log('arg\n', arg);
+	//log('arg\n', arg);
 	
 	//log('root:', cwd());
 	//log('__dirname:', __dirname);
