@@ -30,7 +30,7 @@ import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { cwd } = process,
 	{ readFileSync: readFile } = fs,
-	{ join, relative, dirname } = path,
+	{ join } = path,
 	config = JSON.parse(readFile('config.json')),
 	{
 		deploy,
