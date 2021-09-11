@@ -1,4 +1,4 @@
 const { log } = console,
-	{ arg } = require('./helpers/helpers');
+	{ args: _args } = require('./helpers/helpers');
 
-module.exports = async function args() { log(arg); };
+module.exports = async function args() { log(_args); };

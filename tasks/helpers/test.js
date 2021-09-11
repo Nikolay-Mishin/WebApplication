@@ -4,17 +4,17 @@ const { log } = console,
 	h = require('./helpers');
 
 module.exports = async function test() {
-	const { config, modules, tasks, useWebpack, currTask, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, currTask, args, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
 	//log('process\n', process);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg });
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);
-	//log('arg\n', arg);
+	//log('args\n', args);
 	
 	//log('root:', cwd());
 	//log('__dirname:', __dirname);

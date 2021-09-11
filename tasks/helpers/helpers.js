@@ -74,11 +74,13 @@ module.exports = {
 	getFiles(_path, exclude = []) {
 		return readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)));
 	},
-	arg: (argList => {
+	args: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
 		args.$node = argList[0];
 		args.$gulp = argList[1];
 		argList = argList.slice(2);
+		args.$task = argList.filter(arg => !/^\-+/.test(arg))[0] || null;
+		args.$task_args = argList.indexOf(args.$task);
 		argList.forEach((arg, i) => {
 			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
@@ -87,13 +89,13 @@ module.exports = {
 				curOpt = null;
 			}
 			else args[curOpt = opt] = true; // argument name
-			if (i == argList.length - 1) args.$task = argList[i];
 		});
 		return args;
 	})(argv),
 	get nodePath() { return this.arg.$node; },
 	get gulpPath() { return this.arg.$gulp; },
 	get currTask() { return this.arg.$task; },
+	get taskArgs() { return this.arg.$taskArgs; },
 	// filtered = Object.filter(scores, ([name, score]) => score > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	getDefaultContext, options, runInContext,

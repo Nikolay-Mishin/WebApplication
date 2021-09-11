@@ -1,6 +1,6 @@
 const {
 	lastRun, notify,
-	arg: { fav },
+	args: { fav },
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
