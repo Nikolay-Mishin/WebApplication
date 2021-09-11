@@ -1,10 +1,10 @@
 const { log } = console,
-	{ cwd } = process,
-	h = require('./helpers'),
-	tasks = require('./tasks');
+	{ cwd, env, argv, stdout, stdin, execArgv } = process,
+	{ HOMEDRIVE, INIT_CWD } = env,
+	h = require('./helpers');
 
 module.exports = async function test() {
-	const { config, modules, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
@@ -15,8 +15,12 @@ module.exports = async function test() {
 	//log('serverConfig\n', serverConfig);
 	log('useWebpack: ', useWebpack);
 
-	//log('env\n', process.env);
-	//log('argv\n', process.argv);
+	//log('env\n', env);
+	log('env-list\n', {
+		HOMEDRIVE, INIT_CWD, stdout, stdin, argv, execArgv
+	});
+
+	//log('argv\n', argv);
 	log('arg\n', arg);
 	
 	log('root:', cwd());

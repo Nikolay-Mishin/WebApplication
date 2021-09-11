@@ -1,8 +1,5 @@
 /// <binding ProjectOpened='_tasksWatch' />
 
-exports._tasksWatch = require('./tasks/helpers/tasksWatch');
-exports._test = require('./tasks/helpers/test');
-
 const { log } = console,
 	h = require('./tasks/helpers/helpers'),
 	tasks = require('./tasks/helpers/tasks'),
@@ -13,6 +10,9 @@ const { log } = console,
 	} = tasks;
 
 Object.assign(exports, tasks);
+
+exports._tasksWatch = require('./tasks/helpers/tasksWatch');
+exports._test = require('./tasks/helpers/test');
 
 exports.build = series(clean, parallel(html, js));
 exports.dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);

@@ -1,4 +1,5 @@
-const config = require('../../gulpfile.config'),
+const { argv } = process,
+	config = require('../../gulpfile.config'),
 	{
 		root, useWebpack, esModule,
 		modules: {
@@ -55,7 +56,7 @@ module.exports = {
 			else args[curOpt = opt] = true; // argument name
 		});
 		return args;
-	})(process.argv),
+	})(argv),
 	lastRun(func) { return { since: lastRun(func) }; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
 	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
