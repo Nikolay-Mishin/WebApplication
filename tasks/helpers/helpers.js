@@ -74,10 +74,10 @@ module.exports = {
 	getFiles(_path, exclude = []) {
 		return readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)));
 	},
-	get nodePath() { return this.arg.$node; },
-	get gulpPath() { return this.arg.$gulp; },
-	get currTask() { return this.arg.$task; },
-	get taskArgs() { return this.arg.$taskArgs; },
+	get nodePath() { return this.args.$node; },
+	get gulpPath() { return this.args.$gulp; },
+	get currTask() { return this.args.$task; },
+	get taskArgs() { return this.args.$taskArgs; },
 	// filtered = Object.filter(scores, ([name, score]) => score > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	getDefaultContext, options, runInContext,
