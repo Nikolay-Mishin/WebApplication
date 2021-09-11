@@ -1,11 +1,11 @@
 import h from './helpers/helpers.js';
 const {
 	config: { paths },
-	modules: { realFavicon }
+	modules: { realFavicon: { generateFavicon } }
 } = h;
 
 export default function generate_favicon(done) {
-	realFavicon.generateFavicon({
+	generateFavicon({
 		masterPicture: paths.src.favicon,
 		dest: paths.build.favicon,
 		iconsPath: paths.src.iconsPath,

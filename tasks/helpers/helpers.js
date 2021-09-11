@@ -3,20 +3,25 @@ import { argv } from 'process';
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 const {
-		root, useWebpack, esModule,
-		modules: {
-			gulp: { lastRun },
-			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir },
-			path: { join, dirname, relative, basename: base, extname: ext },
-			gutil, notify, plumber
-		},
-		webpackConfig = join(root, 'webpack.config.js'),
-		tsconfig = join(root, 'tsconfig.json')
-	} = config,
+	root, useWebpack, esModule, tasksPath, excludeTasks = [],
+	modules: {
+		gulp: { lastRun },
+		fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, lstatSync: lstat, statSync: stat },
+		path: { join, dirname, relative, basename: base, extname: ext, sep },
+		gutil, notify, plumber
+	},
+	webpackConfig = join(root, 'webpack.config.js'),
+	tsconfig = join(root, 'tsconfig.json')
+} = config,
 	__dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? __dirname(from) : from, to),
 	relativeRoot = from => _relative(from, root),
-	fileName = file => base(file, ext(file));
+	fileName = file => base(file, ext(file)),
+	isDir = path => exist(path) && lstat(path).isDirectory(),
+	isFile = path => exist(path) && lstat(path).isFile(),
+	getFiles = (path, exclude = []) => {
+		return !isDir(path) ? [] : readDir(path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)))
+	};
 
 function getDefaultContext(defaultName) {
 	let argv = process.argv[2] || process.argv[3];
@@ -28,23 +33,23 @@ const options = {
 	project: 'app-' + getDefaultContext('canonium')
 };
 
-function runInContext(filepath, cb) {
-	const context = path.relative(process.cwd(), filepath),
-		projectName = context.split(path.sep)[0];
+function runInContext(path, cb) {
+	const context = relative(process.cwd(), path),
+		project = context.split(sep)[0];
 
 	//console.log(
 	//	'[' + chalk.green(projectName.replace('app-', '')) + ']' +
 	//	' has been changed: ' + chalk.cyan(context)
 	//);
-	log(`[${projectName.replace('app-', '')}] has been changed:  + ${context}`);
+	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
 
-	options.project = projectName; // Set project
+	options.project = project; // Set project
 
 	cb(); // Task call
 
 	// Example
-	//gulp.watch('app-*/templates/*.jade').on('change', function (filepath) {
-	//	runInContext(filepath, gulp.series('jade'));
+	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
+	//	runInContext(file, gulp.series('jade'));
 	//});
 }
 
@@ -78,8 +83,8 @@ export default {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	fileName,
-	getFiles: (_path, exclude = []) => readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file))),
+	fileName, isDir, isFile, getFiles,
+	get tasksList() { return getFiles(tasksPath, excludeTasks); },
 	get nodePath() { return this.args.$node; },
 	get gulpPath() { return this.args.$gulp; },
 	get currTask() { return this.args.$task; },
@@ -89,20 +94,30 @@ export default {
 	getDefaultContext, options, runInContext,
 	args: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
+
 		args.$node = argList[0];
 		args.$gulp = argList[1];
 		argList = argList.slice(2);
-		args.$task = argList.filter(arg => !/^\-+/.test(arg))[0] || null;
-		args.$task_args = argList.indexOf(args.$task);
-		argList.forEach((arg, i) => {
+		args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir || isFile));
+
+		let i = argList.indexOf(args.$task);
+		log('i: ', i);
+		args.$task_args = argList.slice(++i);
+		log('i: ', i);
+		args.$argList = argList.slice(0, --i);
+		log('i: ', i);
+
+		argList.forEach(arg => {
 			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
+			log(arg, /^\-+/.test(arg), isDir(arg), isFile(arg));
 			if (thisOpt === opt) {
 				if (curOpt) args[curOpt] = opt; // argument value
 				curOpt = null;
 			}
 			else args[curOpt = opt] = true; // argument name
 		});
+
 		return args;
 	})(argv),
 	lastRun: func => { since: lastRun(func) },
