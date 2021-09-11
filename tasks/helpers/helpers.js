@@ -100,29 +100,5 @@ module.exports = {
 			})
 		});
 	},
-	options: {
-		project: 'app-' + getDefaultContext('canonium')
-	},
-	getDefaultContext(defaultName) {
-		const argv = process.argv[2] || process.argv[3];
-		if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) {
-			argv = process.argv[3];
-		}
-		return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
-	},
-	runInContext(filepath, cb) {
-		const context = path.relative(process.cwd(), filepath),
-			projectName = context.split(path.sep)[0];
-
-		// Console
-		console.log(
-			'[' + chalk.green(projectName.replace('app-', '')) + ']' +
-			' has been changed: ' + chalk.cyan(context)
-		);
-
-		// Set project
-		options.project = projectName;
-
-		cb();
-	}
+	options, getDefaultContext, runInContext
 };
