@@ -1,7 +1,7 @@
 import h from './helpers/helpers.js';
 const {
 	lastRun, notify,
-	arg: { fav },
+	args: { fav },
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
