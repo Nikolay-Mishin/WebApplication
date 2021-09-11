@@ -1,14 +1,8 @@
 {
 	"es": {
 		"useWebpack": true,
-		"module": "es6",
+		"esModule": "es6",
 		"webpackConfig": "webpack.config.js"
-	},
-	"paths": {
-		"root": ".",
-		"build": "wwwroot",
-		"src": "src"
-
 	},
 	"server": {
 		"serverPHP": false,
@@ -16,5 +10,67 @@
 		"port": 8080,
 		"baseDir": "html",
 		"index": "app"
+	},
+	"deploy": {
+		"host": "site.ru",
+		"user": "tstv",
+		"pass": "112121",
+		"port": "7070",
+		"folder": "",
+		"include": [ "*.htaccess" ],
+		"exclude": [
+			".git", ".vs", "bin", "obj", "Properties",
+			"**/node_modules", "**/bower_components", "**/doc", 
+			"**/Thumbs.db", "**/*.DS_Store", ".gitattributes", ".gitignore", "*.sln", "*.cs",
+			"appsettings.json", "appsettings.Development.json"
+		]
+	},
+	"paths": {
+		"tasksPath": "tasks",
+		"projectRoot": "",
+		"root": ".",
+		"build": {
+			"root": "wwwroot",
+			"html": "html/",
+			"css": "css/",
+			"js": "js/",
+			"favicon": "favicon/",
+			"faviconDataFile": "favicon/faviconData.json",
+			"faviconInject": "**/*.html",
+			"img": "img/"
+		},
+		"src": {
+			"root": "src",
+			"html": "html/**/*.{html,htm}",
+			"php": "php/**/*.php",
+			"pug": "pug/*.pug",
+			"scss": "scss/*.{scss,sass}",
+			"js": "js/**/*.js",
+			"favicon": "favicon/icon.png",
+			"iconsPath": "/favicon",
+			"img": "img/**/*.{jpeg,jpg,png,svg,gif}"
+		},
+		"watch": {
+			"html": "html/**/*.{html,htm}",
+			"scss": "scss/**/*.{scss, sass}",
+			"js": "js/**/*.js"
+		},
+		"clean": {
+			"build": "**/*",
+			"html": "html",
+			"css": "css",
+			"js": "js"
+		},
+		"tasks": {
+			"root": "../../..",
+			"deploy": "../_server",
+			"watch": {
+				"tasks": "tasks/**/*",
+				"root": [ "*.js", "*config*", "*lint*", "!*doc*" ],
+				"doc": "doc/**/*",
+				"package": "package.json",
+				"server": [ "../../../package.json", "../../../.editorconfig" ]
+			}
+		}
 	}
 }

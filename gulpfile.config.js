@@ -30,17 +30,18 @@ import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { cwd } = process,
 	{ readFileSync: readFile } = fs,
-	config = JSON.parse(readFile('config.json')),
 	{ join, relative, dirname } = path,
-	root = join(cwd(), config.paths.root), // __dirname
-	build = join(root, config.paths.build),
-	srcRoot = config.paths.src,
+	config = JSON.parse(readFile('config.json')),
+	{
+		deploy,
+		es: { useWebpack, esModule, webpackConfig },
+		paths: { tasksPath, projectRoot, root: _root, build: { root: _build }, src: { root: srcRoot } },
+		server: { serverPHP, domain, port, baseDir: _baseDir, index }
+	} = config,
+	root = join(cwd(), _root), // __dirname
+	build = join(root, _build),
 	src = join(root, srcRoot),
-	serverPHP = config.server.serverPHP,
-	domain = config.server.domain,
-	port = config.server.port,
-	baseDir = join(build, config.server.baseDir),
-	index = config.server.index;
+	baseDir = join(build, _baseDir);
 
 const server = browserSync.create(),
 	reload = async () => server.reload(),
@@ -48,23 +49,21 @@ const server = browserSync.create(),
 	{ reload: _reload } = browserSync;
 
 export default process.node_config = process.node_config || {
-	root, build, src, serverPHP,
-	tasksPath: join(root, 'tasks'),
-	//useWebpack: config.es.useWebpack,
-	//esModule: config.es.module,
-	//webpackConfig: join(root, config.es.webpackConfig),
-	deploy: {
-		host: 'site.ru',
-		user: 'tstv',
-		pass: '112121',
-		port: '7070',
-		folder: '',
-		include: ['*.htaccess'],
-		exclude: [
-			'.git', '.vs', 'bin', 'obj', 'Properties', '**/node_modules', '**/bower_components',
-			'**/Thumbs.db', '**/*.DS_Store', '.gitattributes', '.gitignore', '*.sln', '*.cs',
-			'*.doc.*', 'appsettings.json', 'appsettings.Development.json'
-		]
+	root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	tasksPath: join(root, tasksPath),
+	//webpackConfig: join(root, webpackConfig),
+	// Подключаемые модули
+	modules: {
+		gulp,
+		fs, path,
+		browserSync, reload, server, stream, _reload,
+		gulpif, gutil, notify, plumber, changed,
+		rimraf, rename, sourcemaps,
+		htmlmin, htmlclean, pug,
+		inlineCss, sass, prefixer,
+		rigger, concat, uglify, webpack, webpackStream,
+		babel, terser, gulpTerser,
+		realFavicon, imageMin, ImgMinify
 	},
 	paths: {
 		root,
@@ -115,19 +114,6 @@ export default process.node_config = process.node_config || {
 				server: ['../../../package.json', '../../../.editorconfig']
 			}
 		}
-	},
-	// Подключаемые модули
-	modules: {
-		gulp,
-		fs, path,
-		browserSync, reload, server, stream, _reload,
-		gulpif, gutil, notify, plumber, changed,
-		rimraf, rename, sourcemaps,
-		htmlmin, htmlclean, pug,
-		inlineCss, sass, prefixer,
-		rigger, concat, uglify, webpack, webpackStream,
-		babel, terser, gulpTerser,
-		realFavicon, imageMin, ImgMinify
 	},
 	// конфигурация browserSync
 	serverConfig: {
