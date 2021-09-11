@@ -1,6 +1,6 @@
 const {
 	config: { paths },
-	modules: { realFavicon }
+	modules: { realFavicon: { generateFavicon } }
 } = require('./helpers/helpers');
 
 module.exports = function generate_favicon(done) {
