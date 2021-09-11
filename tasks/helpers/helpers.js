@@ -94,6 +94,9 @@ module.exports = {
 	get nodePath() { return this.arg.$node; },
 	get gulpPath() { return this.arg.$gulp; },
 	get currTask() { return this.arg.$task; },
+	// filtered = Object.filter(scores, ([name, score]) => score > 1);
+	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
+	getDefaultContext, options, runInContext,
 	lastRun(func) { return { since: lastRun(func) }; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
 	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
@@ -104,6 +107,5 @@ module.exports = {
 				message: "Ошибка: <%= error.message %>"
 			})
 		});
-	},
-	getDefaultContext, options, runInContext
+	}
 };
