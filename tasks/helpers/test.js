@@ -3,8 +3,7 @@ import { cwd, env, argv, title } from 'process';
 import yargs from 'yargs';
 import h from './helpers.js';
 
-const { INIT_CWD, HOMEDRIVE } = env,
-	{ argv: _argv } = yargs;
+const { INIT_CWD, HOMEDRIVE } = env;
 
 export default async function test() {
 	const { config, modules, tasks, useWebpack, currTask, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
@@ -13,10 +12,11 @@ export default async function test() {
 
 	//log('process\n', process);
 
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg });
+
 	//log('env\n', env);
 	//log('argv\n', argv);
 	//log('arg\n', arg);
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
 	
 	//log('root:', cwd());
 	//log('__dirname:', __dirname);
