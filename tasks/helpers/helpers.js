@@ -84,7 +84,7 @@ export default {
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	fileName, isDir, isFile, getFiles, getDefaultContext, options, runInContext,
-	// filtered = Object.filter(scores, ([name, score]) => score > 1);
+	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	get tasksList() { return getFiles(tasksPath, excludeTasks); },
 	get nodePath() { return this.args.$node; },
