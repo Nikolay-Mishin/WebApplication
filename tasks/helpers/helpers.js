@@ -100,5 +100,5 @@ module.exports = {
 			})
 		});
 	},
-	options, getDefaultContext, runInContext
+	getDefaultContext, options, runInContext
 };
