@@ -15,7 +15,7 @@ const { argv } = process,
 	fileName = file => base(file, ext(file));
 
 function getDefaultContext(defaultName) {
-	const argv = process.argv[2] || process.argv[3];
+	let argv = process.argv[2] || process.argv[3];
 	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = process.argv[3];
 	return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
 }

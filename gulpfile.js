@@ -6,7 +6,7 @@ const { log } = console,
 	{ setMode, setModeSync, modules: { gulp: { series, parallel } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
-		move_files, deploy: _deploy
+		move_files, deploy: _deploy, data: _data
 	} = tasks;
 
 Object.assign(exports, tasks);
@@ -29,7 +29,7 @@ setModeSync(true);
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 
-exports.data = () => tasks.data('tasks/**/*');
+exports.data = () => _data('tasks/**/*');
 //exports.data = () => src('tasks/**/*').on('data', function (file) {
 //	log({
 //		contents: file.contents, // содержимое файла
