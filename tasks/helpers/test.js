@@ -12,11 +12,10 @@ module.exports = async function test() {
 	//log('process\n', process);
 
 	//log('env\n', env);
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
-
 	//log('argv\n', argv);
 	//log('arg\n', arg);
-
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
+	
 	//log('root:', cwd());
 	//log('__dirname:', __dirname);
 	//log('relative:', relativeRoot(__dirname));
