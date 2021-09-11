@@ -105,7 +105,7 @@ export default {
 	get currTask() { return this.args.$task; },
 	get taskArgs() { return this.args.$taskArgs; },
 	args: (argList => {
-		let args = {}, opt, thisOpt, curOpt;
+		let args = {};
 
 		args.$node = argList[0];
 		args.$gulp = argList[1];
