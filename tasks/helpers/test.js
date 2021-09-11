@@ -1,32 +1,31 @@
 import { log } from 'console';
-import { cwd, title, env, argv } from 'process';
+import { cwd, env, argv, title } from 'process';
 import yargs from 'yargs';
 import h from './helpers.js';
 
-const { INIT_CWD, HOMEDRIVE } = env;
+const { INIT_CWD, HOMEDRIVE } = env,
+	{ argv: _argv } = yargs;
 
 export default async function test() {
-	const { argv: _argv } = yargs,
-		{ config, modules, tasks, useWebpack, currTask, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, currTask, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
 	//log('process\n', process);
 
-	//log('config\n', config);
-	//log('paths\n', paths);
-	//log('serverConfig\n', serverConfig);
-	//log('useWebpack: ', useWebpack);
-
 	//log('env\n', env);
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
-
 	//log('argv\n', argv);
 	//log('arg\n', arg);
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv, _argv });
 	
 	//log('root:', cwd());
 	//log('__dirname:', __dirname);
 	//log('relative:', relativeRoot(__dirname));
+
+	//log('config\n', config);
+	//log('paths\n', paths);
+	//log('serverConfig\n', serverConfig);
+	//log('useWebpack: ', useWebpack);
 
 	//log('modules\n', modules);
 	//log('tasks\n', tasks);
