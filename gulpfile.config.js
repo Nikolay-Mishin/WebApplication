@@ -2,6 +2,7 @@ const { cwd } = process,
 	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ readFileSync: readFile } = fs,
+	{ join } = path,
 	config = JSON.parse(readFile('config.json')),
 	{
 		deploy,
@@ -9,7 +10,6 @@ const { cwd } = process,
 		paths: { tasksPath, projectRoot, root: _root, build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
-	{ join } = path,
 	root = join(__dirname, _root),
 	build = join(root, _build),
 	src = join(root, srcRoot),
