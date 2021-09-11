@@ -1,5 +1,4 @@
-const { cwd } = process,
-	fs = require('fs'), // работа с файловой системой
+const fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ readFileSync: readFile } = fs,
 	{ join } = path,
