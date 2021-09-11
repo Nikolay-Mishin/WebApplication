@@ -3,11 +3,11 @@ import { cwd, title, env, argv, execArgv } from 'process';
 import yargs from 'yargs';
 import h from './helpers.js';
 
-const { HOMEDRIVE, INIT_CWD } = env;
+const { HOMEDRIVE, INIT_CWD } = env, { arg } = h;
 
 export default async function test() {
 	const { argv: _argv } = yargs,
-		{ config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
+		{ config, modules, tasks, useWebpack, /*arg, */__dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 

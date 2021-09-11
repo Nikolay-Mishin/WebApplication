@@ -6,11 +6,12 @@ import tasks from './tasks/helpers/tasks.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/helpers/test.js';
 
-const { setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h;
+const { setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
+	{ deploy: _deploy, data: _data } = tasks;
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
-		move_files, deploy: _deploy
+		move_files
 	} = tasks,
 	build = series(clean, parallel(html, js)),
 	dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
@@ -30,7 +31,7 @@ setModeSync(true);
 log('mode:', (await h.webpackConfig).mode);
 log('useWebpack:', h.useWebpack);
 
-export const data = () => tasks.data('tasks/**/*');
+export const data = () => _data('tasks/**/*');
 //export const data = () => src('tasks/**/*').on('data', function (file) {
 //	log({
 //		contents: file.contents, // содержимое файла
