@@ -6,7 +6,7 @@ import h from './helpers.js';
 const { HOMEDRIVE, INIT_CWD } = env;
 
 export default async function test() {
-	const { _argv } = yargs,
+	const { argv: _argv } = yargs,
 		{ config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;

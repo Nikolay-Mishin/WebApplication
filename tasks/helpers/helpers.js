@@ -51,7 +51,10 @@ const helpers = {
 	getFiles: (_path, exclude = []) => readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file))),
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
-		argList.forEach(arg => {
+		args.$node = argList[0];
+		args.$gulp = argList[1];
+		argList = argList.slice(2);
+		argList.forEach((arg, i) => {
 			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
 			if (thisOpt === opt) {
@@ -59,10 +62,13 @@ const helpers = {
 				curOpt = null;
 			}
 			else args[curOpt = opt] = true; // argument name
+			if (i == argList.length - 1) args.$task = argList[i];
 		});
 		return args;
 	})(argv),
-	currTask: (argList => argList[argList.length - 1])(argv),
+	get nodePath() { return this.arg.$node; },
+	get gulpPath() { return this.arg.$gulp; },
+	get currTask() { return this.arg.$task; },
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
