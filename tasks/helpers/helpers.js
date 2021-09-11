@@ -46,7 +46,10 @@ module.exports = {
 	},
 	arg: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
-		argList.forEach(arg => {
+		args.$node = argList[0];
+		args.$gulp = argList[1];
+		argList = argList.slice(2);
+		argList.forEach((arg, i) => {
 			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
 			if (thisOpt === opt) {
@@ -54,10 +57,13 @@ module.exports = {
 				curOpt = null;
 			}
 			else args[curOpt = opt] = true; // argument name
+			if (i == argList.length - 1) args.$task = argList[i];
 		});
 		return args;
 	})(argv),
-	currTask: (argList => argList[argList.length - 1])(argv),
+	get nodePath() { return this.arg.$node; },
+	get gulpPath() { return this.arg.$gulp; },
+	get currTask() { return this.arg.$task; },
 	lastRun(func) { return { since: lastRun(func) }; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
 	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
