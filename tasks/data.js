@@ -5,7 +5,7 @@ const {
 		modules: { gulp: { src } }
 	} = h;
 
-export default function data(path = 'tasks/**/*', cb = () => { }) {
+export default function data(path, cb = () => { }) {
 	return src(path, lastRun(data)).on('data', function(file) {
 		log({
 			contents: file.contents, // содержимое файла
