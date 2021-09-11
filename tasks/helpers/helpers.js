@@ -18,6 +18,19 @@ const { log } = console,
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFiles = (path, exclude = []) => {
 		return !isDir(path) ? [] : readDir(path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)))
+	},
+	parseArgs = (argList, assign = {}) => {
+		let args = {}, opt, thisOpt, curOpt;
+		argList.forEach(arg => {
+			thisOpt = arg.trim();
+			opt = thisOpt.replace(/^\-+/, '');
+			if (thisOpt === opt) {
+				if (curOpt) args[curOpt] = opt; // argument value
+				curOpt = null;
+			}
+			else args[curOpt = opt] = true; // argument name
+		});
+		return Object.assign(assign, args);
 	};
 
 function getDefaultContext(defaultName) {
@@ -76,7 +89,7 @@ module.exports = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
-	fileName, isDir, isFile, getFiles, getDefaultContext, options, runInContext,
+	fileName, isDir, isFile, getFiles, parseArgs, getDefaultContext, options, runInContext,
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	get tasksList() { return getFiles(tasksPath, excludeTasks); },
@@ -85,7 +98,7 @@ module.exports = {
 	get currTask() { return this.args.$task; },
 	get taskArgs() { return this.args.$taskArgs; },
 	args: (argList => {
-		let args = {}, opt, thisOpt, curOpt;
+		let args = {};
 
 		args.$node = argList[0];
 		args.$gulp = argList[1];
@@ -96,17 +109,7 @@ module.exports = {
 		args.$task_args = argList.slice(++i);
 		args.$argList = argList.slice(0, --i);
 
-		argList.forEach(arg => {
-			thisOpt = arg.trim();
-			opt = thisOpt.replace(/^\-+/, '');
-			if (thisOpt === opt) {
-				if (curOpt) args[curOpt] = opt; // argument value
-				curOpt = null;
-			}
-			else args[curOpt = opt] = true; // argument name
-		});
-
-		return args;
+		return parseArgs(argList, args);
 	})(argv),
 	lastRun(func) { return { since: lastRun(func) }; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
