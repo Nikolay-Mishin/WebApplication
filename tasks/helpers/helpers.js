@@ -14,15 +14,15 @@ const { argv } = process,
 	relativeRoot = from => relative(from, root),
 	fileName = file => base(file, ext(file));
 
-const options = {
-	project: 'app-' + getDefaultContext('canonium')
-};
-
 function getDefaultContext(defaultName) {
 	const argv = process.argv[2] || process.argv[3];
 	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = process.argv[3];
 	return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
 }
+
+const options = {
+	project: 'app-' + getDefaultContext('canonium')
+};
 
 function runInContext(filepath, cb) {
 	const context = path.relative(process.cwd(), filepath),
