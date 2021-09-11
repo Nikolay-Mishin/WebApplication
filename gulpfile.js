@@ -3,7 +3,7 @@
 const { log } = console,
 	h = require('./tasks/helpers/helpers'),
 	tasks = require('./tasks/helpers/tasks'),
-	{ setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
+	{ setMode, setModeSync, modules: { gulp: { series, parallel } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy
