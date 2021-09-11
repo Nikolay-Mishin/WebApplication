@@ -80,6 +80,13 @@ export default {
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	fileName,
 	getFiles: (_path, exclude = []) => readDir(_path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file))),
+	get nodePath() { return this.args.$node; },
+	get gulpPath() { return this.args.$gulp; },
+	get currTask() { return this.args.$task; },
+	get taskArgs() { return this.args.$taskArgs; },
+	// filtered = Object.filter(scores, ([name, score]) => score > 1);
+	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
+	getDefaultContext, options, runInContext,
 	args: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
 		args.$node = argList[0];
@@ -98,13 +105,6 @@ export default {
 		});
 		return args;
 	})(argv),
-	get nodePath() { return this.arg.$node; },
-	get gulpPath() { return this.arg.$gulp; },
-	get currTask() { return this.arg.$task; },
-	get taskArgs() { return this.arg.$taskArgs; },
-	// filtered = Object.filter(scores, ([name, score]) => score > 1);
-	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	getDefaultContext, options, runInContext,
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
