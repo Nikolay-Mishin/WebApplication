@@ -1,31 +1,29 @@
 const { log } = console,
-	{ cwd, env, argv, stdout, stdin, execArgv } = process,
+	{ cwd, title, env, argv, execArgv } = process,
 	{ HOMEDRIVE, INIT_CWD } = env,
 	h = require('./helpers');
 
 module.exports = async function test() {
-	const { config, modules, tasks, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, arg, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
-	//log('process\n', process);
+	log('process\n', process);
 
 	//log('config\n', config);
 	log('paths\n', paths);
 	//log('serverConfig\n', serverConfig);
-	log('useWebpack: ', useWebpack);
+	//log('useWebpack: ', useWebpack);
 
 	//log('env\n', env);
-	log('env-list\n', {
-		HOMEDRIVE, INIT_CWD, stdout, stdin, argv, execArgv
-	});
+	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, currTask });
 
 	//log('argv\n', argv);
 	log('arg\n', arg);
 	
-	log('root:', cwd());
-	log('__dirname:', __dirname);
-	log('relative:', relativeRoot(__dirname));
+	//log('root:', cwd());
+	//log('__dirname:', __dirname);
+	//log('relative:', relativeRoot(__dirname));
 
 	//log('modules\n', modules);
 	//log('tasks\n', tasks);

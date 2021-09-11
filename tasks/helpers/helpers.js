@@ -57,6 +57,7 @@ module.exports = {
 		});
 		return args;
 	})(argv),
+	currTask: (argList => argList[argList.length - 1])(argv),
 	lastRun(func) { return { since: lastRun(func) }; },
 	error(err) { return gutil.log(gutil.colors.red('[Error]'), err.toString()); },
 	notify(title, message = 'Scripts Done') { return notify({ title: title, message: message }) },
