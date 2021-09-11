@@ -1,5 +1,5 @@
 const { log } = console,
-	{ cwd, title, env, argv } = process,
+	{ cwd, env, argv, title } = process,
 	{ INIT_CWD, HOMEDRIVE } = env,
 	{ argv: _argv } = require('yargs'),
 	h = require('./helpers');
