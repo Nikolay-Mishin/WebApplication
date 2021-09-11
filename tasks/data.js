@@ -4,7 +4,7 @@ const { log } = console,
 		modules: { gulp: { src } }
 	} = require('./helpers/helpers');
 
-module.exports = function data(path = 'tasks/**/*', cb = () => { }) {
+module.exports = function data(path, cb = () => { }) {
 	return src(path, lastRun(data)).on('data', function(file) {
 		log({
 			contents: file.contents, // содержимое файла
