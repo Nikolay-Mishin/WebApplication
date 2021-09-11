@@ -42,7 +42,7 @@ const helpers = {
 		return (this.config = { useWebpack: !includes || esNext || higher5 || higher2014 }).useWebpack;
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
-	get dev() { return (this.getMode || this.setModeSync()) === 'development'; },
+	get dev() { return (this.getMode.trim().toLowerCase() || this.setModeSync()) === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),

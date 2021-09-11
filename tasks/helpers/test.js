@@ -1,5 +1,6 @@
 import { log } from 'console';
 import { cwd, title, env, argv, execArgv } from 'process';
+import { _argv } from 'yargs';
 import h from './helpers.js';
 
 const { HOMEDRIVE, INIT_CWD } = env;
@@ -17,7 +18,7 @@ export default async function test() {
 	//log('useWebpack: ', useWebpack);
 
 	//log('env\n', env);
-	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, currTask });
+	log('env-list\n', { HOMEDRIVE, INIT_CWD, title, argv, execArgv, currTask, _argv });
 
 	//log('argv\n', argv);
 	log('arg\n', arg);
