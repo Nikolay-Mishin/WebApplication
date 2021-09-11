@@ -10,7 +10,7 @@ module.exports = async function test() {
 
 	//log('process\n', process);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg, argv });
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, arg });
 
 	//log('env\n', env);
 	//log('argv\n', argv);
