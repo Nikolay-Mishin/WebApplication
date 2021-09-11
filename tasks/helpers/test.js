@@ -1,12 +1,13 @@
 import { log } from 'console';
 import { cwd, title, env, argv, execArgv } from 'process';
-import { _argv } from 'yargs';
+import yargs from 'yargs';
 import h from './helpers.js';
 
 const { HOMEDRIVE, INIT_CWD } = env;
 
 export default async function test() {
-	const { config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
+	const { _argv } = yargs,
+		{ config, modules, tasks, useWebpack, arg, __dirname, relativeRoot, setModeSync, mode, dev, prod, currTask } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
