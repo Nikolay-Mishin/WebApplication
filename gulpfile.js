@@ -11,9 +11,6 @@ const { log } = console,
 
 Object.assign(exports, tasks);
 
-exports._tasksWatch = require('./tasks/helpers/tasksWatch');
-exports._test = require('./tasks/helpers/test');
-
 exports.build = series(clean, parallel(html, js));
 exports.dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
 exports.prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img));
@@ -22,6 +19,9 @@ exports.move = series(clean, move_files);
 
 // задача по умолчанию
 //export default build;
+
+exports._tasksWatch = require('./tasks/helpers/tasksWatch');
+exports._test = require('./tasks/helpers/test');
 
 //console.log('exports\n', tasks);
 
