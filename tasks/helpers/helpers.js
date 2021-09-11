@@ -37,6 +37,11 @@ function runInContext(filepath, cb) {
 	options.project = projectName; // Set project
 
 	cb(); // Task call
+
+	// Example
+	//gulp.watch('app-*/templates/*.jade').on('change', function (filepath) {
+	//	runInContext(filepath, gulp.series('jade'));
+	//});
 }
 
 module.exports = {
