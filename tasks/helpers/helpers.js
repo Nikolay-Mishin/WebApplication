@@ -76,34 +76,29 @@ module.exports = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync(prod = false) { return process.env.NODE_ENV = prod ? 'production' : 'development'; },
-	fileName, isDir, isFile, getFiles,
+	fileName, isDir, isFile, getFiles, parseArgs, getDefaultContext, options, runInContext,
+	// filtered = Object.filter(scores, ([name, score]) => score > 1);
+	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	get tasksList() { return getFiles(tasksPath, excludeTasks); },
 	get nodePath() { return this.args.$node; },
 	get gulpPath() { return this.args.$gulp; },
 	get currTask() { return this.args.$task; },
 	get taskArgs() { return this.args.$taskArgs; },
-	// filtered = Object.filter(scores, ([name, score]) => score > 1);
-	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	getDefaultContext, options, runInContext,
 	args: (argList => {
 		let args = {}, opt, thisOpt, curOpt;
 
 		args.$node = argList[0];
 		args.$gulp = argList[1];
 		argList = argList.slice(2);
-		args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir || isFile));
+		args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null;
 
 		let i = argList.indexOf(args.$task);
-		log('i: ', i);
 		args.$task_args = argList.slice(++i);
-		log('i: ', i);
 		args.$argList = argList.slice(0, --i);
-		log('i: ', i);
 
 		argList.forEach(arg => {
 			thisOpt = arg.trim();
 			opt = thisOpt.replace(/^\-+/, '');
-			log(arg, /^\-+/.test(arg), isDir(arg), isFile(arg));
 			if (thisOpt === opt) {
 				if (curOpt) args[curOpt] = opt; // argument value
 				curOpt = null;
