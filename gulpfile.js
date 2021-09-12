@@ -9,7 +9,7 @@ import _test from './tasks/helpers/test.js';
 const { setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
 	{ deploy: _deploy, data: _data } = tasks;
 
-//setMode();
+//setModeSync();
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
