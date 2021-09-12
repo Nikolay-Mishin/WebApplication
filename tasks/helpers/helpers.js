@@ -16,7 +16,26 @@ const argv = _argv.slice(2),
 	} = config,
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
-	relativeRoot = from => _relative(from, root);
+	relativeRoot = from => _relative(from, root),
+	fileName = file => base(file, ext(file)),
+	isDir = path => exist(path) && stat(path).isDirectory(),
+	isFile = path => exist(path) && stat(path).isFile(),
+	getFiles = (path, exclude = []) => {
+		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
+	},
+	parseArgs = (argList, assign = {}, sep = '^\-+') => {
+		let args = {}, opt, thisOpt, curOpt;
+		argList.forEach(arg => {
+			thisOpt = arg.trim();
+			opt = thisOpt.replace(new RegExp(sep), '');
+			if (thisOpt === opt) {
+				if (curOpt) args[curOpt] = opt; // argument value
+				curOpt = null;
+			}
+			else args[curOpt = opt] = true; // argument name
+		});
+		return Object.assign(assign, args);
+	};
 
 function getContext(name) {
 	let _argv = argv[0] || argv[1];
@@ -49,7 +68,7 @@ function runInContext(path, cb) {
 }
 
 export default {
-	_dirname, _relative, relativeRoot,
+	_dirname, _relative, relativeRoot, fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -78,34 +97,9 @@ export default {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	get tasksList() { return this._tasksList = this._tasksList || (() => this.getFiles(tasksPath, excludeTasks))() },
-	get args() { return this._args = this._args || (argList => this.parseArgs(argList))(argv); },
-	get currTask() {
-		return this._currTask = this._currTask || (argList =>
-			argList.filter(arg => !(/^\-+/.test(arg) || this.isDir(arg) || this.isFile(arg)))[0] || null)(argv);
-	},
-	get getFiles() {
-		return (path, exclude = []) =>
-			readDir(path).filter(file => this.isFile(join(path, file)) && !exclude.includes(this.fileName(file)));
-	},
-	get parseArgs() {
-		return (argList, assign = {}, sep = '^\-+') => {
-			let args = {}, opt, thisOpt, curOpt;
-			argList.forEach(arg => {
-				thisOpt = arg.trim();
-				opt = thisOpt.replace(new RegExp(sep), '');
-				if (thisOpt === opt) {
-					if (curOpt) args[curOpt] = opt; // argument value
-					curOpt = null;
-				}
-				else args[curOpt = opt] = true; // argument name
-			});
-			return Object.assign(assign, args);
-		};
-	},
-	fileName: file => base(file, ext(file)),
-	isDir: path => exist(path) && stat(path).isDirectory(),
-	isFile: path => exist(path) && stat(path).isFile(),
+	tasksList: (() => { return getFiles(tasksPath, excludeTasks); })(),
+	args: (argList => parseArgs(argList))(argv),
+	currTask: (argList => { return argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	getContext, options, runInContext,

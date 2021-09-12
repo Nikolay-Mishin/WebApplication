@@ -5,13 +5,17 @@ import h from './helpers.js';
 const { INIT_CWD, HOMEDRIVE } = env;
 
 export default async function test() {
-	const { config, modules, tasks, useWebpack, currTask, args, _dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const
+		{
+			_dirname, relativeRoot,
+			config, modules, tasks, useWebpack, tasksList, args, currTask, setModeSync, mode, dev, prod
+		} = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
 	//log('process\n', process);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, tasksList, currTask, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);
