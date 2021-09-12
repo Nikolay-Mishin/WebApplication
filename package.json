@@ -1,6 +1,6 @@
 {
 	"name": "web-app-cjs",
-	"version": "4.1.0",
+	"version": "4.6.0",
 	"main": "gulpfile.js",
 	"type": "commonjs",
 	"exports": {
