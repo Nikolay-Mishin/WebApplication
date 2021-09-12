@@ -88,7 +88,7 @@ module.exports = {
 	get dev() { return (this.getMode || this.setModeSync()).trim().toLowerCase() === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV; },
-	setMode: async (prod = false) => this.setModeSync(prod),
+	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	tasksList: (() => getFiles(tasksPath, excludeTasks))(),
 	args: (argList => parseArgs(argList))(argv),
