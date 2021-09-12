@@ -5,7 +5,7 @@ import h from './helpers.js';
 const { INIT_CWD, HOMEDRIVE } = env;
 
 export default async function test() {
-	const { config, modules, tasks, useWebpack, currTask, args, __dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
+	const { config, modules, tasks, useWebpack, currTask, args, _dirname, relativeRoot, setModeSync, mode, dev, prod } = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
@@ -18,8 +18,8 @@ export default async function test() {
 	//log('args\n', args);
 	
 	//log('root:', cwd());
-	//log('__dirname:', __dirname);
-	//log('relative:', relativeRoot(__dirname));
+	//log('_dirname:', _dirname);
+	//log('relative:', relativeRoot(_dirname));
 
 	//log('config\n', config);
 	//log('paths\n', paths);

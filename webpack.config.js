@@ -165,7 +165,7 @@ export default {
 		alias: {
 			'^@': build,
 			'^/': src,
-			//'jQuery':join(__dirname, './../../../jquery')
+			//'jQuery':join(root, './../../../jquery')
 		}
 	},
 	externals: {
