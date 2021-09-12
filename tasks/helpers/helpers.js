@@ -14,8 +14,8 @@ const argv = _argv.slice(2),
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
-	__dirname = meta => dirname(toPath(meta.url)),
-	_relative = (from, to) => relative(from.url ? __dirname(from) : from, to),
+	_dirname = meta => dirname(toPath(meta.url)),
+	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	relativeRoot = from => _relative(from, root),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
@@ -38,9 +38,9 @@ const argv = _argv.slice(2),
 	};
 
 function getContext(name) {
-	let argv = argv[0] || argv[1];
-	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = argv[1];
-	return (typeof argv === 'undefined') ? name : argv.replace('--', '');
+	let _argv = argv[0] || argv[1];
+	if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
+	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
 }
 
 const options = {
@@ -52,7 +52,7 @@ function runInContext(path, cb) {
 		project = context.split(sep)[0];
 
 	//console.log(
-	//	'[' + chalk.green(projectName.replace('app-', '')) + ']' +
+	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
 	//	' has been changed: ' + chalk.cyan(context)
 	//);
 	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
@@ -68,7 +68,7 @@ function runInContext(path, cb) {
 }
 
 export default {
-	__dirname, _relative, relativeRoot,
+	_dirname, _relative, relativeRoot,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -97,11 +97,11 @@ export default {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	fileName, isDir, isFile, getFiles, parseArgs, getDefaultContext, options, runInContext,
+	fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	tasksList: (() => { return getFiles(tasksPath, excludeTasks); })(),
-	currTask: (argList => { return args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
+	currTask: (argList => { return argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
 	args: (argList => parseArgs(argList))(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
