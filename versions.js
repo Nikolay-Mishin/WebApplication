@@ -10,13 +10,13 @@
  * 2.4 - add Deploy
  * 2.5 - add ServerPHP
  * 2.6 - add modules in Gulpfile.config
- * 2.7 - add getters & setters in Helpers
+ * 2.7 - add Getters & Setters in Helpers
  * 2.8 - add Tasks
  * 3.0 - add ESM
- * 3.1 - add get useWebpack in Helpers
- * 3.2 - add set config in Helpers
+ * 3.1 - add Get useWebpack in Helpers
+ * 3.2 - add Set config in Helpers
  * 3.3 - add fileName() in Helpers
- * 3.4 - add get webpackConfig in Helpers
+ * 3.4 - add Get webpackConfig in Helpers
  * 3.5 - add log to src.on('data')
  * 3.6 - add config.json
  * 4.0 - merge changes from cjs to esm
@@ -24,8 +24,8 @@
  * 4.2 - add Data
  * 4.3 - fix Test
  * 4.4 - add isDir() & isFile() in Helpers
- * 4.5 - add parseArgs() & fix get args in Helpers
- * 4.6 - add getContext() & runInContext() in Helpers
+ * 4.5 - add parseArgs() & fix Get args in Helpers
+ * 4.6 - add GetContext() & runInContext() in Helpers
 */
 
 /* new versions
