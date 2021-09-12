@@ -1,18 +1,19 @@
 import { log } from 'console';
-import { argv } from 'process';
+import { argv as _argv, cwd } from 'process';
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
-const {
-	root, useWebpack, esModule, tasksPath, excludeTasks = [],
-	modules: {
-		gulp: { lastRun },
-		fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
-		path: { join, dirname, relative, basename: base, extname: ext, sep },
-		gutil, notify, plumber
-	},
-	webpackConfig = join(root, 'webpack.config.js'),
-	tsconfig = join(root, 'tsconfig.json')
-} = config,
+const argv = _argv.slice(2),
+	{
+		root, useWebpack, esModule, tasksPath, excludeTasks = [],
+		modules: {
+			gulp: { lastRun },
+			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
+			path: { join, dirname, relative, basename: base, extname: ext, sep },
+			gutil, notify, plumber
+		},
+		webpackConfig = join(root, 'webpack.config.js'),
+		tsconfig = join(root, 'tsconfig.json')
+	} = config,
 	__dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? __dirname(from) : from, to),
 	relativeRoot = from => _relative(from, root),
@@ -20,13 +21,13 @@ const {
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFiles = (path, exclude = []) => {
-		return !isDir(path) ? [] : readDir(path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)))
+		return readDir(path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)))
 	},
-	parseArgs = (argList, assign = {}) => {
+	parseArgs = (argList, assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
 			thisOpt = arg.trim();
-			opt = thisOpt.replace(/^\-+/, '');
+			opt = thisOpt.replace(new RegExp(sep), '');
 			if (thisOpt === opt) {
 				if (curOpt) args[curOpt] = opt; // argument value
 				curOpt = null;
@@ -36,18 +37,18 @@ const {
 		return Object.assign(assign, args);
 	};
 
-function getDefaultContext(defaultName) {
-	let argv = process.argv[2] || process.argv[3];
-	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = process.argv[3];
-	return (typeof argv === 'undefined') ? defaultName : argv.replace('--', '');
+function getContext(name) {
+	let argv = argv[0] || argv[1];
+	if (typeof argv !== 'undefined' && argv.indexOf('--') < 0) argv = argv[1];
+	return (typeof argv === 'undefined') ? name : argv.replace('--', '');
 }
 
 const options = {
-	project: 'app-' + getDefaultContext('canonium')
+	project: 'app-' + getContext('canonium')
 };
 
 function runInContext(path, cb) {
-	const context = relative(process.cwd(), path),
+	const context = relative(cwd(), path),
 		project = context.split(sep)[0];
 
 	//console.log(
@@ -99,25 +100,9 @@ export default {
 	fileName, isDir, isFile, getFiles, parseArgs, getDefaultContext, options, runInContext,
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	get tasksList() { return getFiles(tasksPath, excludeTasks); },
-	get nodePath() { return this.args.$node; },
-	get gulpPath() { return this.args.$gulp; },
-	get currTask() { return this.args.$task; },
-	get taskArgs() { return this.args.$taskArgs; },
-	args: (argList => {
-		let args = {};
-
-		args.$node = argList[0];
-		args.$gulp = argList[1];
-		argList = argList.slice(2);
-		args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null;
-
-		let i = argList.indexOf(args.$task);
-		args.$task_args = argList.slice(++i);
-		args.$argList = argList.slice(0, --i);
-
-		return parseArgs(argList, args);
-	})(argv),
+	tasksList: (() => { return getFiles(tasksPath, excludeTasks); })(),
+	currTask: (argList => { return args.$task = argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
+	args: (argList => parseArgs(argList))(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
