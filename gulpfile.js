@@ -9,7 +9,7 @@ const { log } = console,
 		move_files, deploy: _deploy, data: _data
 	} = tasks;
 
-//setMode();
+//setModeSync();
 
 Object.assign(exports, tasks);
 
