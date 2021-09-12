@@ -1,12 +1,8 @@
-const {
-		config: { tasksPath },
-		modules: { path: { basename: base, relative } },
-		tasksList
-	} = require('./helpers');
+const { tasksList, config: { tasksPath } } = require('./helpers');
 
 module.exports = process.node_tasks = process.node_tasks || (function tasks() {
 	if (process.node_tasks) return process.node_tasks;
 	const tasks = {};
-	tasksList.forEach(file => tasks[base(file, '.js').replace(/\-+/g, '_')] = require(`${tasksPath}/${file}`));
+	tasksList.forEach(task => tasks[task.replace(/\-+/g, '_')] = require(`${tasksPath}/${task}.js`));
 	return process.node_tasks = tasks;
 })();

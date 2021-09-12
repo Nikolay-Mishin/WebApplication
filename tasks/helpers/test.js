@@ -10,16 +10,9 @@ module.exports = async function test() {
 
 	//log('process\n', process);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, tasksList, currTask, args });
+	//log('tasksList\n', tasksList);
 
-	let total = [0, 1, 2, 3, 4].reduce((prev, curr, i, arr) => {
-		return prev + curr;
-	});
-	log('total:', total);
-	total = [0, 1, 2, 3, 4].reduce((prev, curr, i, arr) => {
-		arr[i] = ++curr; return arr;
-	}, 0);
-	log('total\n', total);
+	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);

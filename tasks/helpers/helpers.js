@@ -17,8 +17,9 @@ const { log } = console,
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFiles = (path, exclude = []) => {
+	getFiles = (path, { exclude = [], nonExt = false } = opts) => {
 		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
+			.reduce((prev, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
 	},
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -90,7 +91,7 @@ module.exports = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	tasksList: (() => getFiles(tasksPath, excludeTasks))(),
+	tasksList: (() => getFiles(tasksPath, { excludeTasks, nonExt: true }))(),
 	args: (argList => parseArgs(argList))(argv),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
