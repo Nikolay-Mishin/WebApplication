@@ -5,10 +5,9 @@ import h from './helpers.js';
 const { INIT_CWD, HOMEDRIVE } = env;
 
 export default async function test() {
-	const
-		{
-			_dirname, relativeRoot,
-			config, modules, tasks, useWebpack, tasksList, args, currTask, setModeSync, mode, dev, prod
+	const {
+			config, modules, tasks, useWebpack, tasksList, args, currTask,
+			_dirname, relativeRoot, setModeSync, mode, dev, prod
 		} = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
