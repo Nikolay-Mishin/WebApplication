@@ -6,7 +6,7 @@ const fs = require('fs'), // работа с файловой системой
 	{
 		deploy,
 		es: { useWebpack, esModule, webpackConfig },
-		paths: { tasksPath, projectRoot, root: _root, build: { root: _build }, src: { root: srcRoot } },
+		paths: { tasksPath = 'tasks', projectsRoot = '', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
 	root = join(__dirname, _root),

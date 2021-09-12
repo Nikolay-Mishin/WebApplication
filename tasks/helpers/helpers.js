@@ -19,7 +19,7 @@ const { log } = console,
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFiles = (path, { exclude = [], nonExt = false } = opts) => {
 		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
-			.reduce((prev, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
+			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
 	},
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
