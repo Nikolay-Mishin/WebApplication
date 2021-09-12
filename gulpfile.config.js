@@ -35,7 +35,7 @@ const { readFileSync: readFile } = fs,
 	{
 		deploy,
 		es: { useWebpack, esModule, webpackConfig },
-		paths: { tasksPath, projectRoot, root: _root, build: { root: _build }, src: { root: srcRoot } },
+		paths: { tasksPath = 'tasks', projectsRoot = '', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
 	root = join(cwd(), _root), // __dirname

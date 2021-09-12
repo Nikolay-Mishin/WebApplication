@@ -27,7 +27,7 @@
 	},
 	"paths": {
 		"tasksPath": "tasks",
-		"projectRoot": "",
+		"projectsRoot": "",
 		"root": ".",
 		"build": {
 			"root": "wwwroot",
