@@ -9,11 +9,13 @@ const { log } = console,
 		move_files, deploy: _deploy, data: _data
 	} = tasks;
 
+//setMode();
+
 Object.assign(exports, tasks);
 
 exports.build = series(clean, parallel(html, js));
-exports.dev = series(clean, setMode(), parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
-exports.prod = series(clean, setMode(true), parallel(prod_html, prod_scss, prod_js, dev_img));
+exports.dev = series(clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);
+exports.prod = series(setMode(true), clean, parallel(prod_html, prod_scss, prod_js, dev_img));
 exports.deploy = series(exports.prod, _deploy);
 exports.move = series(clean, move_files);
 
@@ -25,7 +27,7 @@ exports._test = require('./tasks/helpers/test');
 
 //console.log('exports\n', tasks);
 
-setModeSync(true);
+//setModeSync(true);
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 
