@@ -18,7 +18,7 @@ const { log } = console,
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFiles = (path, exclude = []) => {
-		return readDir(path).filter(file => ext(file) !== '' && !exclude.includes(fileName(file)))
+		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
 	},
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -65,7 +65,7 @@ function runInContext(path, cb) {
 }
 
 module.exports = {
-	relativeRoot,
+	relativeRoot, fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
@@ -90,12 +90,12 @@ module.exports = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
+	tasksList: (() => { return getFiles(tasksPath, excludeTasks); })(),
+	args: (argList => parseArgs(argList))(argv),
+	currTask: (argList => { return argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	tasksList: (() => { return getFiles(tasksPath, excludeTasks); })(),
-	currTask: (argList => { return argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null; })(argv),
-	args: (argList => parseArgs(argList))(argv),
+	getContext, options, runInContext,
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
