@@ -1,6 +1,5 @@
 const { log } = require('console'),
 	{ cwd, argv: _argv } = require('process'),
-	{ fileURLToPath: toPath } = require('url'),
 	{ existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat } = require('fs'),
 	{ join, dirname, relative, basename: base, extname: ext, sep } = require('path'),
 	//config = require('../../gulpfile.config'),
@@ -82,6 +81,6 @@ function runInContext(path, cb) {
 
 module.exports = {
 	argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
-	getContext, runInContext
+	getContext, runInContext, options
 };
 

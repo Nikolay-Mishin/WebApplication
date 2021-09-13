@@ -68,7 +68,7 @@ const { log } = console,
 //}
 
 const helpers = {
-	relativeRoot, //fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
+	relativeRoot, //fileName, isDir, isFile, getFiles, parseArgs, getContext, runInContext, options,
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
