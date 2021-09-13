@@ -2,7 +2,10 @@ import { log } from 'console';
 import { cwd, argv as _argv } from 'process';
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
-const argv = _argv.slice(2),
+import h from './baseHelpers.js';
+
+const //argv = _argv.slice(2),
+	{ argv, _relative, isDir, isFile, getFiles } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
 		modules: {
@@ -14,29 +17,29 @@ const argv = _argv.slice(2),
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
-	_dirname = meta => dirname(toPath(meta.url)),
-	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
-	relativeRoot = from => _relative(from, root),
-	fileName = file => base(file, ext(file)),
-	isDir = path => exist(path) && stat(path).isDirectory(),
-	isFile = path => exist(path) && stat(path).isFile(),
-	getFiles = (path, { exclude = [], nonExt = false }) => {
-		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
-			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
-	};
-//parseArgs = (argList, assign = {}, sep = '^\-+') => {
-//	let args = {}, opt, thisOpt, curOpt;
-//	argList.forEach(arg => {
-//		thisOpt = arg.trim();
-//		opt = thisOpt.replace(new RegExp(sep), '');
-//		if (thisOpt === opt) {
-//			if (curOpt) args[curOpt] = opt; // argument value
-//			curOpt = null;
-//		}
-//		else args[curOpt = opt] = true; // argument name
-//	});
-//	return Object.assign(assign, args);
-//};
+	//_dirname = meta => dirname(toPath(meta.url)),
+	//_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
+	relativeRoot = from => _relative(from, root);
+	//fileName = file => base(file, ext(file)),
+	//isDir = path => exist(path) && stat(path).isDirectory(),
+	//isFile = path => exist(path) && stat(path).isFile(),
+	//getFiles = (path, { exclude = [], nonExt = false }) => {
+	//	return readDir(path).filter(file => isFile(join(path, file)) && !exclude.includes(fileName(file)))
+	//		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
+	//},
+	//parseArgs = (argList, assign = {}, sep = '^\-+') => {
+	//	let args = {}, opt, thisOpt, curOpt;
+	//	argList.forEach(arg => {
+	//		thisOpt = arg.trim();
+	//		opt = thisOpt.replace(new RegExp(sep), '');
+	//		if (thisOpt === opt) {
+	//			if (curOpt) args[curOpt] = opt; // argument value
+	//			curOpt = null;
+	//		}
+	//		else args[curOpt = opt] = true; // argument name
+	//	});
+	//	return Object.assign(assign, args);
+	//};
 
 //function getContext(name) {
 //	let _argv = argv[0] || argv[1];
@@ -44,32 +47,33 @@ const argv = _argv.slice(2),
 //	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
 //}
 
-const options = {
-	project: 'app-' + getContext('canonium')
-};
+//const options = {
+//	project: 'app-' + getContext('canonium')
+//};
 
-function runInContext(path, cb) {
-	const context = relative(cwd(), path),
-		project = context.split(sep)[0];
+//function runInContext(path, cb) {
+//	const context = relative(cwd(), path),
+//		project = context.split(sep)[0];
 
-	//console.log(
-	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
-	//	' has been changed: ' + chalk.cyan(context)
-	//);
-	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
+//	//console.log(
+//	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
+//	//	' has been changed: ' + chalk.cyan(context)
+//	//);
+//	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
 
-	options.project = project; // Set project
+//	options.project = project; // Set project
 
-	cb(); // Task call
+//	cb(); // Task call
 
-	// Example
-	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
-	//	runInContext(file, gulp.series('jade'));
-	//});
-}
+//	// Example
+//	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
+//	//	runInContext(file, gulp.series('jade'));
+//	//});
+//}
 
 const helpers = {
-	_dirname, _relative, relativeRoot, fileName, isDir, isFile, getFiles, /*parseArgs, getContext, */options, runInContext,
+	relativeRoot,
+	//_dirname, _relative, /*relativeRoot, */fileName, isDir, isFile, getFiles, /*parseArgs, getContext, */options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -102,7 +106,7 @@ const helpers = {
 	//args: (argList => parseArgs(argList))(argv),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
-	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
+	//filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
@@ -116,6 +120,6 @@ const helpers = {
 	}
 };
 
-Object.assign(helpers, _helpers);
+Object.assign(helpers, h);
 
 export default helpers;
