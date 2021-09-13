@@ -34,7 +34,7 @@ const { log } = require('console'),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
 	_projectsPath = join(cwd, projects),
 	existProjects = isDir(_projectsPath),
-	projectsPath = isDir(_projectsPath) ? _projectsPath : cwd,
+	projectsPath = existProjects ? _projectsPath : cwd,
 	getContext = () => {
 		const projects = getFolders(projectsPath, { exclude })
 			.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
