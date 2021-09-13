@@ -1,4 +1,5 @@
-import { cwd, argv as _argv } from 'process';
+import { log } from 'console';
+import { cwd as _cwd, argv as _argv } from 'process';
 import h from './tasks/helpers/baseHelpers.js';
 
 import gulp from 'gulp'; // сам gulp
@@ -33,15 +34,15 @@ import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { readFileSync: readFile } = fs,
 	{ join } = path,
-	{ isFile } = h,
-	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+	{ config, cwd, isFile } = h,
+	//config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{
-		deploy,
+		name: project, deploy,
 		es: { useWebpack, esModule, webpackConfig },
-		paths: { tasksPath = 'tasks', projectsRoot = '', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
+		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
-	root = join(cwd(), _root), // __dirname
+	root = join(cwd, _root), // __dirname
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
