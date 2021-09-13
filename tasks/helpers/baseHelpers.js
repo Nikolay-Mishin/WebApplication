@@ -41,7 +41,7 @@ const { INIT_CWD } = env,
 	projectsPath = isDir(_projectsPath) ? _projectsPath : cwd,
 	getContext = () => {
 		const projects = getFolders(projectsPath, { exclude })
-				.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
+			.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
 			arg = filter(args, ([arg, val]) => val === true && (projects.includes(arg))),
 			project = !name ? name : keys(arg)[1] || fileName(INIT_CWD != cwd ? INIT_CWD : cwd),
 			contextPath = join(projectsPath, project),
@@ -60,7 +60,7 @@ const { INIT_CWD } = env,
 
 		return { project, context };
 	},
-	project = getContext(),
+	{ project, context } = getContext(),
 	runInContext = (path, cb) => {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
