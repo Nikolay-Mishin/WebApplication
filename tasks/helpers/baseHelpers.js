@@ -68,6 +68,8 @@ function getContext(_name) {
 	log('projectName:', projectName);
 	log('args:', args);
 	log('argv:', argv);
+	log('INIT_CWD != cwd:', INIT_CWD != cwd);
+	log('argv.length > 0:', argv.length > 0);
 	//log('projects\n', projects);
 	//log('parent:', parent);
 }
