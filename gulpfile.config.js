@@ -40,7 +40,7 @@ function getContext(name) {
 	//let _argv = argv[0] || argv[1];
 	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
 	//return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-	let argv = filter(args, [arg, val] => val === true);
+	let argv = filter(args, ([arg, val]) => val === true);
 }
 
 module.exports = process.node_config = process.node_config || {
