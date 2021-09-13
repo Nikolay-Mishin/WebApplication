@@ -1,10 +1,10 @@
 import { log } from 'console';
-import { argv as _argv, cwd } from 'process';
+import { cwd, argv as _argv } from 'process';
 import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 const argv = _argv.slice(2),
 	{
-		root, useWebpack, esModule, tasksPath, excludeTasks = [],
+		root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
@@ -23,26 +23,26 @@ const argv = _argv.slice(2),
 	getFiles = (path, { exclude = [], nonExt = false } = opts) => {
 		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
 			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
-	},
-	parseArgs = (argList, assign = {}, sep = '^\-+') => {
-		let args = {}, opt, thisOpt, curOpt;
-		argList.forEach(arg => {
-			thisOpt = arg.trim();
-			opt = thisOpt.replace(new RegExp(sep), '');
-			if (thisOpt === opt) {
-				if (curOpt) args[curOpt] = opt; // argument value
-				curOpt = null;
-			}
-			else args[curOpt = opt] = true; // argument name
-		});
-		return Object.assign(assign, args);
 	};
+//parseArgs = (argList, assign = {}, sep = '^\-+') => {
+//	let args = {}, opt, thisOpt, curOpt;
+//	argList.forEach(arg => {
+//		thisOpt = arg.trim();
+//		opt = thisOpt.replace(new RegExp(sep), '');
+//		if (thisOpt === opt) {
+//			if (curOpt) args[curOpt] = opt; // argument value
+//			curOpt = null;
+//		}
+//		else args[curOpt = opt] = true; // argument name
+//	});
+//	return Object.assign(assign, args);
+//};
 
-function getContext(name) {
-	let _argv = argv[0] || argv[1];
-	if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
-	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-}
+//function getContext(name) {
+//	let _argv = argv[0] || argv[1];
+//	if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
+//	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
+//}
 
 const options = {
 	project: 'app-' + getContext('canonium')
@@ -68,8 +68,8 @@ function runInContext(path, cb) {
 	//});
 }
 
-export default {
-	_dirname, _relative, relativeRoot, fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
+const helpers = {
+	_dirname, _relative, relativeRoot, fileName, isDir, isFile, getFiles, /*parseArgs, getContext, */options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -99,11 +99,10 @@ export default {
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	tasksList: (() => getFiles(tasksPath, { excludeTasks, nonExt: true }))(),
-	args: (argList => parseArgs(argList))(argv),
+	//args: (argList => parseArgs(argList))(argv),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
 	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	getContext, options, runInContext,
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
@@ -116,3 +115,7 @@ export default {
 		});
 	}
 };
+
+Object.assign(helpers, _helpers);
+
+export default helpers;
