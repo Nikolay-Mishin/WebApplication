@@ -12,7 +12,7 @@ module.exports = async function test() {
 
 	//log('tasksList\n', tasksList);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
+	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);

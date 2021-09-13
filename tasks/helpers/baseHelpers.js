@@ -1,8 +1,9 @@
 const { log } = require('console'),
-	{ cwd, argv: _argv } = require('process'),
+	{ env: { INIT_CWD } , cwd: _cwd, argv: _argv } = require('process'),
 	{ existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat } = require('fs'),
 	{ join, dirname, relative, basename: base, extname: ext, sep } = require('path'),
 	//config = require('../../gulpfile.config'),
+	cwd = _cwd(),
 	argv = _argv.slice(2),
 	//{
 	//	root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
@@ -45,14 +46,19 @@ function getContext(name) {
 	//let _argv = argv[0] || argv[1];
 	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
 	//return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-	let projects = ['project'],
-		argv = filter(args, ([arg, val]) => val === true),
+	let project = fileName(cwd),
+		projects = ['project'],
+		argv = filter(args, ([arg, val]) => { log('getContext-filter\n', [arg, val]); return val === true; }),
 		_keys = keys(argv),
 		arg = _keys.filter(key => projects.includes(key));
-	log('getContext-projects\n', projects);
-	log('getContext-argv\n', argv);
-	log('getContext-keys\n', _keys);
-	log('getContext-arg\n', arg);
+	log('cwd:', INIT_CWD);
+	log('cwd:', cwd);
+	log('project:', project);
+	log('args:', args);
+	log('projects:', projects);
+	log('argv:', argv);
+	log('keys:', _keys);
+	log('arg:', arg);
 }
 
 const options = {
@@ -80,7 +86,7 @@ function runInContext(path, cb) {
 }
 
 module.exports = {
-	argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
+	INIT_CWD, cwd, argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
 	getContext, runInContext, options
 };
 
