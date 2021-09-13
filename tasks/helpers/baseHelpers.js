@@ -40,7 +40,8 @@ const { log } = require('console'),
 			.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
 			arg = filter(args, ([arg, val]) => val === true && (projects.includes(arg))),
 			project = !name ? name : keys(arg)[1] || fileName(INIT_CWD != cwd ? INIT_CWD : cwd),
-			context = join(projectsPath, project);
+			contextPath = join(projectsPath, project),
+			context = isDir(contextPath) ? contextPath : projectsPath;
 		log('INIT_CWD:', INIT_CWD);
 		log('cwd:', cwd);
 		log('projectsPath:', projectsPath);
