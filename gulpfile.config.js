@@ -32,15 +32,13 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
-const { readFileSync: readFile } = fs,
-	{ join } = path,
-	{ project, config, cwd, isFile } = h,
-	//config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+const { join } = path,
+	{ project, context, config, cwd } = h,
 	{
-		deploy,
 		es: { useWebpack, esModule, webpackConfig },
-		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
-		server: { serverPHP, domain, port, baseDir: _baseDir, index }
+		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
+		server: { serverPHP, domain, port, baseDir: _baseDir, index },
+		deploy
 	} = config,
 	root = join(cwd, _root), // __dirname
 	build = join(root, _build),
