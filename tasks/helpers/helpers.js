@@ -7,8 +7,8 @@ const { log } = console,
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
 			gulp: { lastRun },
-			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
-			path: { join, relative, basename: base, extname: ext, sep },
+			fs: { existsSync: exist, readFileSync: readFile },
+			path: { join },
 			gutil, notify, plumber
 		},
 		webpackConfig = join(root, 'webpack.config.js'),

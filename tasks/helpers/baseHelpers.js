@@ -48,6 +48,7 @@ const { log } = require('console'),
 		log('fileName(cwd):', fileName(cwd));
 		log('name:', name);
 		log('project:', project);
+		log('context:', context);
 		log('args:', args);
 		log('arg:', arg);
 		//log('projects\n', projects);
