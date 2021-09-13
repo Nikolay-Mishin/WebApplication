@@ -13,7 +13,7 @@ const { log } = require('console'),
 		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
-	root = join(__dirname, _root),
+	root = join(cwd, _root),
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
