@@ -1,9 +1,11 @@
 const { log } = console,
 	{ cwd, argv: _argv } = process,
-	argv = _argv.slice(2),
+	h = require('./baseHelpers'),
+	//argv = _argv.slice(2),
+	{ argv, _relative, isDir, isFile, getFiles } = h,
 	config = require('../../gulpfile.config'),
 	{
-		root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
+		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
@@ -13,14 +15,14 @@ const { log } = console,
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
 	} = config,
-	relativeRoot = from => _relative(from, root),
-	fileName = file => base(file, ext(file)),
-	isDir = path => exist(path) && stat(path).isDirectory(),
-	isFile = path => exist(path) && stat(path).isFile(),
-	getFiles = (path, { exclude = [], nonExt = false }) => {
-		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
-			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
-	};
+	relativeRoot = from => _relative(from, root);
+	//fileName = file => base(file, ext(file)),
+	//isDir = path => exist(path) && stat(path).isDirectory(),
+	//isFile = path => exist(path) && stat(path).isFile(),
+	//getFiles = (path, { exclude = [], nonExt = false }) => {
+	//	return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
+	//		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
+	//},
 	//parseArgs = (argList, assign = {}, sep = '^\-+') => {
 	//	let args = {}, opt, thisOpt, curOpt;
 	//	argList.forEach(arg => {
@@ -41,32 +43,32 @@ const { log } = console,
 //	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
 //}
 
-const options = {
-	project: 'app-' + getContext('canonium')
-};
+//const options = {
+//	project: 'app-' + getContext('canonium')
+//};
 
-function runInContext(path, cb) {
-	const context = relative(cwd(), path),
-		project = context.split(sep)[0];
+//function runInContext(path, cb) {
+//	const context = relative(cwd(), path),
+//		project = context.split(sep)[0];
 
-	//console.log(
-	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
-	//	' has been changed: ' + chalk.cyan(context)
-	//);
-	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
+//	//console.log(
+//	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
+//	//	' has been changed: ' + chalk.cyan(context)
+//	//);
+//	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
 
-	options.project = project; // Set project
+//	options.project = project; // Set project
 
-	cb(); // Task call
+//	cb(); // Task call
 
-	// Example
-	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
-	//	runInContext(file, gulp.series('jade'));
-	//});
-}
+//	// Example
+//	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
+//	//	runInContext(file, gulp.series('jade'));
+//	//});
+//}
 
 const helpers = {
-	relativeRoot, fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
+	relativeRoot, //fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
@@ -92,11 +94,10 @@ const helpers = {
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	tasksList: (() => getFiles(tasksPath, { excludeTasks, nonExt: true }))(),
-	args: (argList => parseArgs(argList))(argv),
+	//args: (argList => parseArgs(argList))(argv),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	// filtered = Object.filter(scores, ([key, value]) => value > 1);
-	filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	getContext, options, runInContext,
+	//filter: Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),
@@ -110,6 +111,6 @@ const helpers = {
 	}
 };
 
-Object.assign(helpers, _helpers);
+Object.assign(helpers, h);
 
 module.exports = helpers;
