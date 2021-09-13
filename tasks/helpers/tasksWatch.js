@@ -14,25 +14,25 @@ const {
 export default async function tasksWatch() {
 	watch(tasks, function _tasksWatch() {
 		return src(tasks, { since: lastRun(_tasksWatch) })
-			.on('data', ({ extname, relative: rel, path } = f) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }))
+			.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }))
 			.pipe(dest(`${root}/tasks`))
 			.pipe(dest(`${deploy}/tasks`));
 	});
 	watch(_root, function rootWatch() {
 		return src(_root, { since: lastRun(rootWatch) })
-			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
+			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			//.pipe(changed('app', { hasChanged: changed.compareContents }))
 			.pipe(dest(root))
 			.pipe(dest(deploy));
 	});
 	watch(doc, function docWatch() {
 		return src(doc, { since: lastRun(docWatch) })
-			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
+			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(`${deploy}/doc`));
 	});
 	watch(server.concat(_package), function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
-			.on('data', ({ relative: rel, path } = file) => log({ rel, path }))
+			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(deploy));
 	});
 };
