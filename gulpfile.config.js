@@ -40,7 +40,7 @@ const { join } = path,
 		server: { serverPHP, domain, port, baseDir: _baseDir, index },
 		deploy
 	} = config,
-	root = join(cwd, _root), // __dirname
+	root = join(cwd, _root),
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
