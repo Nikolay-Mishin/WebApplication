@@ -1,4 +1,5 @@
-const fs = require('fs'), // работа с файловой системой
+const { cwd, argv: _argv } = require('process'),
+	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ readFileSync: readFile } = fs,
 	{ join } = path,
@@ -18,10 +19,35 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	server = browserSync.create(),
 	reload = async () => server.reload();
 
+const argv = _argv.slice(2),
+	parseArgs = (argList, assign = {}, sep = '^\-+') => {
+		let args = {}, opt, thisOpt, curOpt;
+		argList.forEach(arg => {
+			thisOpt = arg.trim();
+			opt = thisOpt.replace(new RegExp(sep), '');
+			if (thisOpt === opt) {
+				if (curOpt) args[curOpt] = opt; // argument value
+				curOpt = null;
+			}
+			else args[curOpt = opt] = true; // argument name
+		});
+		return Object.assign(assign, args);
+	},
+	args = (argList => parseArgs(argList))(argv),
+	filter = Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate));
+
+function getContext(name) {
+	//let _argv = argv[0] || argv[1];
+	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
+	//return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
+	let argv = filter(args, [arg, val] => val === true);
+}
+
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	tasksPath: join(root, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
+	helpers: { parseArgs, args, getContext, filter },
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp

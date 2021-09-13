@@ -1,9 +1,9 @@
 const { log } = console,
-	{ argv: _argv, cwd } = process,
+	{ cwd, argv: _argv } = process,
 	argv = _argv.slice(2),
 	config = require('../../gulpfile.config'),
 	{
-		root, useWebpack, esModule, tasksPath, excludeTasks = [],
+		root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat },
@@ -20,26 +20,26 @@ const { log } = console,
 	getFiles = (path, { exclude = [], nonExt = false } = opts) => {
 		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
 			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
-	},
-	parseArgs = (argList, assign = {}, sep = '^\-+') => {
-		let args = {}, opt, thisOpt, curOpt;
-		argList.forEach(arg => {
-			thisOpt = arg.trim();
-			opt = thisOpt.replace(new RegExp(sep), '');
-			if (thisOpt === opt) {
-				if (curOpt) args[curOpt] = opt; // argument value
-				curOpt = null;
-			}
-			else args[curOpt = opt] = true; // argument name
-		});
-		return Object.assign(assign, args);
 	};
+	//parseArgs = (argList, assign = {}, sep = '^\-+') => {
+	//	let args = {}, opt, thisOpt, curOpt;
+	//	argList.forEach(arg => {
+	//		thisOpt = arg.trim();
+	//		opt = thisOpt.replace(new RegExp(sep), '');
+	//		if (thisOpt === opt) {
+	//			if (curOpt) args[curOpt] = opt; // argument value
+	//			curOpt = null;
+	//		}
+	//		else args[curOpt = opt] = true; // argument name
+	//	});
+	//	return Object.assign(assign, args);
+	//};
 
-function getContext(name) {
-	let _argv = argv[0] || argv[1];
-	if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
-	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-}
+//function getContext(name) {
+//	let _argv = argv[0] || argv[1];
+//	if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
+//	return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
+//}
 
 const options = {
 	project: 'app-' + getContext('canonium')
@@ -65,7 +65,7 @@ function runInContext(path, cb) {
 	//});
 }
 
-module.exports = {
+const helpers = {
 	relativeRoot, fileName, isDir, isFile, getFiles, parseArgs, getContext, options, runInContext,
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
@@ -109,3 +109,7 @@ module.exports = {
 		});
 	}
 };
+
+Object.assign(helpers, _helpers);
+
+module.exports = helpers;
