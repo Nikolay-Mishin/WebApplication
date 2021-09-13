@@ -51,7 +51,7 @@ function getContext(name) {
 		argv = filter(args, ([arg, val]) => { log('getContext-filter\n', [arg, val]); return val === true; }),
 		_keys = keys(argv),
 		arg = _keys.filter(key => projects.includes(key));
-	log('cwd:', INIT_CWD);
+	log('INIT_CWD:', INIT_CWD);
 	log('cwd:', cwd);
 	log('project:', project);
 	log('args:', args);
