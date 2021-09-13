@@ -11,7 +11,7 @@ const { log } = require('console'),
 		server: { serverPHP, domain, port, baseDir: _baseDir, index },
 		deploy
 	} = config,
-	root = join(cwd, _root),
+	root = join(context, _root),
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
