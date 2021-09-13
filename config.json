@@ -1,4 +1,5 @@
 {
+	"name": "WebApplication",
 	"es": {
 		"useWebpack": true,
 		"esModule": "es6",
@@ -26,8 +27,8 @@
 		]
 	},
 	"paths": {
+		"projects": "Open Server/domains",
 		"tasksPath": "tasks",
-		"projectsRoot": "",
 		"root": ".",
 		"build": {
 			"root": "wwwroot",

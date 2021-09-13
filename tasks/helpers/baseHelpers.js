@@ -36,29 +36,36 @@ const { log } = require('console'),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFolders = path => readDir(path).filter(file => isDir(join(path, file))),
+	getFolders = (path, { exclude = [] }) => readDir(path)
+		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => {
 		return readDir(path).filter(file => isFile(join(path, file)) && !exclude.includes(fileName(file)))
 			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
-	};
+	},
+	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+	{ name, deploy: { exclude }, paths: { projects = '' } } = config,
+	_projectsPath = join(cwd, projects),
+	projectsPath = isDir(_projectsPath) ? _projectsPath : cwd;
 
 function getContext(name) {
 	//let _argv = argv[0] || argv[1];
 	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
 	//return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-	let project = fileName(cwd),
-		projects = ['project'],
-		argv = filter(args, ([arg, val]) => { log('getContext-filter\n', [arg, val]); return val === true; }),
-		_keys = keys(argv),
-		arg = _keys.filter(key => projects.includes(key));
+	const project = fileName(cwd),
+		projects = getFolders(projectsPath, { exclude }),
+		parent = getFolders(dirname(projectsPath), { exclude }),
+		argv = filter(args, ([arg, val]) => val === true && (projects.includes(arg) || parent.includes(arg))),
+		projectName = INIT_CWD != cwd && argv.length > 0 ? fileName(INIT_CWD) : name;
 	log('INIT_CWD:', INIT_CWD);
 	log('cwd:', cwd);
+	log('projectsPath:', projectsPath);
 	log('project:', project);
+	log('name:', name);
+	log('projectName:', projectName);
 	log('args:', args);
-	log('projects:', projects);
 	log('argv:', argv);
-	log('keys:', _keys);
-	log('arg:', arg);
+	//log('projects\n', projects);
+	//log('parent:', parent);
 }
 
 const options = {
@@ -86,7 +93,7 @@ function runInContext(path, cb) {
 }
 
 module.exports = {
-	INIT_CWD, cwd, argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
+	config, INIT_CWD, cwd, argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
 	getContext, runInContext, options
 };
 

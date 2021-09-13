@@ -1,15 +1,16 @@
-const { cwd, argv: _argv } = require('process'),
+const { log } = require('console'),
+	{ cwd: _cwd, argv: _argv } = require('process'),
 	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ readFileSync: readFile } = fs,
 	{ join } = path,
 	h = require('./tasks/helpers/baseHelpers'),
-	{ isFile } = h,
-	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+	{ config, cwd, isFile } = h,
+	//config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{
-		deploy,
+		deploy, name: project,
 		es: { useWebpack, esModule, webpackConfig },
-		paths: { tasksPath = 'tasks', projectsRoot = '', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
+		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
 	} = config,
 	root = join(__dirname, _root),
