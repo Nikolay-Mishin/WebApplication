@@ -1,11 +1,13 @@
 import { log } from 'console';
-import { cwd, argv as _argv } from 'process';
+import { env, cwd as _cwd, argv as _argv, env } from 'process';
 import { fileURLToPath as toPath } from 'url';
 import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, statSync as stat } from 'fs';
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 //import config from '../../gulpfile.config.js';
 
-const argv = _argv.slice(2),
+const { INIT_CWD } = env,
+	cwd = _cwd(),
+	argv = _argv.slice(2),
 	//{
 	//	root, useWebpack, esModule, tasksPath, excludeTasks = [], helpers: _helpers,
 	//	modules: {
@@ -49,14 +51,19 @@ function getContext(name) {
 	//let _argv = argv[0] || argv[1];
 	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
 	//return (typeof _argv === 'undefined') ? name : _argv.replace('--', '');
-	let projects = ['project'],
-		argv = filter(args, ([arg, val]) => val === true),
+	let project = fileName(cwd),
+		projects = ['project'],
+		argv = filter(args, ([arg, val]) => { log('getContext-filter\n', [arg, val]); return val === true; }),
 		_keys = keys(argv),
 		arg = _keys.filter(key => projects.includes(key));
-	log('getContext-projects\n', projects);
-	log('getContext-argv\n', argv);
-	log('getContext-keys\n', _keys);
-	log('getContext-arg\n', arg);
+	log('cwd:', INIT_CWD);
+	log('cwd:', cwd);
+	log('project:', project);
+	log('args:', args);
+	log('projects:', projects);
+	log('argv:', argv);
+	log('keys:', _keys);
+	log('arg:', arg);
 }
 
 const options = {

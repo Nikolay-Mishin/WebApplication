@@ -1,5 +1,5 @@
 import { log } from 'console';
-import { cwd, env, argv, title } from 'process';
+import { env, cwd, argv, title } from 'process';
 import h from './helpers.js';
 
 const { INIT_CWD, HOMEDRIVE } = env;
@@ -16,7 +16,7 @@ export default async function test() {
 
 	//log('tasksList\n', tasksList);
 
-	log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
+	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);
