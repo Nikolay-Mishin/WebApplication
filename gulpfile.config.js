@@ -8,7 +8,7 @@ const { log } = require('console'),
 	{ config, cwd, isFile } = h,
 	//config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{
-		deploy, name: project,
+		name: project, deploy,
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
