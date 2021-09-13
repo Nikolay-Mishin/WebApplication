@@ -1,5 +1,5 @@
 import { log } from 'console';
-import { env, cwd as _cwd, argv as _argv, env } from 'process';
+import { env, cwd as _cwd, argv as _argv } from 'process';
 import { fileURLToPath as toPath } from 'url';
 import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, statSync as stat } from 'fs';
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
