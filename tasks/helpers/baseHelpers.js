@@ -32,8 +32,6 @@ const { log } = require('console'),
 	args = (argList => parseArgs(argList))(argv),
 	keys = obj => Object.keys(obj),
 	filter = Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
-	_dirname = meta => dirname(toPath(meta.url)),
-	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	//relativeRoot = from => _relative(from, root),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
@@ -83,7 +81,7 @@ function runInContext(path, cb) {
 }
 
 module.exports = {
-	argv, parseArgs, args, filter, _dirname, _relative, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
+	argv, parseArgs, args, filter, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
 	getContext, runInContext
 };
 
