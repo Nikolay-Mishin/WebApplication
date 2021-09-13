@@ -85,5 +85,5 @@ function runInContext(path, cb) {
 
 export default {
 	argv, parseArgs, args, filter, _dirname, _relative, /*relativeRoot, */fileName, isDir, isFile, getFolders, getFiles,
-	getContext, runInContext
+	getContext, runInContext, options
 };

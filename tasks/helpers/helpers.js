@@ -72,8 +72,7 @@ const //argv = _argv.slice(2),
 //}
 
 const helpers = {
-	relativeRoot,
-	//_dirname, _relative, /*relativeRoot, */fileName, isDir, isFile, getFiles, /*parseArgs, getContext, */options, runInContext,
+	relativeRoot, //_dirname, _relative, fileName, isDir, isFile, getFiles, parseArgs, getContext, runInContext, options,
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
