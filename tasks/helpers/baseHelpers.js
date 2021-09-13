@@ -34,6 +34,7 @@ const { INIT_CWD } = env,
 	},
 	args = (argList => parseArgs(argList))(argv),
 	keys = obj => Object.keys(obj),
+	empty = obj => keys(obj).length == 0,
 	filter = Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
@@ -47,59 +48,46 @@ const { INIT_CWD } = env,
 		.filter(file => isFile(join(path, file)) && !exclude.includes(fileName(file)))
 		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0),
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
-	{ name, deploy: { exclude }, paths: { projects = '' } } = config,
+	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
 	_projectsPath = join(cwd, projects),
-	projectsPath = isDir(_projectsPath) ? _projectsPath : cwd;
+	existProjects = isDir(_projectsPath),
+	projectsPath = isDir(_projectsPath) ? _projectsPath : cwd,
+	getContext = () => {
+		const projects = getFolders(projectsPath, { exclude })
+				.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
+			arg = filter(args, ([arg, val]) => val === true && (projects.includes(arg))),
+			project = !name ? name : keys(arg)[1] || fileName(INIT_CWD != cwd ? INIT_CWD : cwd);
+		log('INIT_CWD:', INIT_CWD);
+		log('cwd:', cwd);
+		log('projectsPath:', projectsPath);
+		log('existProjects:', existProjects);
+		log('fileName(cwd):', fileName(cwd));
+		log('name:', name);
+		log('project:', project);
+		log('args:', args);
+		log('arg:', arg);
+		//log('projects\n', projects);
 
-function getContext(_name) {
-	//let _argv = argv[0] || argv[1];
-	//if (typeof _argv !== 'undefined' && _argv.indexOf('--') < 0) _argv = argv[1];
-	//return (typeof _argv === 'undefined') ? _name : _argv.replace('--', '');
-	const project = fileName(cwd),
-		projects = getFolders(projectsPath, { exclude }),
-		parent = getFolders(dirname(projectsPath), { exclude }),
-		argv = filter(args, ([arg, val]) => val === true && (projects.includes(arg) || parent.includes(arg))),
-		projectName = INIT_CWD != cwd && argv.length > 0 ? fileName(INIT_CWD) : name;
-	log('INIT_CWD:', INIT_CWD);
-	log('cwd:', cwd);
-	log('projectsPath:', projectsPath);
-	log('project:', project);
-	log('name:', name);
-	log('projectName:', projectName);
-	log('args:', args);
-	log('argv:', argv);
-	log('INIT_CWD != cwd:', INIT_CWD != cwd);
-	log('argv.length > 0:', argv.length > 0);
-	//log('projects\n', projects);
-	//log('parent:', parent);
-}
+		return project;
+	},
+	project = getContext(),
+	runInContext = (path, cb) => {
+		const context = relative(cwd, path),
+			project = context.split(sep)[0];
 
-const options = {
-	project: 'app-' + getContext('canonium')
-};
+		log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
 
-function runInContext(path, cb) {
-	const context = relative(cwd, path),
-		project = context.split(sep)[0];
+		options.project = project; // Set project
 
-	//console.log(
-	//	'[' + chalk.green(project.replace('app-', '')) + ']' +
-	//	' has been changed: ' + chalk.cyan(context)
-	//);
-	log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
+		cb(); // Task call
 
-	options.project = project; // Set project
-
-	cb(); // Task call
-
-	// Example
-	//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
-	//	runInContext(file, gulp.series('jade'));
-	//});
-}
+		//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
+		//	runInContext(file, gulp.series('jade'));
+		//});
+	};
 
 export default {
-	config, INIT_CWD, cwd, argv, parseArgs, args, filter, _dirname, _relative, //relativeRoot,
+	project, config, INIT_CWD, cwd, argv, parseArgs, args, filter, _dirname, _relative, //relativeRoot,
 	fileName, isDir, isFile, getFolders, getFiles,
-	getContext, runInContext, options
+	getContext, runInContext
 };

@@ -34,10 +34,10 @@ import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { readFileSync: readFile } = fs,
 	{ join } = path,
-	{ config, cwd, isFile } = h,
+	{ project, config, cwd, isFile } = h,
 	//config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{
-		name: project, deploy,
+		deploy,
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { projects = '', tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
 		server: { serverPHP, domain, port, baseDir: _baseDir, index }
