@@ -20,7 +20,7 @@ const argv = _argv.slice(2),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFiles = (path, { exclude = [], nonExt = false } = opts) => {
+	getFiles = (path, { exclude = [], nonExt = false }) => {
 		return readDir(path).filter(file => ext(join(path, file)) !== '' && !exclude.includes(fileName(file)))
 			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
 	};
