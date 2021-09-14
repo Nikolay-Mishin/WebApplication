@@ -52,7 +52,7 @@ const server = browserSync.create(),
 
 export default process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
-	tasksPath: join(root, tasksPath),
+	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	// Подключаемые модули
 	modules: {
