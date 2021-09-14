@@ -42,7 +42,7 @@ const helpers = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	tasksList: (() => getFiles(tasksPath, { excludeTasks, nonExt: true }))(),
+	tasksList: (() => getFiles(tasksPath, { exclude: excludeTasks, nonExt: true }))(),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),

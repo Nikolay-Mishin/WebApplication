@@ -26,9 +26,18 @@ const { log } = require('console'),
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFolders = (path, { exclude = [] }) => readDir(path)
 		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
-	getFiles = (path, { exclude = [], nonExt = false }) => {
-		return readDir(path).filter(file => isFile(join(path, file)) && !exclude.includes(fileName(file)))
-			.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace('.js', '') : file; return files; }, 0);
+	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
+		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
+		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
+	imports = async (path, exclude = []) => {
+		const isArr = Array.isArray(path),
+			imports = {},
+			files = isArr ? path : getFiles(path, { exclude });
+		files.forEach(file => {
+			imports[file.replace(/\-+/g, '_')] = import(`${path ? toUrl(path) : '.'}/${file}.js`);
+		});
+		for (let file in imports) imports[file] = (await imports[file]).default;
+		return imports;
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
@@ -73,7 +82,8 @@ const { log } = require('console'),
 	};
 
 module.exports = {
-	project, context, config, INIT_CWD, cwd, argv, parseArgs, args, filter, fileName, isDir, isFile, getFolders, getFiles,
+	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
+	filter, fileName, isDir, isFile, getFolders, getFiles, imports,
 	getContext, runInContext
 };
 
