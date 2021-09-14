@@ -1,6 +1,8 @@
+import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
+import imports from './import.js';
 
 const { argv, _relative, isDir, isFile } = h,
 	{
@@ -60,6 +62,6 @@ const helpers = {
 	}
 };
 
-Object.assign(helpers, h);
+Object.assign(helpers, h, imports);
 
 export default helpers;

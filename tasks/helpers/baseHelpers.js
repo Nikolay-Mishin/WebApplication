@@ -4,7 +4,7 @@ import { fileURLToPath as toPath, pathToFileURL as toUrl } from 'url';
 import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, statSync as stat } from 'fs';
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 
-const { INIT_CWD } = env,
+export const { INIT_CWD } = env,
 	cwd = _cwd(),
 	argv = _argv.slice(2),
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
@@ -23,7 +23,10 @@ const { INIT_CWD } = env,
 	args = (argList => parseArgs(argList))(argv),
 	keys = obj => Object.keys(obj),
 	empty = obj => keys(obj).length == 0,
-	filter = Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
+	fromEntries = entries => Object.fromEntries(entries),
+	entries = obj => Object.entries(obj),
+	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
+	isArray = obj => Array.isArray(obj),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
@@ -33,13 +36,6 @@ const { INIT_CWD } = env,
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
 		.map(file => nonExt ? file.replace(ext(file), '') : file),
-	imports = async (path, exclude = []) => {
-		const isArr = Array.isArray(path),
-			imports = (isArr ? path : getFiles(path, { exclude })).reduce(async (imports, file) => {
-				const _file = (await import(`${isArr ? file : toUrl(path)}/${file}`)).default;
-				(await imports)[fileName(file.replace(/\-+/g, '_'))] = _file; return imports; }, {});
-		return await imports;
-	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
 	_projectsPath = join(cwd, projects),
@@ -83,7 +79,9 @@ const { INIT_CWD } = env,
 	};
 
 export default {
-	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
-	filter, _dirname, _relative, fileName, isDir, isFile, getFolders, getFiles, imports,
-	getContext, runInContext
+	config, INIT_CWD, cwd, argv, parseArgs, args,
+	keys, empty, fromEntries, entries, filter, isArray,
+	_dirname, _relative, fileName, isDir, isFile,
+	getFolders, getFiles,
+	getContext, runInContext, project, context
 };

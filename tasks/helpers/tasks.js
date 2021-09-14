@@ -1,4 +1,4 @@
 import h from './helpers.js';
-const { config: { tasksPath, excludeTasks = [] }, imports } = h;
+const { importModules, config: { tasksPath, excludeTasks = [] } } = h;
 
-export default process.node_tasks = process.node_tasks || await (async () => await imports(tasksPath, excludeTasks))();
+export default process.node_tasks = process.node_tasks || await (async () => await importModules(tasksPath, excludeTasks))();
