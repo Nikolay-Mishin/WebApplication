@@ -39,9 +39,10 @@ const { INIT_CWD } = env,
 			imports = {},
 			files = isArr ? path : getFiles(path, { exclude });
 		files.forEach(file => {
-			imports[file.replace(/\-+/g, '_')] = import(`${path ? toUrl(path) : '.'}/${file}.js`);
+			//imports[file.replace(/\-+/g, '_')] = import(`${path ? toUrl(path) : '.'}/${file}.js`);
+			imports[file.replace(/\-+/g, '_')] = `${path ? toUrl(path) : '.'}/${file}.js`;
 		});
-		for (let file in imports) imports[file] = (await imports[file]).default;
+		//for (let file in imports) imports[file] = (await imports[file]).default;
 		return imports;
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
@@ -85,6 +86,8 @@ const { INIT_CWD } = env,
 		//	runInContext(file, gulp.series('jade'));
 		//});
 	};
+
+log('config\n', config);
 
 export default {
 	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
