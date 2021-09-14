@@ -1,35 +1,32 @@
 import module from './export.js'; // both static and dynamic importers will work
 
+export { module };
+
 // or
-export const consumer = import('./export.js').then(m => {
-	const module = m.default;
-	console.log('dynamic import\n', module);
+export const consumer = await import('./export.js').then(module => {
+	console.log('dynamic import\n', module.default);
+	return module.default;
 });
 
 // ES2015 consumer
-export const consumer2015 = module.then(exports => {
-	console.log('ES2015 consumer\n', exports.my); // will log "module"
+export const consumer2015 = await module.then(module => {
+	console.log('ES2015 consumer\n', module); // will log "module"
+	return module;
 });
 
 // ES2017 consumer
-export const consumer2017 = (async () => {
-	const module = (await import('./export.js')).default;
-	console.log('ES2017 consumer - module\n', module);
-	const _module = await module;
-	console.log('ES2017 consumer\n', _module);
+export const consumer2017 = await (async () => {
+	const module = await (await import('./export.js')).default;
+	console.log('ES2017 consumer\n', module);
+	return module;
 })();
 
 // ES2017 consumer and exporter
-export default new Promise(async $export => {
-	const module = (await import('./export.js')).default;
-	console.log('ES2017 consumer and exporter - module\n', module);
-	const _module = await module;
-	console.log('ES2017 consumer and exporter\n', _module);
-	$export({ _module, method() { } });
+export default await new Promise(async $export => {
+	const module = await (await import('./export.js')).default;
+	console.log('ES2017 consumer and exporter\n', module);
+	$export({ module, method() { } });
 });
-
-export const module2 = (await import('./export.js')).default;
-console.log('module2\n', module2);
 
 import { exports, promise, _export } from './export.js';
 

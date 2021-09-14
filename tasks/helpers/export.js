@@ -1,7 +1,7 @@
 import imports from './import.js'; // grab the importer
 
 // export through the same pattern
-export const exports = new Promise(async $export => {
+export const exports = await new Promise(async $export => {
 	// grab many modules at once
 	const [a, b] = await imports(
 		import('./baseHelpers.js'),

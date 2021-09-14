@@ -54,16 +54,16 @@ const { INIT_CWD } = env,
 			project = !name ? name : keys(arg)[1] || fileName(INIT_CWD != cwd ? INIT_CWD : cwd),
 			contextPath = join(projectsPath, project),
 			context = isDir(contextPath) ? contextPath : projectsPath;
-		log('INIT_CWD:', INIT_CWD);
-		log('cwd:', cwd);
-		log('projectsPath:', projectsPath);
-		log('existProjects:', existProjects);
-		log('fileName(cwd):', fileName(cwd));
-		log('name:', name);
-		log('project:', project);
-		log('context:', context);
-		log('args:', args);
-		log('arg:', arg);
+		//log('INIT_CWD:', INIT_CWD);
+		//log('cwd:', cwd);
+		//log('projectsPath:', projectsPath);
+		//log('existProjects:', existProjects);
+		//log('fileName(cwd):', fileName(cwd));
+		//log('name:', name);
+		//log('project:', project);
+		//log('context:', context);
+		//log('args:', args);
+		//log('arg:', arg);
 		//log('projects:', projects);
 
 		return { project, context };
