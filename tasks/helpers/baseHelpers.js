@@ -35,9 +35,9 @@ const { INIT_CWD } = env,
 		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
 	imports = async (path, exclude = []) => {
 		const isArr = Array.isArray(path),
-			_path = path ? toUrl(path) : '.',
 			imports = (isArr ? path : getFiles(path, { exclude })).reduce(async (imports, file) => {
-				(await imports)[fileName(file.replace(/\-+/g, '_'))] = (await import(`${isArr ? file : _path}/${file}`)).default;
+				file = (await import(`${isArr ? file : toUrl(path)}/${file}`)).default;
+				(await imports)[fileName(file.replace(/\-+/g, '_'))] = file;
 				return imports;
 			}, {});
 		return await imports;
