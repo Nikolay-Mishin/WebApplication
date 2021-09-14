@@ -82,8 +82,6 @@ const { log } = require('console'),
 		//});
 	};
 
-log('config\n', config);
-
 module.exports = {
 	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
 	filter, fileName, isDir, isFile, getFolders, getFiles, imports,
