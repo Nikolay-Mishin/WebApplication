@@ -38,8 +38,8 @@ export const data = () => _data('tasks/**/*');
 import module from './tasks/helpers/module.js';
 import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/helpers/module.js';
 
-log('module\n', module);
-log('mod\n', mod);
-log('consumer\n', consumer);
-log('consumer2015\n', consumer2015);
-log('consumer2017\n', consumer2017);
+//log('module\n', module);
+//log('mod\n', mod);
+//log('consumer\n', consumer);
+//log('consumer2015\n', consumer2015);
+//log('consumer2017\n', consumer2017);
