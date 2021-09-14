@@ -8,36 +8,12 @@
 		<StartupObject />
 	</PropertyGroup>
 
-	<!--<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES2015</TypeScriptTarget>
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
-    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
-    <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
-    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
-    <TypeScriptOutFile>wwwroot/index.js</TypeScriptOutFile>
-    <TypeScriptOutDir>wwwroot</TypeScriptOutDir>
-    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
-    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
-    <TypeScriptSourceMap>True</TypeScriptSourceMap>
-    <TypeScriptMapRoot />
-    <TypeScriptSourceRoot>src</TypeScriptSourceRoot>
-  </PropertyGroup>-->
-
-	<!--<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
-	</ItemGroup>-->
-
-	<!--<ItemGroup>
-    <None Remove="src\js\app.js" />
-    <None Remove="src\js\lib.js" />
-  </ItemGroup>-->
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+		<Folder Include="src\" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<!--<Content Include="src\js\app.js">
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <TypeScriptCompile Include="src\js\lib.js" />-->
 		<Content Include="src\ts\app.ts">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
@@ -45,29 +21,37 @@
 		<TypeScriptCompile Include="src\ts\main.ts" />
 	</ItemGroup>
 
-	<!--<ItemGroup>
+	<ItemGroup>
 		<None Update="gulpfile.config.js">
 			<DependentUpon>gulpfile.config.js</DependentUpon>
 		</None>
+		<Content Update="tsconfig.json">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+	
+	<!--<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<TypeScriptTarget>ES2015</TypeScriptTarget>
+		<TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+		<TypeScriptModuleKind>None</TypeScriptModuleKind>
+		<TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+		<TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
+		<TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+		<TypeScriptOutFile>wwwroot/index.js</TypeScriptOutFile>
+		<TypeScriptOutDir>wwwroot</TypeScriptOutDir>
+		<TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+		<TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+		<TypeScriptSourceMap>True</TypeScriptSourceMap>
+		<TypeScriptMapRoot />
+		<TypeScriptSourceRoot>src</TypeScriptSourceRoot>
+	</PropertyGroup>-->
+
+	<!--<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
 	</ItemGroup>-->
-
-	<!--<ItemGroup>
-	  <Folder Include="src\js\" />
-	</ItemGroup>-->
-
-	<!--<ItemGroup>
-    <Folder Include="wwwroot\" />
-	<Folder Include="src\" />
-  </ItemGroup>-->
-
-	<!--<ItemGroup>
-    <Content Update="tsconfig.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>-->
 
 	<ProjectExtensions>
-		<!--<VisualStudio AllowExistingFolder="true" />-->
+		<VisualStudio AllowExistingFolder="true" />
 		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>
 
