@@ -36,13 +36,14 @@ const { INIT_CWD } = env,
 		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
 	imports = async (path, exclude = []) => {
 		const isArr = Array.isArray(path),
+			_path = path ? toUrl(path) : '.',
 			imports = {},
 			files = isArr ? path : getFiles(path, { exclude });
 		files.forEach(file => {
-			//imports[file.replace(/\-+/g, '_')] = import(`${path ? toUrl(path) : '.'}/${file}.js`);
-			imports[file.replace(/\-+/g, '_')] = `${path ? toUrl(path) : '.'}/${file}.js`;
+			imports[fileName(file.replace(/\-+/g, '_'))] = import(`${isArr ? file : _path}/${file}`);
+			//imports[fileName(file.replace(/\-+/g, '_'))] = `${isArr ? file : _path}/${file}`;
 		});
-		//for (let file in imports) imports[file] = (await imports[file]).default;
+		for (let file in imports) imports[file] = (await imports[file]).default;
 		return imports;
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
