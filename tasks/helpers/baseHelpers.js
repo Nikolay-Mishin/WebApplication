@@ -41,7 +41,6 @@ const { INIT_CWD } = env,
 			files = isArr ? path : getFiles(path, { exclude });
 		files.forEach(file => {
 			imports[fileName(file.replace(/\-+/g, '_'))] = import(`${isArr ? file : _path}/${file}`);
-			//imports[fileName(file.replace(/\-+/g, '_'))] = `${isArr ? file : _path}/${file}`;
 		});
 		for (let file in imports) imports[file] = (await imports[file]).default;
 		return imports;
