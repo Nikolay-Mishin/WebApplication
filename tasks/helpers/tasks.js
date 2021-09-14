@@ -7,6 +7,6 @@ export default process.node_tasks = process.node_tasks || await (async function 
 	const tasks = {};
 	tasksList.forEach(task => tasks[task.replace(/\-+/g, '_')] = import(`${tasksPath ? toUrl(tasksPath) : '.'}/${task}.js`));
 	for (let task in tasks) tasks[task] = (await tasks[task]).default;
-	log('imports\n', imports);
+	log('imports\n', imports(tasksPath));
 	return process.node_tasks = tasks;
 })();

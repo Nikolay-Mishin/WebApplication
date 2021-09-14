@@ -87,8 +87,6 @@ const { INIT_CWD } = env,
 		//});
 	};
 
-log('config\n', config);
-
 export default {
 	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
 	filter, _dirname, _relative, fileName, isDir, isFile, getFolders, getFiles, imports,
