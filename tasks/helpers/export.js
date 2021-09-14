@@ -1,11 +1,11 @@
-import imports from './imports.js'; // grab the importer
+import imports from './import.js'; // grab the importer
 
 // export through the same pattern
 export const exports = new Promise(async $export => {
 	// grab many modules at once
 	const [a, b] = await imports(
-		import('./a.js'),
-		import('./b.js')
+		import('./baseHelpers.js'),
+		import('./helpers.js')
 	);
 	$export({ name: 'c', a, b }); // export this module
 });

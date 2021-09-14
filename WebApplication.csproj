@@ -22,9 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="gulpfile.config.js">
-			<DependentUpon>gulpfile.config.js</DependentUpon>
-		</None>
 		<Content Update="tsconfig.json">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
