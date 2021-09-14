@@ -28,17 +28,13 @@ const { log } = require('console'),
 		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
-		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
-	imports = async (path, exclude = []) => {
+		.reduce((total, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
+	imports = (path, exclude = []) => {
 		const isArr = Array.isArray(path),
-			imports = {},
-			files = isArr ? path : getFiles(path, { exclude });
-		files.forEach(file => {
-			//imports[file.replace(/\-+/g, '_')] = require(`${path ? path : '.'}/${file}.js`);
-			imports[file.replace(/\-+/g, '_')] = `${path ? path : '.'}/${file}.js`;
-		});
-		//for (let file in imports) imports[file] = (await imports[file]).default;
-		return imports;
+			_path = path ? path : '.';
+		return (isArr ? path : getFiles(path, { exclude })).reduce((total, file, i, files) => {
+			total[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : _path}/${file}`); return total;
+		}, {});
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,

@@ -1,5 +1,4 @@
-const { log } = require('console'),
-	{ cwd: _cwd, argv: _argv } = require('process'),
+const { cwd: _cwd, argv: _argv } = require('process'),
 	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ join } = path,

@@ -1,10 +1,9 @@
-const { log } = console,
-	{ argv: _argv } = process,
+const { argv: _argv } = process,
 	h = require('./baseHelpers'),
-	{ argv, _relative, isDir, isFile, getFiles } = h,
+	{ argv, _relative, isDir, isFile } = h,
 	config = require('../../gulpfile.config'),
 	{
-		root, useWebpack, esModule, tasksPath, excludeTasks = [],
+		root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile },
@@ -42,7 +41,6 @@ const helpers = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode: (prod = false) => async () => this.setModeSync(prod),
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	tasksList: (() => getFiles(tasksPath, { exclude: excludeTasks, nonExt: true }))(),
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
