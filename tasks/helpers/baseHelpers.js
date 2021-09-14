@@ -29,19 +29,16 @@ const { INIT_CWD } = env,
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFolders = (path, { exclude = [] }) => readDir(path)
-		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
+	getFolders = (path, { exclude = [] }) => readDir(path).filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
-		.reduce((accumulator, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
+		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
 	imports = async (path, exclude = []) => {
 		const isArr = Array.isArray(path),
 			_path = path ? toUrl(path) : '.',
-			imports = {},
-			files = isArr ? path : getFiles(path, { exclude });
-		files.forEach(file => {
-			imports[fileName(file.replace(/\-+/g, '_'))] = import(`${isArr ? file : _path}/${file}`);
-		});
+			imports = (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
+				imports[fileName(file.replace(/\-+/g, '_'))] = import(`${isArr ? file : _path}/${file}`); return imports;
+			}, {});
 		for (let file in imports) imports[file] = (await imports[file]).default;
 		return imports;
 	},

@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { cwd as _cwd, argv as _argv } from 'process';
 import h from './tasks/helpers/baseHelpers.js';
 

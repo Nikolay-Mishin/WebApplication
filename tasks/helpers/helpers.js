@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
