@@ -1,4 +1,4 @@
-/// <binding ProjectOpened='_tasksWatch, _test' />
+/// <binding ProjectOpened='_tasksWatch' />
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
