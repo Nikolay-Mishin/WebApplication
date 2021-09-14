@@ -36,10 +36,8 @@ const { INIT_CWD } = env,
 	imports = async (path, exclude = []) => {
 		const isArr = Array.isArray(path),
 			imports = (isArr ? path : getFiles(path, { exclude })).reduce(async (imports, file) => {
-				file = (await import(`${isArr ? file : toUrl(path)}/${file}`)).default;
-				(await imports)[fileName(file.replace(/\-+/g, '_'))] = file;
-				return imports;
-			}, {});
+				const _file = (await import(`${isArr ? file : toUrl(path)}/${file}`)).default;
+				(await imports)[fileName(file.replace(/\-+/g, '_'))] = _file; return imports; }, {});
 		return await imports;
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
