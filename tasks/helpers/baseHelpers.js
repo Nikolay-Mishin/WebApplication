@@ -36,11 +36,11 @@ const { INIT_CWD } = env,
 	imports = async (path, exclude = []) => {
 		const isArr = Array.isArray(path),
 			_path = path ? toUrl(path) : '.',
-			imports = (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
-				imports[fileName(file.replace(/\-+/g, '_'))] = import(`${isArr ? file : _path}/${file}`); return imports;
+			imports = (isArr ? path : getFiles(path, { exclude })).reduce(async (imports, file) => {
+				(await imports)[fileName(file.replace(/\-+/g, '_'))] = (await import(`${isArr ? file : _path}/${file}`)).default;
+				return imports;
 			}, {});
-		for (let file in imports) imports[file] = (await imports[file]).default;
-		return imports;
+		return await imports;
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
