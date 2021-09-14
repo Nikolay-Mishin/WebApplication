@@ -87,7 +87,7 @@ const { INIT_CWD } = env,
 	};
 
 export default {
-	project, context, config, INIT_CWD, cwd, argv, parseArgs, args, filter, _dirname, _relative,
-	fileName, isDir, isFile, getFolders, getFiles, imports,
+	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
+	filter, _dirname, _relative, fileName, isDir, isFile, getFolders, getFiles, imports,
 	getContext, runInContext
 };
