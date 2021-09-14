@@ -29,7 +29,7 @@ const { log } = require('console'),
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
 		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
 	imports = (path, exclude = []) => {
-		const isArr = Array.isArray(path),
+		const isArr = Array.isArray(path);
 		return (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
 			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : path}/${file}`);
 			return imports;
