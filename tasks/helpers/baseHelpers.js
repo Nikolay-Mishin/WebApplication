@@ -31,9 +31,7 @@ const { log } = require('console'),
 	imports = (path, exclude = []) => {
 		const isArr = Array.isArray(path);
 		return (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
-			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : path}/${file}`);
-			return imports;
-		}, {});
+			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : path}/${file}`); return imports; }, {});
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
