@@ -24,8 +24,7 @@ const { log } = require('console'),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFolders = (path, { exclude = [] }) => readDir(path)
-		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
+	getFolders = (path, { exclude = [] }) => readDir(path).filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
 		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
