@@ -1,5 +1,18 @@
 import module from './export.js'; // both static and dynamic importers will work
 
+import { exports, promise, _export } from './export.js';
+
+console.log('exports\n', exports);
+console.log('promise\n', promise);
+console.log('_export\n', _export);
+
+// ES2017 consumer and exporter
+export default await new Promise(async $export => {
+	const module = await (await import('./export.js')).default;
+	console.log('ES2017 consumer and exporter\n', module);
+	$export({ module, method() { } });
+});
+
 export { module };
 
 // or
@@ -20,16 +33,3 @@ export const consumer2017 = await (async () => {
 	console.log('ES2017 consumer\n', module);
 	return module;
 })();
-
-// ES2017 consumer and exporter
-export default await new Promise(async $export => {
-	const module = await (await import('./export.js')).default;
-	console.log('ES2017 consumer and exporter\n', module);
-	$export({ module, method() { } });
-});
-
-import { exports, promise, _export } from './export.js';
-
-console.log('exports\n', exports);
-console.log('promise\n', promise);
-console.log('_export\n', _export);
