@@ -1,4 +1,5 @@
-const { tasksList, config: { tasksPath }, imports } = require('./helpers');
+const { log } = console,
+	{ tasksList, config: { tasksPath }, imports } = require('./helpers');
 
 module.exports = process.node_tasks = process.node_tasks || (function tasks() {
 	const tasks = {};
