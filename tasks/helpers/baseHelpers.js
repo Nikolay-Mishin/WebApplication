@@ -30,9 +30,9 @@ const { log } = require('console'),
 		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
 	imports = (path, exclude = []) => {
 		const isArr = Array.isArray(path),
-			_path = path ? toUrl(path) : '.';
 		return (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
-			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : _path}/${file}`); return imports;
+			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : path}/${file}`);
+			return imports;
 		}, {});
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
