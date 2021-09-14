@@ -28,12 +28,12 @@ const { log } = require('console'),
 		.filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
-		.reduce((total, file, i, files) => { files[i] = nonExt ? file.replace(ext(file), '') : file; return files; }, 0),
+		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
 	imports = (path, exclude = []) => {
 		const isArr = Array.isArray(path),
-			_path = path ? path : '.';
-		return (isArr ? path : getFiles(path, { exclude })).reduce((total, file, i, files) => {
-			total[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : _path}/${file}`); return total;
+			_path = path ? toUrl(path) : '.';
+		return (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
+			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : _path}/${file}`); return imports;
 		}, {});
 	},
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
