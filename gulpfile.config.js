@@ -55,7 +55,7 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	{ stream } = server,
 	{ reload: _reload } = browserSync;
 
-Object.assign(modules, { browserSync, browserSync2, server, reload, stream, _reload });
+Object.assign(modules, { server, reload, stream, _reload });
 
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
