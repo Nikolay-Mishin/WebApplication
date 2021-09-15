@@ -47,6 +47,7 @@ const { join } = path,
 
 const modules = await importModules(
 	'gulp',
+	'browser-sync',
 	'gulp-if', // плагин для условий
 	'gulp-util', // отладка
 	'gulp-notify', // отладка
