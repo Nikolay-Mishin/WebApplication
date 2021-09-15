@@ -53,7 +53,14 @@ const browserSync = require('browser-sync'), // плагин перезагру�
 	server = browserSync.create(),
 	reload = async () => server.reload();
 
-Object.assign(modules, { browserSync, browserSync2, _reload: browserSync.reload, server, reload, stream: server.stream });
+const browserSync = require('browser-sync'), // плагин перезагрузки браузера
+	browserSync2 = modules['browser-sync'],
+	server = browserSync.create(),
+	reload = async () => server.reload(),
+	{ stream } = server,
+	{ reload: _reload } = browserSync;
+
+Object.assign(modules, { browserSync, browserSync2, server, reload, stream, _reload });
 
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
@@ -62,10 +69,7 @@ module.exports = process.node_config = process.node_config || {
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
-		fs, path, browserSync,
-		_reload: browserSync.reload,
-		server, reload,
-		stream: server.stream,
+		fs, path, browserSync, server, reload, stream, _reload,
 		gulpif: require('gulp-if'), // плагин для условий
 		gutil: require('gulp-util'), // отладка
 		notify: require('gulp-notify'), // отладка
