@@ -2,6 +2,7 @@ const { log } = require('console'),
 	{ env: { INIT_CWD }, cwd: _cwd, argv: _argv } = require('process'),
 	{ existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat } = require('fs'),
 	{ join, dirname, relative, basename: base, extname: ext, sep } = require('path'),
+	{ imports, importModules } = require('./import.js'),
 	cwd = _cwd(),
 	argv = _argv.slice(2),
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
@@ -68,12 +69,11 @@ const { log } = require('console'),
 
 		cb(); // Task call
 
-		//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
-		//	runInContext(file, gulp.series('jade'));
-		//});
+		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	};
 
 module.exports = {
+	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
 	keys, empty, fromEntries, entries, filter, isArray,
 	fileName, isDir, isFile,

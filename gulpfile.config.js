@@ -1,9 +1,10 @@
-const { cwd: _cwd, argv: _argv } = require('process'),
+const { log } = require('console'),
+	{ cwd: _cwd, argv: _argv } = require('process'),
 	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ join } = path,
 	h = require('./tasks/helpers/baseHelpers'),
-	{ project, context, config, cwd } = h,
+	{ project, context, config, cwd, importModules } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -14,6 +15,9 @@ const { cwd: _cwd, argv: _argv } = require('process'),
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
+
+//const modules = importModules(['gulp']);
+//log('modules\n', modules);
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	server = browserSync.create(),
