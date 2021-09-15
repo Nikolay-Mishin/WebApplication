@@ -1,3 +1,4 @@
+import { log } from 'console';
 import { cwd as _cwd, argv as _argv } from 'process';
 import h from './tasks/helpers/baseHelpers.js';
 
@@ -44,43 +45,43 @@ const { join } = path,
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-//const modules = importModules(
-//	'gulp',
-//	'gulp-if', // плагин для условий
-//	'gulp-util', // отладка
-//	'gulp-notify', // отладка
-//	'gulp-plumber', // отладка
-//	'gulp-changed', // плагин переименования файлов
-//	'rimraf', // удаление файлов
-//	'gulp-rename', // плагин переименования файлов
-//	'gulp-sourcemaps', // плагин создания map-файлов
-//	'gulp-htmlmin', // плагин сжатия html
-//	'gulp-htmlclean',
-//	'gulp-pug', // плагин компиляции pug
-//	'gulp-inline-css',
-//	'gulp-sass', // плагин компиляции scss (+ node-sass)
-//	'gulp-autoprefixer', // плагин расстановки префиксов
-//	'gulp-rigger', // плагин объединения js
-//	'concat',
-//	'gulp-uglify', // плагин сжатия js
-//	'webpack', // webpack
-//	'webpack-stream', // webpack
-//	'gulp-babel',
-//	//'terser',
-//	'gulp-terser',
-//	'gulp-real-favicon',
-//	'gulp-imagemin',
-//	'imgminify'
-//);
-
-//log('modules-config\n', modules);
+const modules = importModules(
+	'gulp',
+	'gulp-if', // плагин для условий
+	'gulp-util', // отладка
+	'gulp-notify', // отладка
+	'gulp-plumber', // отладка
+	'gulp-changed', // плагин переименования файлов
+	'rimraf', // удаление файлов
+	'gulp-rename', // плагин переименования файлов
+	'gulp-sourcemaps', // плагин создания map-файлов
+	'gulp-htmlmin', // плагин сжатия html
+	'gulp-htmlclean',
+	'gulp-pug', // плагин компиляции pug
+	'gulp-inline-css',
+	'gulp-sass', // плагин компиляции scss (+ node-sass)
+	'gulp-autoprefixer', // плагин расстановки префиксов
+	'gulp-rigger', // плагин объединения js
+	'concat',
+	'gulp-uglify', // плагин сжатия js
+	'webpack', // webpack
+	'webpack-stream', // webpack
+	'gulp-babel',
+	//'terser',
+	'gulp-terser',
+	'gulp-real-favicon',
+	'gulp-imagemin',
+	'imgminify'
+);
 
 const server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync;
 
-//Object.assign(modules, { browserSync, browserSync2, _reload: browserSync.reload, server, reload, stream: server.stream });
+Object.assign(modules, { server, reload, stream, _reload });
+
+log('modules-config\n', modules);
 
 export default process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
