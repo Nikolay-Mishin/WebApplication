@@ -74,7 +74,7 @@ const modules = await importModules(
 	'imgminify'
 );
 
-const server = browserSync.create(),
+const server = modules.browser_sync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync;
@@ -88,6 +88,7 @@ export default process.node_config = process.node_config || {
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	// Подключаемые модули
+	//modules,
 	modules: {
 		gulp,
 		fs, path,
