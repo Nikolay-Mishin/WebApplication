@@ -1,4 +1,4 @@
-/// <binding ProjectOpened='_tasksWatch' />
+// <binding ProjectOpened='_tasksWatch' />
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
@@ -35,8 +35,9 @@ log('useWebpack:', h.useWebpack);
 
 export const data = () => _data('tasks/**/*');
 
-import module from './tasks/helpers/module.js';
-import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/helpers/module.js';
+//import _export from './tasks/helpers/export.js';
+//import module from './tasks/helpers/module.js';
+//import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/helpers/module.js';
 
 //log('module\n', module);
 //log('mod\n', mod);

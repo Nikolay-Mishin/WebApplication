@@ -26,7 +26,8 @@
  * 4.4 - add isDir() & isFile() in Helpers
  * 4.5 - add parseArgs() & fix Get args in Helpers
  * 4.6 - add GetContext() & runInContext() in Helpers
- * 5.0 - add multiProjectContext in gulpfile.config
+ * 5.0 - add multiProjectContext in gulpfile.configp
+ * 5.1 - add async imports
 */
 
 /* new versions

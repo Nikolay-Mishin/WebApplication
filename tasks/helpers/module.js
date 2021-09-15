@@ -4,7 +4,7 @@ import module from './export.js'; // both static and dynamic importers will work
 
 import { exports, promise, _export } from './export.js';
 
-//log('exports\n', exports.name);
+//log('exports.name\n', exports.name);
 //log('promise\n', promise);
 //log('_export\n', _export);
 

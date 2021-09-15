@@ -1,8 +1,8 @@
 import { log } from 'console';
-import { imports } from './import.js'; // grab the importer
-import { _import } from './import.js';
+import { imports, importModules } from './import.js'; // grab the importer
 
-//log('_import\n', await _import('./baseHelpers.js', './helpers.js'));
+//log('export\n', await imports('./baseHelpers.js', './helpers.js'));
+//log('importModules\n', await importModules(['../clean-js.js']));
 
 // export through the same pattern
 export const exports = await new Promise(async $export => {
