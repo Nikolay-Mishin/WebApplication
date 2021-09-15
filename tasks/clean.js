@@ -3,4 +3,4 @@ const {
 	modules: { rimraf }
 } = require('./helpers/helpers');
 
-module.exports = function clean(done) { rimraf(paths.clean.build, done); };
+module.exports = done => rimraf(paths.clean.build, done);

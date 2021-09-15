@@ -5,7 +5,7 @@ const { log } = console,
 		modules: { gulp: { dest }, changed }
 	} = h;
 
-module.exports = function move_test() {
+module.exports = () => {
 	const { tasks: { data } } = h;
 	return data('src/**/*')
 		//.pipe(changed('www', { hasChanged: changed.compareContents }))

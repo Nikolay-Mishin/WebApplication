@@ -1,12 +1,9 @@
 const {
-	config: { paths },
+	config: { paths: { build: { faviconDataFile } } },
 	modules: {
 		fs: { readFileSync: readFile },
 		realFavicon: { checkForUpdates }
 	}
 } = require('./helpers/helpers');
 
-module.exports = async function check_for_favicon_update() {
-	let currentVersion = JSON.parse(readFile(paths.build.faviconDataFile)).version;
-	checkForUpdates(currentVersion, err => { if (err) throw err; });
-};
+module.exports = async () => checkForUpdates(JSON.parse(readFile(faviconDataFile)).version, err => { if (err) throw err; });

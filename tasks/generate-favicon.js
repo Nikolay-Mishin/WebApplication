@@ -3,8 +3,8 @@ const {
 	modules: { realFavicon: { generateFavicon } }
 } = require('./helpers/helpers');
 
-module.exports = function generate_favicon(done) {
-	realFavicon.generateFavicon({
+module.exports = done => {
+	generateFavicon({
 		masterPicture: paths.src.favicon,
 		dest: paths.build.favicon,
 		iconsPath: paths.src.iconsPath,

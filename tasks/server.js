@@ -8,8 +8,10 @@ const h = require('./helpers/helpers'),
 		}
 	} = h;
 
-module.exports = function server_task() {
-	return serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks); // локальный сервер
+// локальный сервер
+module.exports = () => serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks); 
+
+//{
 	//browserSync(serverConfig);
 
 	//watch(paths.watch.js, series('dev:js', _reload));
@@ -18,4 +20,4 @@ module.exports = function server_task() {
 	//watch(paths.watch.html, series('dev:html', reload));
 	//watch(paths.watch.scss, series('dev:scss', reload));
 	//watch(paths.watch.js, series('dev:js', reload));
-};
+//}
