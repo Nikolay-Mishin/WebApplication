@@ -33,7 +33,7 @@ import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { join } = path,
-	{ project, context, config, cwd, importModules } = h,
+	{ project, context, config, cwd, importModules, isObject } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -82,7 +82,10 @@ const server = modules.browser_sync.create(),
 
 Object.assign(modules, { server, reload, stream, _reload });
 
-log('modules-config\n', modules);
+//log('modules-config\n', modules);
+
+log('isObject2({}):', isObject({}));
+log('isObject2([]):', isObject([]));
 
 export default process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,

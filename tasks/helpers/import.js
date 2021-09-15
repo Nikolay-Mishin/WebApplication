@@ -18,11 +18,11 @@ export const imports = async (...modules) => await $import(false, ...modules),
 		const scan = modules[1] === true,
 			_exclude = scan ? modules.pop() : [];
 		modules = scan ? modules.shift() : modules;
-		log('scan:', scan);
-		log('exclude:', _exclude);
-		log('modules-scan\n', modules);
+		//log('scan:', scan);
+		//log('exclude:', _exclude);
+		//log('modules-scan\n', modules);
 		modules = (!scan ? modules : getFiles(modules, { _exclude })).map(m => !scan ? m : `${toUrl(modules)}/${m}`);
-		log('modules\n', modules);
+		//log('modules\n', modules);
 		const imports = await $import(true, ...modules);
 		return fromEntries(keys(imports).map(m => [m.replace(/\-+/g, '_'), imports[m]]));
 	};
