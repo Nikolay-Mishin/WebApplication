@@ -1,4 +1,4 @@
-// <binding ProjectOpened='_tasksWatch' />
+/// <binding ProjectOpened='_tasksWatch' />
 
 const { log } = console,
 	h = require('./tasks/helpers/helpers'),
