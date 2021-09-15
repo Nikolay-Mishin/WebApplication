@@ -49,7 +49,7 @@ const modules = importModules(
 
 log('modules-config\n', modules);
 
-const browserSync = modules['browser_sync'], // плагин перезагрузки браузера
+const browserSync = modules.browser_sync, // плагин перезагрузки браузера
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
