@@ -1,5 +1,5 @@
 const { basename: base, extname: ext } = require('path'),
-	{ isArray, getFiles, fromEntries, keys } = require('./baseHelpers.js'),
+	{ isArray, getFiles, fromEntries, keys } = require('./baseHelpers'),
 	$import = (toObj, ...modules) => {
 		const imports = modules.concat.apply([], modules)
 			.map(m => {

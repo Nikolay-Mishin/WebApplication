@@ -3,8 +3,9 @@ const { log } = require('console'),
 	fs = require('fs'), // работа с файловой системой
 	path = require('path'), // работа с путями
 	{ join } = path,
+	{ importModules } = require('./tasks/helpers/import'),
 	h = require('./tasks/helpers/baseHelpers'),
-	{ project, context, config, cwd, importModules } = h,
+	{ project, context, config, cwd } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
