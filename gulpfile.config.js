@@ -47,8 +47,6 @@ const modules = importModules(
 	'imgminify'
 );
 
-log('modules-config\n', modules);
-
 const browserSync = modules.browser_sync, // плагин перезагрузки браузера
 	server = browserSync.create(),
 	reload = async () => server.reload(),
@@ -56,6 +54,8 @@ const browserSync = modules.browser_sync, // плагин перезагрузк
 	{ reload: _reload } = browserSync;
 
 Object.assign(modules, { server, reload, stream, _reload });
+
+log('modules-config\n', modules);
 
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
