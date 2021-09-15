@@ -48,7 +48,7 @@ export default async function test() {
 	//}
 	
 	//setModeSync(true);
-
+	
 	//log[h.mode] = {};
 	//if (h.prod) {
 	//	log[h.mode].mode = h.mode;

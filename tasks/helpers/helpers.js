@@ -15,11 +15,10 @@ const { argv, _relative, isDir, isFile } = h,
 		},
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
-	} = config,
-	relativeRoot = from => _relative(from, root);
+	} = config;
 
 const helpers = {
-	relativeRoot,
+	relativeRoot: from => _relative(from, root),
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
@@ -65,13 +64,3 @@ const helpers = {
 Object.assign(helpers, imports, h);
 
 export default helpers;
-
-export const {
-	relativeRoot, setMode, setModeSync, currTask, lastRun, error, notify,
-	imports, importModules,
-	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, empty, fromEntries, entries, filter, isArray,
-	_dirname, _relative, fileName, isDir, isFile,
-	getFolders, getFiles,
-	config, project, context, runInContext
-} = helpers;
