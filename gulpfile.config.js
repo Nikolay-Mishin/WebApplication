@@ -17,12 +17,43 @@ const { log } = require('console'),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-//const modules = importModules(['gulp']);
-//log('modules\n', modules);
+const modules = importModules(
+	'gulp',
+	'gulp-if', // плагин для условий
+	'gulp-util', // отладка
+	'gulp-notify', // отладка
+	'gulp-plumber', // отладка
+	'gulp-changed', // плагин переименования файлов
+	'rimraf', // удаление файлов
+	'gulp-rename', // плагин переименования файлов
+	'gulp-sourcemaps', // плагин создания map-файлов
+	'gulp-htmlmin', // плагин сжатия html
+	'gulp-htmlclean',
+	'gulp-pug', // плагин компиляции pug
+	'gulp-inline-css',
+	'gulp-sass', // плагин компиляции scss (+ node-sass)
+	'gulp-autoprefixer', // плагин расстановки префиксов
+	'gulp-rigger', // плагин объединения js
+	'concat',
+	'gulp-uglify', // плагин сжатия js
+	'webpack', // webpack
+	'webpack-stream', // webpack
+	'gulp-babel',
+	//'terser',
+	'gulp-terser',
+	'gulp-real-favicon',
+	'gulp-imagemin',
+	'imgminify'
+);
+
+log('modules-config\n', modules);
 
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
+	browserSync2 = modules['browser-sync'],
 	server = browserSync.create(),
 	reload = async () => server.reload();
+
+Object.assign(modules, { browserSync, browserSync2, _reload: browserSync.reload, server, reload, stream: server.stream });
 
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
@@ -31,8 +62,7 @@ module.exports = process.node_config = process.node_config || {
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
-		fs, path,
-		browserSync: browserSync, // плагин перезагрузки браузера
+		fs, path, browserSync,
 		_reload: browserSync.reload,
 		server, reload,
 		stream: server.stream,
