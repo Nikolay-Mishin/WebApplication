@@ -1,4 +1,5 @@
 import { cwd as _cwd, argv as _argv } from 'process';
+//import { importModules } from './import.js';
 import h from './tasks/helpers/baseHelpers.js';
 
 import gulp from 'gulp'; // сам gulp
@@ -32,7 +33,7 @@ import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
 const { join } = path,
-	{ project, context, config, cwd } = h,
+	{ project, context, config, cwd, importModules } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -43,6 +44,9 @@ const { join } = path,
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
+
+//modules = importModules(['gulp']);
+//log('modules\n', modules);
 
 const server = browserSync.create(),
 	reload = async () => server.reload(),

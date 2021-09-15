@@ -3,7 +3,9 @@ import { env, cwd as _cwd, argv as _argv } from 'process';
 import { fileURLToPath as toPath } from 'url';
 import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, statSync as stat } from 'fs';
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
+import { imports, importModules } from './import.js';
 
+export { imports, importModules };
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
 	argv = _argv.slice(2),
@@ -77,6 +79,7 @@ export const { INIT_CWD } = env,
 	};
 
 export default {
+	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
 	keys, empty, fromEntries, entries, filter, isArray,
 	_dirname, _relative, fileName, isDir, isFile,
