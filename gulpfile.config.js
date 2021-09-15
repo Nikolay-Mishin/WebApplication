@@ -19,6 +19,7 @@ const { log } = require('console'),
 
 const modules = importModules(
 	'gulp',
+	'browser-sync',
 	'gulp-if', // плагин для условий
 	'gulp-util', // отладка
 	'gulp-notify', // отладка
