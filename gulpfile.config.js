@@ -51,11 +51,6 @@ log('modules-config\n', modules);
 const browserSync = require('browser-sync'), // плагин перезагрузки браузера
 	browserSync2 = modules['browser-sync'],
 	server = browserSync.create(),
-	reload = async () => server.reload();
-
-const browserSync = require('browser-sync'), // плагин перезагрузки браузера
-	browserSync2 = modules['browser-sync'],
-	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync;
@@ -69,7 +64,8 @@ module.exports = process.node_config = process.node_config || {
 	// Подключаемые модули
 	modules: {
 		gulp: require('gulp'), // сам gulp
-		fs, path, browserSync, server, reload, stream, _reload,
+		fs, path,
+		browserSync, server, reload, stream, _reload,
 		gulpif: require('gulp-if'), // плагин для условий
 		gutil: require('gulp-util'), // отладка
 		notify: require('gulp-notify'), // отладка
