@@ -14,9 +14,15 @@ const $import = (toObj, ...modules) => (async (...modules) => {
 // flatten arguments to enable both - imports([m1, m2]) or imports(m1, m2)
 export const imports = async (...modules) => await $import(false, ...modules),
 	importModules = async (path, exclude = []) => {
-		const isArr = isArray(path),
-			modules = (isArr ? path : getFiles(path, { exclude })).map(m => isArr ? m : `${toUrl(path)}/${m}`),
-			imports = await $import(true, ...modules);
+		const scan = modules[1] === true,
+			exclude = scan ? modules.pop() : [];
+		modules = scan ? modules.shift() : modules;
+		log('scan:', scan);
+		log('exclude:', exclude);
+		log('modules-scan\n', modules);
+		modules = (!scan ? modules : getFiles(modules, { exclude })).map(m => !scan ? m : `${toUrl(modules)}/${m}`);
+		log('modules\n', modules);
+		const imports = await $import(true, ...modules);
 		return fromEntries(keys(imports).map(m => [m.replace(/\-+/g, '_'), imports[m]]));
 	};
 
