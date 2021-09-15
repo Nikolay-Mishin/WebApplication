@@ -45,7 +45,7 @@ const { join } = path,
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-const modules = importModules(
+const modules = await importModules(
 	'gulp',
 	'gulp-if', // плагин для условий
 	'gulp-util', // отладка
