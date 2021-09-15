@@ -28,6 +28,7 @@
  * 4.6 - add GetContext() & runInContext() in Helpers
  * 5.0 - add multiProjectContext in gulpfile.configp
  * 5.1 - add async imports
+ * 5.2 - fix exports
 */
 
 /* new versions

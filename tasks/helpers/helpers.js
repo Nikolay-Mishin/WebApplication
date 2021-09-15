@@ -1,8 +1,8 @@
 import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
-import h from './baseHelpers.js';
 import imports from './import.js';
+import h from './baseHelpers.js';
 
 const { argv, _relative, isDir, isFile } = h,
 	{
@@ -62,6 +62,16 @@ const helpers = {
 	}
 };
 
-Object.assign(helpers, h, imports);
+Object.assign(helpers, imports, h);
 
 export default helpers;
+
+export const {
+	relativeRoot, setMode, setModeSync, currTask, lastRun, error, notify,
+	imports, importModules,
+	INIT_CWD, cwd, argv, parseArgs, args,
+	keys, empty, fromEntries, entries, filter, isArray,
+	_dirname, _relative, fileName, isDir, isFile,
+	getFolders, getFiles,
+	config, project, context, runInContext
+} = helpers;
