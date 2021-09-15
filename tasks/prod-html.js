@@ -17,4 +17,4 @@ export default function prod_html() {
 		.pipe(notify('prod:html'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

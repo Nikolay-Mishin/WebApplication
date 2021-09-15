@@ -20,4 +20,4 @@ export default function dev_html() {
 		.pipe(notify('dev:html'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

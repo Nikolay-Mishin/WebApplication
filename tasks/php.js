@@ -14,4 +14,4 @@ export default function php() {
 		.pipe(notify(`${h.mode}:php`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

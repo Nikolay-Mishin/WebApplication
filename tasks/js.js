@@ -27,4 +27,4 @@ export default async function js() {
 		.pipe(notify(`${mode}:js`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

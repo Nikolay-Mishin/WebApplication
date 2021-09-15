@@ -4,6 +4,4 @@ const {
 	modules: { connectPHP }
 } = h;
 
-export default function serverPHP() {
-	return connectPHP.server(serverPHPconfig);
-};
+export default () => connectPHP.server(serverPHPconfig)

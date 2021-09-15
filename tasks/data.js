@@ -31,4 +31,4 @@ export default function data(path, cb = () => { }) {
 		});
 		cb(file);
 	});
-};
+}

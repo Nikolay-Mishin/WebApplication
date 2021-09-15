@@ -26,4 +26,4 @@ export default function scss() {
 		.pipe(notify(`${mode}:scss`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

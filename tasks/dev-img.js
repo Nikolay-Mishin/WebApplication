@@ -23,4 +23,4 @@ export default async function dev_img() {
 		if (err) throw err;
 		log('Images optimized successfully!');
 	});
-};
+}

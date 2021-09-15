@@ -17,4 +17,4 @@ export default function dev_imgmin() {
 			svgoPlugins: [{ removeViewBox: true }]
 		}))
 		.pipe(dest(paths.build.img));
-};
+}

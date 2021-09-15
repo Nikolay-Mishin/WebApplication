@@ -25,4 +25,4 @@ export default function dev_scss() {
 		.pipe(notify('dev:scss'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

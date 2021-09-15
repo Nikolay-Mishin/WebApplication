@@ -4,4 +4,4 @@ const {
 	modules: { rimraf }
 } = h;
 
-export default function clean_html(done) { rimraf(paths.clean.html, done); };
+export default done => rimraf(paths.clean.html, done)

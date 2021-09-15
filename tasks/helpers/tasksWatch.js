@@ -11,7 +11,7 @@ const {
 		}
 	} = h;
 
-export default async function tasksWatch() {
+export default async () => {
 	watch(tasks, function _tasksWatch() {
 		return src(tasks, { since: lastRun(_tasksWatch) })
 			.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }))
@@ -35,4 +35,4 @@ export default async function tasksWatch() {
 			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(deploy));
 	});
-};
+}

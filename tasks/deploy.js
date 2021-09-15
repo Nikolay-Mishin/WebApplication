@@ -22,4 +22,4 @@ export default function deploy() {
 			silent: false,
 			compress: true
 		}));
-};
+}

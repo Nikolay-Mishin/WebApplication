@@ -20,4 +20,4 @@ export default function dev_js() {
 		.pipe(notify('dev:js'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

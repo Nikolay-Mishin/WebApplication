@@ -15,4 +15,4 @@ export default function move_test() {
 				file.extname == '.css' ? 'files/css' :
 				file.extname == '.js' ? 'files/js' : 'files'
 		}));
-};
+}

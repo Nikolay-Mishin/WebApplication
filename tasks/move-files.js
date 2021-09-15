@@ -11,4 +11,4 @@ export default function move_files() {
 	src('files/**/*.css', lastRun(move_files)).pipe(dest(paths.build.css));
 	src('files/**/*.js', lastRun(move_files)).pipe(dest(paths.build.js));
 	return src('files/assets/**/*.{jpeg,jpg,png,svg,gif}', lastRun(move_files)).pipe(dest(paths.build.img));
-};
+}

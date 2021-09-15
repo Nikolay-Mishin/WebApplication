@@ -4,4 +4,4 @@ const {
 	modules: { rimraf }
 } = h;
 
-export default function clean_js(done) { rimraf(paths.clean.js, done); };
+export default done => rimraf(paths.clean.js, done)

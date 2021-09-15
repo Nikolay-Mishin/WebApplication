@@ -4,7 +4,7 @@ import h from './helpers.js';
 
 const { INIT_CWD, HOMEDRIVE } = env;
 
-export default async function test() {
+export default async () => {
 	const {
 			config, modules, tasks, useWebpack, tasksList, args, currTask,
 			_dirname, relativeRoot, setModeSync, mode, dev, prod
@@ -56,4 +56,4 @@ export default async function test() {
 	//	log[h.mode].prod = h.prod;
 	//}
 	//log('log\n', log);
-};
+}

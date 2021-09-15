@@ -22,4 +22,4 @@ export default function html() {
 		.pipe(notify(`${mode}:html`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

@@ -73,9 +73,7 @@ export const { INIT_CWD } = env,
 
 		cb(); // Task call
 
-		//gulp.watch('app-*/templates/*.jade').on('change', function (file) {
-		//	runInContext(file, gulp.series('jade'));
-		//});
+		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	};
 
 export default {

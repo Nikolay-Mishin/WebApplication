@@ -14,4 +14,4 @@ export default function sftp_push() {
 			port: deploy.port,
 			remotePath: deploy.folder
 		}));
-};
+}

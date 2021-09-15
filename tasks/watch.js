@@ -7,8 +7,8 @@ const {
 	}
 } = h;
 
-export default async function watch_all() {
+export default async () => {
 	watch(paths.watch.html, series('dev:html'), _reload({ stream: true }));
 	watch(paths.watch.scss, series('dev:scss'), _reload({ stream: true }));
 	watch(paths.watch.js, series('dev:js'), _reload({ stream: true }));
-};
+}

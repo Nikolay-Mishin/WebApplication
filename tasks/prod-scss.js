@@ -23,4 +23,4 @@ export default function prod_scss() {
 		.pipe(notify('prod:scss'));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
-};
+}

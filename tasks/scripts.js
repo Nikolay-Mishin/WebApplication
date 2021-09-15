@@ -21,4 +21,4 @@ export default function scripts() {
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulpTerser({}, terser.minify))
 		.pipe(dest(paths.build.js));
-};
+}

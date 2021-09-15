@@ -14,4 +14,4 @@ export default function dev_pug() {
 			pretty: true
 		}))
 		.pipe(dest(paths.build.root));
-};
+}

@@ -65,4 +65,4 @@ export default function generate_favicon(done) {
 		},
 		markupFile: paths.build.faviconDataFile
 	}, done);
-};
+}
