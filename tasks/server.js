@@ -21,4 +21,3 @@ export default () => serverPHPrun ? init(serverConfig) : series(() => init(serve
 	//watch(paths.watch.scss, series('dev:scss', reload));
 	//watch(paths.watch.js, series('dev:js', reload));
 //}
-
