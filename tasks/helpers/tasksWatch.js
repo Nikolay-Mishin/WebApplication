@@ -2,7 +2,7 @@ const { log } = console,
 	{
 		config: { paths: { tasks: {
 			root, deploy, watch: { tasks, root: _root, doc, package, server }
-		}}},
+		} } },
 		modules: {
 			gulp: { src, dest, watch, lastRun },
 			path: { join },
@@ -29,7 +29,7 @@ module.exports = async function tasksWatch() {
 			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(`${deploy}/doc`));
 	});
-	watch(server.concat(package), function serverWatch() {
+	watch(server.concat(_package), function serverWatch() {
 		return src(server, { since: lastRun(serverWatch) })
 			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(deploy));

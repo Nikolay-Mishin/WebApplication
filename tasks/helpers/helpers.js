@@ -1,4 +1,5 @@
 const { argv: _argv } = process,
+	imports = require('./import'),
 	h = require('./baseHelpers'),
 	{ argv, _relative, isDir, isFile } = h,
 	config = require('../../gulpfile.config'),
@@ -55,6 +56,6 @@ const helpers = {
 	}
 };
 
-Object.assign(helpers, h);
+Object.assign(helpers, h, imports);
 
 module.exports = helpers;

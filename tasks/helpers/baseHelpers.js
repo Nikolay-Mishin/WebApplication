@@ -20,46 +20,44 @@ const { log } = require('console'),
 	args = (argList => parseArgs(argList))(argv),
 	keys = obj => Object.keys(obj),
 	empty = obj => keys(obj).length == 0,
-	filter = Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate)),
+	fromEntries = entries => Object.fromEntries(entries),
+	entries = obj => Object.entries(obj),
+	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
+	isArray = obj => Array.isArray(obj),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
 	getFolders = (path, { exclude = [] }) => readDir(path).filter(file => isDir(join(path, file)) && !exclude.includes(file)),
 	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
-		.reduce((files, file) => { files.push(nonExt ? file.replace(ext(file), '') : file); return files; }, []),
-	imports = (path, exclude = []) => {
-		const isArr = Array.isArray(path);
-		return (isArr ? path : getFiles(path, { exclude })).reduce((imports, file) => {
-			imports[fileName(file.replace(/\-+/g, '_'))] = require(`${isArr ? file : path}/${file}`); return imports; }, {});
-	},
+		.map(file => nonExt ? file.replace(ext(file), '') : file),
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
-	{ name = '', deploy: { exclude = [] }, paths: { projects = '' } } = config,
-	_projectsPath = join(cwd, projects),
-	existProjects = isDir(_projectsPath),
-	projectsPath = existProjects ? _projectsPath : cwd,
-	getContext = () => {
-		const projects = getFolders(projectsPath, { exclude })
-			.concat(existProjects ? [] : getFolders(dirname(projectsPath), { exclude })),
+	{ project, context } = (() => {
+		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
+			_projectsPath = join(cwd, projectsRoot),
+			exist = isDir(_projectsPath),
+			projectsPath = exist ? _projectsPath : cwd,
+			projects = getFolders(projectsPath, { exclude })
+				.concat(exist ? [] : getFolders(dirname(projectsPath), { exclude })),
 			arg = filter(args, ([arg, val]) => val === true && (projects.includes(arg))),
-			project = !name ? name : keys(arg)[1] || fileName(INIT_CWD != cwd ? INIT_CWD : cwd),
+			project = !name ? name : keys(arg)[1] || fileName(exist && INIT_CWD != cwd ? INIT_CWD : cwd),
 			contextPath = join(projectsPath, project),
-			context = isDir(contextPath) ? contextPath : projectsPath;
-		log('INIT_CWD:', INIT_CWD);
-		log('cwd:', cwd);
-		log('projectsPath:', projectsPath);
-		log('existProjects:', existProjects);
-		log('fileName(cwd):', fileName(cwd));
-		log('name:', name);
-		log('project:', project);
-		log('context:', context);
-		log('args:', args);
-		log('arg:', arg);
-		//log('projects\n', projects);
+			context = exist && isDir(contextPath) ? contextPath : projectsPath;
+
+		//log('INIT_CWD:', INIT_CWD);
+		//log('cwd:', cwd);
+		//log('projectsPath:', projectsPath);
+		//log('exist:', exist);
+		//log('fileName(cwd):', fileName(cwd));
+		//log('name:', name);
+		//log('project:', project);
+		//log('context:', context);
+		//log('args:', args);
+		//log('arg:', arg);
+		//log('projects:', projects);
 
 		return { project, context };
-	},
-	{ project, context } = getContext(),
+	})(),
 	runInContext = (path, cb) => {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
@@ -76,8 +74,9 @@ const { log } = require('console'),
 	};
 
 module.exports = {
-	project, context, config, INIT_CWD, cwd, argv, parseArgs, args,
-	filter, fileName, isDir, isFile, getFolders, getFiles, imports,
-	getContext, runInContext
+	INIT_CWD, cwd, argv, parseArgs, args,
+	keys, empty, fromEntries, entries, filter, isArray,
+	fileName, isDir, isFile,
+	getFolders, getFiles,
+	config, project, context, runInContext
 };
-
