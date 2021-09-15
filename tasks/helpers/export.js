@@ -8,7 +8,7 @@ import { imports, importModules } from './import.js'; // grab the importer
 export const exports = await new Promise(async $export => {
 	// grab many modules at once
 	const [a, b] = await imports('./baseHelpers.js', './helpers.js');
-	$export({ name: 'c', a, b }); // export this module
+	$export({ name: 'c', a: a.cwd, b: b.cwd }); // export this module
 });
 
 // ES2017 Asynchronous Export
