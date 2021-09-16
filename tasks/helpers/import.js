@@ -1,6 +1,6 @@
 const { log } = require('console'),
 	{ basename: base, extname: ext } = require('path'),
-	{ fromEntries, isObject, keys, values, isDir, getFiles } = require('./baseHelpers'),
+	{ fromEntries, isObject, isDir, keys, values, getFiles } = require('./baseHelpers'),
 	$import = (toObj, ...modules) => {
 		const imports = modules.concat.apply([], modules)
 			.map(m => {
