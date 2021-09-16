@@ -1,7 +1,8 @@
-const { argv: _argv } = process,
+const { log } = require('console'),
+	{ argv: _argv } = process,
 	imports = require('./import'),
 	h = require('./baseHelpers'),
-	{ argv, _relative, isDir, isFile } = h,
+	{ argv, _relative, isDir, isFile, setBind } = h,
 	config = require('../../gulpfile.config'),
 	{
 		root, useWebpack, esModule,
@@ -40,7 +41,7 @@ const helpers = {
 	get dev() { return (this.getMode || this.setModeSync()).trim().toLowerCase() === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV; },
-	setMode: (prod = false) => async () => this.setModeSync(prod),
+	setMode (prod = false) { /*log('this\n', this);*/ return async () => { /*log('this-async\n', this);*/ return this.setModeSync(prod); }; },
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	lastRun: func => { since: lastRun(func) },
@@ -55,6 +56,12 @@ const helpers = {
 		});
 	}
 };
+
+log('helpers.setMode', helpers.setMode);
+log('bind(helpers.setMode)', setBind(helpers, helpers.setMode));
+log('helpers.setMode', helpers.setMode);
+helpers.setMode = helpers.setMode.bind(helpers);
+log('helpers.setMode.bind', helpers.setMode);
 
 Object.assign(helpers, h, imports);
 

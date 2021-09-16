@@ -27,11 +27,11 @@ exports._test = require('./tasks/helpers/test');
 
 //console.log('exports\n', tasks);
 
+log('h.setMode:', h.setMode(true)());
+log('setMode:', setMode(true).call(h));
+
 //setModeSync(true);
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
-
-log('setMode:', setMode);
-log('h.setMode:', h.setMode);
 
 exports.data = () => _data('tasks/**/*');

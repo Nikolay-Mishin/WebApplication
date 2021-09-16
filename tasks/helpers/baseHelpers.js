@@ -18,6 +18,8 @@ const { log } = require('console'),
 		return Object.assign(assign, args);
 	},
 	args = (argList => parseArgs(argList))(argv),
+	bind = (obj, ...func) => func.concat.apply([], func).map(func => func.bind(obj)),
+	setBind = (obj, ...func) => bind(obj, ...func),
 	keys = obj => Object.keys(obj),
 	values = obj => Object.values(obj),
 	empty = obj => keys(obj).length == 0,
@@ -26,9 +28,9 @@ const { log } = require('console'),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
 	isObject = (Object.isObject = Object.isObject || function (obj) {
-		log('obj:', obj);
-		log('constructor:', obj.constructor);
-		log('this\n', this);
+		//log('obj:', obj);
+		//log('constructor:', obj.constructor);
+		//log('this\n', this);
 		return obj != null && obj.constructor === this;
 	}).bind(Object),
 	fileName = file => base(file, ext(file)),
@@ -85,7 +87,7 @@ const { log } = require('console'),
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, values, empty, fromEntries, entries, filter, isArray, isObject,
+	bind, setBind, keys, values, empty, fromEntries, entries, filter, isArray, isObject,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile

@@ -89,9 +89,6 @@ Object.assign(modules, { server, reload, stream, _reload });
 
 //log('modules-config\n', modules);
 
-log('isObject({}):', isObject({}));
-log('isObject([]):', isObject([]));
-
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	tasksPath: join(cwd, tasksPath),
