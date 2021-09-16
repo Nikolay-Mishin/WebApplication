@@ -18,8 +18,6 @@ const { log } = require('console'),
 		return Object.assign(assign, args);
 	},
 	args = (argList => parseArgs(argList))(argv),
-	bind = (obj, ...func) => func.concat.apply([], func).map(func => func.bind(obj)),
-	setBind = (obj, ...func) => bind(obj, ...func),
 	isArray = obj => Array.isArray(obj),
 	isObject = Object.isObject = Object.isObject ||
 		(function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
@@ -29,6 +27,8 @@ const { log } = require('console'),
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = Object.filter || ((obj, predicate) => fromEntries(entries(obj).filter(predicate))),
+	bind = (obj, ...func) => func.concat.apply([], func).map(func => func.bind(obj)),
+	setBind = (obj, ...func) => { return fromEntries(bind(obj, ...func).map(func => [func.name, func])); },
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
@@ -83,7 +83,7 @@ const { log } = require('console'),
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
-	bind, setBind, isArray, isObject, keys, values, empty, fromEntries, entries, filter,
+	isArray, isObject, keys, values, empty, fromEntries, entries, filter, bind, setBind,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile
