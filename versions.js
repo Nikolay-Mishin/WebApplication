@@ -33,7 +33,3 @@
  * 5.4 - fix modules
  * 5.5 - add searchFile() in BaseHelpers
 */
-
-/* new versions
-
-*/
