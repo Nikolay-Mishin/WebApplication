@@ -77,7 +77,7 @@ const { log } = require('console'),
 			log('path:', path);
 			return file ? file :
 				parent ? this(dirname(path)) :
-					_cwd ? this(cwd) : null;
+				_cwd ? this(cwd) : null;
 		},
 			file = searchPath(path);
 		return !json ? file : JSON.parse(file);
