@@ -32,7 +32,45 @@ import realFavicon from 'gulp-real-favicon'; // генератор фавико�
 import imageMin from 'gulp-imagemin'; // оптимизация картинок
 import ImgMinify from 'imgminify'; // оптимизация картинок
 
-const { join } = path,
+// Подключаемые модули
+const modules = await importModules({
+	gulp: 'gulp',
+	fs: 'fs',
+	path: 'path',
+	browserSync: 'browser-sync',
+	gulpif: 'gulp-if',
+	gutil: 'gulp-util',
+	notify: 'gulp-notify',
+	plumber: 'gulp-plumber',
+	changed: 'gulp-changed',
+	rimraf: 'rimraf',
+	rename: 'gulp-rename',
+	sourcemaps: 'gulp-sourcemaps',
+	htmlmin: 'gulp-htmlmin',
+	htmlclean: 'gulp-htmlclean',
+	pug: 'gulp-pug',
+	inlineCss: 'gulp-inline-css',
+	sass: 'gulp-sass',
+	prefixer: 'gulp-autoprefixer',
+	rigger: 'gulp-rigger',
+	concat: 'concat',
+	uglify: 'gulp-uglify',
+	webpack: 'webpack',
+	webpackStream: 'webpack-stream',
+	babel: 'gulp-babel',
+	terser: 'terser',
+	gulpTerser: 'gulp-terser',
+	realFavicon: 'gulp-real-favicon',
+	imageMin: 'gulp-imagemin',
+	ImgMinify: 'imgminify'
+});
+
+const { path, browserSync } = modules,
+	server = browserSync.create(),
+	reload = async () => server.reload(),
+	{ stream } = server,
+	{ reload: _reload } = browserSync,
+	{ join } = path,
 	{ project, context, config, cwd, importModules, isObject } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
@@ -45,95 +83,12 @@ const { join } = path,
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-const modules = await importModules(
-	'gulp',
-	'browser-sync',
-	'gulp-if', // плагин для условий
-	'gulp-util', // отладка
-	'gulp-notify', // отладка
-	'gulp-plumber', // отладка
-	'gulp-changed', // плагин переименования файлов
-	'rimraf', // удаление файлов
-	'gulp-rename', // плагин переименования файлов
-	'gulp-sourcemaps', // плагин создания map-файлов
-	'gulp-htmlmin', // плагин сжатия html
-	'gulp-htmlclean',
-	'gulp-pug', // плагин компиляции pug
-	'gulp-inline-css',
-	'gulp-sass', // плагин компиляции scss (+ node-sass)
-	'gulp-autoprefixer', // плагин расстановки префиксов
-	'gulp-rigger', // плагин объединения js
-	'concat',
-	'gulp-uglify', // плагин сжатия js
-	'webpack', // webpack
-	'webpack-stream', // webpack
-	'gulp-babel',
-	//'terser',
-	'gulp-terser',
-	'gulp-real-favicon',
-	'gulp-imagemin',
-	'imgminify'
-);
-
-//const modules = await importModules({
-//	gulp: 'gulp',
-//	fs: 'fs',
-//	path: 'path',
-//	browserSync: 'browser-sync',
-//	gulpif: 'gulp-if',
-//	gutil: 'gulp-util',
-//	notify: 'gulp-notify',
-//	plumber: 'gulp-plumber',
-//	changed: 'gulp-changed',
-//	rimraf: 'rimraf',
-//	rename: 'gulp-rename',
-//	sourcemaps: 'gulp-sourcemaps',
-//	htmlmin: 'gulp-htmlmin',
-//	htmlclean: 'gulp-htmlclean',
-//	pug: 'gulp-pug',
-//	inlineCss: 'gulp-inline-css',
-//	sass: 'gulp-sass',
-//	prefixer: 'gulp-autoprefixer',
-//	rigger: 'gulp-rigger',
-//	concat: 'concat',
-//	uglify: 'gulp-uglify',
-//	webpack: 'webpack',
-//	webpackStream: 'webpack-stream',
-//	babel: 'gulp-babel',
-//	terser: 'terser',
-//	gulpTerser: 'gulp-terser',
-//	realFavicon: 'gulp-real-favicon',
-//	imageMin: 'gulp-imagemin',
-//	ImgMinify: 'imgminify'
-//});
-
-const server = modules.browser_sync.create(),
-	reload = async () => server.reload(),
-	{ stream } = server,
-	{ reload: _reload } = browserSync;
-
 Object.assign(modules, { server, reload, stream, _reload });
 
-//log('modules-config\n', modules);
-
 export default process.node_config = process.node_config || {
-	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	modules, h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
-	// Подключаемые модули
-	//modules,
-	modules: {
-		gulp,
-		fs, path,
-		browserSync, server, reload, stream, _reload,
-		gulpif, gutil, notify, plumber, changed,
-		rimraf, rename, sourcemaps,
-		htmlmin, htmlclean, pug,
-		inlineCss, sass, prefixer,
-		rigger, concat, uglify, webpack, webpackStream,
-		babel, terser, gulpTerser,
-		realFavicon, imageMin, ImgMinify
-	},
 	paths: {
 		root,
 		// пути для сборки проекта
