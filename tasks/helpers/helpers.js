@@ -3,9 +3,9 @@ import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
 
-const { argv, _relative, isDir, isFile, setBind } = h,
+const { _relative, importModules, isDir, isFile, argv, setBind } = h,
 	{
-		root, useWebpack, esModule,
+		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile },
@@ -18,13 +18,13 @@ const { argv, _relative, isDir, isFile, setBind } = h,
 
 const helpers = {
 	relativeRoot: from => _relative(from, root),
+	get tasks() { return process.node_tasks = process.node_tasks || importModules(tasksPath, excludeTasks); },
+	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
 		process.node_config[name] = value[name];
 	},
-	get modules() { return this.config.modules; },
-	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
 		return (async () => !(exist(webpackConfig) && this.getMode) ? {} :
 			(this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default }).webpackConfig)();

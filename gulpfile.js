@@ -2,17 +2,16 @@
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
-import tasks from './tasks/helpers/tasks.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/helpers/test.js';
 
-const { setMode, modules: { gulp: { series, parallel } } } = h,
-	{ deploy: _deploy, data: _data } = tasks;
+const { tasks, setMode, modules: { gulp: { series, parallel } } } = h,
+	{ deploy: _deploy, data: _data } = await tasks;
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files
-	} = tasks,
+} = await tasks,
 	build = series(clean, parallel(html, js)),
 	dev = series(clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
 	prod = series(setMode(true), clean, parallel(prod_html, prod_scss, prod_js, dev_img)),
@@ -25,7 +24,7 @@ export const {
 export { _tasksWatch, _test };
 
 Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
-//console.log('exports\n', tasks);
+//console.log('exports\n', await tasks);
 
 setMode(true)();
 log('mode:', (await h.webpackConfig).mode);
