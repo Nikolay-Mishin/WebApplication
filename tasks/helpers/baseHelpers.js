@@ -32,7 +32,7 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
-	isObject = (function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
+	isObject = Object.isObject || (function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
@@ -86,9 +86,6 @@ export const { INIT_CWD } = env,
 			file = searchPath(path);
 		return !json ? file : JSON.parse(file);
 	};
-
-Object.isObject = Object.isObject || isObject;
-Object.filter = Object.filter || filter;
 
 export default {
 	imports, importModules,
