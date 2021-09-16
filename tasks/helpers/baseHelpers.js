@@ -23,6 +23,8 @@ export const { INIT_CWD } = env,
 		return Object.assign(assign, args);
 	},
 	args = (argList => parseArgs(argList))(argv),
+	bind = (obj, ...func) => func.concat.apply([], func).map(func => func.bind(obj)),
+	setBind = (obj, ...func) => bind(obj, ...func),
 	keys = obj => Object.keys(obj),
 	values = obj => Object.values(obj),
 	empty = obj => keys(obj).length == 0,
@@ -30,12 +32,7 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
-	isObject = (Object.isObject = Object.isObject || function (obj) {
-		log('obj:', obj);
-		log('constructor:', obj.constructor);
-		log('this\n', this);
-		return obj != null && obj.constructor === this;
-	}).bind(Object),
+	isObject = (function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
@@ -90,10 +87,12 @@ export const { INIT_CWD } = env,
 		return !json ? file : JSON.parse(file);
 	};
 
+Object.isObject = Object.isObject || isObject;
+
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, values, empty, fromEntries, entries, filter, isArray, isObject,
+	bind, setBind, keys, values, empty, fromEntries, entries, filter, isArray, isObject,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile

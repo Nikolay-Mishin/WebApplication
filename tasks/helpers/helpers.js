@@ -3,7 +3,7 @@ import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
 
-const { argv, _relative, isDir, isFile } = h,
+const { argv, _relative, isDir, isFile, setBind } = h,
 	{
 		root, useWebpack, esModule,
 		modules: {
@@ -44,7 +44,7 @@ const helpers = {
 	get dev() { return (this.getMode || this.setModeSync()).trim().toLowerCase() === 'development'; },
 	get prod() { return !this.dev; },
 	get getMode() { return process.env.NODE_ENV; },
-	setMode: (prod = false) => async () => this.setModeSync(prod),
+	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
 	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
 	lastRun: func => { since: lastRun(func) },
@@ -59,6 +59,12 @@ const helpers = {
 		});
 	}
 };
+
+log('helpers.setMode', helpers.setMode);
+log('setBind(helpers.setMode)', setBind(helpers, helpers.setMode));
+log('helpers.setMode', helpers.setMode);
+helpers.setMode = helpers.setMode.bind(helpers);
+log('helpers.setMode.bind', helpers.setMode);
 
 Object.assign(helpers, h);
 

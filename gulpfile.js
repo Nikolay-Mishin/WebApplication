@@ -29,12 +29,12 @@ export { _tasksWatch, _test };
 Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
 //console.log('exports\n', tasks);
 
+log('h.setMode:', h.setMode(true)());
+log('setMode:', setMode(true)());
+
 //setModeSync(true);
 log('mode:', (await h.webpackConfig).mode);
 log('useWebpack:', h.useWebpack);
-
-log('setMode:', setMode);
-log('h.setMode:', h.setMode);
 
 export const data = () => _data('tasks/**/*');
 
