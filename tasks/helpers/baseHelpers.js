@@ -88,6 +88,7 @@ export const { INIT_CWD } = env,
 	};
 
 Object.isObject = Object.isObject || isObject;
+Object.filter = Object.filter || filter;
 
 export default {
 	imports, importModules,
