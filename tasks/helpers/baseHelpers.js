@@ -25,7 +25,7 @@ const { log } = require('console'),
 	empty = obj => keys(obj).length == 0,
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
-	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
+	filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
 	isObject = (function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
 	fileName = file => base(file, ext(file)),
@@ -81,6 +81,7 @@ const { log } = require('console'),
 	};
 
 Object.isObject = Object.isObject || isObject;
+Object.filter = Object.filter || filter;
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
