@@ -54,7 +54,7 @@ const modules = await importModules({
 Object.assign(modules, { server, reload, stream, _reload });
 
 export default process.node_config = process.node_config || {
-	modules, h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	modules, root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {
