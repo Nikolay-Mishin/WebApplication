@@ -33,5 +33,5 @@
  * 5.4 - fix modules
  * 5.5 - add isObject() in BaseHelpers
  * 5.6 - add searchFile() in BaseHelpers
- * 5.7 - add setBind() in BaseHelpers
+ * 5.7 - add bind() in BaseHelpers
 */
