@@ -25,7 +25,7 @@ const { log } = require('console'),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
-	isObject = obj => (Object.isObject = Object.isObject || function (obj) {
+	isObject = obj => Object.isObject ? Object.isObject(obj) : (Object.isObject = function (obj) {
 		log('obj:', obj);
 		log('constructor:', obj.constructor);
 		log('this\n', this);
