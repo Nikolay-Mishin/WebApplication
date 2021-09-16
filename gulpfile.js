@@ -28,7 +28,7 @@ exports._test = require('./tasks/helpers/test');
 //console.log('exports\n', tasks);
 
 log('h.setMode:', h.setMode(true)());
-log('setMode:', setMode(true).call(h));
+log('setMode:', setMode(true));
 
 //setModeSync(true);
 log('mode:', h.webpackConfig.mode);
