@@ -19,11 +19,7 @@ export const imports = async (...modules) => await $import(false, ...modules),
 			[_keys, _values, scan] = !isObj ? [[], [], isDir(modules[0])] : [keys(modules[0]), values(modules[0]), false],
 			_exclude = scan ? modules.pop() : [];
 		modules = scan ? modules.shift() : (isObj ? _values : modules);
-		//log('scan:', scan);
-		//log('exclude:', _exclude);
-		//log('modules-scan\n', modules);
 		modules = (!scan ? modules : getFiles(modules, { _exclude })).map(m => !scan ? m : `${toUrl(modules)}/${m}`);
-		//log('modules\n', modules);
 		const imports = await $import(true, ...modules);
 		return fromEntries(keys(imports).map((m, i) => [isObj ? _keys[i] : m.replace(/\-+/g, '_'), imports[m]]));
 	};
