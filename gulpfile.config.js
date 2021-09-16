@@ -47,6 +47,38 @@ const modules = importModules(
 	'imgminify'
 );
 
+//const modules = await importModules({
+//	gulp: 'gulp',
+//	fs: 'fs',
+//	path: 'path',
+//	browserSync: 'browser-sync',
+//	gulpif: 'gulp-if',
+//	gutil: 'gulp-util',
+//	notify: 'gulp-notify',
+//	plumber: 'gulp-plumber',
+//	changed: 'gulp-changed',
+//	rimraf: 'rimraf',
+//	rename: 'gulp-rename',
+//	sourcemaps: 'gulp-sourcemaps',
+//	htmlmin: 'gulp-htmlmin',
+//	htmlclean: 'gulp-htmlclean',
+//	pug: 'gulp-pug',
+//	inlineCss: 'gulp-inline-css',
+//	sass: 'gulp-sass',
+//	prefixer: 'gulp-autoprefixer',
+//	rigger: 'gulp-rigger',
+//	concat: 'concat',
+//	uglify: 'gulp-uglify',
+//	webpack: 'webpack',
+//	webpackStream: 'webpack-stream',
+//	babel: 'gulp-babel',
+//	terser: 'terser',
+//	gulpTerser: 'gulp-terser',
+//	realFavicon: 'gulp-real-favicon',
+//	imageMin: 'gulp-imagemin',
+//	ImgMinify: 'imgminify'
+//});
+
 const browserSync = modules.browser_sync, // плагин перезагрузки браузера
 	server = browserSync.create(),
 	reload = async () => server.reload(),
