@@ -75,6 +75,42 @@ const modules = await importModules(
 	'imgminify'
 );
 
+//const modules = await importModules({
+//	gulp: '',
+//	fs: '',
+//	path: '',
+//	browserSync: '',
+//	reload: '',
+//	server: '',
+//	stream: '',
+//	_reload: '',
+//	gulpif: '',
+//	gutil: '',
+//	notify: '',
+//	plumber: '',
+//	changed: '',
+//	rimraf: '',
+//	rename: '',
+//	sourcemaps: '',
+//	htmlmin: '',
+//	htmlclean: '',
+//	pug: '',
+//	inlineCss: '',
+//	sass: '',
+//	prefixer: '',
+//	rigger: '',
+//	concat: '',
+//	uglify: '',
+//	webpack: '',
+//	webpackStream: '',
+//	babel: '',
+//	terser: '',
+//	gulpTerser: '',
+//	realFavicon: '',
+//	imageMin: '',
+//	ImgMinify
+//});
+
 const server = modules.browser_sync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,

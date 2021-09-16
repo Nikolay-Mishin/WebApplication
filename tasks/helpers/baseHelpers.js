@@ -30,12 +30,12 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
-	isObject = obj => Object.isObject ? Object.isObject(obj) : (Object.isObject = function (obj) {
+	isObject = (Object.isObject = Object.isObject || function (obj) {
 		log('obj:', obj);
 		log('constructor:', obj.constructor);
 		log('this\n', this);
 		return obj != null && obj.constructor === this;
-	})(obj),
+	}).bind(Object),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
