@@ -30,10 +30,10 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
-	isObject = obj => (Object.isObject = Object.isObject || function (obj) {
-		log('obj2:', obj);
-		log('constructor2:', obj.constructor);
-		log('this2\n', this);
+	isObject = obj => Object.isObject ? Object.isObject(obj) : (Object.isObject = function (obj) {
+		log('obj:', obj);
+		log('constructor:', obj.constructor);
+		log('this\n', this);
 		return obj != null && obj.constructor === this;
 	})(obj),
 	_dirname = meta => dirname(toPath(meta.url)),
@@ -93,7 +93,7 @@ export const { INIT_CWD } = env,
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, empty, fromEntries, entries, filter, isArray, isObject,
+	keys, values, empty, fromEntries, entries, filter, isArray, isObject,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile
