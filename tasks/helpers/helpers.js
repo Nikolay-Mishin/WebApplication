@@ -60,12 +60,6 @@ const helpers = {
 	}
 };
 
-log('helpers.setMode', helpers.setMode);
-log('setBind(helpers.setMode)', setBind(helpers, helpers.setMode));
-log('helpers.setMode', helpers.setMode);
-helpers.setMode = helpers.setMode.bind(helpers);
-log('helpers.setMode.bind', helpers.setMode);
-
-Object.assign(helpers, h);
+Object.assign(setBind(helpers, helpers.setMode), h);
 
 export default helpers;

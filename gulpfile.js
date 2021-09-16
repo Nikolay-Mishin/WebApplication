@@ -6,10 +6,8 @@ import tasks from './tasks/helpers/tasks.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/helpers/test.js';
 
-const { setMode, setModeSync, modules: { gulp: { series, parallel, src } } } = h,
+const { setMode, modules: { gulp: { series, parallel } } } = h,
 	{ deploy: _deploy, data: _data } = tasks;
-
-//setModeSync();
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
@@ -29,10 +27,7 @@ export { _tasksWatch, _test };
 Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
 //console.log('exports\n', tasks);
 
-log('h.setMode:', h.setMode(true)());
-log('setMode:', setMode(true)());
-
-//setModeSync(true);
+setMode(true)();
 log('mode:', (await h.webpackConfig).mode);
 log('useWebpack:', h.useWebpack);
 
