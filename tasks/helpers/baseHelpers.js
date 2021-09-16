@@ -85,7 +85,7 @@ const { log } = require('console'),
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, empty, fromEntries, entries, filter, isArray, isObject,
+	keys, values, empty, fromEntries, entries, filter, isArray, isObject,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile
