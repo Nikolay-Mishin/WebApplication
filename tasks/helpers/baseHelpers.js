@@ -19,11 +19,18 @@ const { log } = require('console'),
 	},
 	args = (argList => parseArgs(argList))(argv),
 	keys = obj => Object.keys(obj),
+	values = obj => Object.values(obj),
 	empty = obj => keys(obj).length == 0,
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	isArray = obj => Array.isArray(obj),
+	isObject = obj => (Object.isObject = Object.isObject || function (obj) {
+		log('obj:', obj);
+		log('constructor:', obj.constructor);
+		log('this\n', this);
+		return obj != null && obj.constructor === this;
+	})(obj),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
@@ -43,7 +50,6 @@ const { log } = require('console'),
 			project = !name ? name : keys(arg)[1] || fileName(exist && INIT_CWD != cwd ? INIT_CWD : cwd),
 			contextPath = join(projectsPath, project),
 			context = exist && isDir(contextPath) ? contextPath : projectsPath;
-
 		//log('INIT_CWD:', INIT_CWD);
 		//log('cwd:', cwd);
 		//log('projectsPath:', projectsPath);
@@ -55,26 +61,32 @@ const { log } = require('console'),
 		//log('args:', args);
 		//log('arg:', arg);
 		//log('projects:', projects);
-
 		return { project, context };
 	})(),
 	runInContext = (path, cb) => {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
-
 		log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
-
-		options.project = project; // Set project
-
 		cb(); // Task call
-
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
+	},
+	searchFile = (path, search, { json = false, parent = true, _cwd = true }) => {
+		const searchPath = function (path) {
+			const filePath = join(path, search),
+				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
+			log('path:', path);
+			return file ? file :
+				parent ? this(dirname(path)) :
+					_cwd ? this(cwd) : null;
+		},
+			file = searchPath(path);
+		return !json ? file : JSON.parse(file);
 	};
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
-	keys, empty, fromEntries, entries, filter, isArray,
+	keys, empty, fromEntries, entries, filter, isArray, isObject,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
-	config, project, context, runInContext
+	config, project, context, runInContext, searchFile
 };

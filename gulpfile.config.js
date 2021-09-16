@@ -5,7 +5,7 @@ const { log } = require('console'),
 	{ join } = path,
 	{ importModules } = require('./tasks/helpers/import'),
 	h = require('./tasks/helpers/baseHelpers'),
-	{ project, context, config, cwd } = h,
+	{ project, context, config, cwd, isObject } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -55,7 +55,10 @@ const browserSync = modules.browser_sync, // плагин перезагрузк
 
 Object.assign(modules, { server, reload, stream, _reload });
 
-log('modules-config\n', modules);
+//log('modules-config\n', modules);
+
+log('isObject({}):', isObject({}));
+log('isObject([]):', isObject([]));
 
 module.exports = process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
