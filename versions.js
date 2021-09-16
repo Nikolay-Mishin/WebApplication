@@ -31,9 +31,7 @@
  * 5.2 - add Imports & ImportModules
  * 5.3 - fix exports
  * 5.4 - fix modules
- * 5.5 - add searchFile() in BaseHelpers
-*/
-
-/* new versions
-
+ * 5.5 - add isObject() in BaseHelpers
+ * 5.6 - add searchFile() in BaseHelpers
+ * 5.7 - add setBind() in BaseHelpers
 */
