@@ -16,9 +16,7 @@ const $import = (toObj, ...modules) => (async (...modules) => {
 export const imports = async (...modules) => await $import(false, ...modules),
 	importModules = async (...modules) => {
 		const isObj = isObject(modules[0]),
-			_keys = !isObj ? [] : keys(modules[0]),
-			_values = !isObj ? [] : values(modules[0]),
-			scan = !isObj ? isDir(modules[0]) : false,
+			[_keys, _values, scan] = !isObj ? [[], [], isDir(modules[0])] : [keys(modules[0]), values(modules[0]), false],
 			_exclude = scan ? modules.pop() : [];
 		modules = scan ? modules.shift() : (isObj ? _values : modules);
 		//log('scan:', scan);
