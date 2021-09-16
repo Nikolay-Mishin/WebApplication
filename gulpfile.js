@@ -3,13 +3,13 @@
 const { log } = console,
 	h = require('./tasks/helpers/helpers'),
 	tasks = require('./tasks/helpers/tasks'),
-	{ setMode, setModeSync, modules: { gulp: { series, parallel } } } = h,
+	{ setMode, modules: { gulp: { series, parallel } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy, data: _data
 	} = tasks;
 
-//setModeSync();
+//setMode()();
 
 Object.assign(exports, tasks);
 
@@ -27,10 +27,7 @@ exports._test = require('./tasks/helpers/test');
 
 //console.log('exports\n', tasks);
 
-log('h.setMode:', h.setMode(true)());
-log('setMode:', setMode(true)());
-
-//setModeSync(true);
+setMode(true)();
 log('mode:', h.webpackConfig.mode);
 log('useWebpack:', h.useWebpack);
 
