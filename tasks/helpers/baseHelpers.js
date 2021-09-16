@@ -25,9 +25,10 @@ const { log } = require('console'),
 	empty = obj => keys(obj).length == 0,
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
-	filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
+	filter = Object.filter = Object.filter || ((obj, predicate) => fromEntries(entries(obj).filter(predicate))),
 	isArray = obj => Array.isArray(obj),
-	isObject = (function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
+	isObject = Object.isObject = Object.isObject ||
+		(function (obj) { return obj != null && obj.constructor === this; }).bind(Object),
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
@@ -79,9 +80,6 @@ const { log } = require('console'),
 			file = searchPath(path);
 		return !json ? file : JSON.parse(file);
 	};
-
-Object.isObject = Object.isObject || isObject;
-Object.filter = Object.filter || filter;
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
