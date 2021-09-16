@@ -1,6 +1,6 @@
 {
 	"name": "web-app",
-	"version": "5.6.0",
+	"version": "5.7.0",
 	"main": "gulpfile.js",
 	"type": "module",
 	"exports": {

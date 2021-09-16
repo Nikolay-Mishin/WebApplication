@@ -1,7 +1,7 @@
 import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import { basename as base, extname as ext } from 'path';
-import { fromEntries, isObject, keys, values, isDir, getFiles } from './baseHelpers.js';
+import { fromEntries, isObject, isDir, keys, values, getFiles } from './baseHelpers.js';
 
 const $import = (toObj, ...modules) => (async (...modules) => {
 	const imports = await Promise.all(modules.concat.apply([], modules)

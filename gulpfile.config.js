@@ -2,76 +2,45 @@ import { log } from 'console';
 import { cwd as _cwd, argv as _argv } from 'process';
 import h from './tasks/helpers/baseHelpers.js';
 
-import gulp from 'gulp'; // сам gulp
-import fs from 'fs'; // работа с файловой системой
-import path from 'path'; // работа с путями
-import browserSync from 'browser-sync'; // плагин перезагрузки браузера
-import gulpif from 'gulp-if'; // плагин для условий
-import gutil from 'gulp-util'; // отладка
-import notify from 'gulp-notify'; // отладка
-import plumber from 'gulp-plumber'; // errorHandler
-import changed from 'gulp-changed';
-import rimraf from 'rimraf'; // удаление файлов
-import rename from 'gulp-rename'; // плагин переименования файлов
-import sourcemaps from 'gulp-sourcemaps'; // плагин создания map-файлов
-import htmlmin from 'gulp-htmlmin'; // плагин сжатия html
-import htmlclean from 'gulp-htmlclean';
-import pug from 'gulp-pug'; // плагин компиляции pug
-import inlineCss from 'gulp-inline-css';
-import sass from 'gulp-sass'; // плагин компиляции scss (+ node-sass)
-import prefixer from 'gulp-autoprefixer'; // плагин расстановки префиксов
-import rigger from 'gulp-rigger'; // плагин объединения js
-import concat from 'concat';
-import uglify from 'gulp-uglify'; // плагин сжатия js
-import webpack from 'webpack'; // webpack
-import webpackStream from 'webpack-stream'; // webpack
-import babel from 'gulp-babel';
-import terser from 'terser';
-import gulpTerser from 'gulp-terser';
-import realFavicon from 'gulp-real-favicon'; // генератор фавиконок
-import imageMin from 'gulp-imagemin'; // оптимизация картинок
-import ImgMinify from 'imgminify'; // оптимизация картинок
-
-// Подключаемые модули
-const modules = await importModules({
-	gulp: 'gulp',
-	fs: 'fs',
-	path: 'path',
-	browserSync: 'browser-sync',
-	gulpif: 'gulp-if',
-	gutil: 'gulp-util',
-	notify: 'gulp-notify',
-	plumber: 'gulp-plumber',
-	changed: 'gulp-changed',
-	rimraf: 'rimraf',
-	rename: 'gulp-rename',
-	sourcemaps: 'gulp-sourcemaps',
-	htmlmin: 'gulp-htmlmin',
-	htmlclean: 'gulp-htmlclean',
-	pug: 'gulp-pug',
-	inlineCss: 'gulp-inline-css',
-	sass: 'gulp-sass',
-	prefixer: 'gulp-autoprefixer',
-	rigger: 'gulp-rigger',
-	concat: 'concat',
-	uglify: 'gulp-uglify',
-	webpack: 'webpack',
-	webpackStream: 'webpack-stream',
-	babel: 'gulp-babel',
-	terser: 'terser',
-	gulpTerser: 'gulp-terser',
-	realFavicon: 'gulp-real-favicon',
-	imageMin: 'gulp-imagemin',
-	ImgMinify: 'imgminify'
-});
-
-const { path, browserSync } = modules,
+const { importModules, config, context, cwd, project } = h,
+	// Подключаемые модули
+	modules = await importModules({
+		gulp: 'gulp',
+		fs: 'fs',
+		path: 'path',
+		browserSync: 'browser-sync',
+		gulpif: 'gulp-if',
+		gutil: 'gulp-util',
+		notify: 'gulp-notify',
+		plumber: 'gulp-plumber',
+		changed: 'gulp-changed',
+		rimraf: 'rimraf',
+		rename: 'gulp-rename',
+		sourcemaps: 'gulp-sourcemaps',
+		htmlmin: 'gulp-htmlmin',
+		htmlclean: 'gulp-htmlclean',
+		pug: 'gulp-pug',
+		inlineCss: 'gulp-inline-css',
+		sass: 'gulp-sass',
+		prefixer: 'gulp-autoprefixer',
+		rigger: 'gulp-rigger',
+		concat: 'concat',
+		uglify: 'gulp-uglify',
+		webpack: 'webpack',
+		webpackStream: 'webpack-stream',
+		babel: 'gulp-babel',
+		terser: 'terser',
+		gulpTerser: 'gulp-terser',
+		realFavicon: 'gulp-real-favicon',
+		imageMin: 'gulp-imagemin',
+		ImgMinify: 'imgminify'
+	}),
+	{ path, browserSync } = modules,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
 	{ join } = path,
-	{ project, context, config, cwd, importModules, isObject } = h,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
