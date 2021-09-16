@@ -4,6 +4,7 @@
 *.cs
 [Pp]roperties
 appsettings.*
+src/fontawesome-free-5.15.4-web/svgs
 
 # User-specific files
 *.suo
