@@ -33,6 +33,9 @@ Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
 log('mode:', (await h.webpackConfig).mode);
 log('useWebpack:', h.useWebpack);
 
+log('setMode:', setMode);
+log('h.setMode:', h.setMode);
+
 export const data = () => _data('tasks/**/*');
 
 //import _export from './tasks/helpers/export.js';

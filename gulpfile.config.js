@@ -76,39 +76,35 @@ const modules = await importModules(
 );
 
 //const modules = await importModules({
-//	gulp: '',
-//	fs: '',
-//	path: '',
-//	browserSync: '',
-//	reload: '',
-//	server: '',
-//	stream: '',
-//	_reload: '',
-//	gulpif: '',
-//	gutil: '',
-//	notify: '',
-//	plumber: '',
-//	changed: '',
-//	rimraf: '',
-//	rename: '',
-//	sourcemaps: '',
-//	htmlmin: '',
-//	htmlclean: '',
-//	pug: '',
-//	inlineCss: '',
-//	sass: '',
-//	prefixer: '',
-//	rigger: '',
-//	concat: '',
-//	uglify: '',
-//	webpack: '',
-//	webpackStream: '',
-//	babel: '',
-//	terser: '',
-//	gulpTerser: '',
-//	realFavicon: '',
-//	imageMin: '',
-//	ImgMinify
+//	gulp: 'gulp',
+//	fs: 'fs',
+//	path: 'path',
+//	browserSync: 'browser-sync',
+//	gulpif: 'gulp-if',
+//	gutil: 'gulp-util',
+//	notify: 'gulp-notify',
+//	plumber: 'gulp-plumber',
+//	changed: 'gulp-changed',
+//	rimraf: 'rimraf',
+//	rename: 'gulp-rename',
+//	sourcemaps: 'gulp-sourcemaps',
+//	htmlmin: 'gulp-htmlmin',
+//	htmlclean: 'gulp-htmlclean',
+//	pug: 'gulp-pug',
+//	inlineCss: 'gulp-inline-css',
+//	sass: 'gulp-sass',
+//	prefixer: 'gulp-autoprefixer',
+//	rigger: 'gulp-rigger',
+//	concat: 'concat',
+//	uglify: 'gulp-uglify',
+//	webpack: 'webpack',
+//	webpackStream: 'webpack-stream',
+//	babel: 'gulp-babel',
+//	terser: 'terser',
+//	gulpTerser: 'gulp-terser',
+//	realFavicon: 'gulp-real-favicon',
+//	imageMin: 'gulp-imagemin',
+//	ImgMinify: 'imgminify'
 //});
 
 const server = modules.browser_sync.create(),
@@ -120,9 +116,6 @@ Object.assign(modules, { server, reload, stream, _reload });
 
 //log('modules-config\n', modules);
 
-log('isObject({}):', isObject({}));
-log('isObject([]):', isObject([]));
-
 export default process.node_config = process.node_config || {
 	h, root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	tasksPath: join(cwd, tasksPath),
@@ -132,7 +125,7 @@ export default process.node_config = process.node_config || {
 	modules: {
 		gulp,
 		fs, path,
-		browserSync, reload, server, stream, _reload,
+		browserSync, server, reload, stream, _reload,
 		gulpif, gutil, notify, plumber, changed,
 		rimraf, rename, sourcemaps,
 		htmlmin, htmlclean, pug,
