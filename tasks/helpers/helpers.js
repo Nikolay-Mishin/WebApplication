@@ -2,8 +2,9 @@ const { log } = require('console'),
 	{ argv: _argv } = process,
 	imports = require('./import'),
 	h = require('./baseHelpers'),
-	{ argv, _relative, isDir, isFile, setBind } = h,
 	config = require('../../gulpfile.config'),
+	{ importModules } = imports,
+	{ _relative, isDir, isFile, argv, setBind } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -17,7 +18,7 @@ const { log } = require('console'),
 	} = config;
 
 const helpers = {
-	relativeRoot = from => _relative(from, root),
+	relativeRoot: from => _relative(from, root),
 	get tasks() { return process.node_tasks = process.node_tasks || importModules(tasksPath, excludeTasks); },
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
