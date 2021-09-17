@@ -80,7 +80,7 @@ export const { INIT_CWD } = env,
 	searchFile = (function (...args) { return this.call(this, ...args); })
 		.bind(function (path, search, { json = false, parent = true, _cwd = true } = {}) {
 			log('arguments-bind\n', arguments);
-			log('arguments\n', json, parent, _cwd);
+			log('arguments:', json, parent, _cwd);
 			const searchPath = (path) => {
 				const filePath = join(path, search),
 					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
