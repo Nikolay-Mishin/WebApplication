@@ -1,14 +1,13 @@
 import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import { basename as base, extname as ext } from 'path';
-import { fromEntries, isObject, isDir, keys, values, getFiles } from './baseHelpers.js';
+import { concat, fromEntries, isObject, isDir, keys, values, getFiles } from './baseHelpers.js';
 
 const $import = (toObj, ...modules) => (async (...modules) => {
-	const imports = await Promise.all(modules.concat.apply([], modules)
-		.map(async m => {
-			const module = (await import(m)).default;
-			return !toObj ? module : [base(m, ext(m)), module];
-		}));
+	const imports = await Promise.all(concat(modules).map(async m => {
+		const module = (await import(m)).default;
+		return !toObj ? module : [base(m, ext(m)), module];
+	}));
 	return !toObj ? imports : fromEntries(imports);
 })(...modules);
 

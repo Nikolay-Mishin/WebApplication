@@ -1,10 +1,11 @@
 {
 	"name": "web-app",
-	"version": "5.7.0",
+	"version": "6.0.0",
 	"main": "gulpfile.js",
 	"type": "module",
 	"exports": {
 		".": "./gulpfile.js",
+        "./@config": "./gulpfile.config.js",
 		"./@*": "./*.js",
 		"./*": "./tasks/*.js",
 		"./_*": "./tasks/helpers/*.js"

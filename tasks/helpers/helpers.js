@@ -60,6 +60,4 @@ const helpers = {
 	}
 };
 
-Object.assign(setBind(helpers, helpers.setMode), h);
-
-export default helpers;
+export default Object.assign(setBind(helpers, helpers.setMode), h);
