@@ -11,8 +11,7 @@ const imports = (...modules) => $import(concat(modules)),
 		modules = scan ? modules.shift() : (isObj ? _values : modules);
 		modules = (!scan ? modules : getFiles(modules, { exclude: scan && isArray(modules) ? modules.pop() : [] }))
 			.map(m => !scan ? m : `${modules}/${m}`);
-		const imports = $import(modules);
-		return fromEntries(imports.map((m, i) => [isObj ? _keys[i] : fileName(modules[i]).replace(/\-+/g, '_'), m]));
+		return fromEntries($import(modules).map((m, i) => [isObj ? _keys[i] : fileName(modules[i]).replace(/\-+/g, '_'), m]));
 	};
 
 module.exports = { imports, importModules };
