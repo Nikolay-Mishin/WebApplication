@@ -1,6 +1,6 @@
 import { log } from 'console';
 import { env, cwd, argv, title } from 'process';
-import h from './helpers.js';
+import h from '../helpers/helpers.js';
 
 const { INIT_CWD, HOMEDRIVE } = env;
 

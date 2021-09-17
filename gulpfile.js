@@ -3,7 +3,7 @@
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
-import _test from './tasks/helpers/test.js';
+import _test from './tasks/test/test.js';
 
 const { tasks, setMode, modules: { gulp: { series, parallel } } } = h,
 	{ deploy: _deploy, data: _data } = await tasks;
@@ -32,9 +32,9 @@ log('useWebpack:', h.useWebpack);
 
 export const data = () => _data('tasks/**/*');
 
-//import _export from './tasks/helpers/export.js';
-//import module from './tasks/helpers/module.js';
-//import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/helpers/module.js';
+//import _export from './tasks/test/export.js';
+//import module from './tasks/test/module.js';
+//import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/test/module.js';
 
 //log('module\n', module);
 //log('mod\n', mod);

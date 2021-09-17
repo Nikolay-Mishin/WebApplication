@@ -1,12 +1,12 @@
 import { log } from 'console';
-import { imports } from './import.js'; // grab the importer
+import { imports } from '../helpers/import.js'; // grab the importer
 
-log('export\n', await imports('./baseHelpers.js', './helpers.js'));
+log('export\n', await imports('../helpers/baseHelpers.js', '../helpers/helpers.js'));
 
 // export through the same pattern
 export const exports = await new Promise(async $export => {
 	// grab many modules at once
-	const [a, b] = await imports('./baseHelpers.js', './helpers.js');
+	const [a, b] = await imports('../helpers/baseHelpers.js', '../helpers/helpers.js');
 	$export({ name: 'c', a: a.cwd, b: b.cwd }); // export this module
 });
 
