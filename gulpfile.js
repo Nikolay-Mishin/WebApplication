@@ -22,7 +22,7 @@ exports.move = series(clean, move_files);
 //export default build;
 
 exports._tasksWatch = require('./tasks/helpers/tasksWatch');
-exports._test = require('./tasks/helpers/test');
+exports._test = require('./tasks/test/test');
 
 //console.log('exports\n', tasks);
 

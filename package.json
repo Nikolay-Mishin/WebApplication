@@ -8,7 +8,8 @@
 		"./@config": "./gulpfile.config.js",
 		"./@*": "./*.js",
 		"./*": "./tasks/*.js",
-		"./_*": "./tasks/helpers/*.js"
+		"./_*": "./tasks/helpers/*.js",
+		"./#*": "./tasks/test/*.js"
 	},
 	"license": "ISC",
 	"author": {
