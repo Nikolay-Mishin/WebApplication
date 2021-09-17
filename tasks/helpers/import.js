@@ -20,7 +20,6 @@ export const imports = (...modules) => $import(false, ...modules),
 		modules = scan ? modules.shift() : (isObj ? _values : modules);
 		modules = (!scan ? modules : getFiles(modules, { _exclude })).map(m => !scan ? m : `${toUrl(modules)}/${m}`);
 		const imports = await $import(true, ...modules);
-		log('imports\n', imports);
 		return fromEntries(keys(imports).map((m, i) => [isObj ? _keys[i] : m.replace(/\-+/g, '_'), imports[m]]));
 	};
 

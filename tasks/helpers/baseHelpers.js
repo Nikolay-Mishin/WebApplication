@@ -32,7 +32,7 @@ export const { INIT_CWD } = env,
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
-    concat = list => list.concat.apply([], list);
+    concat = list => list.concat.apply([], list),
 	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
