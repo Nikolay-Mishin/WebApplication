@@ -39,7 +39,7 @@ const { log } = require('console'),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
-	{ config, context, cwd, assignConfig, project } = require('./tasks/helpers/baseHelpers'),
+	{ config, context, cwd, assignConfig } = require('./tasks/helpers/baseHelpers'),
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
