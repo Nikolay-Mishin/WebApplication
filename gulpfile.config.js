@@ -51,7 +51,7 @@ const modules = await importModules({
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-assignConfig(context, 'config.json');
+assignConfig(join(context, tasksPath), 'config.json');
 
 export default process.node_config = process.node_config || {
 	modules, root, build, src, serverPHP, deploy, //useWebpack, esModule,

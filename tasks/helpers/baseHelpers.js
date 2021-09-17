@@ -33,6 +33,7 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	concat = list => list.concat.apply([], list),
+	slice = obj => [].slice.call(obj),
 	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
@@ -84,18 +85,17 @@ export const { INIT_CWD } = env,
 			const searchPath = (path) => {
 				const filePath = join(path, search),
 					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
+				log('this-bind:', this);
 				this.config = this.config || file;
-				log('this-searchPath:', this);
 				log('path:', path);
 				log('filePath:', filePath);
 				log('file:', file);
-				log('this.config:', this.config);
+				log('this:', this);
 				return file ? file :
-					parent ? this(dirname(path)) :
-					_cwd ? this(cwd) : null;
+					parent ? this(dirname(path), slice(arguments, 1)) :
+						_cwd ? this(cwd, slice(arguments, 1)) : null;
 			},
 				file = searchPath(path);
-			log('this-bind:', this);
 			return !json || isObject(file) ? file : JSON.parse(file);
 		}),
 	assignConfig = (path, ...configList) => {
