@@ -1,6 +1,6 @@
 import { log } from 'console';
 import { cwd as _cwd, argv as _argv } from 'process';
-import { importModules, config, context, cwd, searchFile, assignConfig, project } from './tasks/helpers/baseHelpers.js';
+import { importModules, config, context, cwd, assignConfig } from './tasks/helpers/baseHelpers.js';
 
 // Подключаемые модули
 const modules = await importModules({
@@ -35,11 +35,11 @@ const modules = await importModules({
 	ImgMinify: 'imgminify'
 }),
 	{ path, browserSync } = modules,
+	{ join } = path,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
-	{ join } = path,
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
