@@ -85,17 +85,17 @@ export const { INIT_CWD } = env,
 				const filePath = join(path, search),
 					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
 				this.config = this.config || file;
-				//log('this-searchPath:', this);
-				//log('path:', path);
-				//log('filePath:', filePath);
-				//log('file:', file);
-				//log('this.config:', this.config);
+				log('this-searchPath:', this);
+				log('path:', path);
+				log('filePath:', filePath);
+				log('file:', file);
+				log('this.config:', this.config);
 				return file ? file :
 					parent ? this(dirname(path)) :
 					_cwd ? this(cwd) : null;
 			},
 				file = searchPath(path);
-			//log('this-bind:', this);
+			log('this-bind:', this);
 			return !json || isObject(file) ? file : JSON.parse(file);
 		}),
 	assignConfig = (path, ...configList) => {
