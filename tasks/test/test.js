@@ -1,7 +1,7 @@
 const { log } = console,
 	{ env, cwd, argv, title } = process,
 	{ INIT_CWD, HOMEDRIVE } = env,
-	h = require('./helpers');
+	h = require('../helpers/helpers');
 
 module.exports = async function test() {
 	const {

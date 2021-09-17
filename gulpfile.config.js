@@ -1,5 +1,4 @@
 const { log } = require('console'),
-	{ cwd: _cwd, argv: _argv } = require('process'),
 	{ importModules } = require('./tasks/helpers/import'),
 	// Подключаемые модули
 	modules = importModules({
