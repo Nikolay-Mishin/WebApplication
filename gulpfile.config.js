@@ -33,12 +33,12 @@ const { log } = require('console'),
 		imageMin: 'gulp-imagemin', // оптимизация изображений
 		ImgMinify: 'imgminify' // оптимизация изображений
 	}),
-	{ browserSync, path } = modules,
+	{ path, browserSync } = modules,
+	{ join } = path,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
-	{ join } = path,
 	{ config, context, cwd, assignConfig, project } = require('./tasks/helpers/baseHelpers'),
 	{
 		es: { useWebpack, esModule, webpackConfig },
