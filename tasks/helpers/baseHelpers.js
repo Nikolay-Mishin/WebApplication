@@ -80,21 +80,17 @@ const cwd = _cwd(),
 			log('arguments-bind\n', arguments);
 			log('arguments:', json, parent, _cwd);
 			log('this-bind:', this);
-			const searchPath = (path) => {
-				const filePath = join(path, search),
-					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
-				log('this-searchPath:', this);
-				this.config = this.config || file;
-				log('path:', path);
-				log('filePath:', filePath);
-				log('file:', file);
-				log('this:', this);
-				return file ? file :
-					_cwd ? call(this, cwd, ...slice(arguments, 1)) :
-					parent /*&& path != cwd*/ ? call(this, dirname(path), ...slice(arguments, 1)) : null;
-			},
-				file = searchPath(path);
-			return !json || isObject(file) ? file : JSON.parse(file);
+			const filePath = join(path, search),
+				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
+			log('this-searchPath:', this);
+			this.config = this.config || file;
+			log('path:', path);
+			log('filePath:', filePath);
+			log('file:', file);
+			log('this:', this);
+			return file ? (!json || isObject(file) ? file : JSON.parse(file)) :
+				_cwd ? call(this, cwd, ...slice(arguments, 1)) :
+				parent /*&& path != cwd*/ ? call(this, dirname(path), ...slice(arguments, 1)) : null;
 		}),
 	assignConfig = (path, ...configList) => {
 		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
