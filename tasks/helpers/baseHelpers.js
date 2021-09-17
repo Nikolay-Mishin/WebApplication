@@ -1,8 +1,9 @@
 const { log } = require('console'),
 	{ env: { INIT_CWD }, cwd: _cwd, argv: _argv } = require('process'),
 	{ existsSync: exist, readFileSync: readFile, readdirSync: readDir, statSync: stat } = require('fs'),
-	{ join, dirname, relative, basename: base, extname: ext, sep } = require('path'),
-	cwd = _cwd(),
+	{ join, dirname, relative, basename: base, extname: ext, sep } = require('path');
+
+const cwd = _cwd(),
 	argv = _argv.slice(2),
 	parseArgs = (argList, assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
