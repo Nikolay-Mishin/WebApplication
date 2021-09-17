@@ -20,22 +20,10 @@
 		"folder": "",
 		"include": [ "*.htaccess" ],
 		"exclude": [
-			".git",
-			".vs",
-			"bin",
-			"obj",
-			"Properties",
-			"**/node_modules",
-			"**/bower_components",
-			"**/doc",
-			"**/Thumbs.db",
-			"**/*.DS_Store",
-			".gitattributes",
-			".gitignore",
-			"*.sln",
-			"*.cs",
-			"appsettings.json",
-			"appsettings.Development.json"
+			".git", ".vs", "bin", "obj", "Properties",
+			"**/node_modules", "**/bower_components", "**/doc", 
+			"**/Thumbs.db", "**/*.DS_Store", ".gitattributes", ".gitignore", "*.sln", "*.cs",
+			"appsettings.json", "appsettings.Development.json"
 		]
 	},
 	"paths": {
