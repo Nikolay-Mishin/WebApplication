@@ -39,7 +39,7 @@ const { log } = require('console'),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
 	{ join } = path,
-	{ config, context, cwd, project } = require('./tasks/helpers/baseHelpers'),
+	{ config, context, cwd, assignConfig, project } = require('./tasks/helpers/baseHelpers'),
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -51,10 +51,11 @@ const { log } = require('console'),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-Object.assign(modules, { server, reload, stream, _reload });
+assignConfig(context, 'config.json');
 
 module.exports = process.node_config = process.node_config || {
-	modules, root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	modules: Object.assign(modules, { server, reload, stream, _reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {
