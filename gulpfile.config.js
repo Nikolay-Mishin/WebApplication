@@ -51,7 +51,7 @@ const { log } = require('console'),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-assignConfig(context, 'config.json');
+assignConfig(join(context, tasksPath), 'config.json');
 
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
