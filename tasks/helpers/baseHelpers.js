@@ -5,6 +5,8 @@ import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, 
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 import { imports, importModules } from './import.js';
 
+const is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj);
+
 export { imports, importModules };
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
@@ -24,8 +26,8 @@ export const { INIT_CWD } = env,
 	},
 	args = (argList => parseArgs(argList))(argv),
 	isArray = obj => Array.isArray(obj),
-	isObject = Object.isObject = Object.isObject || (function (obj) { return obj != null && obj.constructor === this; })
-		.bind(Object),
+	isObject = Object.isObject = Object.isObject || (obj => is(Object, obj)),
+	isFunction = Function.isFunction = Function.isFunction || (obj => is(Function, obj)),
 	keys = obj => Object.keys(obj),
 	values = obj => Object.values(obj),
 	empty = obj => keys(obj).length == 0,
@@ -33,10 +35,11 @@ export const { INIT_CWD } = env,
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	concat = list => [].concat.apply([], list),
-	slice = obj => [].slice.call(obj),
+	slice = (obj, i) => [].slice.call(obj, i),
 	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
+	call = function (context, ...args) { return context.call(context, ...args); },
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
@@ -82,18 +85,19 @@ export const { INIT_CWD } = env,
 		.bind(function (path, search, { json = false, parent = true, _cwd = true } = {}) {
 			log('arguments-bind\n', arguments);
 			log('arguments:', json, parent, _cwd);
+			log('this-bind:', this);
 			const searchPath = (path) => {
 				const filePath = join(path, search),
 					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
-				log('this-bind:', this);
+				log('this-searchPath:', this);
 				this.config = this.config || file;
 				log('path:', path);
 				log('filePath:', filePath);
 				log('file:', file);
 				log('this:', this);
 				return file ? file :
-					parent ? this(dirname(path), slice(arguments, 1)) :
-						_cwd ? this(cwd, slice(arguments, 1)) : null;
+					_cwd ? call(this, cwd, ...slice(arguments, 1)) :
+					parent /*&& path != cwd*/ ? call(this, dirname(path), ...slice(arguments, 1)) : null;
 			},
 				file = searchPath(path);
 			return !json || isObject(file) ? file : JSON.parse(file);
@@ -106,7 +110,7 @@ export const { INIT_CWD } = env,
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
-	isArray, isObject, keys, values, empty, fromEntries, entries, filter, concat, bind, setBind,
+	isArray, isObject, isFunction, keys, values, empty, fromEntries, entries, filter, concat, slice, bind, setBind, call,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile, assignConfig
