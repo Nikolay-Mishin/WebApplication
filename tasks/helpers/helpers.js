@@ -5,7 +5,7 @@ const { log } = require('console'),
 	{ argv, _relative, isDir, isFile, setBind } = h,
 	config = require('../../gulpfile.config'),
 	{
-		root, useWebpack, esModule,
+		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile },
@@ -14,15 +14,14 @@ const { log } = require('console'),
 		},
 		webpackConfig = join(root, 'webpack.config.js'),
 		tsconfig = join(root, 'tsconfig.json')
-	} = config,
-	relativeRoot = from => _relative(from, root);
+	} = config;
 
 const helpers = {
-	relativeRoot,
+	relativeRoot = from => _relative(from, root),
+	get tasks() { return process.node_tasks = process.node_tasks || importModules(tasksPath, excludeTasks); },
 	get config() { return process.node_config; },
 	set config(value) { process.node_config[name = Object.keys(value)[0]] = value[name]; },
 	get modules() { return this.config.modules; },
-	get tasks() { return process.node_tasks; },
 	get webpackConfig() {
 		return !(exist(wc = webpackConfig) && this.getMode) ? {} : (this.config = { webpackConfig: require(wc) }).webpackConfig;
 	},
@@ -57,6 +56,4 @@ const helpers = {
 	}
 };
 
-Object.assign(setBind(helpers, helpers.setMode), h, imports);
-
-module.exports = helpers;
+module.exports = Object.assign(setBind(helpers, helpers.setMode), h, imports);

@@ -27,7 +27,8 @@ const { log } = require('console'),
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = Object.filter || ((obj, predicate) => fromEntries(entries(obj).filter(predicate))),
-	bind = (context, ...funcList) => funcList.concat.apply([], funcList).map(func => func.bind(context)),
+	concat = list => list.concat.apply([], list),
+	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
 	fileName = file => base(file, ext(file)),
@@ -80,11 +81,15 @@ const { log } = require('console'),
 		},
 			file = searchPath(path);
 		return !json ? file : JSON.parse(file);
+	},
+	asignConfig = (...configList) => {
+		configList = concat(configList).map(config => [fileName(config), searchFile(config)]);
+		return fromEntries(configList);
 	};
 
 module.exports = {
 	INIT_CWD, cwd, argv, parseArgs, args,
-	isArray, isObject, keys, values, empty, fromEntries, entries, filter, bind, setBind,
+	isArray, isObject, keys, values, empty, fromEntries, entries, filter, concat, bind, setBind,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile

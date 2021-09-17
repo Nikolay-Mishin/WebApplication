@@ -1,12 +1,11 @@
 const { log } = require('console'),
 	{ basename: base, extname: ext } = require('path'),
-	{ fromEntries, isObject, isDir, keys, values, getFiles } = require('./baseHelpers'),
+	{ concat, fromEntries, isObject, isDir, keys, values, getFiles } = require('./baseHelpers'),
 	$import = (toObj, ...modules) => {
-		const imports = modules.concat.apply([], modules)
-			.map(m => {
-				const module = require(m);
-				return !toObj ? module : [base(m, ext(m)), module];
-			});
+		const imports = concat(modules).map(m => {
+			const module = require(m);
+			return !toObj ? module : [base(m, ext(m)), module];
+		});
 		return !toObj ? imports : fromEntries(imports);
 	};
 

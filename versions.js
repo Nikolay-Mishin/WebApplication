@@ -34,4 +34,6 @@
  * 5.5 - add isObject() in BaseHelpers
  * 5.6 - add searchFile() in BaseHelpers
  * 5.7 - add bind() in BaseHelpers
+ * 5.8 - fix Tasks
+ * 6.0 - add assignConfig() in BaseHelpers
 */
