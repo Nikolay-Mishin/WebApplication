@@ -1,6 +1,6 @@
 import { log } from 'console';
 import { cwd as _cwd, argv as _argv } from 'process';
-import { importModules, config, context, cwd, project } from './tasks/helpers/baseHelpers.js';
+import { importModules, config, context, cwd, searchFile, assignConfig, project } from './tasks/helpers/baseHelpers.js';
 
 // Подключаемые модули
 const modules = await importModules({
@@ -51,10 +51,12 @@ const modules = await importModules({
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-Object.assign(modules, { server, reload, stream, _reload });
+assignConfig(context, 'config.json');
+//log('assignConfig\n', assignConfig(context, 'config.json'));
 
 export default process.node_config = process.node_config || {
 	modules, root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	modules: Object.assign(modules, { server, reload, stream, _reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {

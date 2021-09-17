@@ -32,7 +32,7 @@ export const { INIT_CWD } = env,
 	fromEntries = entries => Object.fromEntries(entries),
 	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
-    concat = list => list.concat.apply([], list),
+	concat = list => list.concat.apply([], list),
 	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
@@ -41,8 +41,8 @@ export const { INIT_CWD } = env,
 	fileName = file => base(file, ext(file)),
 	isDir = path => exist(path) && stat(path).isDirectory(),
 	isFile = path => exist(path) && stat(path).isFile(),
-	getFolders = (path, { exclude = [] }) => readDir(path).filter(file => isDir(join(path, file)) && !exclude.includes(file)),
-	getFiles = (path, { exclude = [], nonExt = false }) => readDir(path)
+	getFolders = (path, { exclude = [] } = {}) => readDir(path).filter(f => isDir(join(path, f)) && !exclude.includes(f)),
+	getFiles = (path, { exclude = [], nonExt = false } = {}) => readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
 		.map(file => nonExt ? file.replace(ext(file), '') : file),
 	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
@@ -77,23 +77,31 @@ export const { INIT_CWD } = env,
 		cb(); // Task call
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
-	searchFile = (path, search, { json = false, parent = true, _cwd = true }) => {
-		const searchPath = function (path) {
-			const filePath = join(path, search),
-				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
-			log('path:', path);
-			return file ? file :
-				parent ? this(dirname(path)) :
-				_cwd ? this(cwd) : null;
-		},
-			file = searchPath(path);
-		return !json ? file : JSON.parse(file);
-	},
-    asignConfig = (...configList) => {
-        configList = concat(configList).map(config => [fileName(config), searchFile(config)]);
-        return fromEntries(configList);
-    };
-
+	searchFile = (function (...args) { return this.call(this, ...args); })
+		.bind(function (path, search, { json = false, parent = true, _cwd = true } = {}) {
+			log('arguments-bind\n', arguments);
+			log('arguments\n', json, parent, _cwd);
+			const searchPath = (path) => {
+				const filePath = join(path, search),
+					file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
+				this.config = this.config || file;
+				//log('this-searchPath:', this);
+				//log('path:', path);
+				//log('filePath:', filePath);
+				//log('file:', file);
+				//log('this.config:', this.config);
+				return file ? file :
+					parent ? this(dirname(path)) :
+					_cwd ? this(cwd) : null;
+			},
+				file = searchPath(path);
+			//log('this-bind:', this);
+			return !json || isObject(file) ? file : JSON.parse(file);
+		}),
+	assignConfig = (path, ...configList) => {
+		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
+		return fromEntries(configList);
+	};
 
 export default {
 	imports, importModules,
@@ -101,5 +109,5 @@ export default {
 	isArray, isObject, keys, values, empty, fromEntries, entries, filter, concat, bind, setBind,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
-	config, project, context, runInContext, searchFile, asignConfig
+	config, project, context, runInContext, searchFile, assignConfig
 };
