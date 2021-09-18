@@ -2,15 +2,13 @@
 
 const { log } = console,
 	h = require('./tasks/helpers/helpers'),
-	{ tasks, setMode, modules: { gulp: { series, parallel } } } = h,
+	{ tasks, assign, setMode, modules: { gulp: { series, parallel } } } = h,
 	{
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
 		move_files, deploy: _deploy, data: _data
-	} = tasks;
+	} = assign(exports, tasks);
 
 //setMode()();
-
-Object.assign(exports, tasks);
 
 exports.build = series(clean, parallel(html, js));
 exports.dev = series(clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch);

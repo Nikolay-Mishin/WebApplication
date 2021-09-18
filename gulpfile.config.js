@@ -38,7 +38,7 @@ const { log } = require('console'),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
-	{ config, context, assignConfig, cwd } = require('./tasks/helpers/baseHelpers'),
+	{ config, context, assignConfig, assign, cwd } = require('./tasks/helpers/baseHelpers'),
 	{
 		es: { useWebpack, esModule, webpackConfig },
 		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
@@ -54,7 +54,7 @@ assignConfig(join(context, tasksPath), 'config.json');
 
 module.exports = process.node_config = process.node_config || {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
-	modules: Object.assign(modules, { server, reload, stream, _reload }),
+	modules: assign(modules, { server, reload, stream, _reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {

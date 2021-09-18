@@ -4,7 +4,7 @@ const { log } = require('console'),
 	h = require('./baseHelpers'),
 	config = require('../../gulpfile.config'),
 	{ importModules } = imports,
-	{ _relative, isDir, isFile, argv, setBind } = h,
+	{ _relative, isDir, isFile, argv, assign, setBind } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -57,4 +57,4 @@ const helpers = {
 	}
 };
 
-module.exports = Object.assign(setBind(helpers, helpers.setMode), h, imports);
+module.exports = assign(setBind(helpers, helpers.setMode), h, imports);

@@ -7,7 +7,8 @@ const is = (context, obj) => (function (obj) { return obj != null && obj.constru
 
 const cwd = _cwd(),
 	argv = _argv.slice(2),
-	parseArgs = (argList, assign = {}, sep = '^\-+') => {
+	{ assign, keys, values, fromEntries, entries } = Object,
+	parseArgs = (argList, _assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
 			thisOpt = arg.trim();
@@ -18,22 +19,21 @@ const cwd = _cwd(),
 			}
 			else args[curOpt = opt] = true; // argument name
 		});
-		return Object.assign(assign, args);
+		return assign(_assign, args);
 	},
 	args = (argList => parseArgs(argList))(argv),
 	isArray = obj => Array.isArray(obj),
 	isObject = Object.isObject = Object.isObject || (obj => is(Object, obj)),
-	isFunction = Function.isFunction = Function.isFunction || (obj => is(Function, obj)),
-	keys = obj => Object.keys(obj),
-	values = obj => Object.values(obj),
+	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
+	hasOwn = Object.prototype.hasOwnProperty,
+	define = (obj, prop, desc = {}) => Object.defineProperty(obj, prop, desc),
+	register = (obj, prop, value, desc = {}) => hasOwn(prop) ? obj[prop] : define(obj, prop, assign(desc, { value })),
 	empty = obj => keys(obj).length == 0,
-	fromEntries = entries => Object.fromEntries(entries),
-	entries = obj => Object.entries(obj),
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
-	concat = list => [].concat.apply([], list),
-	slice = (obj, i) => [].slice.call(obj, i),
+	concat = (...list) => [].concat.apply([], ...list),
+	slice = (obj, i = 0) => [].slice.call(obj, i),
 	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
-	setBind = (context, ...funcList) => Object.assign(context, fromEntries(bind(context, ...funcList)
+	setBind = (context, ...funcList) => assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
 	call = function (context, ...args) { return context.call(context, ...args); },
 	fileName = file => base(file, ext(file)),
@@ -76,30 +76,41 @@ const cwd = _cwd(),
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
 	searchFile = (function (...args) { return this.call(this, ...args); })
-		.bind(function (path, search, { json = false, parent = true, _cwd = true } = {}) {
-			log('arguments-bind\n', arguments);
-			log('arguments:', json, parent, _cwd);
+		.bind(function (path, search, { json = true, parent = true, _cwd = true } = {}) {
+			log('arguments\n', arguments);
+			let args = assign([], arguments, { 2: { json, parent, _cwd } });
+			log('args\n', args);
 			log('this-bind:', this);
 			const filePath = join(path, search),
 				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
 			log('this-searchPath:', this);
-			this.config = this.config || file;
+			if (file) {
+				this.config = this.config || { path, file };
+				if (_cwd && path == cwd) this.cwd = { path, file };
+				if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
+					this.parent[dirname(path)] = file;
+				}
+				args[2]._cwd = false;
+			}
+			log('this:', this);
 			log('path:', path);
 			log('filePath:', filePath);
 			log('file:', file);
-			log('this:', this);
+			log('arguments-slice\n', slice(args, 1));
 			return file ? (!json || isObject(file) ? file : JSON.parse(file)) :
-				_cwd ? call(this, cwd, ...slice(arguments, 1)) :
-				parent /*&& path != cwd*/ ? call(this, dirname(path), ...slice(arguments, 1)) : null;
+				_cwd ? call(this, cwd, ...slice(args, 1)) :
+				parent /*&& path != cwd*/ ? call(this, dirname(path), ...slice(args, 1)) : null;
 		}),
-	assignConfig = (path, ...configList) => {
+	assignConfig = function (path, ...configList) {
+		//log('this-assignConfig:', this);
 		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
 		return fromEntries(configList);
 	};
 
 module.exports = {
-	INIT_CWD, cwd, argv, parseArgs, args,
-	isArray, isObject, isFunction, keys, values, empty, fromEntries, entries, filter, concat, slice, bind, setBind, call,
+	INIT_CWD, cwd, argv, assign, keys, values, fromEntries, entries, parseArgs, args,
+	isArray, isObject, isFunc, hasOwn, define, register,
+	empty, filter, concat, slice, bind, setBind, call,
 	fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile, assignConfig
