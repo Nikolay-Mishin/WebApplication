@@ -3,7 +3,7 @@ import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
 
-const { _relative, importModules, isDir, isFile, argv, setBind } = h,
+const { _relative, importModules, isDir, isFile, argv, assign, setBind } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -60,4 +60,4 @@ const helpers = {
 	}
 };
 
-export default Object.assign(setBind(helpers, helpers.setMode), h);
+export default assign(setBind(helpers, helpers.setMode), h);

@@ -5,7 +5,7 @@ import h from './tasks/helpers/helpers.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/test/test.js';
 
-const { tasks, setMode, modules: { gulp: { series, parallel } } } = h,
+const { tasks, setMode, assign, modules: { gulp: { series, parallel } } } = h,
 	{ deploy: _deploy, data: _data } = await tasks;
 
 export const {
@@ -23,7 +23,7 @@ export const {
 
 export { _tasksWatch, _test };
 
-Object.assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
+assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
 //console.log('exports\n', await tasks);
 
 setMode(true)();
