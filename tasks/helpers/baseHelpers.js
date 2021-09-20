@@ -26,13 +26,32 @@ export const { INIT_CWD } = env,
 		return assign(_assign, args);
 	},
 	args = (argList => parseArgs(argList))(argv),
-	isArray = obj => Array.isArray(obj),
+	{ isArray } = Array,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
-	hasOwn = Object.prototype.hasOwnProperty,
-	define = (obj, prop, desc = {}) => Object.defineProperty(obj, prop, desc),
-	register = (obj, prop, value, desc = {}) => hasOwn(prop) ? obj[prop] : define(obj, prop, assign(desc, { value })),
-	empty = obj => keys(obj).length == 0,
+	protoList = (function _protoList(obj) {
+		const proto = this.proto = obj.__proto__;
+		let protoList = [];
+		this.protoList = this.protoList || [];
+		if (proto) {
+			log('proto:', proto);
+			this.protoList.push(_protoList.call(this, proto));
+			return proto;
+			//this.protoList.push(proto);
+			//_protoList.call(this, proto);
+			protoList = this.protoList;
+			log('this.protoList:', this.protoList);
+			this.protoList = [];
+			log('protoList:', protoList);
+		}
+		log('end:', { proto, protoList, this: this.protoList });
+		return protoList;
+	}).bind({}),
+	getProto = (obj, i = 0) => protoList(obj, i),
+	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(...arguments),
+	define = (obj, prop, value, desc = {}) => hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, assign(desc, { value })),
+	register = (obj, prop, value) => hasOwn(obj, prop) || !obj.__proto__ ? value : obj.__proto__[prop] = value,
+	empty = obj => (isObject ? keys(obj) : obj).length == 0,
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
 	concat = (...list) => [].concat.apply([], ...list),
 	slice = (obj, i = 0) => [].slice.call(obj, i),
@@ -86,11 +105,11 @@ export const { INIT_CWD } = env,
 	searchFile = function (path, search, { json = true, parent = true, _cwd = true } = {}) { return call(
 		function (path, search, { json = true, parent = true, _cwd = true } = {}) {
 			let args = assign([], arguments, { 2: { json, parent, _cwd } });
-			log('args\n', args);
-			log('this-bind:', this);
+			//log('args\n', args);
+			//log('this-bind:', this);
 			const filePath = join(path, search),
 				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
-				//file = !json || isObject(_file) ? _file : JSON.parse(_file);
+			//file = !json || isObject(_file) ? _file : JSON.parse(_file);
 			if (file) {
 				this.config = this.config || { path, file };
 				if (_cwd && path == cwd) {
@@ -101,26 +120,57 @@ export const { INIT_CWD } = env,
 					this.parent[path] = file;
 				}
 			}
-			log('this:', this);
-			log('args-slice:', slice(args, 1));
-			log('file:', file);
+			//log('this:', this);
+			//log('args-slice:', slice(args, 1));
+			//log('file:', file);
 			return _cwd ? call(this, cwd, ...slice(args, 1)) :
 				parent && path != dirname(path) ? call(this, dirname(path), ...slice(args, 1)) :
-				file ? this : null;
-		}, ...arguments); },
-	assignConfig = function (path, ...configList) { return callBind({}, arguments, function (path, ...configList) {
-		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
-		log('this-assignConfig:', this);
-		log('searchFile:', searchFile);
-		log('searchFile:', configList);
-		return fromEntries(configList);
-	}); };
+				file && !empty(this) ? this : null;
+		}, ...arguments);
+	},
+	assignConfig = function (path, ...configList) {
+		return callBind({}, arguments, function (path, ...configList) {
+			configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
+			//log('this-assignConfig:', this);
+			//log('searchFile:', searchFile);
+			//log('searchFile:', configList);
+
+			const func = function () {
+				log('this:', this)
+			}
+
+			log('protoList-Object:', protoList(Object));
+			//log('Object:', Object);
+			//log('protoList-searchFile:', protoList(searchFile));
+
+			Object.__proto__._my_func = func;
+			const obj = Object.defineProperty(Object, 'func', { value: func });
+			//Object.func();
+			//Object.func();
+			//({}).func();
+
+			//log('Object.__proto__:', Object.__proto__);
+			//log('Object.prototype:', Object.prototype);
+
+			//searchFile.prototype.__proto__.func = func;
+			//searchFile.func();
+			//Function.func();
+			//(() => { }).func();
+
+			//log('protoList-Object:', protoList(Object));
+			//log('Object:', Object);
+			//log('protoList-searchFile:', protoList(searchFile));
+			//log('obj:', obj);
+			
+			return fromEntries(configList);
+		});
+	};
 
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, assign, keys, values, fromEntries, entries, parseArgs, args,
 	isArray, isObject, isFunc, hasOwn, define, register,
-	empty, filter, concat, slice, bind, getBind, setBind, call, callBind,
+	empty, filter, concat, slice, bind, getBind, setBind, call,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile, assignConfig
