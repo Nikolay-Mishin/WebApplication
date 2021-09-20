@@ -33,17 +33,15 @@ export const { INIT_CWD } = env,
 		const proto = this.proto = obj.__proto__;
 		let protoList = [];
 		this.protoList = this.protoList || [];
-		this.protoList2 = this.protoList2 || [];
 		if (proto) {
 			log('proto:', proto);
 			this.protoList.push(proto);
-			this.protoList2.push(_protoList.call(this, proto));
 			protoList = this.protoList;
 			log('this.protoList:', this.protoList);
 			//this.protoList = [];
 			log('protoList:', protoList);
 		}
-		log('end:', { proto, protoList, this: this.protoList, push: this.protoList2 });
+		log('end:', { proto, protoList, this: this.protoList });
 		return proto;
 	}).bind({}),
 	getProto = (obj, i = 0) => protoList(obj, i),
