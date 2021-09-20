@@ -33,6 +33,7 @@ export const { INIT_CWD } = env,
 		const proto = this.proto = obj.__proto__;
 		let protoList = [];
 		this.protoList = this.protoList || [];
+		this.protoList2 = this.protoList2 || [];
 		if (proto) {
 			log('proto:', proto);
 			this.protoList.push(proto);
