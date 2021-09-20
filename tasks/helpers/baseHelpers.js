@@ -40,7 +40,8 @@ export const { INIT_CWD } = env,
 	getBind = (context, func) => bind(context, func).shift(),
 	setBind = (context, ...funcList) => assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))),
-	call = function (context, ...args) { return context.call(context, ...args); },
+	call = (context, ...args) => context.call(context, ...args),
+	callBind = (context, args, cb) => cb.call(context, ...args),
 	_dirname = meta => dirname(toPath(meta.url)),
 	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
 	fileName = file => base(file, ext(file)),
@@ -82,39 +83,44 @@ export const { INIT_CWD } = env,
 		cb(); // Task call
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
-	searchFile = getBind(function (path, search, { json = true, parent = true, _cwd = true } = {}) {
-		let args = assign([], arguments, { 2: { json, parent, _cwd } });
-		log('args\n', args);
-		log('this-bind:', this);
-		const filePath = join(path, search),
-			file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
-		if (file) {
-			this.config = this.config || { path, file };
-			if (_cwd && path == cwd) {
-				args[2]._cwd = false;
-				this.cwd = { path, file };
+	searchFile = function (path, search, { json = true, parent = true, _cwd = true } = {}) { return call(
+		function (path, search, { json = true, parent = true, _cwd = true } = {}) {
+			let args = assign([], arguments, { 2: { json, parent, _cwd } });
+			log('args\n', args);
+			log('this-bind:', this);
+			const filePath = join(path, search),
+				file = isDir(path) && isFile(filePath) ? readFile(filePath) : null;
+				//file = !json || isObject(_file) ? _file : JSON.parse(_file);
+			if (file) {
+				this.config = this.config || { path, file };
+				if (_cwd && path == cwd) {
+					args[2]._cwd = false;
+					this.cwd = { path, file };
+				}
+				if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
+					this.parent[path] = file;
+				}
 			}
-			if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
-				this.parent[path] = file;
-			}
-		}
-		log('this:', this);
-		log('args-slice:', slice(args, 1));
-		return _cwd ? call(this, cwd, ...slice(args, 1)) :
-			parent && path != dirname(path) ? call(this, dirname(path), ...slice(args, 1)) :
-				file ? (!json || isObject(file) ? file : JSON.parse(file)) : null;
-	}, function (...args) { return call(this, ...args); }),
-	assignConfig = getBind({}, function (path, ...configList) {
-		log('this-assignConfig:', this);
+			log('this:', this);
+			log('args-slice:', slice(args, 1));
+			log('file:', file);
+			return _cwd ? call(this, cwd, ...slice(args, 1)) :
+				parent && path != dirname(path) ? call(this, dirname(path), ...slice(args, 1)) :
+				file ? this : null;
+		}, ...arguments); },
+	assignConfig = function (path, ...configList) { return callBind({}, arguments, function (path, ...configList) {
 		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
+		log('this-assignConfig:', this);
+		log('searchFile:', searchFile);
+		log('searchFile:', configList);
 		return fromEntries(configList);
-	});
+	}); };
 
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, assign, keys, values, fromEntries, entries, parseArgs, args,
 	isArray, isObject, isFunc, hasOwn, define, register,
-	empty, filter, concat, slice, bind, getBind, setBind, call,
+	empty, filter, concat, slice, bind, getBind, setBind, call, callBind,
 	_dirname, _relative, fileName, isDir, isFile,
 	getFolders, getFiles,
 	config, project, context, runInContext, searchFile, assignConfig
