@@ -11,7 +11,7 @@ export { imports, importModules };
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
 	argv = _argv.slice(2),
-	{ assign, keys, values, fromEntries, entries } = Object,
+	{ assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
 	parseArgs = (argList, _assign = {}, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
@@ -30,23 +30,27 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	protoList = (function _protoList(obj) {
-		const proto = this.proto = obj.__proto__;
-		let protoList = [];
+		const proto = obj.__proto__;
+		this.objProto = this.objProto || proto;
 		this.protoList = this.protoList || [];
 		if (proto) {
-			log('proto:', proto);
 			this.protoList.push(proto);
-			protoList = this.protoList;
-			log('this.protoList:', this.protoList);
-			//this.protoList = [];
-			log('protoList:', protoList);
+			_protoList.call(this, proto);
 		}
-		log('end:', { proto, protoList, this: this.protoList });
-		return proto;
+		if (proto == this.objProto) {
+			const protoList = this.protoList;
+			this.objProto = null;
+			this.protoList = [];
+			return protoList;
+		}
 	}).bind({}),
 	getProto = (obj, i = 0) => protoList(obj, i),
-	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(...arguments),
-	define = (obj, prop, value, desc = {}) => hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, assign(desc, { value })),
+	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop),
+	define = (obj, prop = '', value = null, { enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+		const descDefault = { enumerable, configurable },
+			desc = assign(descDefault, value ? { value, writable } : { get, set });
+		return hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, desc);
+	},
 	register = (obj, prop, value) => hasOwn(obj, prop) || !obj.__proto__ ? value : obj.__proto__[prop] = value,
 	empty = obj => (isObject ? keys(obj) : obj).length == 0,
 	filter = Object.filter = (obj, predicate) => fromEntries(entries(obj).filter(predicate)),
@@ -137,28 +141,81 @@ export const { INIT_CWD } = env,
 			}
 
 			log('protoList-Object:', protoList(Object));
-			//log('Object:', Object);
-			//log('protoList-searchFile:', protoList(searchFile));
+			log('protoList-searchFile:', protoList(searchFile));
 
-			Object.__proto__._my_func = func;
-			const obj = Object.defineProperty(Object, 'func', { value: func });
-			//Object.func();
-			//Object.func();
-			//({}).func();
+			//Object.__proto__._my_func = func;
+			//searchFile.__proto__.func = func;
+			register(Object, '_my_func', func);
+			register(searchFile, 'func', func);
 
-			//log('Object.__proto__:', Object.__proto__);
-			//log('Object.prototype:', Object.prototype);
+			log('protoList-{}:', protoList({}));
+			log('protoList-Object:', protoList(Object));
+			log('protoList-Array:', protoList(Array));
+			log('protoList-Function:', protoList(Function));
+			log('protoList-searchFile:', protoList(searchFile));
+			log('protoList-() => { }:', protoList(() => { }));
 
-			//searchFile.prototype.__proto__.func = func;
-			//searchFile.func();
-			//Function.func();
-			//(() => { }).func();
+			//const obj = Object.defineProperty(Object, 'fn', { value: func, enumerable: true });
+			const obj0 = { func },
+				obj = define(Object, 'fn', func),
+				obj2 = define(Object),
+				obj3 = Object.create(Object),
+				obj4 = new Object(Object),
+				obj5 = Object.create(obj0),
+				obj6 = new Object(obj0),
+				obj7 = Object.create(obj3),
+				obj8 = new Object(obj3),
+				obj9 = Object.create(obj4),
+				obj10 = new Object(obj4);
 
-			//log('protoList-Object:', protoList(Object));
-			//log('Object:', Object);
-			//log('protoList-searchFile:', protoList(searchFile));
-			//log('obj:', obj);
-			
+			log('obj:', obj);
+			log('protoList-obj:', protoList(obj));
+
+			log('obj2:', obj2);
+			log('protoList-obj2:', protoList(obj2));
+
+			log('obj3:', obj3);
+			log('protoList-obj3-Object.create(Object):', protoList(obj3));
+
+			log('obj4:', obj4);
+			log('protoList-obj4-new Object(Object):', protoList(obj4));
+
+			//obj3.__proto__.func3 = func;
+			//obj4.__proto__.func4 = func;
+			register(obj3, 'func3', func);
+			register(obj4, 'func4', func);
+
+			log('protoList-{}:', protoList({}));
+			log('protoList-Object:', protoList(Object));
+			log('protoList-Array:', protoList(Array));
+			log('protoList-Function:', protoList(Function));
+			log('protoList-searchFile:', protoList(searchFile));
+			log('protoList-() => { }:', protoList(() => { }));
+
+			log('protoList-obj3-Object.create(Object):', protoList(obj3));
+			log('protoList-obj4-new Object(Object):', protoList(obj4));
+
+			log('obj0:', obj0);
+			log('protoList-obj0:', protoList(obj0));
+
+			log('obj5:', obj5);
+			log('protoList-obj5-Object.create(obj0):', protoList(obj5));
+
+			log('obj6:', obj6);
+			log('protoList-obj6-new Object(obj0):', protoList(obj6));
+
+			log('obj7:', obj7);
+			log('protoList-obj7-Object.create(obj3):', protoList(obj7));
+
+			log('obj8:', obj8);
+			log('protoList-obj8-new Object(obj3):', protoList(obj8));
+
+			log('obj9:', obj9);
+			log('protoList-obj9-Object.create(obj4):', protoList(obj9));
+
+			log('obj10:', obj10);
+			log('protoList-obj10-new Object(obj4):', protoList(obj10));
+
 			return fromEntries(configList);
 		});
 	};
