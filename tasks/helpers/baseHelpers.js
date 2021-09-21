@@ -156,7 +156,7 @@ export const { INIT_CWD } = env,
 			log('protoList-() => { }:', protoList(() => { }));
 
 			//const obj = Object.defineProperty(Object, 'fn', { value: func, enumerable: true });
-			const obj0 = { func },
+			const obj0 = { func0: func },
 				obj = define(Object, 'fn', func),
 				obj2 = define(Object),
 				obj3 = Object.create(Object),
@@ -166,7 +166,9 @@ export const { INIT_CWD } = env,
 				obj7 = Object.create(obj3),
 				obj8 = new Object(obj3),
 				obj9 = Object.create(obj4),
-				obj10 = new Object(obj4);
+				obj10 = new Object(obj4),
+				obj11 = assign(obj3, obj0),
+				obj12 = assign(obj4, obj0);
 
 			log('obj:', obj);
 			log('protoList-obj:', protoList(obj));
@@ -215,6 +217,12 @@ export const { INIT_CWD } = env,
 
 			log('obj10:', obj10);
 			log('protoList-obj10-new Object(obj4):', protoList(obj10));
+
+			log('obj9:', obj11);
+			log('protoList-obj11-assign(obj3, obj0):', protoList(obj11));
+
+			log('obj10:', obj12);
+			log('protoList-obj12-assign(obj4, obj0):', protoList(obj12));
 
 			return fromEntries(configList);
 		});
