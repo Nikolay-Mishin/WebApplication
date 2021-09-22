@@ -238,10 +238,10 @@ export const { INIT_CWD } = env,
 			log('obj13:', obj13);
 			log('protoList-obj13-Object.create(obj3):', protoList(obj13));
 
-			//const obj14 = Object.create(obj4);
+			const obj14 = Object.create(obj4);
 
-			//log('obj14:', obj14);
-			//log('protoList-obj14-Object.create(obj4):', protoList(obj14));
+			log('obj14:', obj14);
+			log('protoList-obj14-Object.create(obj4):', protoList(obj14));
 
 			
 			log('Object:', Object);
