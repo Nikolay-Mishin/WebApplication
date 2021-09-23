@@ -46,19 +46,11 @@ export const { INIT_CWD } = env,
 	}).bind({}),
 	getProto = (obj, i = 0) => protoList(obj, i),
 	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop),
+	register = (obj, prop, value) => !obj.__proto__ || hasOwn(obj.__proto__, prop) ? value : obj.__proto__[prop] = value,
 	define = (obj, prop = '', value = null, { enumerable = true, configurable = false, writable = false, get, set } = {}) => {
 		const descDefault = { enumerable, configurable },
 			desc = assign(descDefault, value ? { value, writable } : { get, set });
 		return hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, desc);
-	},
-	register = function (obj, prop, value, { enumerable = true, configurable = false, _value, writable = false, get, set } = {}) {
-		log('value:', value);
-		log('_value:', _value);
-		if (isFunc(_value)) value = value.bind(_value);
-		log('value():', value());
-		!obj.__proto__ || hasOwn(obj.__proto__, prop) ? value : obj.__proto__[prop] = value;
-		if (arguments.length > 3) define(obj, `${prop}Define`, _value ? _value : value, { enumerable, configurable, writable, get, set });
-		return value;
 	},
 	empty = obj => (isObject ? keys(obj) : obj).length == 0,
 	filter = Object.filter = (obj, cb) => fromEntries(entries(obj).filter(cb)),
@@ -151,7 +143,7 @@ export const { INIT_CWD } = env,
 
 			//register(Object, '_my_func', func);
 			//register(searchFile, 'func', func);
-			register(Object, 'funcBind', function () { log('bind:', this); log('isFunc(this):', isFunc(this)); }, { _value: func });
+			register(Object, 'func', func );
 
 			const _null_Def = define({}, '_null', func);
 			const _null_c_Def = define(Object.create({}), '_null_c', func);
