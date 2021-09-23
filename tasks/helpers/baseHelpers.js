@@ -29,6 +29,14 @@ export const { INIT_CWD } = env,
 	{ isArray } = Array,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
+	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop),
+	register = (obj, prop, value) => !obj.__proto__ || hasOwn(obj.__proto__, prop) ? value : obj.__proto__[prop] = value,
+	define = (obj, prop = '', value = null, { enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+		const descDefault = { enumerable, configurable },
+			desc = assign(descDefault, value ? { value, writable } : { get, set });
+		return hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, desc);
+	},
+	getProto = (obj, i = 0) => protoList(obj, i),
 	protoList = (function _protoList(obj) {
 		const proto = obj.__proto__;
 		this.objProto = this.objProto || proto;
@@ -44,14 +52,6 @@ export const { INIT_CWD } = env,
 			return protoList;
 		}
 	}).bind({}),
-	getProto = (obj, i = 0) => protoList(obj, i),
-	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop),
-	register = (obj, prop, value) => !obj.__proto__ || hasOwn(obj.__proto__, prop) ? value : obj.__proto__[prop] = value,
-	define = (obj, prop = '', value = null, { enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-		const descDefault = { enumerable, configurable },
-			desc = assign(descDefault, value ? { value, writable } : { get, set });
-		return hasOwn(obj, prop) ? value : Object.defineProperty(obj, prop, desc);
-	},
 	empty = obj => (isObject ? keys(obj) : obj).length == 0,
 	filter = Object.filter = (obj, cb) => fromEntries(entries(obj).filter(cb)),
 	concat = (...list) => [].concat.apply([], ...list),
