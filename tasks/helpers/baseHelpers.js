@@ -153,6 +153,19 @@ export const { INIT_CWD } = env,
 			//register(searchFile, 'func', func);
 			register(Object, 'funcBind', function () { log('bind:', this); log('isFunc(this):', isFunc(this)); }, { _value: func });
 
+			const _null_Def = define({}, '_null', func);
+			const _null_c_Def = define(Object.create({}), '_null_c', func);
+
+			const null0 = {};
+			const null_c = Object.create({});
+			const null_obj = new Object({});
+
+			register(null_c, 'func_null_c', func);
+
+			const null0_Def = define(null0, 'null0_Def', func);
+			const null_c_Def = define(null_c, 'null_c_Def', func);
+			const null_obj_Def = define(null_obj, 'null_obj_Def', func);
+
 			//log('protoList-{}:', protoList({}));
 			//log('protoList-Object:', protoList(Object));
 			//log('protoList-Array:', protoList(Array));
@@ -243,11 +256,15 @@ export const { INIT_CWD } = env,
 			log('obj14:', obj14);
 			log('protoList-obj14-Object.create(obj4):', protoList(obj14));
 
-			
+
 			log('Object:', Object);
+			log('Object:', Object.create({}));
+			log('Object:', {});
 			log('protoList-Object:', protoList(Object));
 			log('protoList-Function:', protoList(Function));
+			log('protoList-Array:', protoList(Array));
 			log('protoList-{}:', protoList({}));
+			log('protoList-[]:', protoList([]));
 
 			log('obj4:', obj4);
 			log('protoList-obj4:', protoList(obj4));
@@ -261,7 +278,31 @@ export const { INIT_CWD } = env,
 			obj4.funcBind();
 			obj14.funcBind();
 
-			//log('isFunc:', isFunc(func));
+			log('isFunc:', isFunc(func));
+
+			log('_null_Def:', _null_Def);
+			log('protoList-_null_Def:', protoList(_null_Def));
+
+			log('_null_c_Def:', _null_c_Def);
+			log('protoList-_null_c_Def:', protoList(_null_c_Def));
+
+			log('null0:', null0);
+			log('protoList-null0:', protoList(null0));
+
+			log('null_c:', null_c);
+			log('protoList-null_c:', protoList(null_c));
+
+			log('null_obj:', null_obj);
+			log('protoList-null_obj:', protoList(null_obj));
+
+			log('null0_Def:', null0_Def);
+			log('protoList-null0_Def:', protoList(null0_Def));
+
+			log('null_c_Def:', null_c_Def);
+			log('protoList-null_c_Def:', protoList(null_c_Def));
+
+			log('null_obj_Def:', null_obj_Def);
+			log('protoList-null_obj_Def:', protoList(null_obj_Def));
 
 			return fromEntries(configList);
 		});
