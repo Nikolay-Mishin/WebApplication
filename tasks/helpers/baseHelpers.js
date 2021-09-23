@@ -266,9 +266,9 @@ export const { INIT_CWD } = env,
 			//log('typeof {}:', typeof {});
 			//log('typeof obj14:', typeof obj14);
 			//obj14.func();
-			Object.funcBind();
-			obj4.funcBind();
-			obj14.funcBind();
+			Object.func();
+			obj4.func();
+			obj14.func();
 
 			log('isFunc:', isFunc(func));
 
