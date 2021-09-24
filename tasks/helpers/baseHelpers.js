@@ -34,7 +34,7 @@ export const { INIT_CWD } = env,
 	register = (obj, value, { prop, def = false, enumerable = true, configurable = false, _value, writable = false, get, set } = {}) => {
 		prop = prop || value.name;
 		if (_value) value._value = _value;
-		log('register', prop);
+		log('prop', prop);
 		log('value', value);
 		log('_value', _value);
 		log('value.name', value.name);
@@ -159,6 +159,7 @@ export const { INIT_CWD } = env,
 			register(Object, function func2() {
 				log('this:', this);
 				log('func2:', func2);
+				log('func2._value:', func2._value);
 			}, { _value: func });
 
 			const obj = define(Object, func, { prop: 'fn' }),
