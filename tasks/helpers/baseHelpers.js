@@ -30,28 +30,71 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
-	hasOwn = (obj, prop) => obj.hasOwnProperty(prop),
-	register = (obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-		prop = prop || (value || func).name
-		if (value && func) value.func = func
-		else if (func) {
-			const _func = {
-				[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
+	//hasOwn = (obj, prop) => obj.hasOwnProperty(prop),
+	//define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+	//	prop = prop || value.name;
+	//	return hasOwn(obj, prop) ? value :
+	//		Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
+	//},
+	//register = (obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+	//	prop = prop || (value || func).name
+	//	if (value && func) value.func = func
+	//	else if (func) {
+	//		const _func = {
+	//			[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
+	//		}
+	//		_func[prop].func = func
+	//		value = _func[prop]
+	//	}
+	//	if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
+	//		!def ? obj.__proto__[prop] = value :
+	//			define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set })
+	//	}
+	//	return func ? func : value;
+	//},
+	hasOwn = (() => {
+		if (!objProto.hasOwnProperty('hasOwn')) {
+			Object.defineProperty(objProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } })
+		}
+		return (obj, prop) => obj.hasOwn(prop)
+	})(),
+	define = (() => {
+		function define(obj, value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) {
+			prop = prop || value.name
+			if (!obj.hasOwn(prop)) {
+				Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }))
 			}
-			_func[prop].func = func
-			value = _func[prop]
+			return value
 		}
-		if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
-			!def ? obj.__proto__[prop] = value :
-				define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set })
+		if (!objProto.hasOwn('_define')) {
+			Object.defineProperty(objProto, '_define', {
+				value:
+					function _define(value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments) }
+			})
 		}
-		return func ? func : value;
-	},
-	define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-		prop = prop || value.name;
-		return hasOwn(obj, prop) ? value :
-			Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
-	},
+		return define
+	})(),
+	register = (() => {
+		function register(obj, { prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+			prop = prop || (value || func).name
+			if (value && func) value.func = func
+			else if (func) {
+				const _func = {
+					[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
+				}
+				_func[prop].func = func
+				value = _func[prop]
+			}
+			if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
+				!def ? obj.__proto__[prop] = value :
+					obj.__proto__._define(value, { prop, enumerable, configurable, writable, get, set })
+			}
+			return func ? func : value;
+		}
+		if (!objProto.hasOwn('register')) objProto._define(
+			function _register({ prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments) })
+		return register
+	})(),
 	getProto = (obj, i = 0) => protoList(obj)[i],
 	protoList = (function (obj) {
 		const proto = obj.__proto__;
