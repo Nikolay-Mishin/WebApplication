@@ -40,7 +40,7 @@ export const { INIT_CWD } = env,
 		}
 		return _ ? _ : value;
 	},
-	define = (obj, { value = null, prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+	define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
 		prop = prop || value.name;
 		return hasOwn(obj, prop) ? value :
 			Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
