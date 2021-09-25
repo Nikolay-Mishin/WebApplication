@@ -30,25 +30,20 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
-	hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop),
-	register = (obj, value, { prop, def = false, enumerable = true, configurable = false, _value, writable = false, get, set } = {}) => {
+	hasOwn = (obj, prop) => obj.hasOwnProperty(prop),
+	register = (obj, { value, prop, _, def = false, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
 		prop = prop || value.name;
-		if (_value) value._value = _value;
-		log('prop', prop);
-		log('value', value);
-		log('_value', _value);
-		log('value.name', value.name);
-		if (_value) log('_value.name', _value.name);
+		if (_) value._ = _;
 		if (obj.__proto__ || !hasOwn(obj.__proto__, prop)) {
 			!def ? obj.__proto__[prop] = value :
-				define(obj.__proto__, prop, value, { enumerable, configurable, writable, get, set });
+				define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set });
 		}
-		return _value ? _value : value;
+		return _ ? _ : value;
 	},
-	define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+	define = (obj, { value = null, prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
 		prop = prop || value.name;
 		return hasOwn(obj, prop) ? value :
-			Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }))
+			Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
 	},
 	getProto = (obj, i = 0) => protoList(obj)[i],
 	protoList = (function (obj) {
@@ -153,14 +148,15 @@ export const { INIT_CWD } = env,
 			const func = function () {
 				log('this:', this);
 				log('func:', func);
+				log('func._:', func._);
 			};
 
-			register(Object, func);
-			register(Object, function func2() {
+			register(Object, { value: func });
+			register(Object, { value: function func2() {
 				log('this:', this);
 				log('func2:', func2);
-				log('func2._value:', func2._value);
-			}, { _value: func });
+				log('func2._:', func2._);
+			}, _: func });
 
 			const obj = define(Object, func, { prop: 'fn' }),
 				obj2 = Object.create(Object), // return {} => __proto__ = obj
