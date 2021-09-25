@@ -152,18 +152,18 @@ export const { INIT_CWD } = env,
 			//log('searchFile:', searchFile);
 			//log('searchFile:', configList);
 
-			const func = function () {
+			const func = function (obj) {
 				log('this:', this);
-				log('func:', func);
-				log('func._:', func._);
+				log('obj:', obj);
 			};
 
-			register(Object, { value: func });
-			register(Object, { value: function func2() {
-				log('this:', this);
-				log('func2:', func2);
-				log('func2._:', func2._);
-			}, _: func });
+			register(Object, { func: func });
+			register(Object, {
+				func: function func2(obj) {
+					log('this:', this);
+					log('obj:', obj);
+				}
+			});
 
 			const obj = define(Object, func, { prop: 'fn' }),
 				obj2 = Object.create(Object), // return {} => __proto__ = obj
