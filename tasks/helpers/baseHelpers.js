@@ -31,14 +31,21 @@ export const { INIT_CWD } = env,
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
 	hasOwn = (obj, prop) => obj.hasOwnProperty(prop),
-	register = (obj, { value, prop, _, def = false, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-		prop = prop || value.name;
-		if (_) value._ = _;
-		if (obj.__proto__ || !hasOwn(obj.__proto__, prop)) {
-			!def ? obj.__proto__[prop] = value :
-				define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set });
+	register = (obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
+		prop = prop || (value || func).name
+		if (value && func) value.func = func
+		else if (func) {
+			const _func = {
+				[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
+			}
+			_func[prop].func = func
+			value = _func[prop]
 		}
-		return _ ? _ : value;
+		if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
+			!def ? obj.__proto__[prop] = value :
+				define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set })
+		}
+		return func ? func : value;
 	},
 	define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
 		prop = prop || value.name;
