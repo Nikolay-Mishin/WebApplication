@@ -38,8 +38,8 @@ export const { INIT_CWD } = env,
 		log('Object', Object);
 		log('objProto', objProto);
 		log('Object.hasOwn', Object.hasOwn);
-		log('objProto.__proto__', {}.__proto__);
 		Object.defineProperty({}.__proto__, '_hasOwn', { value: function _hasOwn(prop) { return this.hasOwnProperty(prop) } });
+		log('{}', {});
 		log('{}.__proto__', {}.__proto__);
 		log('{}._hasOwn', {}._hasOwn);
 		return (obj, prop) => { log('hasOwn', obj); return obj.hasOwn(prop); }
