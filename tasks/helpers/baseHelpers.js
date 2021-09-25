@@ -30,68 +30,54 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
-	//hasOwn = (obj, prop) => obj.hasOwnProperty(prop),
-	//define = (obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-	//	prop = prop || value.name;
-	//	return hasOwn(obj, prop) ? value :
-	//		Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
-	//},
-	//register = (obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) => {
-	//	prop = prop || (value || func).name
-	//	if (value && func) value.func = func
-	//	else if (func) {
-	//		const _func = {
-	//			[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
-	//		}
-	//		_func[prop].func = func
-	//		value = _func[prop]
-	//	}
-	//	if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
-	//		!def ? obj.__proto__[prop] = value :
-	//			define(obj.__proto__, value, { prop, enumerable, configurable, writable, get, set })
-	//	}
-	//	return func ? func : value;
-	//},
+	objProto = Object.__proto__,
 	hasOwn = (() => {
-		if (!Object.hasOwnProperty('hasOwn')) {
-			Object.defineProperty(Object, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } })
+		if (!objProto.hasOwnProperty('hasOwn')) {
+			Object.defineProperty(objProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } });
 		}
-		return (obj, prop) => obj.hasOwn(prop)
+		log('Object', Object);
+		log('objProto', objProto);
+		log('Object.hasOwn', Object.hasOwn);
+		log('objProto.__proto__', {}.__proto__);
+		Object.defineProperty({}.__proto__, '_hasOwn', { value: function _hasOwn(prop) { return this.hasOwnProperty(prop) } });
+		log('{}.__proto__', {}.__proto__);
+		log('{}._hasOwn', {}._hasOwn);
+		return (obj, prop) => { log('hasOwn', obj); return obj.hasOwn(prop); }
 	})(),
 	define = (() => {
-		function define(obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) {
-			prop = prop || value.name
+		function define(obj, value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) {
+			prop = prop || value.name;
 			if (!obj.hasOwn(prop)) {
-				Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }))
+				Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }));
 			}
-			return value
+			return value;
 		}
-		if (!Object.hasOwn('_define')) Object.defineProperty(Object, '_define', { value:
-			function _define(value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments) }
+		if (!objProto.hasOwn('_define')) Object.defineProperty(objProto, '_define', { value:
+			function _define(value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments); }
 			})
 		return define
 	})(),
 	register = (() => {
-		function register(obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) {
-			prop = prop || (value || func).name
-			if (value && func) value.func = func
+		function register(obj, { prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+			prop = prop || (value || func).name;
+			if (value && func) value.func = func;
 			else if (func) {
 				const _func = {
-					[prop]: function (...args) { log(this); return _func[prop].func(this, ...args) }
-				}
-				_func[prop].func = func
-				value = _func[prop]
+					[prop]: function (...args) { log(this); return _func[prop].func(this, ...args); }
+				};
+				_func[prop].func = func;
+				value = _func[prop];
 			}
-			if (obj.__proto__ && !hasOwn(obj.__proto__, prop)) {
+			if (obj.__proto__ && !obj.__proto__.hasOwn(prop)) {
 				!def ? obj.__proto__[prop] = value :
-					obj.__proto__._define(value, { prop, enumerable, configurable, writable, get, set })
+					obj.__proto__._define(value, { prop, enumerable, configurable, writable, get, set });
 			}
 			return func ? func : value;
 		}
-		if (!Object.hasOwn('register')) Object._define(
-			function _register({ prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments) }
-		)
-		return register
+		if (!objProto.hasOwn('register')) objProto._define(
+			function _register({ prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
+		);
+		return register;
 	})(),
 	getProto = (obj, i = 0) => protoList(obj)[i],
 	protoList = (function (obj) {
@@ -212,34 +198,34 @@ export const { INIT_CWD } = env,
 				obj4 = Object.create(obj),
 				obj5 = new Object(obj);
 
-			log('Object:', Object);
-			log('protoList-Object:', protoList(Object));
+			//log('Object:', Object);
+			//log('protoList-Object:', protoList(Object));
 
-			log('obj:', obj);
-			log('protoList-obj-define:', protoList(obj));
+			//log('obj:', obj);
+			//log('protoList-obj-define:', protoList(obj));
 
-			log('obj2:', obj2);
-			log('protoList-obj2-Object.create(Object):', protoList(obj2));
+			//log('obj2:', obj2);
+			//log('protoList-obj2-Object.create(Object):', protoList(obj2));
 
-			log('obj3:', obj3);
-			log('protoList-obj3-new Object(Object):', protoList(obj3));
+			//log('obj3:', obj3);
+			//log('protoList-obj3-new Object(Object):', protoList(obj3));
 
-			log('obj4:', obj4);
-			log('protoList-obj4-Object.create(obj):', protoList(obj4));
+			//log('obj4:', obj4);
+			//log('protoList-obj4-Object.create(obj):', protoList(obj4));
 
-			log('obj5:', obj5);
-			log('protoList-obj5-new Object(obj):', protoList(obj5));
+			//log('obj5:', obj5);
+			//log('protoList-obj5-new Object(obj):', protoList(obj5));
 
-			log('protoList-{}:', protoList({}));
-			log('protoList-{}:', protoList([]));
-			log('protoList-Object:', protoList(Object));
-			log('protoList-Array:', protoList(Array));
-			log('protoList-Function:', protoList(Function));
-			log('protoList-() => { }:', protoList(() => { }));
-			log('protoList-searchFile:', protoList(searchFile));
+			//log('protoList-{}:', protoList({}));
+			//log('protoList-{}:', protoList([]));
+			//log('protoList-Object:', protoList(Object));
+			//log('protoList-Array:', protoList(Array));
+			//log('protoList-Function:', protoList(Function));
+			//log('protoList-() => { }:', protoList(() => { }));
+			//log('protoList-searchFile:', protoList(searchFile));
 
-			Object.func();
-			Object.func2();
+			//Object.func();
+			//Object.func2();
 
 			return fromEntries(configList);
 		});
