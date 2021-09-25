@@ -53,29 +53,26 @@ export const { INIT_CWD } = env,
 	//	return func ? func : value;
 	//},
 	hasOwn = (() => {
-		if (!objProto.hasOwnProperty('hasOwn')) {
-			Object.defineProperty(objProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } })
+		if (!Object.hasOwnProperty('hasOwn')) {
+			Object.defineProperty(Object, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } })
 		}
 		return (obj, prop) => obj.hasOwn(prop)
 	})(),
 	define = (() => {
-		function define(obj, value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) {
+		function define(obj, value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) {
 			prop = prop || value.name
 			if (!obj.hasOwn(prop)) {
 				Object.defineProperty(obj, prop, assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable }))
 			}
 			return value
 		}
-		if (!objProto.hasOwn('_define')) {
-			Object.defineProperty(objProto, '_define', {
-				value:
-					function _define(value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments) }
+		if (!Object.hasOwn('_define')) Object.defineProperty(Object, '_define', { value:
+			function _define(value = null, { prop = '', enumerable = true, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments) }
 			})
-		}
 		return define
 	})(),
 	register = (() => {
-		function register(obj, { prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+		function register(obj, { prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) {
 			prop = prop || (value || func).name
 			if (value && func) value.func = func
 			else if (func) {
@@ -91,8 +88,9 @@ export const { INIT_CWD } = env,
 			}
 			return func ? func : value;
 		}
-		if (!objProto.hasOwn('register')) objProto._define(
-			function _register({ prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments) })
+		if (!Object.hasOwn('register')) Object._define(
+			function _register({ prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments) }
+		)
 		return register
 	})(),
 	getProto = (obj, i = 0) => protoList(obj)[i],
