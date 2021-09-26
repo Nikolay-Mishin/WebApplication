@@ -26,7 +26,7 @@ export const { INIT_CWD } = env,
 	},
 	args = (argList => parseArgs(argList))(argv),
 	{ assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
-	{ isArray } = Array,
+	{ isArray, from } = Array,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
@@ -75,10 +75,11 @@ export const { INIT_CWD } = env,
 		);
 		return register;
 	})(),
-	getDesc = (() => ({})._register({ getDesc: (obj, key) => Object.getOwnPropertyDescriptor(obj, key) }))(),
+	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, fromEntries(desc)) }))(),
+	getDesc = (() => ({})._register(function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
 	assignDefine = (target, ...sources) => {
-		sources.forEach(source => Object.defineProperties(target, fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
+		sources.forEach(source => target.defineAll(keys(source).map(key => [key, source.getDesc(key)])));
 		return target;
 	},
 	getProto = (obj = Object, i = 0) => protoList(obj)[i],
@@ -98,6 +99,7 @@ export const { INIT_CWD } = env,
 		}
 	}).bind({}),
 	empty = obj => (isObject(obj) ? keys(obj) : obj).length == 0,
+	reverse = obj => from(obj).reverse(),
 	filter = Object.filter = (obj, cb) => fromEntries(entries(obj).filter(cb)),
 	concat = (...list) => [].concat.apply([], ...list),
 	slice = (obj, i = 0) => [].slice.call(obj, i),
@@ -238,7 +240,7 @@ export default {
 	INIT_CWD, cwd, argv, parseArgs, args,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc, createObj, objProto,
 	hasOwn, register, define, assignDefine, getProto, protoList,
-	empty, filter, concat, slice, bind, getBind, setBind, call, callBind,
+	empty, reverse, filter, concat, slice, bind, getBind, setBind, call, callBind,
 	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles,
 	project, context, runInContext, searchFile, assignConfig
 };
