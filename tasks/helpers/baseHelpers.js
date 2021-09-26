@@ -52,19 +52,21 @@ export const { INIT_CWD } = env,
 	})(),
 	register = (() => {
 		function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
-			prop = prop || value.name
-			if (func) value.func = func
+			obj = obj.__proto__;
+			value = value[keys(value).shift()] || value;
+			prop = prop || value.name;
+			if (func) value.func = func;
 			else {
 				const _func = {
-					[prop]: function (...args) { log(this); return _func[prop].value(this, ...args); }
+					[prop]: function (...args) { return _func[prop].func(this, ...args); }
 				};
 				_func[prop].func = value;
 				func = value;
 				value = _func[prop];
 			}
-			if (obj.__proto__ && !obj.__proto__.hasOwn(prop)) {
-				!def ? obj.__proto__[prop] = value :
-					obj.__proto__._define(value, { prop, enumerable, configurable, writable, get, set });
+			if (obj && !obj.hasOwn(prop)) {
+				def || obj === objProto ? obj._define(value, { prop, enumerable, configurable, writable, get, set }) :
+					obj[prop] = value;
 			}
 			return func;
 		}
@@ -73,10 +75,7 @@ export const { INIT_CWD } = env,
 		);
 		return register;
 	})(),
-	getDesc = (() => {
-		objProto._define(function getDesc(key) { return Object.getOwnPropertyDescriptor(this, key); });
-		return (obj, key) => obj.getDesc(key);
-	})(),
+	getDesc = (() => ({})._register({ getDesc: (obj, key) => Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
 	assignDefine = (target, ...sources) => {
 		sources.forEach(source => Object.defineProperties(target, fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
@@ -193,10 +192,7 @@ export const { INIT_CWD } = env,
 				log('obj:', obj);
 			});
 
-			log('Object:', Object);
 			log('protoList:', protoList());
-			log('Object.func1:', Object.func1);
-			log('Object.func2:', Object.func2);
 
 			const obj = define(Object, func1, { prop: 'fn' }),
 				obj2 = Object.create(Object), // return {} => __proto__ = obj
