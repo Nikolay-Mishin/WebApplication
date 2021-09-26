@@ -187,12 +187,10 @@ export const { INIT_CWD } = env,
 				log('obj:', obj);
 			};
 
-			register(Object, { func: func1 });
-			register(Object, {
-				func: function func2(obj) {
-					log('this:', this);
-					log('obj:', obj);
-				}
+			register(Object, func1);
+			register(Object, function func2(obj) {
+				log('this:', this);
+				log('obj:', obj);
 			});
 
 			log('Object:', Object);
