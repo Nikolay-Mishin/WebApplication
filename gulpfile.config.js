@@ -53,7 +53,7 @@ const modules = await importModules({
 assignConfig(join(context, tasksPath), 'config.json');
 
 export default process.node_config = process.node_config || {
-	modules, root, build, src, serverPHP, deploy, //useWebpack, esModule,
+	root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	modules: assign(modules, { server, reload, stream, _reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),

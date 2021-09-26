@@ -30,19 +30,12 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
-	objProto = Object.__proto__,
+	objProto = {}.__proto__,
 	hasOwn = (() => {
 		if (!objProto.hasOwnProperty('hasOwn')) {
-			Object.defineProperty(objProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop) } });
+			Object.defineProperty(objProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop); } });
 		}
-		log('Object', Object);
-		log('objProto', objProto);
-		log('Object.hasOwn', Object.hasOwn);
-		Object.defineProperty({}.__proto__, '_hasOwn', { value: function _hasOwn(prop) { return this.hasOwnProperty(prop) } });
-		log('{}', {});
-		log('{}.__proto__', {}.__proto__);
-		log('{}._hasOwn', {}._hasOwn);
-		return (obj, prop) => { log('hasOwn', obj); return obj.hasOwn(prop); }
+		return (obj, prop) => obj.hasOwn(prop);
 	})(),
 	define = (() => {
 		function define(obj, value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) {
@@ -58,29 +51,39 @@ export const { INIT_CWD } = env,
 		return define
 	})(),
 	register = (() => {
-		function register(obj, { prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
-			prop = prop || (value || func).name;
-			if (value && func) value.func = func;
-			else if (func) {
+		function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+			prop = prop || value.name
+			if (func) value.func = func
+			else {
 				const _func = {
-					[prop]: function (...args) { log(this); return _func[prop].func(this, ...args); }
+					[prop]: function (...args) { log(this); return _func[prop].value(this, ...args); }
 				};
-				_func[prop].func = func;
+				_func[prop].func = value;
+				func = value;
 				value = _func[prop];
 			}
 			if (obj.__proto__ && !obj.__proto__.hasOwn(prop)) {
 				!def ? obj.__proto__[prop] = value :
 					obj.__proto__._define(value, { prop, enumerable, configurable, writable, get, set });
 			}
-			return func ? func : value;
+			return func;
 		}
-		if (!objProto.hasOwn('register')) objProto._define(
-			function _register({ prop, value, func, def, enumerable = true, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
+		objProto._define(
+			function _register({ prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
 		);
 		return register;
 	})(),
-	getProto = (obj, i = 0) => protoList(obj)[i],
-	protoList = (function (obj) {
+	getDesc = (() => {
+		objProto._define(function getDesc(key) { return Object.getOwnPropertyDescriptor(this, key); });
+		return (obj, key) => obj.getDesc(key);
+	})(),
+	// Такой вариант функции присваивания позволяет копировать методы доступа.
+	assignDefine = (target, ...sources) => {
+		sources.forEach(source => Object.defineProperties(target, fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
+		return target;
+	},
+	getProto = (obj = Object, i = 0) => protoList(obj)[i],
+	protoList = (function (obj = Object) {
 		const proto = obj.__proto__;
 		this.objProto = this.objProto || proto;
 		this.protoList = this.protoList || [];
@@ -179,12 +182,12 @@ export const { INIT_CWD } = env,
 			//log('searchFile:', searchFile);
 			//log('searchFile:', configList);
 
-			const func = function (obj) {
+			const func1 = function (obj) {
 				log('this:', this);
 				log('obj:', obj);
 			};
 
-			register(Object, { func: func });
+			register(Object, { func: func1 });
 			register(Object, {
 				func: function func2(obj) {
 					log('this:', this);
@@ -192,7 +195,12 @@ export const { INIT_CWD } = env,
 				}
 			});
 
-			const obj = define(Object, func, { prop: 'fn' }),
+			log('Object:', Object);
+			log('protoList:', protoList());
+			log('Object.func1:', Object.func1);
+			log('Object.func2:', Object.func2);
+
+			const obj = define(Object, func1, { prop: 'fn' }),
 				obj2 = Object.create(Object), // return {} => __proto__ = obj
 				obj3 = new Object(Object), // return obj => __proto__ = obj.__proto__
 				obj4 = Object.create(obj),
@@ -234,9 +242,9 @@ export const { INIT_CWD } = env,
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc, hasOwn, register, define,
-	empty, filter, concat, slice, bind, getBind, setBind, call,
-	_dirname, _relative, fileName, isDir, isFile,
-	getFolders, getFiles,
-	config, project, context, runInContext, searchFile, assignConfig
+	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc, createObj, objProto,
+	hasOwn, register, define, assignDefine, getProto, protoList,
+	empty, filter, concat, slice, bind, getBind, setBind, call, callBind,
+	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles,
+	project, context, runInContext, searchFile, assignConfig
 };
