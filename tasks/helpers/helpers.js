@@ -19,7 +19,7 @@ const { _relative, importModules, isDir, isFile, argv, assignDefine, setBind } =
 const helpers = {
 	relativeRoot: from => _relative(from, root),
 	get tasks() { return process.node_tasks = process.node_tasks || importModules(tasksPath, excludeTasks); },
-	get modules() { log('this.config\n', this.config); return this.config.modules; },
+	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },
 	set config(value) {
 		const name = Object.keys(value)[0];
