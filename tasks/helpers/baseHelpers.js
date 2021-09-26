@@ -29,7 +29,7 @@ export const { INIT_CWD } = env,
 	{ isArray, from } = Array,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
-	createObj = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
+	create = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
 	nullProto = {}.__proto__,
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
@@ -239,8 +239,8 @@ export const { INIT_CWD } = env,
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc, createObj,
-	nullProto, hasOwn, register, define, assignDefine, getProto, protoList,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
+	create, nullProto, hasOwn, register, define, assignDefine, getProto, protoList,
 	empty, reverse, filter, concat, slice, bind, getBind, setBind, call, callBind,
 	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles,
 	project, context, runInContext, searchFile, assignConfig
