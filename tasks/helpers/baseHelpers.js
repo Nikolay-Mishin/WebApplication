@@ -5,7 +5,10 @@ import { existsSync as exist, readFileSync as readFile, readdirSync as readDir, 
 import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 import { imports, importModules } from './import.js';
 
-const is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj);
+const nullProto = {}.__proto__,
+	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
+	getFunc = func => func[keys(func).shift()] || func,
+	funcName = func => func.name.replace('bound ', '').trim();
 
 export { imports, importModules };
 export const { INIT_CWD } = env,
@@ -30,7 +33,6 @@ export const { INIT_CWD } = env,
 	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
 	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
 	create = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
-	nullProto = {}.__proto__,
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
 			Object.defineProperty(nullProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop); } });
@@ -57,8 +59,8 @@ export const { INIT_CWD } = env,
 		);
 		return function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
 			obj = obj.__proto__;
-			value = value[keys(value).shift()] || value;
-			prop = prop || value.name;
+			value = getFunc(value)
+			prop = prop || funcName(value)
 			if (func) value.func = func;
 			else {
 				const _func = {
@@ -75,6 +77,13 @@ export const { INIT_CWD } = env,
 			return func;
 		};
 	})(),
+	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
+		return fromEntries(funcList.map(func => {
+			const { value, opts } = func;
+			func = value || func;
+			return [funcName(func), obj.register(func, opts || {})];
+		}));
+	}))(),
 	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, fromEntries(desc)) }))(),
 	getDesc = (() => ({})._register(function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
@@ -177,70 +186,68 @@ export const { INIT_CWD } = env,
 				file && !empty(this) ? this : null;
 		}, ...arguments);
 	},
-	assignConfig = function (path, ...configList) {
-		return callBind({}, arguments, function (path, ...configList) {
-			configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
-			//log('this-assignConfig:', this);
-			//log('searchFile:', searchFile);
-			//log('searchFile:', configList);
+	assignConfig = function (path, ...configList) { return callBind({}, arguments, function (path, ...configList) {
+		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
+		//log('this-assignConfig:', this);
+		//log('searchFile:', searchFile);
+		//log('searchFile:', configList);
 
-			const func1 = function (obj) {
-				log('this:', this);
-				log('obj:', obj);
-			};
+		const func1 = function (obj) {
+			log('this:', this);
+			log('obj:', obj);
+		};
 
-			register(Object, func1);
-			register(Object, function func2(obj) {
-				log('this:', this);
-				log('obj:', obj);
-			});
-
-			log('protoList:', protoList());
-
-			const obj = define(Object, func1, { prop: 'fn' }),
-				obj2 = Object.create(Object), // return {} => __proto__ = obj
-				obj3 = new Object(Object), // return obj => __proto__ = obj.__proto__
-				obj4 = Object.create(obj),
-				obj5 = new Object(obj);
-
-			//log('Object:', Object);
-			//log('protoList-Object:', protoList(Object));
-
-			//log('obj:', obj);
-			//log('protoList-obj-define:', protoList(obj));
-
-			//log('obj2:', obj2);
-			//log('protoList-obj2-Object.create(Object):', protoList(obj2));
-
-			//log('obj3:', obj3);
-			//log('protoList-obj3-new Object(Object):', protoList(obj3));
-
-			//log('obj4:', obj4);
-			//log('protoList-obj4-Object.create(obj):', protoList(obj4));
-
-			//log('obj5:', obj5);
-			//log('protoList-obj5-new Object(obj):', protoList(obj5));
-
-			//log('protoList-{}:', protoList({}));
-			//log('protoList-{}:', protoList([]));
-			//log('protoList-Object:', protoList(Object));
-			//log('protoList-Array:', protoList(Array));
-			//log('protoList-Function:', protoList(Function));
-			//log('protoList-() => { }:', protoList(() => { }));
-			//log('protoList-searchFile:', protoList(searchFile));
-
-			//Object.func();
-			//Object.func2();
-
-			return fromEntries(configList);
+		register(Object, func1);
+		register(Object, function func2(obj) {
+			log('this:', this);
+			log('obj:', obj);
 		});
-	};
+
+		log('protoList:', protoList());
+
+		const obj = define(Object, func1, { prop: 'fn' }),
+			obj2 = Object.create(Object), // return {} => __proto__ = obj
+			obj3 = new Object(Object), // return obj => __proto__ = obj.__proto__
+			obj4 = Object.create(obj),
+			obj5 = new Object(obj);
+
+		//log('Object:', Object);
+		//log('protoList-Object:', protoList(Object));
+
+		//log('obj:', obj);
+		//log('protoList-obj-define:', protoList(obj));
+
+		//log('obj2:', obj2);
+		//log('protoList-obj2-Object.create(Object):', protoList(obj2));
+
+		//log('obj3:', obj3);
+		//log('protoList-obj3-new Object(Object):', protoList(obj3));
+
+		//log('obj4:', obj4);
+		//log('protoList-obj4-Object.create(obj):', protoList(obj4));
+
+		//log('obj5:', obj5);
+		//log('protoList-obj5-new Object(obj):', protoList(obj5));
+
+		//log('protoList-{}:', protoList({}));
+		//log('protoList-{}:', protoList([]));
+		//log('protoList-Object:', protoList(Object));
+		//log('protoList-Array:', protoList(Array));
+		//log('protoList-Function:', protoList(Function));
+		//log('protoList-() => { }:', protoList(() => { }));
+		//log('protoList-searchFile:', protoList(searchFile));
+
+		//Object.func();
+		//Object.func2();
+
+		return fromEntries(configList);
+	}); };
 
 export default {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
-	create, nullProto, hasOwn, register, define, assignDefine, getProto, protoList,
+	create, nullProto, hasOwn, register, define, defineAll, getDesc, assignDefine, getProto, protoList,
 	empty, reverse, filter, concat, slice, bind, getBind, setBind, call, callBind,
 	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles,
 	project, context, runInContext, searchFile, assignConfig
