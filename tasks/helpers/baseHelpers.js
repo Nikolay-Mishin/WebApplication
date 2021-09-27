@@ -6,9 +6,9 @@ import { join, dirname, relative, basename as base, extname as ext, sep } from '
 import { imports, importModules } from './import.js';
 
 const nullProto = {}.__proto__,
-	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
 	getFunc = func => func[keys(func).shift()] || func,
-	funcName = func => func.name.replace('bound ', '').trim();
+	funcName = func => func.name.replace('bound ', '').trim(),
+	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj);
 
 export { imports, importModules };
 export const { INIT_CWD } = env,
@@ -59,20 +59,20 @@ export const { INIT_CWD } = env,
 		);
 		return function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
 			obj = obj.__proto__;
-			value = getFunc(value)
-			prop = prop || funcName(value)
+			value = getFunc(value);
+			prop = prop || funcName(value);
 			if (func) value.func = func;
 			else {
 				const _func = {
-					[prop]: function (...args) { return _func[prop].func(this, ...args); }
+					[prop]: function (...args) { log('this\n', this); log('args\n', ...args); return _func[prop].func(this, ...args); }
 				};
 				_func[prop].func = value;
 				func = value;
 				value = _func[prop];
 			}
 			if (obj && !obj.hasOwn(prop)) {
-				def || obj === nullProto ? obj._define(value, { prop, enumerable, configurable, writable, get, set }) :
-					obj[prop] = value;
+				enumerable = def || obj === nullProto;
+				obj._define(value, { prop, enumerable, configurable, writable, get, set });
 			}
 			return func;
 		};
@@ -84,11 +84,11 @@ export const { INIT_CWD } = env,
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
 	}))(),
-	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, fromEntries(desc)) }))(),
-	getDesc = (() => ({})._register(function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) }))(),
+	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, desc) }))(),
+	getDesc = (() => ({})._register(function getDesc(obj, key) { log(key, obj); return Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
 	assignDefine = (target, ...sources) => {
-		sources.forEach(source => target.defineAll(keys(source).map(key => [key, source.getDesc(key)])));
+		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
 		return target;
 	},
 	getProto = ({})._register({ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } }),
@@ -263,7 +263,7 @@ const helpers = ({}).registerAll(
 	}).bind({})
 );
 
-log('helpers\n', helpers);
+//log('helpers\n', helpers);
 
 export default {
 	imports, importModules,
