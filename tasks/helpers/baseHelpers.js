@@ -81,7 +81,7 @@ export const { INIT_CWD } = env,
 		return fromEntries(funcList.map(func => {
 			const { value, opts } = func;
 			func = getFunc(value || func);
-			return [funcName(func), obj.register(func, opts || {})];
+			return [funcName(func), obj._register(func, opts || {})];
 		}));
 	}))(),
 	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, fromEntries(desc)) }))(),
