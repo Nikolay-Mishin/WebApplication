@@ -3,8 +3,8 @@ import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
 import {
-	assign, keys, fromEntries, create,
-	protoList, empty, filter, concat, slice, call, callBind, _dirname, _relative, fileName, isDir, isFile, getFolders,
+	assign, keys, fromEntries, create, call,
+	getProto, protoList, empty, filter, concat, slice, _dirname, _relative, fileName, isDir, getFolders
 } from './baseHelpers.js';
 
 export const { INIT_CWD } = env,
@@ -127,22 +127,20 @@ const h = ({}).registerAll(
 		//log('obj5:', obj5);
 		//log('protoList-obj5-new Object(obj):', protoList(obj5));
 
-		log('protoList-{}:', protoList({}));
-		log('protoList-{}:', protoList([]));
-		log('protoList-Object:', protoList(Object));
-		log('protoList-Array:', protoList(Array));
-		log('protoList-Function:', protoList(Function));
-		log('protoList-() => { }:', protoList(() => { }));
-		log('protoList-searchFile:', protoList(searchFile));
-
-		log('Array.getProto:', Array.getProto());
-		log('Array.hasOwn("bind"):', Array.getProto().hasOwn('bind'));
+		//log('protoList-{}:', protoList({}));
+		//log('protoList-{}:', protoList([]));
+		//log('protoList-Object:', protoList(Object));
+		//log('protoList-Array:', protoList(Array));
+		//log('protoList-Function:', protoList(Function));
+		//log('protoList-() => { }:', protoList(() => { }));
+		//log('protoList-searchFile:', protoList(searchFile));
 		
 		log('Object.getProto:', Object.getProto());
 		log('Object.hasOwn("bind"):', Object.getProto().hasOwn('bind'));
 
-		log('Function.getProto:', Function.getProto());
-		log('Function.hasOwn("bind"):', Function.getProto().hasOwn('bind'));
+		log('bind:', getProto.bind({}));
+		log('getProto.protoList:', getProto.protoList());
+		log('bind.protoList:', getProto.bind({}).protoList());
 
 		//Object.func();
 		//Object.func2();
