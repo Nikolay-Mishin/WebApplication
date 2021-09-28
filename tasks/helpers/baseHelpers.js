@@ -58,8 +58,7 @@ export const { INIT_CWD } = env,
 			function _register({ prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
 		);
 		return function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
-			obj = obj.__proto__;
-			value = getFunc(value);
+			[obj, value] = [obj.__proto__, getFunc(value)];
 			prop = prop || funcName(value);
 			if (func) value.func = func;
 			else {
