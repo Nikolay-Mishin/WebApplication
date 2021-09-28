@@ -12,8 +12,8 @@ const nullProto = {}.__proto__,
 export { imports, importModules };
 export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
 	{ isArray, from } = Array,
-	isObject = Object.isObject || (Object.isObject = obj => is(Object, obj)),
-	isFunc = Function.isFunc || (Function.isFunc = obj => is(Function, obj)),
+	isObject = obj => is(Object, obj),
+	isFunc = obj => is(Function, obj),
 	create = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
@@ -72,12 +72,10 @@ const h = ({}).registerAll(
 	function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) },
 	// Такой вариант функции присваивания позволяет копировать методы доступа
 	function assignDefine(target, ...sources) {
-		sources.forEach(source => {
-			return {}.defineAll.call(target, fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)])));
-		});
+		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
 		return target;
 	},
-	{ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } },
+	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
 		this.objProto = this.objProto || proto;
@@ -93,7 +91,7 @@ const h = ({}).registerAll(
 			return _protoList;
 		}
 	}).bind({}),
-	function empty(obj) { return (isObject(obj) ? keys(obj) : obj).length == 0; },
+	function empty(obj) { return (obj.isObject() ? keys(obj) : obj).length == 0; },
 	function reverse(obj) { return from(obj).reverse(); },
 	function _filter(obj, cb) { return fromEntries(entries(obj).filter(cb)); },
 	function concat(...list) { return [].concat.apply([], ...list); },
@@ -104,13 +102,15 @@ const h = ({}).registerAll(
 		.map((func, i) => [funcList[i].name, func]))); },
 	function callBind(context, args, cb) { return cb.call(context, ...args); },
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
-	function _relative(from, to) { return relative(from.url ? _dirname(from) : from, to); },
+	function _relative(from, to) { return relative(from.url ? from._dirname() : from, to); },
 	function fileName(file) { return base(file, ext(file)); },
 	function isDir(path) { return exist(path) && stat(path).isDirectory(); },
 	function isFile(path) { return exist(path) && stat(path).isFile(); },
-	function getFolders(path, {exclude = []}={}) { return readDir(path).filter(f => isDir(join(path, f)) && !exclude.includes(f)); },
+	function getFolders(path, { exclude = [] } = {}) {
+		return readDir(path).filter(f => join(path, f).isDir() && !exclude.includes(f));
+	},
 	function getFiles(path, { exclude = [], nonExt = false } = {}) { return readDir(path)
-		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
+		.filter(file => join(path, file).isFile() && !exclude.includes(nonExt ? file.fileName() : file))
 		.map(file => nonExt ? file.replace(ext(file), '') : file); }
 );
 
