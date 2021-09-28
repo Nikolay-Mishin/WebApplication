@@ -88,7 +88,9 @@ const helpers = ({}).registerAll(
 	function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) },
 	// Такой вариант функции присваивания позволяет копировать методы доступа
 	function assignDefine(target, ...sources) {
-		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)]))));
+		sources.forEach(source => {
+			return {}.defineAll.call(target, fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)])));
+		});
 		return target;
 	},
 	{ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } },
@@ -130,12 +132,11 @@ const helpers = ({}).registerAll(
 );
 
 export const {
-	defineAll, getDesc, assignDefine, getProto, protoList,
-	empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, call, callBind,
-	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles
-} = helpers;
-
-export const config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+		defineAll, getDesc, assignDefine, getProto, protoList,
+		empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, call, callBind,
+		_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles
+	} = helpers,
+	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
@@ -159,15 +160,17 @@ export const config = !isFile('config.json') ? {} : JSON.parse(readFile('config.
 		//log('arg:', arg);
 		//log('projects:', projects);
 		return { project, context };
-	})(),
-	runInContext = (path, cb) => {
+	})();
+
+const contextHelpers = ({}).registerAll(
+	function runInContext(path, cb) {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
 		log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
 		cb(); // Task call
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
-	searchFile = function (path, search, { json = true, parent = true, _cwd = true } = {}) {
+	function searchFile(path, search, { json = true, parent = true, _cwd = true } = {}) {
 		return call(function (path, search, { json = true, parent = true, _cwd = true } = {}) {
 			let args = assign([], arguments, { 2: { json, parent, _cwd } });
 			//log('args\n', args);
@@ -193,7 +196,7 @@ export const config = !isFile('config.json') ? {} : JSON.parse(readFile('config.
 				file && !empty(this) ? this : null;
 		}, ...arguments);
 	},
-	assignConfig = function (path, ...configList) { return callBind({}, arguments, function (path, ...configList) {
+	function assignConfig(path, ...configList) { return callBind({}, arguments, function (path, ...configList) {
 		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
 		//log('this-assignConfig:', this);
 		//log('searchFile:', searchFile);
@@ -248,15 +251,18 @@ export const config = !isFile('config.json') ? {} : JSON.parse(readFile('config.
 		//Object.func2();
 
 		return fromEntries(configList);
-	}); };
+	}); }
+);
+
+export const { runInContext, searchFile, assignConfig } = contextHelpers;
 
 const _helpers = {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
 	create, hasOwn, define, register, registerAll,
-	project, context, runInContext, searchFile, assignConfig
-}.assignDefine(helpers)
+	project, context
+}.assignDefine(helpers, contextHelpers)
 
 log('_helpers\n', _helpers);
 
