@@ -64,7 +64,6 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
 	}))(),
-	//bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
