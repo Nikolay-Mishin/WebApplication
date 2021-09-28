@@ -64,7 +64,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
 	}))(),
-	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
+	//bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
@@ -98,6 +98,7 @@ const h = ({}).registerAll(
 	function _filter(obj, cb) { return fromEntries(entries(obj).filter(cb)); },
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
+	function bind(context, ...funcList) { return concat(funcList).map(func => func.bind(context)) },
 	function getBind(context, func) { return bind(context, func).shift(); },
 	function setBind (context, ...funcList) { return assign(context, fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))); },
@@ -115,7 +116,7 @@ const h = ({}).registerAll(
 
 export const {
 	defineAll, getDesc, assignDefine, getProto, protoList,
-	empty, reverse, _filter: filter, concat, slice, getBind, setBind, callBind,
+	empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, callBind,
 	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles
 } = h;
 

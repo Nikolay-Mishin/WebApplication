@@ -85,7 +85,7 @@ const h = ({}).registerAll(
 		}, ...arguments);
 	},
 	function assignConfig(path, ...configList) { return {}.callBind(arguments, function (path, ...configList) {
-		configList = concat(configList).map(config => [fileName(config), searchFile(path, config)]);
+		configList = configList.concat().map(config => [config.fileName(), path.searchFile(config)]);
 		//log('this-assignConfig:', this);
 		//log('searchFile:', searchFile);
 		//log('searchFile:', configList);
@@ -110,37 +110,30 @@ const h = ({}).registerAll(
 			obj5 = new Object(obj);
 
 		//log('Object:', Object);
-		//log('protoList-Object:', protoList(Object));
+		//log('protoList-Object:', Object.protoList());
 
 		//log('obj:', obj);
-		//log('protoList-obj-define:', protoList(obj));
+		//log('protoList-obj-define:', obj.protoList());
 
 		//log('obj2:', obj2);
-		//log('protoList-obj2-Object.create(Object):', protoList(obj2));
+		//log('protoList-obj2-Object.create(Object):', obj2.protoList());
 
 		//log('obj3:', obj3);
-		//log('protoList-obj3-new Object(Object):', protoList(obj3));
+		//log('protoList-obj3-new Object(Object):', obj3.protoList());
 
 		//log('obj4:', obj4);
-		//log('protoList-obj4-Object.create(obj):', protoList(obj4));
+		//log('protoList-obj4-Object.create(obj):', obj4.protoList());
 
 		//log('obj5:', obj5);
-		//log('protoList-obj5-new Object(obj):', protoList(obj5));
+		//log('protoList-obj5-new Object(obj):', obj5.protoList());
 
-		//log('protoList-{}:', protoList({}));
-		//log('protoList-{}:', protoList([]));
-		//log('protoList-Object:', protoList(Object));
-		//log('protoList-Array:', protoList(Array));
-		//log('protoList-Function:', protoList(Function));
-		//log('protoList-() => { }:', protoList(() => { }));
-		//log('protoList-searchFile:', protoList(searchFile));
-		
-		log('Object.getProto:', Object.getProto());
-		log('Object.hasOwn("bind"):', Object.getProto().hasOwn('bind'));
-
-		log('bind:', getProto.bind({}));
-		log('getProto.protoList:', getProto.protoList());
-		log('bind.protoList:', getProto.bind({}).protoList());
+		//log('protoList-{}:', {}.protoList());
+		//log('protoList-{}:', [].protoList());
+		//log('protoList-Object:', Object.protoList());
+		//log('protoList-Array:', Array.protoList());
+		//log('protoList-Function:', Function.protoList());
+		//log('protoList-() => { }:', (()=>{})).protoList();
+		//log('protoList-searchFile:', searchFile.protoList());
 
 		//Object.func();
 		//Object.func2();
