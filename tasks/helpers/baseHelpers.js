@@ -77,20 +77,39 @@ export const { INIT_CWD } = env,
 			return func;
 		};
 	})(),
-	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
+	registerAll = /*(() => ({})._register(*/function registerAll(obj, ...funcList) {
 		return fromEntries(funcList.map(func => {
 			const { value, opts } = func;
 			func = getFunc(value || func);
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
-	}))(),
+	}/*))()*/,
 	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, desc) }))(),
 	getDesc = (() => ({})._register(function getDesc(obj, key) { log(key, obj); return Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
-	assignDefine = (target, ...sources) => {
+	assignDefine = /*(() => ({})._register(function assignDefine*/(target, ...sources) => {
 		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
+		const helpers = /*({}).*/registerAll({},
+			{ getProto2(obj = Object, i = 0) { return protoList(obj)[i]; } },
+			(function protoList2(obj = Object) {
+				if (!this) return protoList.call({}, obj);
+				const proto = obj ? obj.__proto__ : null;
+				this.objProto = this.objProto || proto;
+				this._protoList = this._protoList || [];
+				if (proto) {
+					this._protoList.push(proto);
+					protoList.call(this, proto);
+				}
+				if (proto == this.objProto) {
+					const _protoList = this._protoList;
+					this.objProto = null;
+					this._protoList = [];
+					return _protoList;
+				}
+			}).bind({})
+		);
 		return target;
-	},
+	}/*))()*/,
 	getProto = ({})._register({ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } }),
 	protoList = ({})._register(function protoList(obj = Object) {
 		if (!this) return protoList.call({}, obj);
@@ -242,26 +261,6 @@ export const { INIT_CWD } = env,
 
 		return fromEntries(configList);
 	}); };
-
-const helpers = ({}).registerAll(
-	{ getProto2(obj = Object, i = 0) { return protoList(obj)[i]; } },
-	(function protoList2(obj = Object) {
-		if (!this) return protoList.call({}, obj);
-		const proto = obj ? obj.__proto__ : null;
-		this.objProto = this.objProto || proto;
-		this._protoList = this._protoList || [];
-		if (proto) {
-			this._protoList.push(proto);
-			protoList.call(this, proto);
-		}
-		if (proto == this.objProto) {
-			const _protoList = this._protoList;
-			this.objProto = null;
-			this._protoList = [];
-			return _protoList;
-		}
-	}).bind({})
-);
 
 //log('helpers\n', helpers);
 
