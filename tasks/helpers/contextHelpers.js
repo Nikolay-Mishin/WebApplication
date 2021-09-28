@@ -2,10 +2,7 @@ import { log } from 'console';
 import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
-import {
-	assign, keys, fromEntries, create, call,
-	getProto, protoList, empty, filter, concat, slice, _dirname, _relative, fileName, isDir, getFolders
-} from './baseHelpers.js';
+import { assign, keys, fromEntries, create, call, protoList } from './baseHelpers.js';
 
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
@@ -30,17 +27,17 @@ export const { INIT_CWD } = env,
 			_projectsPath = join(cwd, projectsRoot),
 			exist = isDir(_projectsPath),
 			projectsPath = exist ? _projectsPath : cwd,
-			projects = getFolders(projectsPath, { exclude })
-				.concat(exist ? [] : getFolders(dirname(projectsPath), { exclude })),
-			arg = filter(args, ([arg, val]) => val === true && (projects.includes(arg))),
-			project = !name ? name : keys(arg)[1] || fileName(exist && INIT_CWD != cwd ? INIT_CWD : cwd),
+			projects = projectsPath.getFolders({ exclude })
+				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
+			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
+			project = !name ? name : keys(arg)[1] || (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
 			contextPath = join(projectsPath, project),
-			context = exist && isDir(contextPath) ? contextPath : projectsPath;
+			context = exist && contextPath.isDir() ? contextPath : projectsPath;
 		//log('INIT_CWD:', INIT_CWD);
 		//log('cwd:', cwd);
 		//log('projectsPath:', projectsPath);
 		//log('exist:', exist);
-		//log('fileName(cwd):', fileName(cwd));
+		//log('cwd.fileName():', cwd.fileName());
 		//log('name:', name);
 		//log('project:', project);
 		//log('context:', context);
@@ -65,7 +62,7 @@ const h = ({}).registerAll(
 			//log('this-bind:', this);
 			const filePath = join(path, search),
 				file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
-			//file = !json || isObject(_file) ? _file : JSON.parse(_file);
+			//file = !json || _file.isObject() ? _file : JSON.parse(_file);
 			if (file) {
 				this.config = this.config || { path, file };
 				if (_cwd && path == cwd) {
@@ -77,11 +74,11 @@ const h = ({}).registerAll(
 				}
 			}
 			//log('this:', this);
-			//log('args-slice:', slice(args, 1));
+			//log('args-slice:', args.slice(1));
 			//log('file:', file);
-			return _cwd ? call(this, cwd, ...slice(args, 1)) :
-				parent && path != dirname(path) ? call(this, dirname(path), ...slice(args, 1)) :
-				file && !empty(this) ? this : null;
+			return _cwd ? call(this, cwd, ...args.slice(1)) :
+				parent && path != dirname(path) ? call(this, dirname(path), ...args.slice(1)) :
+					file && !this.empty() ? this : null;
 		}, ...arguments);
 	},
 	function assignConfig(path, ...configList) { return {}.callBind(arguments, function (path, ...configList) {
