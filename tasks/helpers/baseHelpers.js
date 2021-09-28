@@ -86,26 +86,6 @@ export const { INIT_CWD } = env,
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
 	assignDefine = (() => ({})._register(function assignDefine(target, ...sources) {
 		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)]))));
-		const helpers = ({}).registerAll(
-			{ getProto2(obj = Object, i = 0) { return protoList(obj)[i]; } },
-			(function protoList2(obj = Object) {
-				if (!this) return protoList.call({}, obj);
-				const proto = obj ? obj.__proto__ : null;
-				this.objProto = this.objProto || proto;
-				this._protoList = this._protoList || [];
-				if (proto) {
-					this._protoList.push(proto);
-					protoList.call(this, proto);
-				}
-				if (proto == this.objProto) {
-					const _protoList = this._protoList;
-					this.objProto = null;
-					this._protoList = [];
-					return _protoList;
-				}
-			}).bind({})
-		);
-		log('protoList:', protoList());
 		return target;
 	}))(),
 	getProto = ({})._register({ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } }),
@@ -214,14 +194,16 @@ export const { INIT_CWD } = env,
 			log('obj:', obj);
 		};
 
-		register(Object, func1);
-		register(Object, function func2(obj) {
+		Object._register(func1);
+		Object._register(function func2(obj) {
 			log('this:', this);
 			log('obj:', obj);
 		});
 
-		const obj = define(Object, func1, { prop: 'fn' }),
-			obj2 = Object.create(Object), // return {} => __proto__ = obj
+		log('protoList:', protoList());
+
+		const obj = Object._define(func1, { prop: 'fn' }),
+			obj2 = create(Object), // return {} => __proto__ = obj
 			obj3 = new Object(Object), // return obj => __proto__ = obj.__proto__
 			obj4 = Object.create(obj),
 			obj5 = new Object(obj);
