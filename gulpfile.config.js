@@ -1,5 +1,6 @@
 import { log } from 'console';
-import { importModules, config, context, assignConfig, assign, cwd } from './tasks/helpers/baseHelpers.js';
+import { importModules, assign } from './tasks/helpers/baseHelpers.js';
+import { config, context, assignConfig, cwd } from './tasks/helpers/contextHelpers.js';
 
 // Подключаемые модули
 const modules = await importModules({

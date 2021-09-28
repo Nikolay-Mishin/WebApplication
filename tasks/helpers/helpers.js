@@ -2,8 +2,10 @@ import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
+import ch from './contextHelpers.js';
 
-const { _relative, importModules, isDir, isFile, argv, assignDefine, setBind } = h,
+const { argv } = ch,
+	{ _relative, importModules, isDir, isFile, assignDefine, setBind } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -60,4 +62,4 @@ const helpers = {
 	}
 };
 
-export default assignDefine(setBind(helpers, helpers.setMode), h);
+export default helpers.setBind(helpers.setMode).assignDefine(h, ch);
