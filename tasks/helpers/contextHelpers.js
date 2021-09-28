@@ -127,13 +127,22 @@ const h = ({}).registerAll(
 		//log('obj5:', obj5);
 		//log('protoList-obj5-new Object(obj):', protoList(obj5));
 
-		//log('protoList-{}:', protoList({}));
-		//log('protoList-{}:', protoList([]));
-		//log('protoList-Object:', protoList(Object));
-		//log('protoList-Array:', protoList(Array));
-		//log('protoList-Function:', protoList(Function));
-		//log('protoList-() => { }:', protoList(() => { }));
-		//log('protoList-searchFile:', protoList(searchFile));
+		log('protoList-{}:', protoList({}));
+		log('protoList-{}:', protoList([]));
+		log('protoList-Object:', protoList(Object));
+		log('protoList-Array:', protoList(Array));
+		log('protoList-Function:', protoList(Function));
+		log('protoList-() => { }:', protoList(() => { }));
+		log('protoList-searchFile:', protoList(searchFile));
+
+		log('Array.getProto:', Array.getProto());
+		log('Array.hasOwn("bind"):', Array.getProto().hasOwn('bind'));
+		
+		log('Object.getProto:', Object.getProto());
+		log('Object.hasOwn("bind"):', Object.getProto().hasOwn('bind'));
+
+		log('Function.getProto:', Function.getProto());
+		log('Function.hasOwn("bind"):', Function.getProto().hasOwn('bind'));
 
 		//Object.func();
 		//Object.func2();
