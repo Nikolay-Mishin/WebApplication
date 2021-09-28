@@ -64,32 +64,30 @@ export const { INIT_CWD } = env,
 			if (func) value.func = func;
 			else {
 				const _func = {
-					[prop]: function (...args) { log('this\n', this); log('args\n', ...args); return _func[prop].func(this, ...args); }
+					[prop]: function (...args) { return _func[prop].func(this, ...args); }
 				};
 				_func[prop].func = value;
 				func = value;
 				value = _func[prop];
 			}
-			if (obj && !obj.hasOwn(prop)) {
-				enumerable = def || obj === nullProto;
+			!(def || obj === nullProto) ? obj[prop] = value :
 				obj._define(value, { prop, enumerable, configurable, writable, get, set });
-			}
 			return func;
 		};
 	})(),
-	registerAll = /*(() => ({})._register(*/function registerAll(obj, ...funcList) {
+	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
 		return fromEntries(funcList.map(func => {
 			const { value, opts } = func;
 			func = getFunc(value || func);
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
-	}/*))()*/,
+	}))(),
 	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, desc) }))(),
-	getDesc = (() => ({})._register(function getDesc(obj, key) { log(key, obj); return Object.getOwnPropertyDescriptor(obj, key) }))(),
+	getDesc = (() => ({})._register(function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) }))(),
 	// Такой вариант функции присваивания позволяет копировать методы доступа.
-	assignDefine = /*(() => ({})._register(function assignDefine*/(target, ...sources) => {
-		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, source.getDesc(key)]))));
-		const helpers = /*({}).*/registerAll({},
+	assignDefine = (() => ({})._register(function assignDefine(target, ...sources) {
+		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)]))));
+		const helpers = ({}).registerAll(
 			{ getProto2(obj = Object, i = 0) { return protoList(obj)[i]; } },
 			(function protoList2(obj = Object) {
 				if (!this) return protoList.call({}, obj);
@@ -108,8 +106,9 @@ export const { INIT_CWD } = env,
 				}
 			}).bind({})
 		);
+		log('protoList:', protoList());
 		return target;
-	}/*))()*/,
+	}))(),
 	getProto = ({})._register({ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } }),
 	protoList = ({})._register(function protoList(obj = Object) {
 		if (!this) return protoList.call({}, obj);
@@ -221,8 +220,6 @@ export const { INIT_CWD } = env,
 			log('this:', this);
 			log('obj:', obj);
 		});
-
-		log('protoList:', protoList());
 
 		const obj = define(Object, func1, { prop: 'fn' }),
 			obj2 = Object.create(Object), // return {} => __proto__ = obj
