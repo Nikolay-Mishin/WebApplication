@@ -69,7 +69,8 @@ export const { INIT_CWD } = env,
 				func = value;
 				value = _func[prop];
 			}
-			!(def || obj === nullProto) ? obj[prop] = value :
+			writable = obj === nullProto;
+			!(def || writable) ? obj[prop] = value :
 				obj._define(value, { prop, enumerable, configurable, writable, get, set });
 			return func;
 		};
@@ -80,17 +81,18 @@ export const { INIT_CWD } = env,
 			func = getFunc(value || func);
 			return [funcName(func), obj._register(func, opts || {})];
 		}));
-	}))(),
-	defineAll = (() => ({})._register(function defineAll(obj, desc) { return Object.defineProperties(obj, desc) }))(),
-	getDesc = (() => ({})._register(function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) }))(),
-	// Такой вариант функции присваивания позволяет копировать методы доступа.
-	assignDefine = (() => ({})._register(function assignDefine(target, ...sources) {
+	}))();
+
+const helpers = ({}).registerAll(
+	function defineAll(obj, desc) { return Object.defineProperties(obj, desc) },
+	function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) },
+	// Такой вариант функции присваивания позволяет копировать методы доступа
+	function assignDefine(target, ...sources) {
 		sources.forEach(source => target.defineAll(fromEntries(keys(source).map(key => [key, {}.getDesc.call(source, key)]))));
 		return target;
-	}))(),
-	getProto = ({})._register({ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } }),
-	protoList = ({})._register(function protoList(obj = Object) {
-		if (!this) return protoList.call({}, obj);
+	},
+	{ getProto(obj = Object, i = 0) { return protoList(obj)[i]; } },
+	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
 		this.objProto = this.objProto || proto;
 		this._protoList = this._protoList || [];
@@ -104,28 +106,36 @@ export const { INIT_CWD } = env,
 			this._protoList = [];
 			return _protoList;
 		}
-	}),
-	empty = obj => (isObject(obj) ? keys(obj) : obj).length == 0,
-	reverse = obj => from(obj).reverse(),
-	filter = Object.filter = (obj, cb) => fromEntries(entries(obj).filter(cb)),
-	concat = (...list) => [].concat.apply([], ...list),
-	slice = (obj, i = 0) => [].slice.call(obj, i),
-	bind = (context, ...funcList) => concat(funcList).map(func => func.bind(context)),
-	getBind = (context, func) => bind(context, func).shift(),
-	setBind = (context, ...funcList) => assign(context, fromEntries(bind(context, ...funcList)
-		.map((func, i) => [funcList[i].name, func]))),
-	call = (context, ...args) => context.call(context, ...args),
-	callBind = (context, args, cb) => cb.call(context, ...args),
-	_dirname = meta => dirname(toPath(meta.url)),
-	_relative = (from, to) => relative(from.url ? _dirname(from) : from, to),
-	fileName = file => base(file, ext(file)),
-	isDir = path => exist(path) && stat(path).isDirectory(),
-	isFile = path => exist(path) && stat(path).isFile(),
-	getFolders = (path, { exclude = [] } = {}) => readDir(path).filter(f => isDir(join(path, f)) && !exclude.includes(f)),
-	getFiles = (path, { exclude = [], nonExt = false } = {}) => readDir(path)
+	}).bind({}),
+	function empty(obj) { return (isObject(obj) ? keys(obj) : obj).length == 0; },
+	function reverse(obj) { return from(obj).reverse(); },
+	function _filter(obj, cb) { return fromEntries(entries(obj).filter(cb)); },
+	function concat(...list) { return [].concat.apply([], ...list); },
+	function slice(obj, i = 0) { return [].slice.call(obj, i); },
+	function bind(context, ...funcList) { return concat(funcList).map(func => func.bind(context)); },
+	function getBind(context, func) { return bind(context, func).shift(); },
+	function setBind (context, ...funcList) { return assign(context, fromEntries(bind(context, ...funcList)
+		.map((func, i) => [funcList[i].name, func]))); },
+	function call(context, ...args) { return context.call(context, ...args); },
+	function callBind(context, args, cb) { return cb.call(context, ...args); },
+	function _dirname(meta) { return dirname(toPath(meta.url)); },
+	function _relative(from, to) { return relative(from.url ? _dirname(from) : from, to); },
+	function fileName(file) { return base(file, ext(file)); },
+	function isDir(path) { return exist(path) && stat(path).isDirectory(); },
+	function isFile(path) { return exist(path) && stat(path).isFile(); },
+	function getFolders(path, {exclude = []}={}) { return readDir(path).filter(f => isDir(join(path, f)) && !exclude.includes(f)); },
+	function getFiles(path, { exclude = [], nonExt = false } = {}) { return readDir(path)
 		.filter(file => isFile(join(path, file)) && !exclude.includes(nonExt ? fileName(file) : file))
-		.map(file => nonExt ? file.replace(ext(file), '') : file),
-	config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
+		.map(file => nonExt ? file.replace(ext(file), '') : file); }
+);
+
+export const {
+	defineAll, getDesc, assignDefine, getProto, protoList,
+	empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, call, callBind,
+	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles
+} = helpers;
+
+export const config = !isFile('config.json') ? {} : JSON.parse(readFile('config.json')),
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
@@ -240,14 +250,14 @@ export const { INIT_CWD } = env,
 		return fromEntries(configList);
 	}); };
 
-//log('helpers\n', helpers);
-
-export default {
+const _helpers = {
 	imports, importModules,
 	INIT_CWD, cwd, argv, parseArgs, args,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
-	create, nullProto, hasOwn, register, define, defineAll, getDesc, assignDefine, getProto, protoList,
-	empty, reverse, filter, concat, slice, bind, getBind, setBind, call, callBind,
-	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles,
+	create, hasOwn, define, register, registerAll,
 	project, context, runInContext, searchFile, assignConfig
-};
+}.assignDefine(helpers)
+
+log('_helpers\n', _helpers);
+
+export default _helpers;
