@@ -2,7 +2,7 @@ import { log } from 'console';
 import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
-import { assign, keys, fromEntries, create, call, entries, protoList } from './baseHelpers.js';
+import { assign, keys, isObject, fromEntries, entries } from './baseHelpers.js';
 
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
@@ -60,13 +60,13 @@ const h = ({}).registerAll(
 		//log('args\n', args);
 		//log('this-bind:', this);
 		const filePath = join(path, search),
-			file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
-		//file = !json || _file.isObject() ? _file : JSON.parse(_file);
-		if (file) {
-			const info = { path, file };
+			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
+		if (_file) {
+			const file = !json || isObject(_file) ? _file : JSON.parse(_file),
+				info = { path, file };
 			this.config = this.config || info;
-			if (this.config.path == cwd) return this;
-			else if (file.root || path == cwd) {
+			//if (this.config.path == cwd) return this;
+			/*else */if (file.root || path == cwd) {
 				this.root = info;
 				if (file.root) return this;
 			}
@@ -77,26 +77,15 @@ const h = ({}).registerAll(
 		//log('this:', this);
 		//log('args-slice:', args.slice(1));
 		//log('file:', file);
-		return !(parent && path != cwd && path != dirname(path)) ? this :
+		return !(parent && /*path != cwd &&*/ path != dirname(path)) ? this :
 			searchFile.call(this, dirname(path), ...args.slice(1));
 	}).bind({}),
 	(function assignConfig(path, ...configList) {
-		configList = fromEntries(configList.concat().map(config => {
-			const info = path.searchFile(config),
-				parent = entries(info.parent || {}).map(file => file[1]).reverse(),
-				file = !info.root ? info.config : assign(info.root, ...parent, info.config);
-			log('info\n', info);
-			log('parent\n', parent);
-			log('file\n', file);
-			//log('Object.entries:', Object.entries);
-			//log('{}.entries:', {}.entries);
-			//log('info.entries:', info.entries);
-			return [config.fileName(), file];
+		return fromEntries(configList.concat().map(file => {
+			const { config, root, parent } = path.searchFile(file),
+				parentList = entries(parent || {}).map(file => file[1]).reverse();
+			return [file.fileName(), !root ? config.file : assign(root.file, ...parentList, config.file)];
 		}));
-		//log('this-assignConfig:', this);
-		log('configList:', configList);
-
-		return configList;
 	}).bind({})
 );
 

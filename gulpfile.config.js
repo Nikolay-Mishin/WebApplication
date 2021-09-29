@@ -1,6 +1,6 @@
 import { log } from 'console';
 import { importModules, assign } from './tasks/helpers/baseHelpers.js';
-import { config, context, assignConfig, cwd } from './tasks/helpers/contextHelpers.js';
+import { config, context, cwd } from './tasks/helpers/contextHelpers.js';
 
 // Подключаемые модули
 const modules = await importModules({
@@ -51,7 +51,8 @@ const modules = await importModules({
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-assignConfig(join(context, tasksPath), 'config.json');
+const configList = join(context, tasksPath).assignConfig('config.json');
+log('configList\n', configList);
 
 export default process.node_config = process.node_config || {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
