@@ -14,6 +14,8 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	{ isArray, from } = Array,
 	isObject = obj => is(Object, obj),
 	isFunc = obj => is(Function, obj),
+	// return {} => __proto__ = obj
+	// new Object(obj) - return obj => __proto__ = obj.__proto__
 	create = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {

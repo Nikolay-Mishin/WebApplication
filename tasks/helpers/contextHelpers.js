@@ -2,7 +2,7 @@ import { log } from 'console';
 import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
-import { assign, keys, fromEntries, create, call, protoList } from './baseHelpers.js';
+import { assign, keys, fromEntries, create, call, entries, protoList } from './baseHelpers.js';
 
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
@@ -55,88 +55,49 @@ const h = ({}).registerAll(
 		cb(); // Task call
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
-	function searchFile(path, search, { json = true, parent = true, _cwd = true } = {}) {
-		return call(function (path, search, { json = true, parent = true, _cwd = true } = {}) {
-			let args = assign([], arguments, { 2: { json, parent, _cwd } });
-			//log('args\n', args);
-			//log('this-bind:', this);
-			const filePath = join(path, search),
-				file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
-			//file = !json || _file.isObject() ? _file : JSON.parse(_file);
-			if (file) {
-				this.config = this.config || { path, file };
-				if (_cwd && path == cwd) {
-					args[2]._cwd = false;
-					this.cwd = { path, file };
-				}
-				if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
-					this.parent[path] = file;
-				}
+	(function searchFile(path, search, { json = true, parent = true } = {}) {
+		let args = assign([], arguments, { 2: { json, parent, _cwd } });
+		//log('args\n', args);
+		//log('this-bind:', this);
+		const filePath = join(path, search),
+			file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
+		//file = !json || _file.isObject() ? _file : JSON.parse(_file);
+		if (file) {
+			const info = { path, file };
+			this.config = this.config || info;
+			if (this.config.path == cwd) return this;
+			else if (file.root || path == cwd) {
+				this.root = info;
+				if (file.root) return this;
 			}
-			//log('this:', this);
-			//log('args-slice:', args.slice(1));
-			//log('file:', file);
-			return _cwd ? call(this, cwd, ...args.slice(1)) :
-				parent && path != dirname(path) ? call(this, dirname(path), ...args.slice(1)) :
-					file && !this.empty() ? this : null;
-		}, ...arguments);
-	},
-	function assignConfig(path, ...configList) { return {}.callBind(arguments, function (path, ...configList) {
-		configList = configList.concat().map(config => [config.fileName(), path.searchFile(config)]);
+			else if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
+				this.parent[path] = file;
+			}
+		}
+		//log('this:', this);
+		//log('args-slice:', args.slice(1));
+		//log('file:', file);
+		return !(parent && path != cwd && path != dirname(path)) ? this :
+			searchFile.call(this, dirname(path), ...args.slice(1));
+	}).bind({}),
+	(function assignConfig(path, ...configList) {
+		configList = fromEntries(configList.concat().map(config => {
+			const info = path.searchFile(config),
+				parent = entries(info.parent || {}).map(file => file[1]).reverse(),
+				file = !info.root ? info.config : assign(info.root, ...parent, info.config);
+			log('info\n', info);
+			log('parent\n', parent);
+			log('file\n', file);
+			//log('Object.entries:', Object.entries);
+			//log('{}.entries:', {}.entries);
+			//log('info.entries:', info.entries);
+			return [config.fileName(), file];
+		}));
 		//log('this-assignConfig:', this);
-		//log('searchFile:', searchFile);
-		//log('searchFile:', configList);
+		log('configList:', configList);
 
-		const func1 = function (obj) {
-			log('this:', this);
-			log('obj:', obj);
-		};
-
-		Object._register(func1);
-		Object._register(function func2(obj) {
-			log('this:', this);
-			log('obj:', obj);
-		});
-
-		log('protoList:', protoList());
-
-		const obj = Object._define(func1, { prop: 'fn' }),
-			obj2 = create(Object), // return {} => __proto__ = obj
-			obj3 = new Object(Object), // return obj => __proto__ = obj.__proto__
-			obj4 = Object.create(obj),
-			obj5 = new Object(obj);
-
-		//log('Object:', Object);
-		//log('protoList-Object:', Object.protoList());
-
-		//log('obj:', obj);
-		//log('protoList-obj-define:', obj.protoList());
-
-		//log('obj2:', obj2);
-		//log('protoList-obj2-Object.create(Object):', obj2.protoList());
-
-		//log('obj3:', obj3);
-		//log('protoList-obj3-new Object(Object):', obj3.protoList());
-
-		//log('obj4:', obj4);
-		//log('protoList-obj4-Object.create(obj):', obj4.protoList());
-
-		//log('obj5:', obj5);
-		//log('protoList-obj5-new Object(obj):', obj5.protoList());
-
-		//log('protoList-{}:', {}.protoList());
-		//log('protoList-{}:', [].protoList());
-		//log('protoList-Object:', Object.protoList());
-		//log('protoList-Array:', Array.protoList());
-		//log('protoList-Function:', Function.protoList());
-		//log('protoList-() => { }:', (()=>{})).protoList();
-		//log('protoList-searchFile:', searchFile.protoList());
-
-		//Object.func();
-		//Object.func2();
-
-		return fromEntries(configList);
-	}); }
+		return configList;
+	}).bind({})
 );
 
 export const { runInContext, searchFile, assignConfig } = h;
