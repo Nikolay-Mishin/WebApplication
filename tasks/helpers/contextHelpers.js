@@ -56,17 +56,15 @@ const h = ({}).registerAll(
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
 	(function searchFile(path, search, { json = true, parent = true } = {}) {
-		let args = assign([], arguments, { 2: { json, parent, _cwd } });
-		//log('args\n', args);
-		//log('this-bind:', this);
-		const filePath = join(path, search),
+		const args = assign([], arguments, { 2: { json, parent, _cwd } }),
+			filePath = join(path, search),
 			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
 		if (_file) {
 			const file = !json || isObject(_file) ? _file : JSON.parse(_file),
 				info = { path, file };
 			this.config = this.config || info;
-			//if (this.config.path == cwd) return this;
-			/*else */if (file.root || path == cwd) {
+			if (this.config.path == cwd) return this;
+			else if (file.root || path == cwd) {
 				this.root = info;
 				if (file.root) return this;
 			}
@@ -74,10 +72,7 @@ const h = ({}).registerAll(
 				this.parent[path] = file;
 			}
 		}
-		//log('this:', this);
-		//log('args-slice:', args.slice(1));
-		//log('file:', file);
-		return !(parent && /*path != cwd &&*/ path != dirname(path)) ? this :
+		return !(parent && path != cwd && path != dirname(path)) ? this :
 			searchFile.call(this, dirname(path), ...args.slice(1));
 	}).bind({}),
 	(function assignConfig(path, ...configList) {
