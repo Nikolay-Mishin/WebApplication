@@ -3,56 +3,23 @@ import { importModules, assign } from './tasks/helpers/baseHelpers.js';
 import { config, context, cwd } from './tasks/helpers/contextHelpers.js';
 
 // Подключаемые модули
-const modules = await importModules({
-	gulp: 'gulp',
-	fs: 'fs',
-	path: 'path',
-	browserSync: 'browser-sync',
-	gulpif: 'gulp-if',
-	gutil: 'gulp-util',
-	notify: 'gulp-notify',
-	plumber: 'gulp-plumber',
-	changed: 'gulp-changed',
-	rimraf: 'rimraf',
-	rename: 'gulp-rename',
-	sourcemaps: 'gulp-sourcemaps',
-	htmlmin: 'gulp-htmlmin',
-	htmlclean: 'gulp-htmlclean',
-	pug: 'gulp-pug',
-	inlineCss: 'gulp-inline-css',
-	sass: 'gulp-sass',
-	prefixer: 'gulp-autoprefixer',
-	rigger: 'gulp-rigger',
-	concat: 'concat',
-	uglify: 'gulp-uglify',
-	webpack: 'webpack',
-	webpackStream: 'webpack-stream',
-	babel: 'gulp-babel',
-	terser: 'terser',
-	gulpTerser: 'gulp-terser',
-	realFavicon: 'gulp-real-favicon',
-	imageMin: 'gulp-imagemin',
-	ImgMinify: 'imgminify'
-}),
+const {
+	es: { useWebpack, esModule, webpackConfig },
+	paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
+	server: { serverPHP, domain, port, baseDir: _baseDir, index },
+	deploy, modules: _modules
+} = config,
+	modules = await importModules(_modules),
 	{ path, browserSync } = modules,
 	{ join } = path,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: _reload } = browserSync,
-	{
-		es: { useWebpack, esModule, webpackConfig },
-		paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
-		server: { serverPHP, domain, port, baseDir: _baseDir, index },
-		deploy
-	} = config,
 	root = join(context, _root),
 	build = join(root, _build),
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
-
-const configList = join(context, tasksPath).assignConfig('config.json');
-log('configList\n', configList);
 
 export default process.node_config = process.node_config || {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,

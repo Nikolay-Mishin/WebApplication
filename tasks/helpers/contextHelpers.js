@@ -20,32 +20,7 @@ export const { INIT_CWD } = env,
 		});
 		return args;
 	},
-	args = (argList => parseArgs(argList))(argv),
-	config = !'config.json'.isFile() ? {} : JSON.parse(readFile('config.json')),
-	{ project, context } = (() => {
-		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
-			_projectsPath = join(cwd, projectsRoot),
-			exist = isDir(_projectsPath),
-			projectsPath = exist ? _projectsPath : cwd,
-			projects = projectsPath.getFolders({ exclude })
-				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
-			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
-			project = !name ? name : keys(arg)[1] || (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
-			contextPath = join(projectsPath, project),
-			context = exist && contextPath.isDir() ? contextPath : projectsPath;
-		//log('INIT_CWD:', INIT_CWD);
-		//log('cwd:', cwd);
-		//log('projectsPath:', projectsPath);
-		//log('exist:', exist);
-		//log('cwd.fileName():', cwd.fileName());
-		//log('name:', name);
-		//log('project:', project);
-		//log('context:', context);
-		//log('args:', args);
-		//log('arg:', arg);
-		//log('projects:', projects);
-		return { project, context };
-	})();
+	args = (argList => parseArgs(argList))(argv);
 
 const h = ({}).registerAll(
 	function runInContext(path, cb) {
@@ -84,6 +59,35 @@ const h = ({}).registerAll(
 	}).bind({})
 );
 
-export const { runInContext, searchFile, assignConfig } = h;
+const configList = INIT_CWD.assignConfig('config.json');
+log('configList\n', configList);
+
+export const { runInContext, searchFile, assignConfig } = h,
+	//config = !'config.json'.isFile() ? {} : JSON.parse(readFile('config.json')),
+	config = configList.config,
+	{ project, context } = (() => {
+		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
+			_projectsPath = join(cwd, projectsRoot),
+			exist = isDir(_projectsPath),
+			projectsPath = exist ? _projectsPath : cwd,
+			projects = projectsPath.getFolders({ exclude })
+				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
+			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
+			project = !name ? name : keys(arg)[1] || (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
+			contextPath = join(projectsPath, project),
+			context = exist && contextPath.isDir() ? contextPath : projectsPath;
+		//log('INIT_CWD:', INIT_CWD);
+		//log('cwd:', cwd);
+		//log('projectsPath:', projectsPath);
+		//log('exist:', exist);
+		//log('cwd.fileName():', cwd.fileName());
+		//log('name:', name);
+		//log('project:', project);
+		//log('context:', context);
+		//log('args:', args);
+		//log('arg:', arg);
+		//log('projects:', projects);
+		return { project, context };
+	})();
 
 export default { INIT_CWD, cwd, argv, parseArgs, args, project, context }.assignDefine(h);
