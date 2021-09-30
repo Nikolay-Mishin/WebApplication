@@ -63,7 +63,6 @@ const configList = INIT_CWD.assignConfig('config.json');
 log('configList\n', configList);
 
 export const { runInContext, searchFile, assignConfig } = h,
-	//config = !'config.json'.isFile() ? {} : JSON.parse(readFile('config.json')),
 	config = configList.config,
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
