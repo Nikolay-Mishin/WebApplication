@@ -69,13 +69,6 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
-	function defineAll(obj, desc) { return Object.defineProperties(obj, desc) },
-	function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) },
-	// Такой вариант функции присваивания позволяет копировать методы доступа
-	function assignDefine(target, ...sources) {
-		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
-		return target;
-	},
 	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
@@ -92,6 +85,13 @@ const h = ({}).registerAll(
 			return _protoList;
 		}
 	}).bind({}),
+	function defineAll(obj, desc) { return Object.defineProperties(obj, desc) },
+	function getDesc(obj, key) { return Object.getOwnPropertyDescriptor(obj, key) },
+	// Такой вариант функции присваивания позволяет копировать методы доступа
+	function assignDefine(target, ...sources) {
+		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
+		return target;
+	},
 	function empty(obj) { return (obj.isObject() ? keys(obj) : obj).length == 0; },
 	function reverse(obj) { return from(obj).reverse(); },
 	function _filter(obj, cb) { return fromEntries(entries(obj).filter(cb)); },
