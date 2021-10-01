@@ -69,6 +69,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
+	keys,
 	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
