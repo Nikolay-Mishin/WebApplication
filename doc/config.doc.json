@@ -99,6 +99,8 @@
 		"webpack": "webpack",
 		"webpackStream": "webpack-stream",
 		"babel": "gulp-babel",
+		//"terser": "terser",
+		//"gulpTerser": "gulp-terser",
 		"realFavicon": "gulp-real-favicon",
 		"imageMin": "gulp-imagemin",
 		"ImgMinify": "imgminify"
