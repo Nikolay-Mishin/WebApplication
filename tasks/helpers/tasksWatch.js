@@ -21,7 +21,7 @@ export default async () => {
 	watch(_root, function rootWatch() {
 		return src(_root, { since: lastRun(rootWatch) })
 			.on('data', ({ relative: rel, path }) => log({ rel, path }))
-			//.pipe(changed('app', { hasChanged: changed.compareContents }))
+			.pipe(changed('./gulpfile.js', { hasChanged: changed.compareContents }))
 			.pipe(dest(root))
 			.pipe(dest(deploy));
 	});
