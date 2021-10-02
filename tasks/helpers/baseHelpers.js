@@ -16,7 +16,8 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	isFunc = obj => is(Function, obj),
 	// return {} => __proto__ = obj
 	// new Object(obj) - return obj => __proto__ = obj.__proto__
-	create = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
+	create = (proto = Object, props) => Object.create(proto, props),
+	createAssign = (proto = Object, ...assignList) => assign(Object.create(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
 			Object.defineProperty(nullProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop); } });
@@ -128,5 +129,5 @@ delete h._filter;
 export default {
 	imports, importModules,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
-	create, hasOwn, define, register, registerAll
+	create, createAssign, hasOwn, define, register, registerAll
 }.assignDefine(h);
