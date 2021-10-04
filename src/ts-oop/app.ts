@@ -1,17 +1,18 @@
-// ts/app.ts
+/*
+Таймкоды:
+00:00 ➝ Введение .
+00:55 ➝ Отличие процедурного подхода от объектно-ориентированного.
+02:10 ➝ Классы. Объекты. Свойства. Методы. Конструктор.
+04:40 ➝ Инкапсуляция и сокрытие. Модификаторы доступа.
+11:50 ➝ Наследование.
+16:40 ➝ Полиморфизм. Параметрический и ad-hoc
+23:00 ➝ Агрегация и композиция.
+26:35 ➝ Интерфейсы и абстрактные классы.
+32:30 ➝ Внедрение зависимостей. Dependency injection
+37:10 ➝ Паттерн singleton
+39:00 ➝ Время ставить лайки и писать комментарии :)
+*/
 
-import lib from "./lib";
-import Greeter from "./main";
-//import $ from "jquery";
-
-//global.jQuery = global.$ = $;
-//window.console.log($);
+//import lib from "./lib";
 
 window.console.log("ts/app.ts");
-window.console.log(lib);
-
-window.onload = () => {
-	const el = document.body;
-	const greeter = new Greeter(el);
-	greeter.start();
-};
