@@ -40,23 +40,23 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	})(),
 	register = (() => {
 		nullProto._define(
-			function _register({ prop, value, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
+			function _register({ prop, value, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
 		);
-		return function register(obj, value, { prop, func, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+		return function register(obj, value, { prop, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
 			[obj, value] = [obj.__proto__, getFunc(value)];
 			prop = prop || funcName(value);
-			if (func) value.func = func;
-			else {
-				const _func = {
+
+			const func = value,
+				_func = {
 					[prop]: function (...args) { return _func[prop].func(this, ...args); }
 				};
-				_func[prop].func = value;
-				func = value;
-				value = _func[prop];
-			}
+			_func[prop].func = value;
+			value = _func[prop];
+
 			writable = obj === nullProto;
 			!(def || writable) ? obj[prop] = value :
 				obj._define(value, { prop, enumerable, configurable, writable, get, set });
+
 			return func;
 		};
 	})(),
@@ -70,7 +70,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
-	keys,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
 	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
