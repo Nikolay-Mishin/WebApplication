@@ -1,34 +1,56 @@
 {
 	"compileOnSave": true,
-	"compilerOptions": {
-		"moduleResolution": "classic",
-		"baseUrl": "./",
-		"paths": {
-			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
-		},
-		"allowSyntheticDefaultImports": true,
-		"outDir": "src/js",
-		"target": "es6",
-		"module": "es6",
-		"lib": [ "dom", "es6" ],
-		"charset": "utf-8",
-		"newLine": "crlf",
-		"allowJs": true,
-		"sourceMap": true,
-		"removeComments": false,
-		"noEmitOnError": true,
-		"noEmitHelpers": false,
-		"importHelpers": true,
-		"noImplicitAny": true
-	},
+	"include": [
+		"src/ts"
+	],
 	"exclude": [
 		"node_modules",
 		"gulpfile.js",
 		"wwwroot",
 		"src/js"
 	],
-	"include": [
-		"src/ts"
-	]
+	"compilerOptions": {
+		"outDir": "src/js",
+		"rootDir": "src/ts",
+		"baseUrl": "./",
+		"target": "es6",
+		"module": "es6",
+		"moduleResolution": "classic",
+		"jsx": "react-jsx",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"es6",
+			"esnext"
+		],
+		"paths": {
+			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
+			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
+		},
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"charset": "utf-8",
+		"newLine": "crlf",
+		"allowJs": true,
+		"checkJs": true,
+		"skipLibCheck": true,
+		"importHelpers": true,
+		"sourceMap": true,
+		"removeComments": false,
+		"noEmit": false,
+		"noEmitOnError": true,
+		"noEmitHelpers": false,
+		"strict": true,
+		"alwaysStrict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"noImplicitThis": true,
+		"noImplicitUseStrict": false,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"allowUnreachableCode": true,
+		"noFallthroughCasesInSwitch": true,
+		"forceConsistentCasingInFileNames": true
+	}
 }

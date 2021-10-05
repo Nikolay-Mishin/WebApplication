@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="src\ts-oop\app.ts" />
+	  <None Remove="src\ts-oop\_time-list.ts" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="src\ts-oop\app.ts">
+		<Content Include="src\ts-oop\_time-list.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Include="src\ts\app.ts">
@@ -54,7 +54,7 @@
 	</ItemGroup>-->
 
 	<ProjectExtensions>
-		<VisualStudio AllowExistingFolder="true" />
+		<VisualStudio AllowExistingFolder="true"><UserProperties doc_4tsconfig_1doc_1json__JsonSchema="https://json.schemastore.org/tsconfig.json" /></VisualStudio>
 		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>
 
