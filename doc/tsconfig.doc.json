@@ -13,14 +13,14 @@
 		/* Basic Options */
 		//"outFile": "src/js/main-ts.js",	/* Concatenate and emit output to single file. */
 		"outDir": "src/js",					/* Redirect output structure to the directory. */
-		//"rootDir": "src/ts",				/* Root directory of input files. Use to control the output directory with --outDir. */
+		"rootDir": "src/ts",				/* Root directory of input files. Use to control the output directory with --outDir. */
 
 		/* Module Resolution Options */
 		"baseUrl": "./", /* Base directory to resolve non-absolute module names. */
 		"target": "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
 		"module": "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
 		"moduleResolution": "classic", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-		"jsx": "react-jsx",	/* Specify JSX code generation: 'preserve', 'react-jsx', 'react-native', or 'react'. */
+		"jsx": "preserve",	/* Specify JSX code generation: 'react-jsx', 'preserve', 'react-native', or 'react'. */
 		"lib": [ "dom", "dom.iterable", "es6", "esnext" ], /* Specify library files to be included in the compilation:  */
 		/* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
 		"paths": {
