@@ -1,4 +1,5 @@
 // <binding ProjectOpened='_tasksWatch' />
+//package.json: "-vs-binding": { "ProjectOpened": [ "tasks", "tasksWatch" ] }
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
