@@ -28,5 +28,11 @@
 	},
 	"engines": {
 		"node": ">=14.17.5"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"gulp": "gulp",
+		"tasks": "gulp --tasks",
+		"tasksWatch": "gulp _tasksWatch"
 	}
 }
