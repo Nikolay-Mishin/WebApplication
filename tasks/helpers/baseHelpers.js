@@ -72,7 +72,7 @@ const h = ({}).registerAll(
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
 	function forEach(obj, cb) {
 		for (let key in obj) {
-			cb(obj[key], key);
+			cb(key, obj[key]);
 		}
 	},
 	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
