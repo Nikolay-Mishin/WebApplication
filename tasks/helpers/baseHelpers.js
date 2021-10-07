@@ -56,7 +56,6 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 			writable = obj === nullProto;
 			!(def || writable) ? obj[prop] = value :
 				obj._define(value, { prop, enumerable, configurable, writable, get, set });
-
 			return func;
 		};
 	})(),
@@ -71,6 +70,11 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 
 const h = ({}).registerAll(
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
+	function forEach(obj, cb) {
+		for (let key in obj) {
+			cb(obj[key], key);
+		}
+	},
 	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
