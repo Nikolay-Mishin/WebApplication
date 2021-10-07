@@ -70,12 +70,8 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 
 const h = ({}).registerAll(
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
-	function forEach(obj, cb) {
-		for (let key in obj) {
-			cb(key, obj[key]);
-		}
-	},
-	{ getProto(obj = Object, i = 0) { return obj.protoList()[i]; } },
+	function forEach(obj, cb) { for (let key in obj) cb(key, obj[key]); },
+	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
 		const proto = obj ? obj.__proto__ : null;
 		this.objProto = this.objProto || proto;
