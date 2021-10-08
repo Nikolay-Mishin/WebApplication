@@ -34,6 +34,5 @@
 		"gulp": "gulp",
 		"tasks": "gulp --tasks",
 		"tasksWatch": "gulp _tasksWatch"
-	},
-	"-vs-binding": { "ProjectOpened": [ "tasks", "tasksWatch" ] }
+	}
 }

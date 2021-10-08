@@ -9,6 +9,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="src\ts-oop\compose.ts" />
+	  <None Remove="src\ts-oop\function.ts" />
+	  <None Remove="src\ts-oop\oop-extends.ts" />
+	  <None Remove="src\ts-oop\oop-incapsulate.ts" />
+	  <None Remove="src\ts-oop\oop.ts" />
 	  <None Remove="src\ts-oop\_time-list.ts" />
 	</ItemGroup>
 
@@ -17,6 +22,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="src\ts-oop\compose.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-extends.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-incapsulate.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\function.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Include="src\ts-oop\_time-list.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
