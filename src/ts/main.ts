@@ -3,7 +3,7 @@
 export default class Greeter {
 	private element: HTMLElement;
 	private span: HTMLElement;
-	private timerToken: number;
+	private timerToken: NodeJS.Timeout;
 
 	constructor(element: HTMLElement) {
 		this.element = element;
@@ -11,10 +11,11 @@ export default class Greeter {
 		this.span = document.createElement("span");
 		this.element.appendChild(this.span);
 		this.span.innerText = new Date().toUTCString();
+		this.timerToken = new NodeJS.Timeout;
 	}
 
 	public start() {
-		// this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+		this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
 	}
 
 	public stop() {

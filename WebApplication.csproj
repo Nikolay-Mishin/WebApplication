@@ -14,7 +14,9 @@
 	  <None Remove="src\ts-oop\oop-1-incapsulate.ts" />
 	  <None Remove="src\ts-oop\oop-2-extends.ts" />
 	  <None Remove="src\ts-oop\oop-3-polymorf.ts" />
-	  <None Remove="src\ts-oop\oop-4-agregate_compose.ts" />
+	  <None Remove="src\ts-oop\oop-4-agregate-compose.ts" />
+	  <None Remove="src\ts-oop\oop-5-abstract-interface.ts" />
+	  <None Remove="src\ts-oop\oop-6-dep.Injection-singleton.ts" />
 	  <None Remove="src\ts-oop\oop.ts" />
 	  <None Remove="src\ts-oop\_time-list.ts" />
 	</ItemGroup>
@@ -27,7 +29,13 @@
 		<Content Include="src\ts-oop\compose.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="src\ts-oop\oop-4-agregate_compose.ts">
+		<Content Include="src\ts-oop\oop-6-dep.Injection-singleton.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-5-abstract-interface.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-4-agregate-compose.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Include="src\ts-oop\oop-3-polymorf.ts">

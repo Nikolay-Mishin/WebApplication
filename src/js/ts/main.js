@@ -6,9 +6,10 @@ export default class Greeter {
         this.span = document.createElement("span");
         this.element.appendChild(this.span);
         this.span.innerText = new Date().toUTCString();
+        this.timerToken = new NodeJS.Timeout;
     }
     start() {
-        // this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
     }
     stop() {
         clearTimeout(this.timerToken);
