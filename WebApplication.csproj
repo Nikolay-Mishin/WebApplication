@@ -13,6 +13,7 @@
 	  <None Remove="src\ts-oop\function.ts" />
 	  <None Remove="src\ts-oop\oop-extends.ts" />
 	  <None Remove="src\ts-oop\oop-incapsulate.ts" />
+	  <None Remove="src\ts-oop\oop-polymorf.ts" />
 	  <None Remove="src\ts-oop\oop.ts" />
 	  <None Remove="src\ts-oop\_time-list.ts" />
 	</ItemGroup>
@@ -23,6 +24,9 @@
 
 	<ItemGroup>
 		<Content Include="src\ts-oop\compose.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-polymorf.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Include="src\ts-oop\oop-extends.ts">

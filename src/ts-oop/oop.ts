@@ -30,8 +30,8 @@ class Rectangle {
 
 }
 
-// опратор `new` - используется для создания нового объекта
-const rect = new Rectangle(5, 10),
+// оператор `new` - используется для создания нового объекта
+const rect1 = new Rectangle(5, 10),
 	rect2 = new Rectangle(52, 102),
 	rect3 = new Rectangle(10, 102);
 

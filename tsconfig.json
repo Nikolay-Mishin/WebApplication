@@ -1,17 +1,18 @@
 {
 	"compileOnSave": true,
 	"include": [
-		"src/ts"
+		"src"
 	],
 	"exclude": [
 		"node_modules",
 		"gulpfile.js",
 		"wwwroot",
+		"src/fontawesome-free-5.15.4-web",
 		"src/js"
 	],
 	"compilerOptions": {
 		"outDir": "src/js",
-		"rootDir": "src/ts",
+		"rootDir": "src",
 		"baseUrl": "./",
 		"target": "es6",
 		"module": "es6",
@@ -31,8 +32,8 @@
 		"allowSyntheticDefaultImports": true,
 		"charset": "utf-8",
 		"newLine": "crlf",
-		"allowJs": true,
-		"checkJs": true,
+		"allowJs": false,
+		"checkJs": false,
 		"skipLibCheck": true,
 		"importHelpers": true,
 		"sourceMap": true,
@@ -40,17 +41,17 @@
 		"noEmit": false,
 		"noEmitOnError": true,
 		"noEmitHelpers": false,
-		"strict": true,
-		"alwaysStrict": true,
-		"noImplicitAny": true,
-		"strictNullChecks": true,
-		"noImplicitThis": true,
+		"strict": false,
+		"alwaysStrict": false,
+		"noImplicitAny": false,
+		"strictNullChecks": false,
+		"noImplicitThis": false,
 		"noImplicitUseStrict": false,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noImplicitReturns": true,
-		"allowUnreachableCode": true,
-		"noFallthroughCasesInSwitch": true,
-		"forceConsistentCasingInFileNames": true
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noImplicitReturns": false,
+		"allowUnreachableCode": false,
+		"noFallthroughCasesInSwitch": false,
+		"forceConsistentCasingInFileNames": false
 	}
 }
