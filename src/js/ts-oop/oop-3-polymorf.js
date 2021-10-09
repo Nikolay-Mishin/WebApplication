@@ -43,4 +43,4 @@ function massGreeting(persons) {
     //}
 }
 massGreeting(personList);
-//# sourceMappingURL=oop-polymorf.js.map
+//# sourceMappingURL=oop-3-polymorf.js.map

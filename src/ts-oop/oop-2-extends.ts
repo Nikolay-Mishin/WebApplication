@@ -7,7 +7,7 @@
 // https://learn.javascript.ru/es-object
 // https://learn.javascript.ru/class
 
-// Наследование - это механизм расширения функционала (свойств/методов) класса-родителя (parent), путем наследования (перенимания) публичных (public) и наследуемых (protected) свойств и методов класса-родителя и добавленых новых свойств/методов в классе-потомке (children)
+// Наследование - это механизм расширения функционала (свойств/методов) класса-родителя (parent), путем наследования (перенимания/получения) публичных (public) и наследуемых (protected) свойств и методов класса-родителя и добавления новых свойств/методов в классе-потомке (children)
 // Данный механизм позволяет очень эффективно переиспользовать код, масштабировать и поддерживать его
 // Наследование осуществляется с помощью ключевого слова `extends` после имени класса и указания имени класса-родителя после ключего слова
 // У класса может быть только 1 класс-родитель
@@ -77,6 +77,9 @@ class Person {
 
 }
 
+const person = new Person('Person', 'TV', 15);
+console.log(person);
+
 // класс Работник - наследует класс Person (класс-родитель)
 class Employee extends Person {
 
@@ -123,6 +126,9 @@ class Employee extends Person {
 
 }
 
+const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
+console.log(employee);
+
 class Developer extends Employee {
 
 	private _level;
@@ -156,11 +162,7 @@ class Developer extends Employee {
 
 }
 
-const person = new Person('Person', 'TV', 15);
-const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
 const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
 
-console.log(person);
-console.log(employee);
 console.log(UlbiTv);
 console.log(UlbiTv.fullName); // используем геттер родительского класс

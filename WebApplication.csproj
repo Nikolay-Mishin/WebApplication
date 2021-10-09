@@ -11,9 +11,10 @@
 	<ItemGroup>
 	  <None Remove="src\ts-oop\compose.ts" />
 	  <None Remove="src\ts-oop\function.ts" />
-	  <None Remove="src\ts-oop\oop-extends.ts" />
-	  <None Remove="src\ts-oop\oop-incapsulate.ts" />
-	  <None Remove="src\ts-oop\oop-polymorf.ts" />
+	  <None Remove="src\ts-oop\oop-1-incapsulate.ts" />
+	  <None Remove="src\ts-oop\oop-2-extends.ts" />
+	  <None Remove="src\ts-oop\oop-3-polymorf.ts" />
+	  <None Remove="src\ts-oop\oop-4-agregate_compose.ts" />
 	  <None Remove="src\ts-oop\oop.ts" />
 	  <None Remove="src\ts-oop\_time-list.ts" />
 	</ItemGroup>
@@ -26,13 +27,16 @@
 		<Content Include="src\ts-oop\compose.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="src\ts-oop\oop-polymorf.ts">
+		<Content Include="src\ts-oop\oop-4-agregate_compose.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="src\ts-oop\oop-extends.ts">
+		<Content Include="src\ts-oop\oop-3-polymorf.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="src\ts-oop\oop-incapsulate.ts">
+		<Content Include="src\ts-oop\oop-2-extends.ts">
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="src\ts-oop\oop-1-incapsulate.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Include="src\ts-oop\oop.ts">

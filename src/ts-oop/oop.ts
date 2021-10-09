@@ -35,4 +35,4 @@ const rect1 = new Rectangle(5, 10),
 	rect2 = new Rectangle(52, 102),
 	rect3 = new Rectangle(10, 102);
 
-rect.calcArea(); // вызов метода
+rect1.calcArea(); // вызов метода

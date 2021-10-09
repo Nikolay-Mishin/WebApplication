@@ -55,11 +55,11 @@ class Rectangle2 {
         return (this.width + this.height) * 2; // результат
     }
 }
-// опратор new - используется для создания нового объекта
+// оператор new - используется для создания нового объекта
 const rect = new Rectangle2(5, 10);
 rect.calcArea(); // вызов метода
 const width2 = rect.width;
-// const width = rect._width; // щшибка - свойтво доступно только внутри класса Rectangle
+//const width2 = rect._width; // ошибка - свойтво доступно только внутри класса Rectangle
 // класс Пользователь
 class User {
     constructor(username, password) {
@@ -126,4 +126,4 @@ const db = new Database(1, 2, 3, 4); // создаем объект (подкл�
 db.createNewtable({ name: 'roles' });
 db.createNewtable({ name: 'users' });
 db.clearTables();
-//# sourceMappingURL=oop-incapsulate.js.map
+//# sourceMappingURL=oop-1-incapsulate.js.map
