@@ -8,6 +8,7 @@
 		"encoding": true,
 		"indent": [ true, "tabs", 4 ],
 		"file-name-casing": [ true, "kebab-case" ],
+		"no-console": false,
 		"comment-format": true,
 		//"comment-format": [ true, "check-space" ],
 		"whitespace": [ true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-type-operator", "check-preblock" ],
