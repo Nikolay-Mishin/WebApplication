@@ -106,12 +106,12 @@ interface IFileReader extends IReader {
 
 class FileClient implements IReader, IWriter {
 
-	read(url: string): string {
+	public read(url: string): string {
 		// реализация для файла
 		return url;
 	}
 
-	write(data: string): void {
+	public write(data: string): void {
 		// реализация для файла
 		console.log(data);
 	}
@@ -119,12 +119,12 @@ class FileClient implements IReader, IWriter {
 
 class HttpClient implements IReader, IWriter {
 
-	read(url: string): string {
+	public read(url: string): string {
 		// реализация для Http
 		return url;
 	}
 
-	write(data: string): void {
+	public write(data: string): void {
 		// реализация для Http
 		console.log(data);
 	}
@@ -148,20 +148,20 @@ interface IRepository<T> {
 // в качестве типа Дженерика Repository указываем тип User2
 class UserRepo implements IRepository<User> {
 
-	create(user: User): User {
+	public create(user: User): User {
 		//return database.query(INSERT ...); // запрос к БД
 		return user;
 	}
 
-	get(): User {
+	public get(): User {
 		return new User('Ulbi', 123, 15);
 	}
 
-	update(user: User): User {
+	public update(user: User): User {
 		return user;
 	}
 
-	delete(user: User): User {
+	public delete(user: User): User {
 		return user;
 	}
 
@@ -169,19 +169,19 @@ class UserRepo implements IRepository<User> {
 
 class CarRepo implements IRepository<Car> {
 
-	create(car: Car): Car {
+	public create(car: Car): Car {
 		return car;
 	}
 
-	get(): Car {
+	public get(): Car {
 		return new Car(new Freshener());
 	}
 
-	update(car: Car): Car {
+	public update(car: Car): Car {
 		return car;
 	}
 
-	delete(car: Car): Car {
+	public delete(car: Car): Car {
 		return car;
 	}
 

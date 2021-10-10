@@ -15,7 +15,7 @@ class Calculator {
         return a + b;
     }
 }
-const calculator = new Calculator;
+const calculator = new Calculator();
 calculator.add(5, 5); // 10
 //calculator.add('5', '5'); // '55'
 // 3.1. Параметрический Полиморфизм (истинный)

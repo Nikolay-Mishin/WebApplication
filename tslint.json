@@ -30,16 +30,15 @@
 		"interface-name": [ true, "always-prefix" ],
 		"interface-over-type-literal": true,
 		"one-variable-per-declaration": false, // [true, "ignore-for-loop"]
-		"variable-name": {
-			"options": [
-				"ban-keywords",
-				"check-format",
-				"allow-leading-underscore",
-				"allow-pascal-case",
-				"allow-snake-case"
-				//"require-const-for-all-caps"
-			]
-		},
+		"variable-name": [
+			true,
+			"ban-keywords",
+			"check-format",
+			"allow-leading-underscore",
+			"allow-pascal-case",
+			"allow-snake-case"
+			//"require-const-for-all-caps"
+		],
 		"no-invalid-this": [ true, "check-function-in-method" ],
 		"no-misused-new": true,
 		"new-parens": true,

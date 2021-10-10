@@ -61,10 +61,10 @@ console.log(person);
 // класс Работник - наследует класс Person (класс-родитель)
 class Employee extends Person {
     // инициализируем свойства в конструкторе класса=
-    constructor(firstName, lastName, age, inn, number, snils) {
+    constructor(firstName, lastName, age, inn, passport, snils) {
         super(firstName, lastName, age); // вызываем конструктор класса-родителя, чтобы его не затереть (переопределить)
         this.inn = inn;
-        this.number = number;
+        this.passport = passport;
         this.snils = snils;
     }
     get inn() {
@@ -73,11 +73,11 @@ class Employee extends Person {
     set inn(value) {
         this._inn = value;
     }
-    get number() {
-        return this._number;
+    get passport() {
+        return this._passport;
     }
-    set number(value) {
-        this._number = value;
+    set passport(value) {
+        this._passport = value;
     }
     get snils() {
         return this._snils;
@@ -93,8 +93,8 @@ class Employee extends Person {
 const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
 console.log(employee);
 class Developer extends Employee {
-    constructor(firstName, lastName, age, inn, number, snils, level, language) {
-        super(firstName, lastName, age, inn, number, snils); // вызываем родительский конструктор
+    constructor(firstName, lastName, age, inn, passport, snils, level, language) {
+        super(firstName, lastName, age, inn, passport, snils); // вызываем родительский конструктор
         this.level = level;
         this.language = language;
     }

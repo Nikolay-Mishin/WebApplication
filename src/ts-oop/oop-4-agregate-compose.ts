@@ -38,7 +38,7 @@ class Car {
 	private engine: Engine;
 	private wheels: Wheel[];
 	private freshener: Freshener;
-    
+
 	constructor(freshener: Freshener) {
 		// композиция
 		this.engine = new Engine();

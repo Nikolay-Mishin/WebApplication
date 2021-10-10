@@ -26,7 +26,7 @@ class Person {
 	private _firstName;
 	private _lastName;
 	private _age;
-    
+
 	// инициализируем свойства в конструкторе класса
 	constructor(firstName, lastName, age) {
 		this.firstName = firstName;
@@ -84,14 +84,14 @@ console.log(person);
 class Employee extends Person {
 
 	private _inn;
-	private _number;
+	private _passport;
 	private _snils;
 
 	// инициализируем свойства в конструкторе класса=
-	constructor(firstName, lastName, age, inn, number, snils) {
+	constructor(firstName, lastName, age, inn, passport, snils) {
 		super(firstName, lastName, age); // вызываем конструктор класса-родителя, чтобы его не затереть (переопределить)
 		this.inn = inn;
-		this.number = number;
+		this.passport = passport;
 		this.snils = snils;
 	}
 
@@ -103,12 +103,12 @@ class Employee extends Person {
 		this._inn = value;
 	}
 
-	public get number() {
-		return this._number;
+	public get passport() {
+		return this._passport;
 	}
 
-	public set number(value) {
-		this._number = value;
+	public set passport(value) {
+		this._passport = value;
 	}
 
 	public get snils() {
@@ -133,9 +133,9 @@ class Developer extends Employee {
 
 	private _level;
 	private _language;
-    
-	constructor(firstName, lastName, age, inn, number, snils, level, language) {
-		super(firstName, lastName, age, inn, number, snils); // вызываем родительский конструктор
+
+	constructor(firstName, lastName, age, inn, passport, snils, level, language) {
+		super(firstName, lastName, age, inn, passport, snils); // вызываем родительский конструктор
 		this.level = level;
 		this.language = language;
 	}
