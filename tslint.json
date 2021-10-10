@@ -9,8 +9,7 @@
 		"indent": [ true, "tabs", 4 ],
 		"file-name-casing": [ true, "kebab-case" ],
 		"no-console": false,
-		"comment-format": true,
-		//"comment-format": [ true, "check-space" ],
+		"comment-format": true, // [ true, "check-space" ]
 		"whitespace": [ true, "check-branch", "check-decl", "check-operator", "check-module", "check-separator", "check-rest-spread", "check-type", "check-typecast", "check-type-operator", "check-preblock" ],
 		"ordered-imports": false,
 		//"ordered-imports": [true, {
@@ -26,11 +25,11 @@
 		],
 		"no-reference": true,
 		"no-reference-import": true,
-		"max-classes-per-file": [ true, 1 ],
+		"max-classes-per-file": false, // [ true, 1 ]
 		"class-name": false,
 		"interface-name": [ true, "always-prefix" ],
 		"interface-over-type-literal": true,
-		"one-variable-per-declaration": false,
+		"one-variable-per-declaration": false, // [true, "ignore-for-loop"]
 		"variable-name": {
 			"options": [
 				"ban-keywords",

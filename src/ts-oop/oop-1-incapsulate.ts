@@ -83,11 +83,13 @@ class User {
 	private _username;
 	private _password;
 	private _id;
+	private _age;
 
-	constructor(username, password) {
+	constructor(username, password, age) {
 		this.username = username;
 		this.password = password;
 		this._id = this.generateRandomId();
+		this.age = age;
 	}
 
 	public get username() {
@@ -110,6 +112,14 @@ class User {
 		return this._id;
 	}
 
+	public get age() {
+		return this._age;
+	}
+
+	public set age(value) {
+		this._age = value;
+	}
+
 	public generateRandomId() {
 		return Math.random();
 	}
@@ -117,7 +127,7 @@ class User {
 }
 
 // опратор new - используется для создания нового объекта
-const user = new User('Ulbi', 'Timur');
+const user = new User('Ulbi', 'Timur', 15);
 //user.id = 5; // нельзя изменить свойство только для чтения (отсутствует сеттер)
 user.username = 5; // изменение имени пользователя с помощью сеттера
 

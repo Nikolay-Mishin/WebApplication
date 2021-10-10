@@ -59,7 +59,7 @@ class UserRepo {
         return user;
     }
     get() {
-        return new User('Ulbi', 123);
+        return new User('Ulbi', 123, 15);
     }
     update(user) {
         return user;

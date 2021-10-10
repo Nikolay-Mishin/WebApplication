@@ -51,7 +51,7 @@
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"allowUnreachableCode": true,
-		"noFallthroughCasesInSwitch": true,
+		"noFallthroughCasesInSwitch": false,
 		"forceConsistentCasingInFileNames": true
 	}
 }

@@ -15,11 +15,13 @@
 // Слой 2. Бизнес-логика - сервисный слой (клиентская часть): например, работа с репозиторием
 // Мы работаем либо с одной БД, либо с другой (MongoRepository | MySqlRepository)
 // Стоит задача, какой из репозиториев использовать (в идеале, сервисный слой вообще не должен знать, какой из репозиториев он используем - для него это не важно)
-// У него есть некоторый интерфейс, к которому он обращается, получет какие-то данный из репозиторного слоя и все (ему не важно знать с какой из БД именно он работает: Mongo, MySql, PostGres и тд)
+// У него есть некоторый интерфейс, к которому он обращается, получет какие-то данный из репозиторного слоя и все (ему не важно знать с какой из БД именно он работает: Mongo, MySql, Postgres и тд)
 // Мы работаем с некоторым интерфейсом Repository, а реализацию (имплементацию Mongo или MySql) этого репозиторию мы определяю где-то снаружи, например на уровне конфигурации
 // Таким образом, чтобы поменять одну имплементацию на другую, нам не надо менять сервисный слой - достаточно подправить конфигурацию
 
-interface UserRepo {
+// Работа с БД
+
+interface IUserRepo {
 
 	getUsers(): User[];
 	//create(user: User): User;
@@ -29,16 +31,44 @@ interface UserRepo {
 
 }
 
-class UserMongoDbRepo implements UserRepo {
+class UserMongoDbRepo implements IUserRepo {
 
 	getUsers(): User[] {
 		console.log('Используем подключение к монго и получаем пользователей');
-		return [new User('Пользователь из Монго БД', 123)];
+		return [new User('Пользователь из Монго БД', 123, 15)];
 	}
 
 }
 
-const userMongoDbRepo = new UserMongoDbRepo();
+class UserPostgresDbRepo implements IUserRepo {
+
+	getUsers(): User[] {
+		console.log('Используем подключение к Postgres и получаем пользователей');
+		return [new User('Пользователь из Postgres БД', 123, 15)];
+	}
+
+}
+
+// Клиент
+
+class UserService {
+
+	userRepo: IUserRepo; // в качестве типа указывается не конкретный класс или имплементация, а сам интерфейс (общий тип)
+
+	// инициализируем репозиторий через конструктор - агрегация
+	constructor(userRepo: IUserRepo) {
+		this.userRepo = userRepo;
+	}
+
+	filterUserByAge(age: number): User[] {
+		const users = this.userRepo.getUsers(),
+			usersFiltered = users.filter(user => user.age >= age);
+		return usersFiltered;
+	}
+
+}
+
+const userService = new UserService(new UserMongoDbRepo());
 
 // 6.2. Singleton (Одиночка)
 

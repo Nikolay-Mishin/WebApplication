@@ -29,7 +29,7 @@
 		<Content Include="src\ts-oop\compose.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Include="src\ts-oop\oop-6-dep.Injection-singleton.ts">
+		<Content Include="src\ts-oop\oop-6-dep.injection-singleton.ts">
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Include="src\ts-oop\oop-5-abstract-interface.ts">

@@ -18,7 +18,7 @@
 // Один интерфейс может наследовать другой, при этом может быть только 1 интерфейс-родитель, как и при наследовании классов
 // Интерфейс не может имплементировать другие интерфейсы, тк данная операция подразумевает необдимость реализации всех методов имплементируемого интерфейса, что возможно только в классе
 
-interface I_Client {
+interface IClient {
 
 	url: string;
 
@@ -35,7 +35,7 @@ interface I_Client {
 // Все абстрактные методы должны быть реализованы в классе-наследнике
 // Абстрактные свойства и методы, также могут иметь только модификатор доступа `public` при реализации в дочернем классе
 
-abstract class Client implements I_Client {
+abstract class Client implements IClient {
 
 	public url: string;
 	abstract data: string;
@@ -85,26 +85,26 @@ class ClientChild extends Client {
 
 // Пример 1
 
-interface I_Reader {
+interface IReader {
 
 	read(url: string): string;
 
 }
 
-interface I_Writer {
+interface IWriter {
 
 	write(data: string): void;
 
 }
 
 // наследование интерфейса
-interface I_FileReader extends I_Reader {
+interface IFileReader extends IReader {
 
 	read(data: string): string;
 
 }
 
-class FileClient implements I_Reader, I_Writer {
+class FileClient implements IReader, IWriter {
 
 	read(url: string): string {
 		// реализация для файла
@@ -117,7 +117,7 @@ class FileClient implements I_Reader, I_Writer {
 	}
 }
 
-class HttpClient implements I_Reader, I_Writer {
+class HttpClient implements IReader, IWriter {
 
 	read(url: string): string {
 		// реализация для Http
@@ -134,7 +134,7 @@ class HttpClient implements I_Reader, I_Writer {
 
 // тк мы не можем явно указать в качестве получаемого типа User (репозиторий предназначен для работы с различными сущностями - не только User: Book, Car и тд), мы объявляем Дженерик (обобщение) - тип <Type>, который будет применяться ко всме сущностям
 // В качестве Type указывается тип, который приходит извне и заранее неизвестен явно
-interface Repository<T> {
+interface IRepository<T> {
 
 	// CRUD
 	// create: (obj: T) => T; // альтернативный способ обявления метода в интерфейсе
@@ -146,7 +146,7 @@ interface Repository<T> {
 }
 
 // в качестве типа Дженерика Repository указываем тип User2
-class UserRepo implements Repository<User> {
+class UserRepo implements IRepository<User> {
 
 	create(user: User): User {
 		//return database.query(INSERT ...); // запрос к БД
@@ -154,7 +154,7 @@ class UserRepo implements Repository<User> {
 	}
 
 	get(): User {
-		return new User('Ulbi', 123);
+		return new User('Ulbi', 123, 15);
 	}
 
 	update(user: User): User {
@@ -167,7 +167,7 @@ class UserRepo implements Repository<User> {
 
 }
 
-class CarRepo implements Repository<Car> {
+class CarRepo implements IRepository<Car> {
 
 	create(car: Car): Car {
 		return car;
