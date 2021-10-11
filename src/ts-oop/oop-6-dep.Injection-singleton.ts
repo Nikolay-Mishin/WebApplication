@@ -21,7 +21,7 @@
 
 // Работа с БД
 
-interface I_UserRepo {
+interface IUserRepo {
 
 	getUsers(): User[];
 	//create(user: User): User;
@@ -31,7 +31,7 @@ interface I_UserRepo {
 
 }
 
-class UserMongoDbRepo implements I_UserRepo {
+class UserMongoDbRepo implements IUserRepo {
 
 	public getUsers(): User[] {
 		console.log('Используем подключение к монго и получаем пользователей');
@@ -40,7 +40,7 @@ class UserMongoDbRepo implements I_UserRepo {
 
 }
 
-class UserPostgresDbRepo implements I_UserRepo {
+class UserPostgresDbRepo implements IUserRepo {
 
 	public getUsers(): User[] {
 		console.log('Используем подключение к Postgres и получаем пользователей');
@@ -53,14 +53,14 @@ class UserPostgresDbRepo implements I_UserRepo {
 
 class UserService {
 
-	private _userRepo: I_UserRepo; // в качестве типа указывается не конкретный класс/имплементация, а сам интерфейс (общий тип)
+	private _userRepo: IUserRepo; // в качестве типа указывается не конкретный класс/имплементация, а сам интерфейс (общий тип)
 
 	// инициализируем репозиторий через конструктор - агрегация
-	constructor(userRepo: I_UserRepo) {
+	constructor(userRepo: IUserRepo) {
 		this._userRepo = userRepo;
 	}
 
-	public get userRepo(): I_UserRepo {
+	public get userRepo(): IUserRepo {
 		return this._userRepo;
 	}
 

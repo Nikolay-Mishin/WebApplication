@@ -6,20 +6,25 @@ import Greeter from "./main";
 //console.log($);
 console.log("ts/app.ts");
 console.log(lib);
-//const $app = '';
-function name() {
-    return '';
-}
-name();
-var test = /** @class */ (function () {
-    function test() {
-    }
-    return test;
-}());
-new test();
 document.onload = function () {
     var el = document.body;
     var greeter = new Greeter(el);
     greeter.start();
 };
+//const $app = '';
+function name() {
+    return '';
+    //return '';
+}
+name();
+var Test = /** @class */ (function () {
+    function Test() {
+    }
+    Test.prototype.test = function () {
+        return;
+    };
+    return Test;
+}());
+var test = new Test();
+console.log(test);
 //# sourceMappingURL=app.js.map
