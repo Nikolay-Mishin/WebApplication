@@ -40,7 +40,11 @@ const h = ({}).registerAll(
 				return result;
 			};
 		if (_file) {
-			const file = !json || isObject(_file) ? _file : JSON.parse(_file),
+			log('search:', search);
+			log('isObject:', _file.isObject());
+			log('isJson:', _file.isJson());
+			log('_file\n', _file);
+			const file = !json || !_file.isJson() ? _file : JSON.parse(_file),
 				info = { path, file };
 			this.config = this.config || info;
 			if (this.config.path == cwd) return result();
@@ -64,7 +68,7 @@ const h = ({}).registerAll(
 	}).bind({})
 );
 
-const configList = INIT_CWD.assignConfig('config.json', 'package.json');
+const configList = INIT_CWD.assignConfig('config.json', 'package.json', 'gulpfile.js');
 log('configList\n', configList);
 
 export const { runInContext, searchFile, assignConfig } = h,

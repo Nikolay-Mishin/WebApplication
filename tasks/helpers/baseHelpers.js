@@ -69,7 +69,24 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
+	function isJson(item) {
+		log('typeof:', typeof item);
+		const str = typeof item !== "string"
+			? JSON.stringify(item)
+			: item;
+		try {
+			JSON.parse(item);
+			//item = JSON.parse(str);
+		}
+		catch (e) {
+			return false;
+		}
+		if (typeof str === "object" && str !== null) {
+			return true;
+		}
+		return true;
+	},
 	function forEach(obj, cb) { for (let key in obj) cb(obj[key], key); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
@@ -93,14 +110,14 @@ const h = ({}).registerAll(
 		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
 		return target;
 	},
-	function empty(obj) { return (obj.isObject() ? keys(obj) : obj).length == 0; },
+	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
 	function reverse(obj) { return from(obj).reverse(); },
-	function _filter(obj, cb) { return fromEntries(entries(obj).filter(cb)); },
+	function _filter(obj, cb) { return fromEntries(obj.entries().filter(cb)); },
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
 	function bind(context, ...funcList) { return concat(funcList).map(func => func.bind(context)) },
 	function getBind(context, func) { return bind(context, func).shift(); },
-	function setBind (context, ...funcList) { return assign(context, fromEntries(bind(context, ...funcList)
+	function setBind (context, ...funcList) { return context.assign(fromEntries(bind(context, ...funcList)
 		.map((func, i) => [funcList[i].name, func]))); },
 	function callBind(context, args, cb) { return cb.call(context, ...args); },
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
