@@ -75,11 +75,11 @@
 		"strictFunctionTypes": true,			/* Включает более строгую проверку сигнатур функций */
 		/* Включает более строгую проверку сигнатур при использовании соответствующих методов: bind, call, apply. */
 		"strictBindCallApply": true,
-		/* Не включаются автоматически при включении флага strict. */
+		/* Не включаются автоматически при включении флага strict. Отключает "class-name" и "interface-name" в tslint */
 		/* Запрещает обращаться к свойствам объекта через точку aka dot notation, если свойства объекта описаны не явно, а через произвольные параметры (aka arbitrarily-named properties, index signatures). */
-		"noPropertyAccessFromIndexSignature": true,
+		//"noPropertyAccessFromIndexSignature": true,
 		/* Если произвольные параметры (aka arbitrarily-named properties, index signatures) будут undefined, тип переменной будет определяться как type | undefined. */
-		"noUncheckedIndexedAccess": true,
+		//"noUncheckedIndexedAccess": true,
 		
 		/* Linter Checks */
 		"forceConsistentCasingInFileNames": true, /* Включает режим чувствительности к регистру для импорта файлов */

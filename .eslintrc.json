@@ -124,6 +124,7 @@ Happy linting! 💖
         ],
         "@typescript-eslint/type-annotation-spacing": "off",
         "@typescript-eslint/unified-signatures": "error",
+        "arrow-body-style": "error",
         "arrow-parens": [
             "off",
             "always"

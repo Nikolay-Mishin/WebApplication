@@ -9,8 +9,8 @@
 		"strictFunctionTypes": true,
 		"strictBindCallApply": true,
 
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
+		//"noPropertyAccessFromIndexSignature": true,
+		//"noUncheckedIndexedAccess": true,
 
 		"forceConsistentCasingInFileNames": true,
 		"noUnusedLocals": true,
