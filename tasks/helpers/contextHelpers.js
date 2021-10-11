@@ -56,8 +56,6 @@ const h = ({}).registerAll(
 			searchFile.call(this, dirname(path), ...args.slice(1));
 	}).bind({}),
 	(function assignConfig(path, ...configList) {
-		log(Object.protoList());
-		log(Object.protoList());
 		return fromEntries(configList.concat().map(file => {
 			const { config, root, parent } = path.searchFile(file),
 				parentList = entries(parent || {}).map(file => file[1]).reverse();
