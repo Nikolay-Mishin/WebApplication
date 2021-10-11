@@ -26,14 +26,14 @@ name();
 
 interface ITest {
 
-	test();
+	test(): string;
 
 }
 
 class Test implements ITest {
 
 	public test() {
-		return;
+		return '';
 	}
 
 }

@@ -21,7 +21,7 @@ var Test = /** @class */ (function () {
     function Test() {
     }
     Test.prototype.test = function () {
-        return;
+        return '';
     };
     return Test;
 }());

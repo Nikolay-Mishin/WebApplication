@@ -34,6 +34,7 @@
 		"allowJs": true,
 		"checkJs": true,
 		"skipLibCheck": true,
+		"declaration": true,
 		"importHelpers": true,
 		"sourceMap": true,
 		"removeComments": false,
