@@ -11,12 +11,15 @@ function name() {
     return '';
 }
 name();
-class test {
-}
+var test = /** @class */ (function () {
+    function test() {
+    }
+    return test;
+}());
 new test();
-document.onload = () => {
-    const el = document.body;
-    const greeter = new Greeter(el);
+document.onload = function () {
+    var el = document.body;
+    var greeter = new Greeter(el);
     greeter.start();
 };
 //# sourceMappingURL=app.js.map

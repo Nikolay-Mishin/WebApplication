@@ -11,12 +11,15 @@
 // В TypeScript такой тип полиморфизма отсутствует, тк невозможно переопределение методов за счет перегрузки
 // Также еще одной разновидностью ad-hoc полиморфизма является `приведение типов`, например, когда мы явно какой-то дочерний класс преобразовываем к родительскому
 // класс Калькулятор
-class Calculator {
-    add(a, b) {
-        return a + b;
+var Calculator = /** @class */ (function () {
+    function Calculator() {
     }
-}
-const calculator = new Calculator();
+    Calculator.prototype.add = function (a, b) {
+        return a + b;
+    };
+    return Calculator;
+}());
+var calculator = new Calculator();
 calculator.add(5, 5); // 10
 //calculator.add('5', '5'); // '55'
 // 3.1. Параметрический Полиморфизм (истинный)
@@ -32,12 +35,12 @@ calculator.add(5, 5); // 10
 //employee.greeting();
 //person.greeting();
 // создаем массив объектов и в качестве типа указываем базовый родительский класс
-const personList = [UlbiTv, employee, person];
+var personList = [UlbiTv, employee, person];
 // функция массового приветсвия - вызываем метод greeting() у всех объектов типа Person, в тч и у дочерних объектов (Employee, Developer)
 // суть полиморфизма - много форм (разные объекты), но работаем с ними по сути одинаково (вызов одного метода greeting)
 // у всех объектов один и тот же метод greeting, но в каждом классе реализована своя логика
 function massGreeting(persons) {
-    persons.forEach(person => person.greeting());
+    persons.forEach(function (person) { return person.greeting(); });
     //for (let i = 0; i < persons.length; i++) {
     //	const person = persons[i];
     //	person.greeting();

@@ -5,24 +5,25 @@
 // Класс может включать столько свойств и методов, сколько потребуется
 // Хорошей практикой является делать классы под конкретные задачи
 // класс Прямоугольник
-class Rectangle {
+var Rectangle = /** @class */ (function () {
     // спец. метод (блок инструкций), который будет вызван при создании объекта (экземпляра класса)
     // this - ссылка (указатель) на текущий объект (контекст), у которого будет вызван метод
     // инициализируем свойства объекта
-    constructor(w, h) {
+    function Rectangle(w, h) {
         this.width = w;
         this.height = h;
     }
     // метод, который возвращает площадь прямоугольника
-    calcArea() {
+    Rectangle.prototype.calcArea = function () {
         return this.width * this.height; // результат
-    }
+    };
     // метод, который возвращает периметр прямоугольника
-    calcPerimeter() {
+    Rectangle.prototype.calcPerimeter = function () {
         return (this.width + this.height) * 2; // результат
-    }
-}
+    };
+    return Rectangle;
+}());
 // оператор `new` - используется для создания нового объекта
-const rect1 = new Rectangle(5, 10), rect2 = new Rectangle(52, 102), rect3 = new Rectangle(10, 102);
+var rect1 = new Rectangle(5, 10), rect2 = new Rectangle(52, 102), rect3 = new Rectangle(10, 102);
 rect1.calcArea(); // вызов метода
 //# sourceMappingURL=oop.js.map

@@ -12,124 +12,167 @@
 // Геттеры позволяют получать значения свойств
 // Сеттеры позволяют устанавливать значения свойств
 // класс Прямоугольник
-class Rectangle2 {
+var Rectangle2 = /** @class */ (function () {
     // спец. метод (блок инструкций), который будет вызван при создании объекта (экземпляра класса)
     // this - ссылка (указатель) на текущий объект (контекст), у которого будет вызван метод
     // инициализируем свойства объекта
-    constructor(w, h) {
+    function Rectangle2(w, h) {
         this.width = w; // вызывает сеттер `width`
         this.height = h;
     }
-    // геттер для получения ширины прямоугольника
-    get width() {
-        return this._width;
-    }
-    // сеттер для установки значения ширины прямоугольника
-    set width(value) {
-        if (value <= 0) {
-            this._width = 1;
-        }
-        else {
-            this._width = value;
-        }
-    }
-    // геттер для получения высоты прямоугольника
-    get height() {
-        return this._height;
-    }
-    // сеттер для установки значения высоты прямоугольника
-    set height(value) {
-        // ширина прямоугольника не может быть отрицательной
-        if (value <= 0) {
-            this._height = 1;
-        }
-        else {
-            this._height = value;
-        }
-    }
+    Object.defineProperty(Rectangle2.prototype, "width", {
+        // геттер для получения ширины прямоугольника
+        get: function () {
+            return this._width;
+        },
+        // сеттер для установки значения ширины прямоугольника
+        set: function (value) {
+            if (value <= 0) {
+                this._width = 1;
+            }
+            else {
+                this._width = value;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Rectangle2.prototype, "height", {
+        // геттер для получения высоты прямоугольника
+        get: function () {
+            return this._height;
+        },
+        // сеттер для установки значения высоты прямоугольника
+        set: function (value) {
+            // ширина прямоугольника не может быть отрицательной
+            if (value <= 0) {
+                this._height = 1;
+            }
+            else {
+                this._height = value;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
     // метод, который возвращает площадь прямоугольника
-    calcArea() {
+    Rectangle2.prototype.calcArea = function () {
         return this.width * this.height; // результат
-    }
+    };
     // метод, который возвращает периметр прямоугольника
-    calcPerimeter() {
+    Rectangle2.prototype.calcPerimeter = function () {
         return (this.width + this.height) * 2; // результат
-    }
-}
+    };
+    return Rectangle2;
+}());
 // оператор new - используется для создания нового объекта
-const rect = new Rectangle2(5, 10);
+var rect = new Rectangle2(5, 10);
 rect.calcArea(); // вызов метода
-const width2 = rect.width;
+var width2 = rect.width;
 //const width2 = rect._width; // ошибка - свойтво доступно только внутри класса Rectangle
 // класс Пользователь
-class User {
-    constructor(username, password, age) {
+var User = /** @class */ (function () {
+    function User(username, password, age) {
         this.username = username;
         this.password = password;
         this._id = this.generateRandomId();
         this.age = age;
     }
-    get username() {
-        return this._username;
-    }
-    set username(value) {
-        this._username = value;
-    }
-    get password() {
-        return this._password;
-    }
-    set password(value) {
-        this._password = value;
-    }
-    get id() {
-        return this._id;
-    }
-    get age() {
-        return this._age;
-    }
-    set age(value) {
-        this._age = value;
-    }
-    generateRandomId() {
+    Object.defineProperty(User.prototype, "username", {
+        get: function () {
+            return this._username;
+        },
+        set: function (value) {
+            this._username = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "password", {
+        get: function () {
+            return this._password;
+        },
+        set: function (value) {
+            this._password = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(User.prototype, "age", {
+        get: function () {
+            return this._age;
+        },
+        set: function (value) {
+            this._age = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    User.prototype.generateRandomId = function () {
         return Math.random();
-    }
-}
+    };
+    return User;
+}());
 // опратор new - используется для создания нового объекта
-const user = new User('Ulbi', 'Timur', 15);
+var user = new User('Ulbi', 'Timur', 15);
 //user.id = 5; // нельзя изменить свойство только для чтения (отсутствует сеттер)
 user.username = 5; // изменение имени пользователя с помощью сеттера
 // класс Базы данных
-class Database {
-    constructor(url, port, username, password) {
+var Database = /** @class */ (function () {
+    function Database(url, port, username, password) {
         this._url = url;
         this._port = port;
         this._username = username;
         this._password = password;
         this._tables = [];
     }
-    // Геттеры для свойств класса
-    get url() {
-        return this._url;
-    }
-    get port() {
-        return this._port;
-    }
-    get username() {
-        return this._username;
-    }
-    get password() {
-        return this._password;
-    }
+    Object.defineProperty(Database.prototype, "url", {
+        // Геттеры для свойств класса
+        get: function () {
+            return this._url;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Database.prototype, "port", {
+        get: function () {
+            return this._port;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Database.prototype, "username", {
+        get: function () {
+            return this._username;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Database.prototype, "password", {
+        get: function () {
+            return this._password;
+        },
+        enumerable: false,
+        configurable: true
+    });
     // добавляет новую таблицу в список таблиц
-    createNewtable(table) {
+    Database.prototype.createNewtable = function (table) {
         return this._tables.push(table);
-    }
+    };
     // очищает список таблиц
-    clearTables() {
+    Database.prototype.clearTables = function () {
         return this._tables = [];
-    }
-}
-const db = new Database(1, 2, 3, 4); // создаем объект (подключение к бд)
+    };
+    return Database;
+}());
+var db = new Database(1, 2, 3, 4); // создаем объект (подключение к бд)
 // добавляем новые таблицы
 db.createNewtable({ name: 'roles' });
 db.createNewtable({ name: 'users' });

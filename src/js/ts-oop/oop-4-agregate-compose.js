@@ -7,22 +7,31 @@
 // Отличие агрегации от композиции заключается в том, что при данном подходе в класс передаются объекты других классов передаются извне через параметры конструктора, те в отличии от композиции эти объекты являются самостоятельными сущностями (не зависят от данного класса) и могут использоваться, как отдельно от данного класса, так и в других классах
 // Например, у автомобиля есть объект Елочка-освежитель, которая может существовать как в автомобиле, так и в квартире или человек может носить в качестве аксессуара и тд
 // двигатель
-class Engine {
-    drive() {
+var Engine = /** @class */ (function () {
+    function Engine() {
+    }
+    Engine.prototype.drive = function () {
         console.log('Двигатель работает');
-    }
-}
+    };
+    return Engine;
+}());
 // колесо
-class Wheel {
-    drive() {
-        console.log('Колеса едут');
+var Wheel = /** @class */ (function () {
+    function Wheel() {
     }
-}
+    Wheel.prototype.drive = function () {
+        console.log('Колеса едут');
+    };
+    return Wheel;
+}());
 // освежитель
-class Freshener {
-}
-class Car {
-    constructor(freshener) {
+var Freshener = /** @class */ (function () {
+    function Freshener() {
+    }
+    return Freshener;
+}());
+var Car = /** @class */ (function () {
+    function Car(freshener) {
         // композиция
         this.engine = new Engine();
         this.wheels = [];
@@ -35,19 +44,21 @@ class Car {
         console.log(this.freshener);
     }
     // делегирование - вызов такого же метода у других объектов/классов внутри одного метода
-    drive() {
+    Car.prototype.drive = function () {
         this.engine.drive();
-        this.wheels.forEach(wheel => wheel.drive());
-    }
-}
-const car = new Car(new Freshener());
+        this.wheels.forEach(function (wheel) { return wheel.drive(); });
+    };
+    return Car;
+}());
+var car = new Car(new Freshener());
 car.drive();
 // квартира
-class Flat {
-    constructor(freshener) {
+var Flat = /** @class */ (function () {
+    function Flat(freshener) {
         this.freshener = freshener;
         console.log(this.freshener);
     }
-}
-const flat = new Flat(new Freshener());
+    return Flat;
+}());
+var flat = new Flat(new Freshener());
 //# sourceMappingURL=oop-4-agregate-compose.js.map

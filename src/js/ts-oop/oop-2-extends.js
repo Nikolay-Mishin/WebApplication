@@ -1,5 +1,20 @@
 "use strict";
 // ООП построено на 3 основных концепциях: Инкапсуляция, Наследование и Полиморфизм
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 // 2. Наследование
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/super
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Classes/static
@@ -17,105 +32,148 @@
 // super должен быть вызван первым!
 // методы и свойства дочернего класса, объявленные с теми же именами, что и у класса-родителя, переопределяют (перезаписывают/затирают) их
 // базовый класс
-class Person {
+var Person = /** @class */ (function () {
     // инициализируем свойства в конструкторе класса
-    constructor(firstName, lastName, age) {
+    function Person(firstName, lastName, age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
     }
-    // для каждого поля создаем геттеры и сеттеры
-    get firstName() {
-        return this._firstName;
-    }
-    set firstName(value) {
-        this._firstName = value;
-    }
-    get lastName() {
-        return this._lastName;
-    }
-    set lastName(value) {
-        this._lastName = value;
-    }
-    get age() {
-        return this._age;
-    }
-    set age(value) {
-        if (value <= 0) {
-            this._age = 0;
-        }
-        else {
-            this._age = value;
-        }
-    }
-    // метод отдает полное имя
-    get fullName() {
-        return `Фамилия - ${this.lastName} Имя - ${this.firstName}`;
-    }
+    Object.defineProperty(Person.prototype, "firstName", {
+        // для каждого поля создаем геттеры и сеттеры
+        get: function () {
+            return this._firstName;
+        },
+        set: function (value) {
+            this._firstName = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Person.prototype, "lastName", {
+        get: function () {
+            return this._lastName;
+        },
+        set: function (value) {
+            this._lastName = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Person.prototype, "age", {
+        get: function () {
+            return this._age;
+        },
+        set: function (value) {
+            if (value <= 0) {
+                this._age = 0;
+            }
+            else {
+                this._age = value;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Person.prototype, "fullName", {
+        // метод отдает полное имя
+        get: function () {
+            return "\u0424\u0430\u043C\u0438\u043B\u0438\u044F - " + this.lastName + " \u0418\u043C\u044F - " + this.firstName;
+        },
+        enumerable: false,
+        configurable: true
+    });
     // метод выводит в лог приветствие
-    greeting() {
-        console.log(`Привет я человек и меня зовут ${this.firstName}`);
-    }
-}
-const person = new Person('Person', 'TV', 15);
+    Person.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442 \u044F \u0447\u0435\u043B\u043E\u0432\u0435\u043A \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 " + this.firstName);
+    };
+    return Person;
+}());
+var person = new Person('Person', 'TV', 15);
 console.log(person);
 // класс Работник - наследует класс Person (класс-родитель)
-class Employee extends Person {
+var Employee = /** @class */ (function (_super) {
+    __extends(Employee, _super);
     // инициализируем свойства в конструкторе класса=
-    constructor(firstName, lastName, age, inn, passport, snils) {
-        super(firstName, lastName, age); // вызываем конструктор класса-родителя, чтобы его не затереть (переопределить)
-        this.inn = inn;
-        this.passport = passport;
-        this.snils = snils;
+    function Employee(firstName, lastName, age, inn, passport, snils) {
+        var _this = _super.call(this, firstName, lastName, age) || this;
+        _this.inn = inn;
+        _this.passport = passport;
+        _this.snils = snils;
+        return _this;
     }
-    get inn() {
-        return this._inn;
-    }
-    set inn(value) {
-        this._inn = value;
-    }
-    get passport() {
-        return this._passport;
-    }
-    set passport(value) {
-        this._passport = value;
-    }
-    get snils() {
-        return this._snils;
-    }
-    set snils(value) {
-        this._snils = value;
-    }
+    Object.defineProperty(Employee.prototype, "inn", {
+        get: function () {
+            return this._inn;
+        },
+        set: function (value) {
+            this._inn = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Employee.prototype, "passport", {
+        get: function () {
+            return this._passport;
+        },
+        set: function (value) {
+            this._passport = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Employee.prototype, "snils", {
+        get: function () {
+            return this._snils;
+        },
+        set: function (value) {
+            this._snils = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
     // переопределяем родительский метод приветствия
-    greeting() {
-        console.log(`Привет я работник и меня зовут ${this.firstName}`);
-    }
-}
-const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
+    Employee.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442 \u044F \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u043A \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 " + this.firstName);
+    };
+    return Employee;
+}(Person));
+var employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
 console.log(employee);
-class Developer extends Employee {
-    constructor(firstName, lastName, age, inn, passport, snils, level, language) {
-        super(firstName, lastName, age, inn, passport, snils); // вызываем родительский конструктор
-        this.level = level;
-        this.language = language;
+var Developer = /** @class */ (function (_super) {
+    __extends(Developer, _super);
+    function Developer(firstName, lastName, age, inn, passport, snils, level, language) {
+        var _this = _super.call(this, firstName, lastName, age, inn, passport, snils) || this;
+        _this.level = level;
+        _this.language = language;
+        return _this;
     }
-    get level() {
-        return this._level;
-    }
-    set level(value) {
-        this._level = value;
-    }
-    get language() {
-        return this._language;
-    }
-    set language(value) {
-        this._language = value;
-    }
-    greeting() {
-        console.log(`Привет я разработчик и меня зовут ${this.firstName}`);
-    }
-}
-const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
+    Object.defineProperty(Developer.prototype, "level", {
+        get: function () {
+            return this._level;
+        },
+        set: function (value) {
+            this._level = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Developer.prototype, "language", {
+        get: function () {
+            return this._language;
+        },
+        set: function (value) {
+            this._language = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Developer.prototype.greeting = function () {
+        console.log("\u041F\u0440\u0438\u0432\u0435\u0442 \u044F \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u0447\u0438\u043A \u0438 \u043C\u0435\u043D\u044F \u0437\u043E\u0432\u0443\u0442 " + this.firstName);
+    };
+    return Developer;
+}(Employee));
+var UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
 console.log(UlbiTv);
 console.log(UlbiTv.fullName); // используем геттер родительского класс
 //# sourceMappingURL=oop-2-extends.js.map
