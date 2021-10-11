@@ -15,6 +15,7 @@
 	"compilerOptions": {
 		"outDir": "src/js",
 		"baseUrl": "./",
+		"declarationDir": "src/js/@types",
 		"target": "es5",
 		"module": "es6",
 		"moduleResolution": "node",

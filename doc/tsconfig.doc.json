@@ -16,13 +16,14 @@
 	"compilerOptions": {
 		/* Basic Options */
 		//"outFile": "src/js/main-ts.js",	/* Concatenate and emit output to single file. */
-		"outDir": "src/js", /* Redirect output structure to the directory. */
+		"outDir": "src/js",					/* Redirect output structure to the directory. */
 		//"rootDir": "src",					/* Root directory of input files. Use to control the output with --outDir. */
 
 		/* Module Resolution Options */
 		"baseUrl": "./", /* Base directory to resolve non-absolute module names. */
+		"declarationDir": "src/js/@types",
 		"target": "es5", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
-		"module": "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
+		"module": "es6",			/* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
 		"moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
 		"jsx": "react", /* Specify JSX code generation: 'react-jsx', 'preserve', 'react-native', or 'react'. */
 		"lib": [ "dom", "dom.iterable", "es6", "esnext" ], /* Specify library files to be included in the compilation:  */
@@ -45,35 +46,35 @@
 		"charset": "utf-8",
 		"newLine": "crlf",
 		//"emitBOM": true,
-		"allowJs": true, /* Allow javascript files to be compiled. */
-		"checkJs": true, /* Report errors in .js files. */
+		"allowJs": true,					/* Allow javascript files to be compiled. */
+		"checkJs": true,					/* Report errors in .js files. */
 		"skipLibCheck": true,
-		"declaration": true, /* Generates corresponding '.d.ts' file. */
-		"importHelpers": true, /* Import emit helpers from 'tslib'. */
-		"sourceMap": true, /* Generates corresponding '.map' file. */
-		"removeComments": false, /* Do not emit comments to output. */
+		"declaration": true,				/* Generates corresponding '.d.ts' file. */
+		"importHelpers": true,				/* Import emit helpers from 'tslib'. */
+		"sourceMap": true,					/* Generates corresponding '.map' file. */
+		"removeComments": false,			/* Do not emit comments to output. */
 		//"noLib": true,
-		"noEmit": false, /* Do not emit outputs. */
+		"noEmit": false,					/* Do not emit outputs. */
 		"noEmitOnError": true,
 		"noEmitHelpers": false,
 
 		/* Source Map Options */
-		// "sourceRoot": "./",	/* Specify the location where debugger should locate TypeScript files instead of source locations. */
-		// "mapRoot": "./",		/* Specify the location where debugger should locate map files instead of generated locations. */
+		// "sourceRoot": "./",	/* Specify the location where debugger should locate TypeScript files instead of source. */
+		// "mapRoot": "./",	   /* Specify the location where debugger should locate map files instead of generated locations. */
 		// "inlineSourceMap": true,	/* Emit a single file with source maps instead of having a separate file. */
-		/* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap' to be set. 	
+		/* Emit the source alongside the sourcemaps within a single file; requires '--inlineSourceMap' or '--sourceMap'. 	
 		// "inlineSources": true,
 		
 		/* Strict Type-Checking Options */
-		"strict": true, /* Enable all strict type-checking options. */
+		"strict": true,					/* Enable all strict type-checking options. */
 		/* Включаются автоматически при включении флага strict. */
-		"alwaysStrict": true, /* Parse in strict mode and emit "use strict" for each source file. */
-		"noImplicitThis": true, /* Raise error on 'this' expressions with an implied 'any' type. */
-		"noImplicitAny": true, /* Raise error on expressions and declarations with an implied 'any' type. */
-		"strictNullChecks": true, /* Enable strict null checks. */
+		"alwaysStrict": true,			/* Parse in strict mode and emit "use strict" for each source file. */
+		"noImplicitThis": true,			/* Raise error on 'this' expressions with an implied 'any' type. */
+		"noImplicitAny": true,			/* Raise error on expressions and declarations with an implied 'any' type. */
+		"strictNullChecks": true,		/* Enable strict null checks. */
 		/* Следит, чтобы объявленные свойства класса всегда были инициализированы. Работает, если "strictNullChecks" включен. */
 		"strictPropertyInitialization": true,
-		"strictFunctionTypes": true, /* Включает более строгую проверку сигнатур функций */
+		"strictFunctionTypes": true,	/* Включает более строгую проверку сигнатур функций */
 		/* Включает более строгую проверку сигнатур при использовании соответствующих методов: bind, call, apply. */
 		"strictBindCallApply": true,
 		/* Не включаются автоматически при включении флага strict. Отключает "class-name" и "interface-name" в tslint */
@@ -84,14 +85,14 @@
 
 		/* Linter Checks */
 		"forceConsistentCasingInFileNames": true, /* Включает режим чувствительности к регистру для импорта файлов */
-		"noUnusedLocals": true, /* Report errors on unused locals. */
-		"noUnusedParameters": true, /* Report errors on unused parameters. */
-		"noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		"noFallthroughCasesInSwitch": true, /* Проверяет наличие break в операторе switch/case. */
+		"noUnusedLocals": true,					/* Report errors on unused locals. */
+		"noUnusedParameters": true,				/* Report errors on unused parameters. */
+		"noImplicitReturns": true,				/* Report error when not all code paths in function return a value. */
+		"noFallthroughCasesInSwitch": true,		/* Проверяет наличие break в операторе switch/case. */
 
 		/* Linter Additional Checks */
-		"allowUnreachableCode": false, /* Запрещает код, написанный после операторов return, throw, break, continue. */
-		"allowUnusedLabels": false, /* Disallow Unused Labels */
+		"allowUnreachableCode": false,			/* Запрещает код, написанный после операторов return, throw, break, continue. */
+		"allowUnusedLabels": false,				/* Disallow Unused Labels */
 
 		/* Additional Checks */
 		/* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
@@ -103,8 +104,8 @@
 		"suppressImplicitAnyIndexErrors": false,
 
 		/* Experimental Options */
-		"experimentalDecorators": false, /* Enables experimental support for ES7 decorators. */
-		"emitDecoratorMetadata": false /* Enables experimental support for emitting type metadata for decorators. */
+		"experimentalDecorators": false,		/* Enables experimental support for ES7 decorators. */
+		"emitDecoratorMetadata": false			/* Enables experimental support for emitting type metadata for decorators. */
 	}
 }
 
