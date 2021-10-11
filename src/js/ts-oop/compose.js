@@ -1,3 +1,4 @@
+"use strict";
 const f = (x) => x + 1;
 const g = (x) => x * 2;
 const compose = (f1, f2) => (x) => f1(f2(x));

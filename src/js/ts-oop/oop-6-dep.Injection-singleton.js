@@ -1,3 +1,4 @@
+"use strict";
 // Комбинируя все принципы и подходы, которые мы рассмотрели ранее (наследование, интерфейсы, полиморфизм, инкапсуляция), можно разрабатывать очень гибкие, масштабируемые приложения
 // На основе всех этих принципов строятся такие принципы, как S.O.L.I.D., большое количество паттернов проектирования, которые предназначены практически на любой случай жизни
 class UserMongoDbRepo {
@@ -44,10 +45,9 @@ class Database2 {
     }
     get url() {
         return this._url;
-        console.log('');
     }
 }
 const db1 = new Database2(), db2 = new Database2();
 console.log(db1.url);
 console.log(db2.url);
-//# sourceMappingURL=oop-6-dep.Injection-singleton.js.map
+//# sourceMappingURL=oop-6-dep.injection-singleton.js.map

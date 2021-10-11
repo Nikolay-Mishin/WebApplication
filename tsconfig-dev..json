@@ -1,0 +1,10 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		// выключим некоторый линтинг, чтобы не ломалась компиляция
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"allowUnreachableCode": true,
+		"allowUnusedLabels": true
+	}
+}

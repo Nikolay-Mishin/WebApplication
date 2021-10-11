@@ -6,6 +6,14 @@ import Greeter from "./main";
 //console.log($);
 console.log("ts/app.ts");
 console.log(lib);
+//const $app = '';
+function name() {
+    return '';
+}
+name();
+class test {
+}
+new test();
 document.onload = () => {
     const el = document.body;
     const greeter = new Greeter(el);

@@ -1,3 +1,4 @@
+"use strict";
 // ООП построено на 3 основных концепциях: Инкапсуляция, Наследование и Полиморфизм
 // 2. Наследование
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/super
