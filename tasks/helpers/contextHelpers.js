@@ -33,24 +33,31 @@ const h = ({}).registerAll(
 	(function searchFile(path, search, { json = true, parent = true } = {}) {
 		const args = assign([], arguments, { 2: { json, parent, _cwd } }),
 			filePath = join(path, search),
-			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null;
+			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null,
+			result = () => {
+				const result = {}.assign(this);
+				[this.config, this.root, this.parent] = [null, null, {}];
+				return result;
+			};
 		if (_file) {
 			const file = !json || isObject(_file) ? _file : JSON.parse(_file),
 				info = { path, file };
 			this.config = this.config || info;
-			if (this.config.path == cwd) return this;
+			if (this.config.path == cwd) return result();
 			else if (file.root || path == cwd) {
 				this.root = info;
-				if (file.root) return this;
+				if (file.root) return result();
 			}
 			else if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
 				this.parent[path] = file;
 			}
 		}
-		return !(parent && path != cwd && path != dirname(path)) ? this :
+		return !(parent && path != cwd && path != dirname(path)) ? result() :
 			searchFile.call(this, dirname(path), ...args.slice(1));
 	}).bind({}),
 	(function assignConfig(path, ...configList) {
+		log(Object.protoList());
+		log(Object.protoList());
 		return fromEntries(configList.concat().map(file => {
 			const { config, root, parent } = path.searchFile(file),
 				parentList = entries(parent || {}).map(file => file[1]).reverse();
@@ -59,7 +66,7 @@ const h = ({}).registerAll(
 	}).bind({})
 );
 
-const configList = INIT_CWD.assignConfig('config.json');
+const configList = INIT_CWD.assignConfig('config.json', 'package.json');
 log('configList\n', configList);
 
 export const { runInContext, searchFile, assignConfig } = h,
