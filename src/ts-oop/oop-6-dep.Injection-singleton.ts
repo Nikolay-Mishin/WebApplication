@@ -97,6 +97,7 @@ class Database2 {
 
 	public get url(): number {
 		return this._url;
+		console.log('');
 	}
 
 }

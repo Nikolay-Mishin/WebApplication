@@ -44,6 +44,7 @@ class Database2 {
     }
     get url() {
         return this._url;
+        console.log('');
     }
 }
 const db1 = new Database2(), db2 = new Database2();

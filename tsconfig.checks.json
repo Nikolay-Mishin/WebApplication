@@ -1,46 +1,5 @@
 {
-	"extends": "./tsconfig.checks.json",
-	"compileOnSave": true,
-	"include": [
-		"src"
-	],
-	"exclude": [
-		"node_modules",
-		"bower_components",
-		"gulpfile.js",
-		"wwwroot",
-		"src/fontawesome-free-5.15.4-web",
-		"src/js"
-	],
 	"compilerOptions": {
-		"outDir": "src/js",
-		"baseUrl": "./",
-		"target": "es5",
-		"module": "es6",
-		"moduleResolution": "node",
-		"jsx": "react",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"es6",
-			"esnext"
-		],
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"resolveJsonModule": true,
-
-		"charset": "utf-8",
-		"newLine": "crlf",
-		"allowJs": true,
-		"checkJs": true,
-		"skipLibCheck": true,
-		"importHelpers": true,
-		"sourceMap": true,
-		"removeComments": false,
-		"noEmit": false,
-		"noEmitOnError": true,
-		"noEmitHelpers": false,
-
 		"strict": true,
 		"alwaysStrict": true,
 		"noImplicitThis": true,

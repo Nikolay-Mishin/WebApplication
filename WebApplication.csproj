@@ -90,7 +90,7 @@
 	</ItemGroup>-->
 
 	<ProjectExtensions>
-		<VisualStudio AllowExistingFolder="true"><UserProperties doc_4tsconfig_1doc_1json__JsonSchema="https://json.schemastore.org/tsconfig.json" /></VisualStudio>
+		<VisualStudio AllowExistingFolder="true"><UserProperties doc_4tsconfig_1doc_1json__JsonSchema="https://json.schemastore.org/tsconfig.json" tsconfig_1checks_1json__JsonSchema="https://json.schemastore.org/tsconfig.json" /></VisualStudio>
 		<VisualStudio><UserProperties /></VisualStudio>
 	</ProjectExtensions>
 

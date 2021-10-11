@@ -1,32 +1,35 @@
 {
+	"extends": "./tsconfig.checks.json", // настройки строгости
 	"compileOnSave": true,
 	"include": [
-		"src/ts"
+		"src"
 	],
 	"exclude": [
 		"node_modules",
+		"bower_components",
 		"gulpfile.js",
 		"wwwroot",
+		"src/fontawesome-free-5.15.4-web",
 		"src/js"
 	],
 	"compilerOptions": {
 		/* Basic Options */
 		//"outFile": "src/js/main-ts.js",	/* Concatenate and emit output to single file. */
 		"outDir": "src/js",					/* Redirect output structure to the directory. */
-		"rootDir": "src/ts",				/* Root directory of input files. Use to control the output directory with --outDir. */
+		//"rootDir": "src",					/* Root directory of input files. Use to control the output with --outDir. */
 
 		/* Module Resolution Options */
 		"baseUrl": "./", /* Base directory to resolve non-absolute module names. */
-		"target": "es6", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+		"target": "es5", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
 		"module": "es6", /* Specify module code generation: 'commonjs', 'amd', 'system', 'umd' or 'es2015'. */
-		"moduleResolution": "classic", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
-		"jsx": "preserve",	/* Specify JSX code generation: 'react-jsx', 'preserve', 'react-native', or 'react'. */
+		"moduleResolution": "node", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+		"jsx": "react",	/* Specify JSX code generation: 'react-jsx', 'preserve', 'react-native', or 'react'. */
 		"lib": [ "dom", "dom.iterable", "es6", "esnext" ], /* Specify library files to be included in the compilation:  */
 		/* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
-		"paths": {
-			"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
-			"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
-		},
+		//"paths": {
+		//	"tslib": [ "./../../../node_modules/tslib/tslib.d.ts" ],
+		//	"jquery": [ "./../../../node_modules/jquery/dist/jquery" ]
+		//},
 		//"rootDirs": [],       /* List of root folders whose combined content represents the structure of the project at runtime. */
 		//"typeRoots": [],      /* List of folders to include type definitions from. */
 		//"types": [],          /* Type declaration files to be included in compilation. */
@@ -34,8 +37,8 @@
 		"esModuleInterop": true,
 		/* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
 		"allowSyntheticDefaultImports": true,
-		//"resolveJsonModule": true,
-		"isolatedModules": true, /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+		"resolveJsonModule": true,
+		//"isolatedModules": true, /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
 		/* Basic Options */
 		"charset": "utf-8",
@@ -52,9 +55,7 @@
 		"noEmit": false,					/* Do not emit outputs. */
 		"noEmitOnError": true,
 		"noEmitHelpers": false,
-		/* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
-		//"downlevelIteration": true,		
-
+		
 		/* Source Map Options */
 		// "sourceRoot": "./",	/* Specify the location where debugger should locate TypeScript files instead of source locations. */
 		// "mapRoot": "./",		/* Specify the location where debugger should locate map files instead of generated locations. */
@@ -63,35 +64,46 @@
 		// "inlineSources": true,
 		
 		/* Strict Type-Checking Options */
-		"strict": true,						/* Enable all strict type-checking options. */
-		"alwaysStrict": true,				/* Parse in strict mode and emit "use strict" for each source file. */
-		"noImplicitAny": true,				/* Raise error on expressions and declarations with an implied 'any' type. */
-		"strictNullChecks": true,			/* Enable strict null checks. */
-		"noImplicitThis": true,				/* Raise error on 'this' expressions with an implied 'any' type. */
-		"noImplicitUseStrict": false,
-
+		"strict": true,							/* Enable all strict type-checking options. */
+		/* Включаются автоматически при включении флага strict. */
+		"alwaysStrict": true,					/* Parse in strict mode and emit "use strict" for each source file. */
+		"noImplicitThis": true,					/* Raise error on 'this' expressions with an implied 'any' type. */
+		"noImplicitAny": true,					/* Raise error on expressions and declarations with an implied 'any' type. */
+		"strictNullChecks": true,				/* Enable strict null checks. */
+		/* Следит, чтобы объявленные свойства класса всегда были инициализированы. Работает, если "strictNullChecks" включен. */
+		"strictPropertyInitialization": true,
+		"strictFunctionTypes": true,			/* Включает более строгую проверку сигнатур функций */
+		/* Включает более строгую проверку сигнатур при использовании соответствующих методов: bind, call, apply. */
+		"strictBindCallApply": true,
+		/* Не включаются автоматически при включении флага strict. */
+		/* Запрещает обращаться к свойствам объекта через точку aka dot notation, если свойства объекта описаны не явно, а через произвольные параметры (aka arbitrarily-named properties, index signatures). */
+		"noPropertyAccessFromIndexSignature": true,
+		/* Если произвольные параметры (aka arbitrarily-named properties, index signatures) будут undefined, тип переменной будет определяться как type | undefined. */
+		"noUncheckedIndexedAccess": true,
+		
 		/* Linter Checks */
-		"noUnusedLocals": true,             /* Report errors on unused locals. */
-		"noUnusedParameters": true,         /* Report errors on unused parameters. */
-		"noImplicitReturns": true,          /* Report error when not all code paths in function return a value. */
-		"allowUnreachableCode": true,		/* disallow unreachable code after return, throw, continue, and break statements */
-		"noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-		"forceConsistentCasingInFileNames": true
-		//"allowUnusedLabels": true,		/* Disallow Unused Labels */
+		"forceConsistentCasingInFileNames": true, /* Включает режим чувствительности к регистру для импорта файлов */
+		"noUnusedLocals": true,					/* Report errors on unused locals. */
+		"noUnusedParameters": true,				/* Report errors on unused parameters. */
+		"noImplicitReturns": true,				/* Report error when not all code paths in function return a value. */
+		"noFallthroughCasesInSwitch": true,		/* Проверяет наличие break в операторе switch/case. */
+		
+		/* Linter Additional Checks */
+		"allowUnreachableCode": false,			/* Запрещает код, написанный после операторов return, throw, break, continue. */
+		"allowUnusedLabels": false,				/* Disallow Unused Labels */
 
 		/* Additional Checks */
-		//"strictPropertyInitialization": true,
-		//"strictFunctionTypes": true,
-		//"strictBindCallApply": true,
-		//"noPropertyAccessFromIndexSignature": true,
-		//"noUncheckedIndexedAccess": true,
-		//"suppressExcessPropertyErrors": false,
-		//"suppressImplicitAnyIndexErrors": false,
-		//"noStrictGenericChecks": false
-
+		/* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
+		"downlevelIteration": true,
+		"noImplicitUseStrict": false,
+		"noStrictGenericChecks": false,
+		"suppressExcessPropertyErrors": false,	/* Объект не может содержать свойства, которые не описаны в его структуре. */
+		/* Используя скобочную нотацию невозможно обращаться к свойствам объекта, которые в нём не объявлены ни явно, ни через произвольные параметры. */
+		"suppressImplicitAnyIndexErrors": false, 
+		
 		/* Experimental Options */
-		// "experimentalDecorators": true,  /* Enables experimental support for ES7 decorators. */
-		// "emitDecoratorMetadata": true,   /* Enables experimental support for emitting type metadata for decorators. */
+		"experimentalDecorators": false,		/* Enables experimental support for ES7 decorators. */
+		"emitDecoratorMetadata": false			/* Enables experimental support for emitting type metadata for decorators. */
 	}
 }
 
