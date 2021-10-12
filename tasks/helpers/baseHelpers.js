@@ -5,7 +5,7 @@ import { join, dirname, relative, basename as base, extname as ext } from 'path'
 import { imports, importModules } from './import.js';
 
 const nullProto = {}.__proto__,
-	getFunc = func => func[keys(func).shift()] || func,
+	getFunc = func => func[keys(func).shift()] ?? func,
 	funcName = func => func.name.replace('bound ', '').trim(),
 	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj);
 
@@ -44,7 +44,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 		);
 		return function register(obj, value, { prop, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
 			[obj, value] = [obj.__proto__, getFunc(value)];
-			prop = prop || funcName(value);
+			prop = prop ?? funcName(value);
 
 			const func = value,
 				_func = {
@@ -52,7 +52,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 				};
 			_func[prop].func = value;
 			value = _func[prop];
-
+			
 			writable = obj === nullProto;
 			!(def || writable) ? obj[prop] = value :
 				obj._define(value, { prop, enumerable, configurable, writable, get, set });
@@ -61,15 +61,15 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	})(),
 	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
 		return fromEntries(funcList.map(func => {
-			const { value, opts } = func;
+			const { value, opts = {} } = func;
 			func = getFunc(value || func);
-			return [funcName(func), obj._register(func, opts || {})];
+			return [funcName(func), obj._register(func, opts)];
 		}));
 	}))(),
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = ({}).registerAll(
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
+	log, imports, importModules, assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
 	function jsonParse(item) {
 		try {
 			item = JSON.parse(item);
@@ -85,9 +85,9 @@ const h = ({}).registerAll(
 	function forEach(obj, cb) { for (let key in obj) cb(obj[key], key); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
-		const proto = obj ? obj.__proto__ : null;
-		this.objProto = this.objProto || proto;
-		this._protoList = this._protoList || [];
+		const proto = obj.__proto__ ?? null;
+		this.objProto = this.objProto ?? proto;
+		this._protoList = this._protoList ?? [];
 		if (proto) {
 			this._protoList.push(proto);
 			protoList.call(this, proto);
@@ -106,14 +106,14 @@ const h = ({}).registerAll(
 		return target;
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
-	function reverse(obj) { return from(obj).reverse(); },
-	function _filter(obj, cb) { return fromEntries(obj.entries().filter(cb)); },
+	function reverse(obj) { return obj.from().reverse(); },
+	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
 	function bind(context, ...funcList) { return concat(funcList).map(func => func.bind(context)) },
 	function getBind(context, func) { return bind(context, func).shift(); },
-	function setBind (context, ...funcList) { return context.assign(fromEntries(bind(context, ...funcList)
-		.map((func, i) => [funcList[i].name, func]))); },
+	function setBind (context, ...funcList) { return context.assign(bind(context, ...funcList)
+		.map((func, i) => [funcList[i].name, func]).fromEntries()); },
 	function callBind(context, args, cb) { return cb.call(context, ...args); },
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
 	function _relative(from, to) { return relative(from.url ? from._dirname() : from, to); },

@@ -24,7 +24,7 @@ export default async () => {
 	
 	//log('root:', cwd());
 	//log('_dirname:', _dirname);
-	//log('relative:', relativeRoot(_dirname));
+	//log('relative:', _dirname.relativeRoot());
 
 	//log('config\n', config);
 	//log('paths\n', paths);

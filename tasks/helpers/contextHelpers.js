@@ -2,7 +2,6 @@ import { log } from 'console';
 import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
-import { assign, keys, isObject, fromEntries, entries } from './baseHelpers.js';
 
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
@@ -39,13 +38,9 @@ const h = ({}).registerAll(
 				return result;
 			};
 		if (_file) {
-			log('search:', search);
-			log('isObject:', _file.isObject());
-			log('isJson:', _file.isJson());
-			log('_file\n', _file);
 			const file = _file.jsonParse() ?? _file,
 				info = { path, file };
-			this.config = this.config || info;
+			this.config = this.config ?? info;
 			this.parent = this.parent ?? {};
 			if (this.config.path == cwd) return result();
 			else if (file.root || path == cwd) {
@@ -63,25 +58,25 @@ const h = ({}).registerAll(
 		return configList.concat().map(file => {
 			const { config, root, parent = {} } = path.searchFile(file),
 				parentList = parent.entries().map(file => file[1]).reverse();
-			return [file.fileName(), !root ? config.file : assign(root.file, ...parentList, config.file)];
+			return [file.fileName(), !root ? config.file : root.file.assign(...parentList, config.file)];
 		}).fromEntries();
 	}).bind({})
 );
 
 const configList = INIT_CWD.assignConfig('config.json', 'package.json', 'gulpfile.js');
-log('configList\n', configList);
+'configList\n'.log(configList);
 
 export const { runInContext, searchFile, assignConfig } = h,
-	config = configList.config,
+	{ config } = configList,
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
-			exist = isDir(_projectsPath),
+			exist = _projectsPath.isDir(),
 			projectsPath = exist ? _projectsPath : cwd,
 			projects = projectsPath.getFolders({ exclude })
 				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
 			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
-			project = !name ? name : keys(arg)[1] || (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
+			project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
 			contextPath = join(projectsPath, project),
 			context = exist && contextPath.isDir() ? contextPath : projectsPath;
 		//log('INIT_CWD:', INIT_CWD);

@@ -1,12 +1,12 @@
-// <binding ProjectOpened='_tasksWatch' />
-//package.json: "-vs-binding": { "ProjectOpened": [ "tasks", "tasksWatch" ] }
+// <binding BeforeBuild='_tasksWatch' AfterBuild='_tasksWatch' Clean='_tasksWatch' ProjectOpened='_tasksWatch' />
+//package.json: , "-vs-binding":{"BeforeBuild":["tasksWatch"],"AfterBuild":["tasksWatch"],"Clean":["tasksWatch"],"ProjectOpened":["tasksWatch"]}
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
 import _tasksWatch from './tasks/helpers/tasksWatch.js';
 import _test from './tasks/test/test.js';
 
-const { tasks, setMode, assign, modules: { gulp: { series, parallel } } } = h,
+const { tasks, setMode, modules: { gulp: { series, parallel } } } = h,
 	{ deploy: _deploy, data: _data } = await tasks;
 
 export const {
@@ -24,7 +24,7 @@ export const {
 
 export { _tasksWatch, _test };
 
-assign(tasks, { build, dev, prod, deploy, move, _tasksWatch, _test });
+tasks.assign({ build, dev, prod, deploy, move, _tasksWatch, _test });
 //console.log('exports\n', await tasks);
 
 setMode(true)();

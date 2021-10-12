@@ -1,5 +1,4 @@
-import { log } from 'console';
-import { importModules, assign } from './tasks/helpers/baseHelpers.js';
+import { importModules } from './tasks/helpers/baseHelpers.js';
 import { config, context, cwd } from './tasks/helpers/contextHelpers.js';
 
 // Подключаемые модули
@@ -21,9 +20,9 @@ const {
 	src = join(root, srcRoot),
 	baseDir = join(build, _baseDir);
 
-export default process.node_config = process.node_config || {
+export default process.node_config = process.node_config ?? {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
-	modules: assign(modules, { server, reload, stream, _reload }),
+	modules: modules.assign({ server, reload, stream, _reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {

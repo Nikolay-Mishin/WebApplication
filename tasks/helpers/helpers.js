@@ -1,11 +1,9 @@
-import { log } from 'console';
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
 import ch from './contextHelpers.js';
 
 const { argv } = ch,
-	{ _relative, importModules, isDir, isFile, assignDefine, setBind } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -19,12 +17,12 @@ const { argv } = ch,
 	} = config;
 
 const helpers = {
-	relativeRoot: from => _relative(from, root),
-	get tasks() { return process.node_tasks = process.node_tasks || importModules(tasksPath, excludeTasks); },
+	relativeRoot: from => from._relative(root),
+	get tasks() { return process.node_tasks = process.node_tasks ?? tasksPath.importModules(excludeTasks); },
 	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },
 	set config(value) {
-		const name = Object.keys(value)[0];
+		const name = value.keys()[0];
 		process.node_config[name] = value[name];
 	},
 	get webpackConfig() {
@@ -33,7 +31,7 @@ const helpers = {
 	},
 	get useWebpack() {
 		const _esModule = esModule || !exist(tsconfig) ? 'es5' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
-		if (useWebpack || this.config.useWebpack) return useWebpack || this.config.useWebpack;
+		if (useWebpack ?? this.config.useWebpack) return useWebpack ?? this.config.useWebpack;
 		const search = 'es',
 			includes = _esModule.includes(search),
 			replace = _esModule.replace(new RegExp(search), ''),
@@ -48,7 +46,7 @@ const helpers = {
 	get getMode() { return process.env.NODE_ENV; },
 	setMode(prod = false) { return async () => this.setModeSync(prod); },
 	setModeSync: (prod = false) => process.env.NODE_ENV = prod ? 'production' : 'development',
-	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || isDir(arg) || isFile(arg)))[0] || null)(argv),
+	currTask: (argList => argList.filter(arg => !(/^\-+/.test(arg) || arg.isDir() || arg.isFile()))[0] ?? null)(argv),
 	lastRun: func => { since: lastRun(func) },
 	error: err => gutil.log(gutil.colors.red('[Error]'), err.toString()),
 	notify: (title, message = 'Scripts Done') => notify({ title: title, message: message }),

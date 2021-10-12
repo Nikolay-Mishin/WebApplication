@@ -13,7 +13,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // Переменные проекта
 
-const dev = (process.env.NODE_ENV || 'development') === 'development',
+const dev = (process.env.NODE_ENV ?? 'development') === 'development',
 	prod = !dev,
 	root = cwd(), // __dirname
 	publicPath = 'wwwroot',
