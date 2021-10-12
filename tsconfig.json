@@ -16,7 +16,7 @@
 		"outDir": "src/js",
 		"baseUrl": "./",
 		"declarationDir": "src/js/@types",
-		"target": "es5",
+		"target": "es6",
 		"module": "es6",
 		"moduleResolution": "node",
 		"jsx": "react",

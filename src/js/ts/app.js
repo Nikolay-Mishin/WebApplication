@@ -6,9 +6,9 @@ import $ from "jquery";
 console.log($);
 console.log("ts/app.ts");
 console.log(lib);
-document.onload = function () {
-    var el = document.body;
-    var greeter = new Greeter(el);
+document.onload = () => {
+    const el = document.body;
+    const greeter = new Greeter(el);
     greeter.start();
 };
 //const $app = '';
@@ -17,14 +17,11 @@ function name() {
     //return '';
 }
 name();
-var Test = /** @class */ (function () {
-    function Test() {
-    }
-    Test.prototype.test = function () {
+class Test {
+    test() {
         return '';
-    };
-    return Test;
-}());
-var test = new Test();
+    }
+}
+const test = new Test();
 console.log(test);
 //# sourceMappingURL=app.js.map

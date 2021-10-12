@@ -1,9 +1,9 @@
 "use strict";
-var f = function (x) { return x + 1; };
-var g = function (x) { return x * 2; };
-var compose = function (f1, f2) { return function (x) { return f1(f2(x)); }; };
+const f = (x) => x + 1;
+const g = (x) => x * 2;
+const compose = (f1, f2) => (x) => f1(f2(x));
 // Мы можем применить эту функцию создания новой функции:
-var h = compose(g, f);
+const h = compose(g, f);
 h(10); // Возвращает 22
 // Теперь представьте, что в языке есть оператор (.) для записи compose:
 //const h = g.f;
@@ -12,8 +12,8 @@ h(10); // Возвращает 22
 // Это эквивалентно следующему коду:
 //const m = h.(g.f);
 // Или следующему, если переписать с использованием функции compose:
-var m = compose(h, compose(g, f));
-var pipe = function (x, f) { return f(x); };
+const m = compose(h, compose(g, f));
+const pipe = (x, f) => f(x);
 pipe(10, f); // Возвращает 11
 // Теперь представьте, что в языке есть оператор (|>) для записи pipe:
 //const result = 10 |> f;
@@ -22,5 +22,5 @@ pipe(10, f); // Возвращает 11
 // Это эквивалентно следующему коду:
 //const result = (10 |> f) |> g;
 // Или следующему, если переписать с использованием функции pipe:
-var result = pipe(pipe(10, f), g); // Возвращает 22
+const result = pipe(pipe(10, f), g); // Возвращает 22
 //# sourceMappingURL=compose.js.map
