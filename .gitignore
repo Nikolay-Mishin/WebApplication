@@ -12,6 +12,8 @@ Thumbs.db
 # Public folders
 [Pp]roperties/
 src/fontawesome-free-5.15.4-web
+#*.png
+#*.jp[e]g
 
 # User-specific files
 *.cs
