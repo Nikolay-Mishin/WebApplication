@@ -1,9 +1,9 @@
 import { log } from 'console';
-import { env, cwd as _cwd, argv as _argv } from 'process';
+import { env, cwd as $cwd, argv as $argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
 
-const { assignParentConfig, assignRootConfig } = ({}).registerAll(
+const { assignParentConfig, assignRootConfig } = {}.registerAll(
 	function assignParentConfig(parent) { return parent.entries().map(file => file[1]).reverse(); },
 	function assignRootConfig(root, config, parent) {
 		return !config.isObject() ? config : root.assign(...parent.assignParentConfig(), config);
@@ -11,8 +11,8 @@ const { assignParentConfig, assignRootConfig } = ({}).registerAll(
 );
 
 export const { INIT_CWD } = env,
-	cwd = _cwd(),
-	argv = _argv.slice(2),
+	cwd = $cwd(),
+	argv = $argv.slice(2),
 	parseArgs = (argList, sep = '^\-+') => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
@@ -28,7 +28,7 @@ export const { INIT_CWD } = env,
 	},
 	args = (argList => parseArgs(argList))(argv);
 
-const h = ({}).registerAll(
+const h = {}.registerAll(
 	function runInContext(path, cb) {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
@@ -64,25 +64,27 @@ const h = ({}).registerAll(
 	function assignConfig(path, ...configList) {
 		return configList.concat().map(file => {
 			const { config, root = {}, parent = {} } = path.searchFile(file);
-			return [file.fileName(), (root?.file ?? {}).assignRootConfig(config.file, parent)];
+			return !config ? null : [
+				file.fileName(),
+				{ '@path': `${config.path}\\${file}` }.assign(root?.file ?? {}).assignRootConfig(config.file, parent)
+			];
 		}).fromEntries();
 	},
-	function setBinding(configList, path) {
-		const { config, package: _package } = configList,
-			gulpfileInfo = path.searchFile(_package.main ?? 'gulpfile.js'),
-			gulpfile = (gulpfileInfo.root?.file ?? {}).assignRootConfig(gulpfileInfo.config.file, gulpfileInfo.parent);
-		'configList\n'.log({ config, _package });
+	function setBinding(path, ...configList) {
+		configList = path.assignConfig(...configList);
+		const { config, package: $package, gulpfile } = configList;
+		'configList\n'.log(configList);
 		'gulpfile:'.log(gulpfile);
 		return configList;
 	}
 );
 
-const configList = INIT_CWD.assignConfig('config.json', 'package.json').setBinding(INIT_CWD);
+const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js');
 
 //'configList\n'.log(configList);
 
 export const { runInContext, searchFile, assignConfig } = h,
-	{ config } = configList,
+	{ config, package: $package } = configList,
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),

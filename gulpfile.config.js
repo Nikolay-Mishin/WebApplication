@@ -4,25 +4,25 @@ import { config, context, cwd } from './tasks/helpers/contextHelpers.js';
 // Подключаемые модули
 const {
 	es: { useWebpack, esModule, webpackConfig },
-	paths: { tasksPath = 'tasks', root: _root = '.', build: { root: _build }, src: { root: srcRoot } },
-	server: { serverPHP, domain, port, baseDir: _baseDir, index },
-	deploy, modules: _modules
+	paths: { tasksPath = 'tasks', root: $root = '.', build: { root: $build }, src: { root: srcRoot } },
+	server: { serverPHP, domain, port, baseDir: $baseDir, index },
+	deploy, modules: $modules
 } = config,
-	modules = await importModules(_modules),
+	modules = await importModules($modules),
 	{ path, browserSync } = modules,
 	{ join } = path,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
-	{ reload: _reload } = browserSync,
-	root = join(context, _root),
-	build = join(root, _build),
+	{ reload: $reload } = browserSync,
+	root = join(context, $root),
+	build = join(root, $build),
 	src = join(root, srcRoot),
-	baseDir = join(build, _baseDir);
+	baseDir = join(build, $baseDir);
 
 export default process.node_config = process.node_config ?? {
 	root, build, src, serverPHP, deploy, //useWebpack, esModule,
-	modules: modules.assign({ server, reload, stream, _reload }),
+	modules: modules.assign({ server, reload, stream, $reload }),
 	tasksPath: join(cwd, tasksPath),
 	//webpackConfig: join(root, webpackConfig),
 	paths: {

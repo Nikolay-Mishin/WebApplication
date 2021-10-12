@@ -23,8 +23,8 @@ export default async () => {
 	//log('args\n', args);
 	
 	//log('root:', cwd());
-	//log('_dirname:', _dirname);
-	//log('relative:', _dirname.relativeRoot());
+	//log('_dirname:', _dirname());
+	//log('relative:', relativeRoot(_dirname()));
 
 	//log('config\n', config);
 	//log('paths\n', paths);

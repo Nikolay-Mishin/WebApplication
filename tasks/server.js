@@ -4,7 +4,7 @@ const {
 		modules: {
 			gulp: { watch, series },
 			server: { init },
-			reload, _reload, browserSync
+			reload, $reload
 		}
 	} = h;
 
@@ -12,10 +12,8 @@ const {
 export default () => serverPHPrun ? init(serverConfig) : series(() => init(serverConfig), { serverPHP } = h.tasks)
 
 //{
-	//browserSync(serverConfig);
-
-	//watch(paths.watch.js, series('dev:js', _reload));
-	//watch(paths.watch.js).on('change', _reload);
+	//watch(paths.watch.js, series('dev:js', $reload));
+	//watch(paths.watch.js).on('change', $reload);
 
 	//watch(paths.watch.html, series('dev:html', reload));
 	//watch(paths.watch.scss, series('dev:scss', reload));

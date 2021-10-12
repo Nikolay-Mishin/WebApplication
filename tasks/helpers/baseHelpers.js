@@ -68,7 +68,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	}))(),
 	call = (context, ...args) => context.call(context, ...args);
 
-const h = ({}).registerAll(
+const h = {}.registerAll(
 	log, imports, importModules, assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
 	function jsonParse(item) {
 		try {

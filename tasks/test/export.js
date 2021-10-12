@@ -25,6 +25,6 @@ export const promise = await new Promise(async $export => {
 
 // dropping the Promise all together
 // await async dependencies
-export const _export = await (async () => {
+export const $export = await (async () => {
 	return { my: 'module' }; // export the module
 })();

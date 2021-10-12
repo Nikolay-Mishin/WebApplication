@@ -4,7 +4,7 @@ const {
 		config: { paths, webpackConfig },
 		modules: {
 			gulp: { src, dest },
-			reload, stream, _if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
+			reload, stream, $if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
 		}
 	} = h;
 
@@ -17,12 +17,12 @@ export default async function js() {
 			.pipe(notify(`${mode}:js`));
 	}
 	return src(paths.src.js, lastRun(js)) // main файл
-		.pipe(_if(dev, sourcemaps.init())) // Инициализируем sourcemap
-		.pipe(_if(dev, rigger())) // rigger
-		.pipe(_if(dev, dest(paths.build.js))) // готовый файл в build
+		.pipe($if(dev, sourcemaps.init())) // Инициализируем sourcemap
+		.pipe($if(dev, rigger())) // rigger
+		.pipe($if(dev, dest(paths.build.js))) // готовый файл в build
 		.pipe(uglify().on('error', error)) // сжатие js
-		.pipe(_if(dev, rename({ suffix: '.min' }))) // переименовывание файла
-		.pipe(_if(dev, sourcemaps.write('.'))) // Пропишем карты
+		.pipe($if(dev, rename({ suffix: '.min' }))) // переименовывание файла
+		.pipe($if(dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify(`${mode}:js`));
 		//.pipe(reload({ stream: true })); // И перезагрузим сервер

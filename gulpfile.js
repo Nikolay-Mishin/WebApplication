@@ -3,11 +3,11 @@
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';
-import _tasksWatch from './tasks/helpers/tasksWatch.js';
-import _test from './tasks/test/test.js';
+import $tasksWatch from './tasks/helpers/tasksWatch.js';
+import $test from './tasks/test/test.js';
 
 const { tasks, setMode, modules: { gulp: { series, parallel } } } = h,
-	{ deploy: _deploy, data: _data } = await tasks;
+	{ deploy: $deploy, data: $data } = await tasks;
 
 export const {
 		clean, html, js, dev_html, dev_scss, dev_js, dev_img, generate_favicon, server, watch, prod_html, prod_scss, prod_js,
@@ -16,24 +16,24 @@ export const {
 	build = series(clean, parallel(html, js)),
 	dev = series(clean, parallel(dev_html, dev_scss, dev_js, dev_img/*, generate_favicon*/), server, watch),
 	prod = series(setMode(true), clean, parallel(prod_html, prod_scss, prod_js, dev_img)),
-	deploy = series(prod, _deploy),
+	deploy = series(prod, $deploy),
 	move = series(clean, move_files);
 
 // задача по умолчанию
 //export default build;
 
-export { _tasksWatch, _test };
+export { $tasksWatch, $test };
 
-tasks.assign({ build, dev, prod, deploy, move, _tasksWatch, _test });
+tasks.assign({ build, dev, prod, deploy, move, $tasksWatch, $test });
 //console.log('exports\n', await tasks);
 
 setMode(true)();
 log('mode:', (await h.webpackConfig).mode);
 log('useWebpack:', h.useWebpack);
 
-export const data = () => _data('tasks/**/*');
+export const data = () => $data('tasks/**/*');
 
-//import _export from './tasks/test/export.js';
+//import $export from './tasks/test/export.js';
 //import module from './tasks/test/module.js';
 //import { module as mod, consumer, consumer2015, consumer2017 } from './tasks/test/module.js';
 

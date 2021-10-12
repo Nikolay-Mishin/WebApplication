@@ -3,12 +3,12 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { watch, series },
-		_reload
+		$reload
 	}
 } = h;
 
 export default async () => {
-	watch(paths.watch.html, series('dev:html'), _reload({ stream: true }));
-	watch(paths.watch.scss, series('dev:scss'), _reload({ stream: true }));
-	watch(paths.watch.js, series('dev:js'), _reload({ stream: true }));
+	watch(paths.watch.html, series('dev:html'), $reload({ stream: true }));
+	watch(paths.watch.scss, series('dev:scss'), $reload({ stream: true }));
+	watch(paths.watch.js, series('dev:js'), $reload({ stream: true }));
 }
