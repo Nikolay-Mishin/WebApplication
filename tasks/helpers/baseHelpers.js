@@ -109,12 +109,14 @@ const h = {}.registerAll(
 	function renameKeys(obj, { keyList, pattern = '^_|\W', replace = '' } = {}) {
 		log('obj\n', obj);
 		log('search:', pattern);
+		log('replace:', replace);
 		log('keyList:', keyList);
 		log('slice:', arguments.slice(1));
 		keyList = keyList ?? arguments.slice(1);
 		const newKeys = keyList.map((key, i) => {
 			log('key', key);
-			log(key, key.replace(new RegExp(pattern), replace));
+			log('replace', key.replace);
+			log(key.replace(new RegExp(pattern), replace));
 			key = key.replace(new RegExp(pattern), replace);
 			obj[key] = obj[keyList[i]];
 			return key;
