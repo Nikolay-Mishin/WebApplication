@@ -17,7 +17,8 @@ src/fontawesome-free-5.15.4-web
 
 # Public files
 *.png
-*.jp[e]g
+*.jpg
+*.jpeg
 
 # Project-specific files
 *.cs
