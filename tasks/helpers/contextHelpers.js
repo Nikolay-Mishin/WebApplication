@@ -2,6 +2,7 @@ import { log } from 'console';
 import { env, cwd as $cwd, argv as $argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
+import { dirname as $dirname } from './baseHelpers.js';
 
 const { assignParentConfig, assignRootConfig } = {}.registerAll(
 	function assignParentConfig(parent) { return parent.entries().map(file => file[1]).reverse(); },
@@ -73,18 +74,17 @@ const h = {}.registerAll(
 	function setBinding(path, ...configList) {
 		configList = path.assignConfig(...configList);
 		const { config, package: $package, gulpfile } = configList;
-		'configList\n'.log(configList);
-		'gulpfile:'.log(gulpfile);
+		//'configList\n'.log(configList);
 		return configList;
 	}
 );
 
-const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js');
-
-//'configList\n'.log(configList);
-
-export const { runInContext, searchFile, assignConfig } = h,
+const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
 	{ config, package: $package } = configList,
+	{ paths: { root: $root = './' } } = config;
+
+export { config, $package };
+export const { runInContext, searchFile, assignConfig } = h,
 	{ project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
@@ -108,6 +108,8 @@ export const { runInContext, searchFile, assignConfig } = h,
 		//log('arg:', arg);
 		//log('projects:', projects);
 		return { project, context };
-	})();
+	})(),
+	root = join(context, $root),
+	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
 
 export default { INIT_CWD, cwd, argv, parseArgs, args, project, context }.assignDefine(h);

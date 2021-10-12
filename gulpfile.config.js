@@ -1,10 +1,10 @@
 import { importModules } from './tasks/helpers/baseHelpers.js';
-import { config, context, cwd } from './tasks/helpers/contextHelpers.js';
+import { config, root, cwd, context } from './tasks/helpers/contextHelpers.js';
 
 // Подключаемые модули
 const {
 	es: { useWebpack, esModule, webpackConfig },
-	paths: { tasksPath = 'tasks', root: $root = '.', build: { root: $build }, src: { root: srcRoot } },
+	paths: { tasksPath = 'tasks', build: { root: $build }, src: { root: srcRoot } },
 	server: { serverPHP, domain, port, baseDir: $baseDir, index },
 	deploy, modules: $modules
 } = config,
@@ -15,7 +15,6 @@ const {
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: $reload } = browserSync,
-	root = join(context, $root),
 	build = join(root, $build),
 	src = join(root, srcRoot),
 	baseDir = join(build, $baseDir);

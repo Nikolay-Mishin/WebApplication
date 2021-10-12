@@ -105,6 +105,23 @@ const h = {}.registerAll(
 		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
 		return target;
 	},
+	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); },
+	function renameKeys(obj, { keyList, pattern = '^_|\W', replace = '' } = {}) {
+		log('obj\n', obj);
+		log('search:', pattern);
+		log('keyList:', keyList);
+		log('slice:', arguments.slice(1));
+		keyList = keyList ?? arguments.slice(1);
+		const newKeys = keyList.map((key, i) => {
+			log('key', key);
+			log(key, key.replace(new RegExp(pattern), replace));
+			key = key.replace(new RegExp(pattern), replace);
+			obj[key] = obj[keyList[i]];
+			return key;
+		});
+		$delete(obj, ...keyList);
+		return newKeys;
+	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
 	function reverse(obj) { return obj.from().reverse(); },
 	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
@@ -129,13 +146,20 @@ const h = {}.registerAll(
 );
 
 export const {
-	defineAll, getDesc, assignDefine, getProto, protoList,
-	empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, callBind,
-	_dirname, _relative, fileName, isDir, isFile, getFolders, getFiles
+	jsonParse, isJson, forEach, getProto, protoList, defineAll, getDesc, assignDefine,
+	$delete, renameKeys, empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, callBind,
+	fileName, isDir, isFile, getFolders, getFiles
 } = h;
+const { _dirname, _relative } = h;
+export { _dirname as dirname, _relative as relative };
 
-h.filter = h._filter;
-delete h._filter;
+[h.filter, h.dirname, h.relative] = [h._filter, h._dirname, h._relative];
+
+const newKeys = renameKeys(h, '_filter', '_dirname', '_relative');
+
+log('newKeys:', newKeys);
+
+//log('h\n', h);
 
 export default {
 	imports, importModules,

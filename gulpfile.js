@@ -25,7 +25,7 @@ export const {
 export { $tasksWatch, $test };
 
 tasks.assign({ build, dev, prod, deploy, move, $tasksWatch, $test });
-//console.log('exports\n', await tasks);
+//log('exports\n', await tasks);
 
 setMode(true)();
 log('mode:', (await h.webpackConfig).mode);

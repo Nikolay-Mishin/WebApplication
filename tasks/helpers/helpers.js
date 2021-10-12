@@ -17,7 +17,6 @@ const { argv } = ch,
 	} = config;
 
 const helpers = {
-	relativeRoot: {}._register(function relativeRoot(from) { return from._relative(root); }),
 	get tasks() { return process.node_tasks = process.node_tasks ?? tasksPath.importModules(excludeTasks); },
 	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },

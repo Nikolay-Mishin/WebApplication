@@ -7,7 +7,7 @@ const { INIT_CWD, HOMEDRIVE } = env;
 export default async () => {
 	const {
 			config, modules, tasks, useWebpack, tasksList, args, currTask,
-			_dirname, relativeRoot, setModeSync, mode, dev, prod
+			dirname, setModeSync, mode, dev, prod
 		} = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
@@ -23,8 +23,8 @@ export default async () => {
 	//log('args\n', args);
 	
 	//log('root:', cwd());
-	//log('_dirname:', _dirname(import.meta));
-	//log('relative:', _dirname(import.meta).relativeRoot());
+	//log('$dirname:', dirname(import.meta));
+	//log('relative:', dirname(import.meta).relativeRoot());
 
 	//log('config\n', config);
 	//log('paths\n', paths);
