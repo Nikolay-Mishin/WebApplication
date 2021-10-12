@@ -30,9 +30,8 @@ const h = ({}).registerAll(
 		cb(); // Task call
 		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
 	},
-	(function searchFile(path, search, { json = true, parent = true } = {}) {
-		const args = assign([], arguments, { 2: { json, parent, _cwd } }),
-			filePath = join(path, search),
+	(function searchFile(path, search, parent = true) {
+		const filePath = join(path, search),
 			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null,
 			result = () => {
 				const result = {}.assign(this);
@@ -44,27 +43,28 @@ const h = ({}).registerAll(
 			log('isObject:', _file.isObject());
 			log('isJson:', _file.isJson());
 			log('_file\n', _file);
-			const file = !json || !_file.isJson() ? _file : JSON.parse(_file),
+			const file = _file.jsonParse() ?? _file,
 				info = { path, file };
 			this.config = this.config || info;
+			this.parent = this.parent ?? {};
 			if (this.config.path == cwd) return result();
 			else if (file.root || path == cwd) {
 				this.root = info;
 				if (file.root) return result();
 			}
-			else if (parent && path != this.config.path && !(this.parent = this.parent || {})[path]) {
+			else if (parent && path != this.config.path && !this.parent[path]) {
 				this.parent[path] = file;
 			}
 		}
 		return !(parent && path != cwd && path != dirname(path)) ? result() :
-			searchFile.call(this, dirname(path), ...args.slice(1));
+			searchFile.call(this, dirname(path), ...arguments.from().slice(1));
 	}).bind({}),
 	(function assignConfig(path, ...configList) {
-		return fromEntries(configList.concat().map(file => {
-			const { config, root, parent } = path.searchFile(file),
-				parentList = entries(parent || {}).map(file => file[1]).reverse();
+		return configList.concat().map(file => {
+			const { config, root, parent = {} } = path.searchFile(file),
+				parentList = parent.entries().map(file => file[1]).reverse();
 			return [file.fileName(), !root ? config.file : assign(root.file, ...parentList, config.file)];
-		}));
+		}).fromEntries();
 	}).bind({})
 );
 

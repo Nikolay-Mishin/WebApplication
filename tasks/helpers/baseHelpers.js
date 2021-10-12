@@ -70,22 +70,17 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 
 const h = ({}).registerAll(
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
-	function isJson(item) {
-		log('typeof:', typeof item);
-		const str = typeof item !== "string"
-			? JSON.stringify(item)
-			: item;
+	function jsonParse(item) {
 		try {
-			JSON.parse(item);
-			//item = JSON.parse(str);
+			item = JSON.parse(item);
 		}
 		catch (e) {
-			return false;
+			return null;
 		}
-		if (typeof str === "object" && str !== null) {
-			return true;
-		}
-		return true;
+		return item;
+	},
+	function isJson(item) {
+		return item.jsonParse() ? true : false;
 	},
 	function forEach(obj, cb) { for (let key in obj) cb(obj[key], key); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
