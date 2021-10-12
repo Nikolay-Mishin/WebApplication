@@ -106,18 +106,18 @@ const h = {}.registerAll(
 		return target;
 	},
 	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); },
-	function renameKeys(obj, { keyList, pattern = '^_|\W', replace = '' } = {}) {
+	function renameKeys(obj, { keyList, searchVal = '^_|\W', replaceVal = '' } = {}) {
 		log('obj\n', obj);
-		log('search:', pattern);
-		log('replace:', replace);
+		log('search:', searchVal);
+		log('replace:', replaceVal);
 		log('keyList:', keyList);
 		log('slice:', arguments.slice(1));
 		keyList = keyList ?? arguments.slice(1);
 		const newKeys = keyList.map((key, i) => {
 			log('key', key);
-			log('replace', key.replace);
-			log(key.replace(new RegExp(pattern), replace));
-			key = key.replace(new RegExp(pattern), replace);
+			log('replace:', key.replaceVal);
+			log(key.replace(new RegExp(searchVal), replaceVal));
+			key = key.replace(new RegExp(searchVal), replaceVal);
 			obj[key] = obj[keyList[i]];
 			return key;
 		});
