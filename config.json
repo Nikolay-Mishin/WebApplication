@@ -1,5 +1,19 @@
 {
 	"name": "WebApplication",
+	"binding": {
+		"gulp": {
+			"BeforeBuild": [ "_tasksWatch" ],
+			"AfterBuild": [ "_tasksWatch" ],
+			"Clean": [ "_tasksWatch" ],
+			"ProjectOpened": [ "_tasksWatch" ]
+		},
+		"npm": {
+			"BeforeBuild": [ "tasksWatch" ],
+			"AfterBuild": [ "tasksWatch" ],
+			"Clean": [ "tasksWatch" ],
+			"ProjectOpened": [ "tasksWatch" ]
+		}
+	},
 	"es": {
 		"useWebpack": true,
 		"esModule": "es6",
@@ -20,10 +34,22 @@
 		"folder": "",
 		"include": [ "*.htaccess" ],
 		"exclude": [
-			".git", ".vs", "bin", "obj", "Properties",
-			"**/node_modules", "**/bower_components", "**/doc", 
-			"**/Thumbs.db", "**/*.DS_Store", ".gitattributes", ".gitignore", "*.sln", "*.cs",
-			"appsettings.json", "appsettings.Development.json"
+			".git",
+			".vs",
+			"bin",
+			"obj",
+			"Properties",
+			"**/node_modules",
+			"**/bower_components",
+			"**/doc",
+			"**/Thumbs.db",
+			"**/*.DS_Store",
+			".gitattributes",
+			".gitignore",
+			"*.sln",
+			"*.cs",
+			"appsettings.json",
+			"appsettings.Development.json"
 		]
 	},
 	"paths": {
@@ -74,7 +100,7 @@
 			}
 		}
 	},
-    "modules": {
+	"modules": {
 		"gulp": "gulp",
 		"fs": "fs",
 		"path": "path",
@@ -102,5 +128,5 @@
 		"realFavicon": "gulp-real-favicon",
 		"imageMin": "gulp-imagemin",
 		"ImgMinify": "imgminify"
-    }
+	}
 }

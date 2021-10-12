@@ -3,6 +3,13 @@ import { env, cwd as _cwd, argv as _argv } from 'process';
 import { readFileSync as readFile } from 'fs';
 import { join, dirname, relative, sep } from 'path';
 
+const { assignParentConfig, assignRootConfig } = ({}).registerAll(
+	function assignParentConfig(parent) { return parent.entries().map(file => file[1]).reverse(); },
+	function assignRootConfig(root, config, parent) {
+		return !config.isObject() ? config : root.assign(...parent.assignParentConfig(), config);
+	}
+);
+
 export const { INIT_CWD } = env,
 	cwd = _cwd(),
 	argv = _argv.slice(2),
@@ -54,17 +61,25 @@ const h = ({}).registerAll(
 		return !(parent && path != cwd && path != dirname(path)) ? result() :
 			searchFile.call(this, dirname(path), ...arguments.from().slice(1));
 	}).bind({}),
-	(function assignConfig(path, ...configList) {
+	function assignConfig(path, ...configList) {
 		return configList.concat().map(file => {
-			const { config, root, parent = {} } = path.searchFile(file),
-				parentList = parent.entries().map(file => file[1]).reverse();
-			return [file.fileName(), !root ? config.file : root.file.assign(...parentList, config.file)];
+			const { config, root = {}, parent = {} } = path.searchFile(file);
+			return [file.fileName(), (root?.file ?? {}).assignRootConfig(config.file, parent)];
 		}).fromEntries();
-	}).bind({})
+	},
+	function setBinding(configList, path) {
+		const { config, package: _package } = configList,
+			gulpfileInfo = path.searchFile(_package.main ?? 'gulpfile.js'),
+			gulpfile = (gulpfileInfo.root?.file ?? {}).assignRootConfig(gulpfileInfo.config.file, gulpfileInfo.parent);
+		'configList\n'.log({ config, _package });
+		'gulpfile:'.log(gulpfile);
+		return configList;
+	}
 );
 
-const configList = INIT_CWD.assignConfig('config.json', 'package.json', 'gulpfile.js');
-'configList\n'.log(configList);
+const configList = INIT_CWD.assignConfig('config.json', 'package.json').setBinding(INIT_CWD);
+
+//'configList\n'.log(configList);
 
 export const { runInContext, searchFile, assignConfig } = h,
 	{ config } = configList,
