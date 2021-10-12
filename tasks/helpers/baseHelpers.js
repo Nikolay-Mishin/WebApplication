@@ -107,16 +107,8 @@ const h = {}.registerAll(
 	},
 	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); },
 	function renameKeys(obj, { keyList, searchVal = '^_|\W', replaceVal = '' } = {}) {
-		log('obj\n', obj);
-		log('search:', searchVal);
-		log('replace:', replaceVal);
-		log('keyList:', keyList);
-		log('slice:', arguments.slice(1));
 		keyList = keyList ?? arguments.slice(1);
 		const newKeys = keyList.map((key, i) => {
-			log('key', key);
-			log('replace:', key.replaceVal);
-			log(key.replace(new RegExp(searchVal), replaceVal));
 			key = key.replace(new RegExp(searchVal), replaceVal);
 			obj[key] = obj[keyList[i]];
 			return key;
@@ -155,13 +147,9 @@ export const {
 const { _dirname, _relative } = h;
 export { _dirname as dirname, _relative as relative };
 
-[h.filter, h.dirname, h.relative] = [h._filter, h._dirname, h._relative];
-
 const newKeys = renameKeys(h, '_filter', '_dirname', '_relative');
 
-log('newKeys:', newKeys);
-
-//log('h\n', h);
+log('h\n', h);
 
 export default {
 	imports, importModules,
