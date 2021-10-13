@@ -35,10 +35,12 @@
  * 5.6 - add searchFile() in BaseHelpers
  * 5.7 - add setBind() in BaseHelpers
  * 5.8 - fix Tasks
- * 6.0 - add assignConfig() in BaseHelpers
+ * 6.0 - add assignFiles() in BaseHelpers
  * 6.1 - add define() & register() in BaseHelpers
  * 6.2 - add registerAll() in BaseHelpers
  * 6.3 - add protoList() in BaseHelpers
  * 6.4 - add ContextHelpers
  * 6.5 - add modules in Config
+ * 6.6 - add setBinding() in ContextHelpers
+ * 6.7 = merge ContextHelpers to BaseHelpers
 */

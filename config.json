@@ -2,16 +2,16 @@
 	"name": "WebApplication",
 	"binding": {
 		"gulp": {
-			"BeforeBuild": [ "_tasksWatch" ],
-			"AfterBuild": [ "_tasksWatch" ],
-			"Clean": [ "_tasksWatch" ],
-			"ProjectOpened": [ "_tasksWatch" ]
+			"BeforeBuild": [ "$tasksWatch", "$test" ],
+			"AfterBuild": [ "$tasksWatch" ],
+			"Clean": [ "$tasksWatch" ],
+			"ProjectOpened": [ "$tasksWatch" ]
 		},
 		"npm": {
 			"BeforeBuild": [ "tasksWatch" ],
 			"AfterBuild": [ "tasksWatch" ],
 			"Clean": [ "tasksWatch" ],
-			"ProjectOpened": [ "tasksWatch" ]
+			"ProjectOpened": [ "tasksWatch", "tasks" ]
 		}
 	},
 	"es": {
@@ -104,6 +104,7 @@
 		"gulp": "gulp",
 		"fs": "fs",
 		"path": "path",
+		"buffer": "buffer",
 		"browserSync": "browser-sync",
 		"$if": "gulp-if",
 		"gutil": "gulp-util",

@@ -10,6 +10,7 @@ Thumbs.db
 # Runtime
 [Cc]ache/
 [Tt]mp/
+*test.*
 
 # Public folders
 [Pp]roperties/

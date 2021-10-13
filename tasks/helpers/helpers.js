@@ -1,9 +1,8 @@
 import { pathToFileURL as toUrl } from 'url';
 import config from '../../gulpfile.config.js';
 import h from './baseHelpers.js';
-import ch from './contextHelpers.js';
 
-const { argv } = ch,
+const { argv } = h,
 	{
 		root, useWebpack, esModule, tasksPath, excludeTasks = [],
 		modules: {
@@ -59,4 +58,4 @@ const helpers = {
 	}
 };
 
-export default helpers.setBind(helpers.setMode).assignDefine(h, ch);
+export default helpers.setBind(helpers.setMode).assignDefine(h);

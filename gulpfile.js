@@ -1,5 +1,5 @@
-// <binding BeforeBuild='_tasksWatch' AfterBuild='_tasksWatch' Clean='_tasksWatch' ProjectOpened='_tasksWatch' />
-//package.json: , "-vs-binding":{"BeforeBuild":["tasksWatch"],"AfterBuild":["tasksWatch"],"Clean":["tasksWatch"],"ProjectOpened":["tasksWatch"]}
+// <binding BeforeBuild='$tasksWatch' AfterBuild='$tasksWatch' Clean='$tasksWatch' ProjectOpened='$tasksWatch' />
+// package.json: , "-vs-binding":{"BeforeBuild":["tasksWatch"],"AfterBuild":["tasksWatch"],"Clean":["tasksWatch"],"ProjectOpened":["tasksWatch","tasks"]}
 
 import { log } from 'console';
 import h from './tasks/helpers/helpers.js';

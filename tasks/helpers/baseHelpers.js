@@ -1,7 +1,11 @@
 import { log } from 'console';
+import { env, cwd as $cwd, argv as $argv } from 'process';
 import { fileURLToPath as toPath } from 'url';
-import { existsSync as exist, readdirSync as readDir, statSync as stat } from 'fs';
-import { join, dirname, relative, basename as base, extname as ext } from 'path';
+import {
+	existsSync as exist, readdirSync as readDir, statSync as stat, readFileSync as readFile, writeFileSync as writeFile
+} from 'fs';
+import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
+import { Buffer } from 'buffer';
 import { imports, importModules } from './import.js';
 
 const nullProto = {}.__proto__,
@@ -69,7 +73,10 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 	call = (context, ...args) => context.call(context, ...args);
 
 const h = {}.registerAll(
-	log, imports, importModules, assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
+	log, imports, importModules, assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
+	isObject, isFunc,
+	function toJson(item, space = null, replacer = null) { return JSON.stringify(item, replacer, space); },
+	function isJson(item) { return item.jsonParse() ? true : false; },
 	function jsonParse(item) {
 		try {
 			item = JSON.parse(item);
@@ -78,9 +85,6 @@ const h = {}.registerAll(
 			return null;
 		}
 		return item;
-	},
-	function isJson(item) {
-		return item.jsonParse() ? true : false;
 	},
 	function forEach(obj, cb) { for (let key in obj) cb(obj[key], key); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
@@ -105,7 +109,7 @@ const h = {}.registerAll(
 		sources.forEach(source => defineAll(target, fromEntries(keys(source).map(key => [key, getDesc(source, key)]))));
 		return target;
 	},
-	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); },
+	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); return obj; },
 	function renameKeys(obj, { keyList, searchVal = '^_|\W', replaceVal = '' } = {}) {
 		keyList = keyList ?? arguments.slice(1);
 		const newKeys = keyList.map((key, i) => {
@@ -128,7 +132,9 @@ const h = {}.registerAll(
 	function callBind(context, args, cb) { return cb.call(context, ...args); },
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
 	function _relative(from, to) { return relative(from.url ? from._dirname() : from, to); },
-	function fileName(file) { return base(file, ext(file)); },
+	function fileName(f, info = false) {
+		return !info ? base(f, ext(f)) : { file: f, name: base(f, ext(f)), ext: ext(f).replace(new RegExp('^\.'), '') };
+	},
 	function isDir(path) { return exist(path) && stat(path).isDirectory(); },
 	function isFile(path) { return exist(path) && stat(path).isFile(); },
 	function getFolders(path, { exclude = [] } = {}) {
@@ -140,7 +146,7 @@ const h = {}.registerAll(
 );
 
 export const {
-	jsonParse, isJson, forEach, getProto, protoList, defineAll, getDesc, assignDefine,
+	toJson, isJson, jsonParse, forEach, getProto, protoList, defineAll, getDesc, assignDefine,
 	$delete, renameKeys, empty, reverse, _filter: filter, concat, slice, bind, getBind, setBind, callBind,
 	fileName, isDir, isFile, getFolders, getFiles
 } = h;
@@ -149,10 +155,143 @@ export { _dirname as dirname, _relative as relative };
 
 const newKeys = renameKeys(h, '_filter', '_dirname', '_relative');
 
-log('h\n', h);
+const { assignParentFiles, assignRootFiles } = {}.registerAll(
+	function assignParentFiles(parent) { return parent.entries().map(file => file[1]).reverse(); },
+	function assignRootFiles(root, config, parent) {
+		return !config.isObject() ? { file: config } : root.assign(...parent.assignParentFiles(), config);
+	}
+);
+
+export const { INIT_CWD } = env,
+	cwd = $cwd(),
+	argv = $argv.slice(2),
+	parseArgs = (argList, sep = '^\-+') => {
+		let args = {}, opt, thisOpt, curOpt;
+		argList.forEach(arg => {
+			thisOpt = arg.trim();
+			opt = thisOpt.replace(new RegExp(sep), '');
+			if (thisOpt === opt) {
+				if (curOpt) args[curOpt] = opt; // argument value
+				curOpt = null;
+			}
+			else args[curOpt = opt] = true; // argument name
+		});
+		return args;
+	},
+	args = (argList => parseArgs(argList))(argv);
+
+const ch = {}.registerAll(
+	function runInContext(path, cb) {
+		const context = relative(cwd, path),
+			project = context.split(sep)[0];
+		log(`[${project.replace('app-', '')}] has been changed:  + ${context}`);
+		cb(); // Task call
+		//watch('app-*/templates/*.jade').on('change', file => runInContext(file, series('jade')));
+	},
+	(function searchFile(path, search, parent = true) {
+		const filePath = join(path, search),
+			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null,
+			result = () => {
+				const result = {}.assign(this);
+				[this.config, this.root, this.parent] = [null, null, {}];
+				return result;
+			};
+		if (_file) {
+			const file = _file.jsonParse() ?? _file,
+				info = { path, file };
+			this.config = this.config ?? info;
+			this.parent = this.parent ?? {};
+			if (this.config.path == cwd) return result();
+			else if (file.root || path == cwd) {
+				this.root = info;
+				if (file.root) return result();
+			}
+			else if (parent && path != this.config.path && !this.parent[path]) {
+				this.parent[path] = file;
+			}
+		}
+		return !(parent && path != cwd && path != dirname(path)) ? result() :
+			searchFile.call(this, dirname(path), ...arguments.from().slice(1));
+	}).bind({}),
+	function assignFiles(path, ...files) {
+		return files.concat().map(file => {
+			const { config, root = {}, parent = {} } = path.searchFile(file);
+			return [
+				file.fileName(),
+				!config ? null :
+					{ $path: `${config.path}\\${file}` }.assign((root?.file ?? {}).assignRootFiles(config.file, parent))
+			];
+		}).filter(file => file[1] != null).fromEntries();
+	},
+	function setBinding(path, ...files) {
+		files = path.assignFiles(...files);
+		const { config, package: $package, gulpfile: _gulpfile } = files,
+			gulpfile = _gulpfile?.file;
+		if (config?.binding) {
+			const { gulp, npm } = config.binding;
+			if (npm && $package) {
+				const { name, ext } = $package.$path.fileName(true);
+				$package['-vs-binding'] = npm;
+				'assign\n'.log({}.assign($package));
+				'$delete\n'.log({}.assign($package).$delete('$path'));
+				//'writeFile\n'.log({}.assign($package).$delete('$path').toJson(4));
+				'npm:'.log(`${name}-test.${ext}`);
+				//writeFile(`${name}-test.${ext}`, {}.assign($package).$delete('$path').toJson(4));
+			}
+			if (gulp && gulpfile) {
+				const bindings = gulp.entries().reduce((str, val) => str += ` ${val[0]}='${val[1].join(', ')}'`, '// <binding'),
+					exec = new RegExp('// <binding.+ />\r\n').exec(gulpfile) ?? [];
+				'binding:'.log(`${bindings} />\r\n`);
+				if (exec[0]) {
+					const { name, ext } = _gulpfile.$path.fileName(true),
+						file = _gulpfile.file = Buffer.from(exec.input = exec.input.replace(exec[0], `${bindings} />\r\n`));
+					'gulpfileNew:'.log(file);
+					'gulp:'.log(`${name}-test.${ext}`);
+					//writeFile(`${name}-test.${ext}`, file);
+				}
+			}
+		}
+		'configList\n'.log(files);
+		return files;
+	}
+);
+
+export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
+	{ config, package: $package } = configList;
+
+const { paths: { root: $root = './' } } = config;
+
+export const { runInContext, searchFile, assignFiles, setBinding } = ch,
+	{ project, context } = (() => {
+		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
+			_projectsPath = join(cwd, projectsRoot),
+			exist = _projectsPath.isDir(),
+			projectsPath = exist ? _projectsPath : cwd,
+			projects = projectsPath.getFolders({ exclude })
+				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
+			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
+			project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
+			contextPath = join(projectsPath, project),
+			context = exist && contextPath.isDir() ? contextPath : projectsPath;
+		//log('INIT_CWD:', INIT_CWD);
+		//log('cwd:', cwd);
+		//log('projectsPath:', projectsPath);
+		//log('exist:', exist);
+		//log('cwd.fileName():', cwd.fileName());
+		//log('name:', name);
+		//log('project:', project);
+		//log('context:', context);
+		//log('args:', args);
+		//log('arg:', arg);
+		//log('projects:', projects);
+		return { project, context };
+	})(),
+	root = join(context, $root),
+	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
 
 export default {
-	imports, importModules,
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, isObject, isFunc,
-	create, createAssign, hasOwn, define, register, registerAll
-}.assignDefine(h);
+	log, imports, importModules,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from, isObject, isFunc,
+	create, createAssign, hasOwn, define, register, registerAll, call,
+	INIT_CWD, cwd, argv, parseArgs, args, configList, project, context
+}.assignDefine(h, ch);

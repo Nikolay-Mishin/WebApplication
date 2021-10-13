@@ -1,5 +1,4 @@
-import { importModules } from './tasks/helpers/baseHelpers.js';
-import { config, root, cwd, context } from './tasks/helpers/contextHelpers.js';
+import { importModules, config, root, cwd, context, project } from './tasks/helpers/baseHelpers.js';
 
 // Подключаемые модули
 const {

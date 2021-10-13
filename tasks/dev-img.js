@@ -1,10 +1,10 @@
 import { log } from 'console';
 import h from './helpers/helpers.js';
 const {
-		lastRun,
-		config: { paths },
-		modules: { ImgMinify }
-	} = h;
+	lastRun,
+	config: { paths },
+	modules: { ImgMinify }
+} = h;
 
 const imgMinify = (function imgMinify() {
 	return new ImgMinify()
