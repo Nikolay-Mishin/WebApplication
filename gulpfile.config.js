@@ -1,6 +1,8 @@
 import { importModules, configList, config, root, cwd, context, project } from './tasks/helpers/baseHelpers.js';
 
 'configList\n'.log(configList);
+'project:'.log(project);
+'context:'.log(context);
 
 // Подключаемые модули
 const {
