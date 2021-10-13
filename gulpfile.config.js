@@ -1,4 +1,6 @@
-import { importModules, config, root, cwd, context, project } from './tasks/helpers/baseHelpers.js';
+import { importModules, configList, config, root, cwd, context, project } from './tasks/helpers/baseHelpers.js';
+
+'configList\n'.log(configList);
 
 // Подключаемые модули
 const {

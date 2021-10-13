@@ -249,7 +249,7 @@ const ch = {}.registerAll(
 				}
 			}
 		}
-		'configList\n'.log(files);
+		//'configList\n'.log(files);
 		return files;
 	}
 );
