@@ -1,4 +1,4 @@
-// <binding BeforeBuild='$tasksWatch' AfterBuild='$tasksWatch' Clean='$tasksWatch' ProjectOpened='$tasksWatch' />
+// <binding BeforeBuild='$tasksWatch, $test' AfterBuild='$tasksWatch' Clean='$tasksWatch' ProjectOpened='$tasksWatch' />
 // package.json: , "-vs-binding":{"BeforeBuild":["tasksWatch"],"AfterBuild":["tasksWatch"],"Clean":["tasksWatch"],"ProjectOpened":["tasksWatch","tasks"]}
 
 import { log } from 'console';

@@ -1,38 +1,53 @@
 {
-	"name": "web-app",
-	"version": "6.7.0",
-	"main": "gulpfile.js",
-	"type": "module",
-	"exports": {
-		".": "./gulpfile.js",
-		"./@config": "./gulpfile.config.js",
-		"./@*": "./*.js",
-		"./*": "./tasks/*.js",
-		"./_*": "./tasks/helpers/*.js",
-		"./#*": "./tasks/test/*.js"
-	},
-	"license": "ISC",
-	"author": {
-		"name": "Nikolay Mishin",
-		"url": "https://github.com/Nikolay-Mishin"
-	},
-	"description": "Library of development tools",
-	"keywords": [
-		"gulp",
-		"webpack"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Nikolay-Mishin/WebApplication",
-		"directory": ""
-	},
-	"engines": {
-		"node": ">=14.17.5"
-	},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"gulp": "gulp",
-		"tasks": "gulp --tasks",
-		"tasksWatch": "gulp _tasksWatch"
-	}
+    "name": "web-app",
+    "version": "6.7.0",
+    "main": "gulpfile.js",
+    "type": "module",
+    "exports": {
+        ".": "./gulpfile.js",
+        "./@config": "./gulpfile.config.js",
+        "./@*": "./*.js",
+        "./*": "./tasks/*.js",
+        "./_*": "./tasks/helpers/*.js",
+        "./#*": "./tasks/test/*.js"
+    },
+    "license": "ISC",
+    "author": {
+        "name": "Nikolay Mishin",
+        "url": "https://github.com/Nikolay-Mishin"
+    },
+    "description": "Library of development tools",
+    "keywords": [
+        "gulp",
+        "webpack"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nikolay-Mishin/WebApplication",
+        "directory": ""
+    },
+    "engines": {
+        "node": ">=14.17.5"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "gulp": "gulp",
+        "tasks": "gulp --tasks",
+        "tasksWatch": "gulp _tasksWatch"
+    },
+    "-vs-binding": {
+        "BeforeBuild": [
+            "tasksWatch"
+        ],
+        "AfterBuild": [
+            "tasksWatch"
+        ],
+        "Clean": [
+            "tasksWatch"
+        ],
+        "ProjectOpened": [
+            "tasksWatch",
+            "tasks"
+        ]
+    }
 }
