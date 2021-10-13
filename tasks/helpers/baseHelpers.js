@@ -227,23 +227,23 @@ const ch = {}.registerAll(
 		files = path.assignFiles(...files);
 		const { config, package: $package, gulpfile: _gulpfile } = files,
 			gulpfile = _gulpfile?.file;
-		if (config?.binding) {
+		if (config?.setBinding && config?.binding) {
 			const { gulp, npm } = config.binding;
 			if (npm && $package) {
 				const { name, ext } = $package.$path.fileName(true);
 				$package['-vs-binding'] = npm;
-				'writeFile\n'.log({}.assign($package).$delete('$path').toJson(4));
+				'$package\n'.log({}.assign($package).$delete('$path').toJson(4));
 				'npm:'.log(`${name}.${ext}`);
 				writeFile(`${name}.${ext}`, {}.assign($package).$delete('$path').toJson(4));
 			}
 			if (gulp && gulpfile) {
 				const bindings = gulp.entries().reduce((str, val) => str += ` ${val[0]}='${val[1].join(', ')}'`, '// <binding'),
 					exec = new RegExp('// <binding.+ />\r\n').exec(gulpfile) ?? [];
-				'binding:'.log(`${bindings} />\r\n`);
+				'binding:'.log(`${bindings} />`);
 				if (exec[0]) {
 					const { name, ext } = _gulpfile.$path.fileName(true),
 						file = _gulpfile.file = Buffer.from(exec.input = exec.input.replace(exec[0], `${bindings} />\r\n`));
-					'gulpfileNew:'.log(file);
+					'gulpfile:'.log(file);
 					'gulp:'.log(`${name}.${ext}`);
 					writeFile(`${name}.${ext}`, file);
 				}
