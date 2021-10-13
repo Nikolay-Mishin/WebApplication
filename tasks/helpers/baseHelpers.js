@@ -232,11 +232,9 @@ const ch = {}.registerAll(
 			if (npm && $package) {
 				const { name, ext } = $package.$path.fileName(true);
 				$package['-vs-binding'] = npm;
-				'assign\n'.log({}.assign($package));
-				'$delete\n'.log({}.assign($package).$delete('$path'));
-				//'writeFile\n'.log({}.assign($package).$delete('$path').toJson(4));
+				'writeFile\n'.log({}.assign($package).$delete('$path').toJson(4));
 				'npm:'.log(`${name}-test.${ext}`);
-				//writeFile(`${name}-test.${ext}`, {}.assign($package).$delete('$path').toJson(4));
+				writeFile(`${name}-test.${ext}`, {}.assign($package).$delete('$path').toJson(4));
 			}
 			if (gulp && gulpfile) {
 				const bindings = gulp.entries().reduce((str, val) => str += ` ${val[0]}='${val[1].join(', ')}'`, '// <binding'),
@@ -247,7 +245,7 @@ const ch = {}.registerAll(
 						file = _gulpfile.file = Buffer.from(exec.input = exec.input.replace(exec[0], `${bindings} />\r\n`));
 					'gulpfileNew:'.log(file);
 					'gulp:'.log(`${name}-test.${ext}`);
-					//writeFile(`${name}-test.${ext}`, file);
+					writeFile(`${name}-test.${ext}`, file);
 				}
 			}
 		}
