@@ -58,4 +58,4 @@ const h = {
 	}
 };
 
-export default h.setBind(h.setMode).assignDefine(h);
+export default h.setBind(h.setMode).assignDefine(bh);

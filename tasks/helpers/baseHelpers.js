@@ -46,7 +46,7 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 		nullProto._define(
 			function _register({ prop, value, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
 		);
-		return function register(obj, value, { prop, def, enumerable = false, configurable = false, writable = false, get, set } = {}) {
+		return function register(obj, value, { prop, def = false, enumerable = false, configurable = false, writable = false, get, set } = {}) {
 			[obj, value] = [obj.__proto__, getFunc(value)];
 			prop = prop ?? funcName(value);
 
@@ -58,8 +58,10 @@ export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Ob
 			value = _func[prop];
 			
 			writable = obj === nullProto;
-			!(def || writable) ? obj[prop] = value :
-				obj._define(value, { prop, enumerable, configurable, writable, get, set });
+			log('writable:', writable);
+			log('def:', !(def || writable));
+			//!(def || writable) ? obj[prop] = value :
+			obj._define(value, { prop, enumerable, configurable, writable, get, set });
 			return func;
 		};
 	})(),
