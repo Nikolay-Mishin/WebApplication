@@ -219,38 +219,40 @@ const ch = {}.registerAll(
 			return [
 				file.fileName(),
 				!config ? null :
-					{ $path: `${config.path}\\${file}` }.assign((root?.file ?? {}).assignRootFiles(config.file, parent))
+					{ $path: `${config.path}\\${file}`, $file: file }
+						.assign((root?.file ?? {}).assignRootFiles(config.file, parent))
 			];
 		}).filter(file => file[1] != null).fromEntries();
 	},
-	function setBinding(path, ...files) {
-		files = path.assignFiles(...files);
-		const { config, package: $package, gulpfile: _gulpfile } = files,
+	function setBinding(path, configFile, packageFile, gulpFile) {
+		const configList = path.assignFiles(configFile, packageFile),
+			{ config, package: $package } = configList,
+			_gulpfile = path.assignFiles($package?.main ?? gulpFile).gulpfile,
 			gulpfile = _gulpfile?.file;
-		if (config?.setBinding && config?.binding) {
+		if (_gulpfile) configList.gulpfile = _gulpfile;
+		if (config?.binding) {
 			const { gulp, npm } = config.binding;
 			if (npm && $package) {
-				const { name, ext } = $package.$path.fileName(true);
+				const { name, ext } = $package.$file.fileName(true);
 				$package['-vs-binding'] = npm;
-				'$package\n'.log({}.assign($package).$delete('$path').toJson(4));
-				'npm:'.log(`${name}.${ext}`);
-				writeFile(`${name}.${ext}`, {}.assign($package).$delete('$path').toJson(4));
+				//'$package\n'.log({}.assign($package).$delete('$path', '$file').toJson(4));
+				//'npm:'.log(`${name}.${ext}`);
+				if (config?.setBinding) writeFile(`${name}.${ext}`, {}.assign($package).$delete('$path', '$file').toJson(4));
 			}
 			if (gulp && gulpfile) {
 				const bindings = gulp.entries().reduce((str, val) => str += ` ${val[0]}='${val[1].join(', ')}'`, '// <binding'),
 					exec = new RegExp('// <binding.+ />\r\n').exec(gulpfile) ?? [];
-				'binding:'.log(`${bindings} />`);
+				//'binding:'.log(`${bindings} />`);
 				if (exec[0]) {
 					const { name, ext } = _gulpfile.$path.fileName(true),
 						file = _gulpfile.file = Buffer.from(exec.input = exec.input.replace(exec[0], `${bindings} />\r\n`));
-					'gulpfile:'.log(file);
-					'gulp:'.log(`${name}.${ext}`);
-					writeFile(`${name}.${ext}`, file);
+					//'gulpfile:'.log(file);
+					//'gulp:'.log(`${name}.${ext}`);
+					if (config?.setBinding) writeFile(`${name}.${ext}`, file);
 				}
 			}
 		}
-		//'configList\n'.log(files);
-		return files;
+		return configList;
 	}
 );
 

@@ -1,4 +1,4 @@
-import { importModules, configList, config, root, cwd, context, project } from './tasks/helpers/baseHelpers.js';
+import { config, root, cwd, context, project, configList } from './baseHelpers.js';
 
 'configList\n'.log(configList);
 'project:'.log(project);
@@ -6,12 +6,13 @@ import { importModules, configList, config, root, cwd, context, project } from '
 
 // Подключаемые модули
 const {
+	excludeTasks = [],
 	es: { useWebpack, esModule, webpackConfig },
 	paths: { tasksPath = 'tasks', build: { root: $build }, src: { root: srcRoot } },
 	server: { serverPHP, domain, port, baseDir: $baseDir, index },
 	deploy, modules: $modules
 } = config,
-	modules = await importModules($modules),
+	modules = await $modules.importModules(),
 	{ path, browserSync } = modules,
 	{ join } = path,
 	server = browserSync.create(),
@@ -23,9 +24,9 @@ const {
 	baseDir = join(build, $baseDir);
 
 export default process.node_config = process.node_config ?? {
-	root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	modules: modules.assign({ server, reload, stream, $reload }),
 	tasksPath: join(cwd, tasksPath),
+	excludeTasks, root, build, src, serverPHP, deploy, //useWebpack, esModule,
 	//webpackConfig: join(root, webpackConfig),
 	paths: {
 		root,

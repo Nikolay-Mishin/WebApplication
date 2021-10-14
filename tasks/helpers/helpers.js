@@ -1,10 +1,10 @@
 import { pathToFileURL as toUrl } from 'url';
-import config from '../../gulpfile.config.js';
-import h from './baseHelpers.js';
+import config from './config.js';
+import bh from './baseHelpers.js';
 
-const { argv } = h,
+const { argv } = bh,
 	{
-		root, useWebpack, esModule, tasksPath, excludeTasks = [],
+		tasksPath, excludeTasks, root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile },
@@ -15,7 +15,7 @@ const { argv } = h,
 		tsconfig = join(root, 'tsconfig.json')
 	} = config;
 
-const helpers = {
+const h = {
 	get tasks() { return process.node_tasks = process.node_tasks ?? tasksPath.importModules(excludeTasks); },
 	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },
@@ -58,4 +58,4 @@ const helpers = {
 	}
 };
 
-export default helpers.setBind(helpers.setMode).assignDefine(h);
+export default h.setBind(h.setMode).assignDefine(h);
