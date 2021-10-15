@@ -1,6 +1,6 @@
 import { config, root, cwd, context, project, configList } from './baseHelpers.js';
 
-'configList\n'.log(configList);
+//'configList\n'.log(configList);
 'project:'.log(project);
 'context:'.log(context);
 

@@ -1,0 +1,183 @@
+/*
+npx tslint-to-eslint-config --config .eslintrc.json
+
+node -v // проверка версии nodejs
+npm -v // проверка версии npm
+
+npm init --yes // инициализация npm (создание файла package.json)
+
+npm outdated // является ли какой-либо модуль в проекте «старым»
+
+npm update // обновить все зависимости
+npm update xml2js // обновить одну зависимость, например xml2js
+
+npm view <package> versions
+npm i -D <package>@<version>
+
+npm ls graceful-fs
+
+----- ГЛОБАЛЬНО -----
+
+npm i -g // установка пакетов (глобально), прописанных в package.json
+npm i -g gulp-cli npm-check typescript tslint eslint 
+npm link -g gulp-cli // ссылка на глобальные пакеты
+npm rm -g gulp-cli // удаление | uninstall | --global
+
+----- ЛОКАЛЬНО -----
+
+npm i // установка пакетов, прописанных в package.json
+npm i --save gulp // dependencies
+npm i -D gulp // devDependencies | npm install --save-dev
+npm rm gulp // удаление | uninstall
+
+----- dependencies -----
+
+npm i --save bootstrap animate.css normalize.css jquery jquery-modal jquery.maskedinput fancybox clipboard
+npm i --save @babel/polyfill lodash react react-dom
+
+----- devDependencies -----
+
+// Gulp
+npm i -D gulp browser-sync gulp-autoprefixer gulp-watch gulp-notify gulp-plumber gulp-sourcemaps
+// file
+npm i -D rimraf gulp-clean gulp-rename gulp-concat gulp-uglify gulp-rigger gulp-htmlclean gulp-cssmin gulp-inline-css gulp-htmlmin gulp-imagemin imgminify gulp-real-favicon 
+// Preprocessors
+npm i -D gulp-pug gulp-less less-plugin-lists gulp-sass node-sass typescript
+// Gulp Utilities
+npm i -D del gulp-changed gulp-file-include gulp-if gulp-util uninstall
+// ES-6 и Babel
+npm i -D gulp-babel gulp-terser gulp-eslint concat gulp-rsync gulp-connect-php gulp-changed
+
+// Webpack
+npm i -D webpack webpack-cli webpack-dev-server webpack-stream
+// Webpack Plugins
+npm i -D html-webpack-externals-plugin html-webpack-plugin clean-webpack-plugin copy-webpack-plugin mini-css-extract-plugin optimize-css-assets-webpack-plugin terser-webpack-plugin webpack-bundle-analyzer papaparse tslint-webpack-plugin
+
+// Модули и загрузчики
+npm i -D file-loader csv-loader xml-loader
+// Babel (JavaScript)
+npm i -D @babel/cli @babel/node babel-core babel-preset-env babel-preset-latest
+npm i -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime @babel/runtime @babel/plugin-proposal-class-properties @babel/preset-typescript cross-env babel-eslint eslint-loader tslint-loader tslint-react @babel/preset-react
+// Стили
+npm i -D sass-loader css-loader style-loader less less-loader postcss
+
+// Linters
+npm i -D eslint tslint tslint-react @typescript-eslint/parser @typescript-eslint/eslint-plugin tslint-config-prettier eslint-config-prettier tslint-eslint-rules
+
+// Typings
+npm i -D tslib @types/jquery
+
+----- Package Properties -----
+
+"type": "module",
+"exports": {
+	//".": "./gulpfile.config.js",
+	".": {
+      "module": "./tslib.es6.js",
+      "import": "./modules/index.js",
+      "default": "./gulpfile.config.js"
+    },
+    //"./": "./"
+	"./*": "./tasks/*.js",
+	"./config": "./gulpfile.config.js",
+	"./@*": "./*.js",
+	"./_*": "./tasks/helpers/*.js",
+	"./#*": "./tasks/test/*.js"
+},
+"imports": {
+	".": "./gulpfile.config.js",
+	"./*": "./tasks/*.js",
+	"./_*": "./tasks/helpers/*.js"
+},
+
+----- Package List -----
+
+//@babel/plugin-transform-runtime // смотрит код на наличие ES6 фич и если они есть, трансформирует код так, чтобы эти фичи брались не из глобального скоупа, а импортировались из babel-runtime.
+
+//postcss-loader — обработка CSS с помощью PostCSS
+//postcss-preset-env — полезные настройки PostCSS
+
+//"@babel/core": "^7.8.3", // транспиляция ES2015+ в обратно совместимый JavaScript
+//"@babel/plugin-proposal-class-properties": "^7.8.3", // пример кастомной конфигурации Babel (установка свойств экземпляров в теле класса, а не в его конструкторе)
+//"@babel/preset-env": "^7.8.3", // полезные стандартные настройки Babel
+//"@babel/preset-react": "^7.8.3",
+//"@babel/preset-typescript": "^7.8.3",
+//"babel-eslint": "^10.0.3",
+//"babel-loader": "^8.0.6", // транспиляция файлов с помощью Babel и вебпака
+//"clean-webpack-plugin": "^3.0.0",
+//"copy-webpack-plugin": "^5.1.1",
+//"cross-env": "^6.0.3",
+//"css-loader": "^3.4.2", // загрузка стилей
+//"csv-loader": "^3.0.2",
+//"eslint": "^6.8.0",
+//"eslint-loader": "^3.0.3",
+//"file-loader": "^5.0.2",
+//"html-webpack-plugin": "^3.2.0",
+//"less": "^3.10.3",
+//"less-loader": "^5.0.0",
+//"mini-css-extract-plugin": "^0.9.0",
+//"node-sass": "^4.13.0", // Node Sass
+//"optimize-css-assets-webpack-plugin": "^5.0.3",
+//"papaparse": "^5.1.1",
+//"sass-loader": "^8.0.2", // загружает SCSS и компилирует его в CSS
+//"style-loader": "^1.1.2", // применение стилей к элементам DOM
+//"terser-webpack-plugin": "^2.3.2",
+//"webpack": "^4.41.5",
+//"webpack-bundle-analyzer": "^3.6.0",
+//"webpack-cli": "^3.3.10",
+//"webpack-dev-server": "^3.10.1",
+//"xml-loader": "^1.2.1"
+*/
+
+/* === Export all keys === */
+
+//const api = [
+//	'access',
+//	'appendFile',
+//	'chmod',
+//	'chown',
+//	'close',
+//	'copyFile',
+//	'fchmod',
+//	'fchown',
+//	'fdatasync',
+//	'fstat',
+//	'fsync',
+//	'ftruncate',
+//	'futimes',
+//	'lchown',
+//	'lchmod',
+//	'link',
+//	'lstat',
+//	'mkdir',
+//	'mkdtemp',
+//	'open',
+//	'readFile',
+//	'readdir',
+//	'readlink',
+//	'realpath',
+//	'rename',
+//	'rmdir',
+//	'stat',
+//	'symlink',
+//	'truncate',
+//	'unlink',
+//	'utimes',
+//	'writeFile'
+//].filter(key => {
+//	// Some commands are not available on some systems. Ex:
+//	// fs.copyFile was added in Node.js v8.5.0
+//	// fs.mkdtemp was added in Node.js v5.10.0
+//	// fs.lchown is not available on at least some Linux
+//	return typeof fs[key] === 'function';
+//});
+
+//// Export all keys:
+//Object.keys(fs).forEach(key => {
+//	if (key === 'promises') {
+//		// fs.promises is a getter property that triggers ExperimentalWarning
+//		// Don't re-export it here, the getter is defined in "lib/index.js"
+//		return;
+//	}
+//	exports[key] = fs[key]
+//});
