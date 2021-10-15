@@ -11,7 +11,9 @@ npm outdated // является ли какой-либо модуль в про
 npm update // обновить все зависимости
 npm update xml2js // обновить одну зависимость, например xml2js
 
-npm-check // Check for outdated, incorrect, and unused dependencies
+npm-check -u // Check for outdated, incorrect, and unused dependencies
+	-u, --update - Interactive update.
+	-gu - Update globally installed modules by picking which ones to upgrade.
 
 npm view <package> versions
 npm i -D <package>@<version>

@@ -7,10 +7,10 @@
 		".": {
 			"module": "./tslib.es6.js",
 			"import": "./modules/index.js",
-			"default": "./gulpfile.config.js"
+			"default": "./tasks/helpers/config.js"
 		},
 		"./*": "./tasks/*.js",
-		"./config": "./gulpfile.config.js",
+		"./config": "./tasks/helpers/config.js",
 		"./@*": "./*.js",
 		"./_*": "./tasks/helpers/*.js",
 		"./#*": "./tasks/test/*.js"
