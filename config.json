@@ -94,7 +94,7 @@
 			"deploy": "../_server",
 			"watch": {
 				"tasks": "tasks/**/*",
-				"root": [ "*.js", "*config*", "*lint*", "!*doc*" ],
+				"root": [ "*.js", "*config*", "*lint*", "*.*lint*", "!*doc*" ],
 				"doc": "doc/**/*",
 				"package": "package.json",
 				"server": [ "../../../package.json", "../../../.editorconfig" ]

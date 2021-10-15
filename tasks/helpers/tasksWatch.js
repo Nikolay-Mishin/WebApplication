@@ -35,4 +35,9 @@ export default async () => {
 			.on('data', ({ relative: rel, path }) => log({ rel, path }))
 			.pipe(dest(deploy));
 	});
+
+	src(['*lint*'])
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }));
+	src(['*.*lint*'])
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }));
 }

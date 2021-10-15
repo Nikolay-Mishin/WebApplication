@@ -44,4 +44,6 @@
  * 6.6 - add setBinding() in ContextHelpers
  * 6.7 - merge ContextHelpers to BaseHelpers
  * 6.8 - remove gulpfile.config to helpers
+ * 6.9 - refactory baseHelpers
+ * 7.0 - add domHelpers
 */

@@ -8,11 +8,12 @@ import { join, dirname, relative, basename as base, extname as ext, sep } from '
 import { Buffer } from 'buffer';
 import { imports, importModules } from './import.js';
 
+export { log, imports, importModules };
+
 const getFunc = func => func[keys(func).shift()] ?? func;
 
-export { imports, importModules };
-
-export const { assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
+export const error = msg => { throw new Error(msg) },
+	{ assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
 	{ isArray, from } = Array,
 	funcName = func => func.name.replace('bound ', '').trim(),
 	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
@@ -86,14 +87,15 @@ export const nullProto = {}.__proto__,
 	})(),
 	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
 		return fromEntries(funcList.map(func => {
-			const { value, opts = {} } = func;
-			func = getFunc(value || func);
+			let value, opts;
+			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
+			func = getFunc(value ?? func);
 			return [funcName(func), obj._register(func, opts)];
 		}));
 	}))();
 
 const h = {}.registerAll(
-	log, imports, importModules,
+	log, imports, importModules, [error, { prop: 'errorMsg' }],
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
 	funcName, is, isObject, isFunc,
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
@@ -160,12 +162,6 @@ export const {
 } = h;
 
 renameKeys(h, '_filter');
-
-log('from:', from(new Map([[0, '1'], [1, '2']])));
-log('from:', from({ 0: '1', 1: '2' }));
-log('reverse:', { 0: '1', 1: '2' }.reverse());
-log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
-log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
 
 const fs = {}.registerAll(
 	function _dirname(meta) { return dirname(toPath(meta.url)); },

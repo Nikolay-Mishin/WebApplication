@@ -1,16 +1,20 @@
 {
     "name": "web-app",
-    "version": "6.7.0",
+    "version": "7.0.0",
     "main": "gulpfile.js",
     "type": "module",
-    "exports": {
-        ".": "./gulpfile.js",
-        "./@config": "./gulpfile.config.js",
-        "./@*": "./*.js",
-        "./*": "./tasks/*.js",
-        "./_*": "./tasks/helpers/*.js",
-        "./#*": "./tasks/test/*.js"
-    },
+	"exports": {
+		".": {
+			"module": "./tslib.es6.js",
+			"import": "./modules/index.js",
+			"default": "./gulpfile.config.js"
+		},
+		"./*": "./tasks/*.js",
+		"./config": "./gulpfile.config.js",
+		"./@*": "./*.js",
+		"./_*": "./tasks/helpers/*.js",
+		"./#*": "./tasks/test/*.js"
+	},
     "license": "ISC",
     "author": {
         "name": "Nikolay Mishin",
