@@ -36,8 +36,16 @@ export default async () => {
 			.pipe(dest(deploy));
 	});
 
-	src(['*lint*'])
-		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }));
-	src(['*.*lint*'])
-		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel: join('tasks', rel), path }));
+	src("*.js")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
+	src("*config*")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
+	src("*lint*")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
+	src("*.*lint*")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
+	src(".git*")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
+	src("*config*.*")
+		.on('data', ({ extname, relative: rel, path }) => extname !== '.js' ? '' : log({ rel, path }));
 }
