@@ -97,24 +97,24 @@ export const nullProto = {}.__proto__,
 		return obj.filter(cb ?? (file => file[1] != null));
 	}))(),
 	registerAll2 = (() => ({})._register(function registerAll2(helpers = []) {
-		const funcList = fromEntries(registerAll.funcList.map(([func, opts]) => {
-			return !helpers || helpers.includes(name) ? [opts.name, func.obj._register(func, opts)] : null;
+		const funcList = fromEntries({}.registerAll.funcList.map(([func, opts]) => {
+			return !helpers || helpers.includes(name) ? [opts.name, func /*func.obj._register(func, opts)*/] : null;
 		}).filterEntries());
-		registerAll.funcList = [];
+		({}).registerAll.funcList = [];
 		return funcList;
 	}))(),
 	addRegister = (() => ({})._register(function addRegister(obj, ...funcList) {
 		({}).registerAll.funcList = {}.registerAll.funcList ?? [];
-		log('funcList:', ({}).registerAll.funcList);
+		log('funcList:', {}.registerAll.funcList);
 		const funcs = {};
-		({}).registerAll.funcList = ({}).registerAll.funcList.concat(funcList.map(func => {
+		({}).registerAll.funcList = {}.registerAll.funcList.concat(funcList.map(func => {
 			let value, opts;
 			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
 			funcs[opts.name = funcName(func = getFunc(value ?? func))] = func;
 			func.obj = obj
 			return [func, opts];
 		}));
-		log('funcList:', ({}).registerAll.funcList);
+		log('funcList:', {}.registerAll.funcList);
 		log('funcs:', funcs);
 		return funcs;
 	}))();

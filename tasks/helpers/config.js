@@ -9,6 +9,7 @@ log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
 log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
 
 ({}).addRegister(function getProto2(obj = Object, i = 0) { return obj.protoList()[i]; });
+[].registerAll2();
 
 'project:'.log(project);
 'context:'.log(context);
