@@ -13,7 +13,7 @@ export { log, imports, importModules };
 const getFunc = func => func[keys(func).shift()] ?? func;
 
 export const error = msg => { throw new Error(msg) },
-	{ assign, keys, values, fromEntries, entries, getPrototypeOf } = Object,
+	{ assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames } = Object,
 	{ isArray, from } = Array,
 	funcName = func => func.name.replace('bound ', '').trim(),
 	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
@@ -119,15 +119,15 @@ export const nullProto = {}.__proto__,
 	}))(),
 	unregister = (() => ({})._register(function unregister(obj, ...funcList) {
 		const proto = obj.getPrototype();
-		log('proto:', proto);
-		delete proto.setBinding;
-		//return $delete(proto, ...funcList);
+		$delete(proto, ...funcList);
+		return proto;
 	}))();
 
 const h = {}.addRegister(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
-	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, isArray, from,
 	funcName, is, isObject, isFunc,
+	function getProps(obj = Object) { return obj.getOwnPropertyNames(); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
 		const proto = obj.getPrototype();
@@ -313,14 +313,17 @@ export const { runInContext, searchFile, assignFiles, setBinding } = _context;
 
 [].registerAll();
 
-export const configList = setBinding(INIT_CWD, 'config.json', 'package.json', 'gulpfile.js'),
+export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
 	{ config, package: $package, gulpfile } = configList;
 
 const { helpers = [], paths: { root: $root = './' } } = config;
 
 log({}.setBinding);
-({}).unregister('setBinding');
-log({}.setBinding);
+
+const proto = {}.unregister(...helpers);
+
+log('proto:', proto);
+log('props:', proto.getProps());
 
 export const { project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
