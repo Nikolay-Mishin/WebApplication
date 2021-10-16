@@ -48,14 +48,14 @@ export const nullProto = {}.__proto__,
 		if (!nullProto.hasOwnProperty('hasOwn')) {
 			Object.defineProperty(nullProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop); } });
 		}
-		return (obj, prop) => obj.hasOwn(prop);
+		return (obj, prop) => obj.hasOwnProperty(prop);
 	})(),
 	define = (() => {
 		if (!nullProto.hasOwn('_define')) Object.defineProperty(nullProto, '_define', {
 			value:
-				function _define(value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) { return define(this, ...arguments); }
+				function _define(value = null, { prop = '', enumerable = false, configurable = true, writable = false, get, set } = {}) { return define(this, ...arguments); }
 		})
-		return function define(obj, value = null, { prop = '', enumerable = false, configurable = false, writable = false, get, set } = {}) {
+		return function define(obj, value = null, { prop = '', enumerable = false, configurable = true, writable = false, get, set } = {}) {
 			prop = prop || value.name;
 			if (!obj.hasOwn(prop)) {
 				const desc = assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable });
@@ -64,12 +64,18 @@ export const nullProto = {}.__proto__,
 			return value;
 		};
 	})(),
+	getPrototype = (() => {
+		function _getPrototype(obj = Object) { return obj.prototype ?? obj.__proto__; }
+		nullProto._define(function getPrototype() { return _getPrototype(this); });
+		return _getPrototype;
+	})(),
 	register = (() => {
 		nullProto._define(
-			function _register({ prop, value, def, enumerable = false, configurable = false, writable = false, get, set } = {}) { return register(this, ...arguments); }
+			function _register({ prop, value, def, enumerable = false, configurable = true, writable = false, get, set } = {})
+				{ return register(this, ...arguments); }
 		);
-		return function register(obj, value, { prop, def = false, enumerable = false, configurable = false, writable = false, get, set } = {}) {
-			const proto = obj.prototype ?? obj.__proto__;
+		return function register(obj, value, { prop, def = false, enumerable = false, configurable = true, writable = false, get, set } = {}) {
+			const proto = obj.getPrototype();
 			[value, prop] = [getFunc(value), prop ?? funcName(value)];
 
 			const func = value,
@@ -110,6 +116,12 @@ export const nullProto = {}.__proto__,
 		//log('funcList:', {}.registerAll.funcList);
 		//log('funcs:', funcs);
 		return funcs;
+	}))(),
+	unregister = (() => ({})._register(function unregister(obj, ...funcList) {
+		const proto = obj.getPrototype();
+		log('proto:', proto);
+		delete proto.setBinding;
+		//return $delete(proto, ...funcList);
 	}))();
 
 const h = {}.addRegister(
@@ -118,7 +130,7 @@ const h = {}.addRegister(
 	funcName, is, isObject, isFunc,
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
-		const proto = obj.prototype ?? obj.__proto__;
+		const proto = obj.getPrototype();
 		if (proto) {
 			this.objProto = this.objProto ?? proto;
 			this._protoList = this._protoList ?? [];
@@ -306,6 +318,10 @@ export const configList = setBinding(INIT_CWD, 'config.json', 'package.json', 'g
 
 const { helpers = [], paths: { root: $root = './' } } = config;
 
+log({}.setBinding);
+({}).unregister('setBinding');
+log({}.setBinding);
+
 export const { project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
@@ -338,6 +354,6 @@ fs.renameKeys('_dirname', '_relative');
 
 export default {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, argv, parseArgs, args,
-	createObj, createAssign, hasOwn, define, register, filterEntries, registerAll, addRegister,
+	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
 	configList, project, context
 }.assignDefine(h, fs, func, _context);
