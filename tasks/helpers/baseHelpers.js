@@ -107,7 +107,7 @@ export const nullProto = {}.__proto__,
 		({}).registerAll.funcList = {}.registerAll.funcList ?? [];
 		log('funcList:', ({}).registerAll.funcList);
 		const funcs = {};
-		({}).registerAll.funcList.push(funcList.map(func => {
+		({}).registerAll.funcList = ({}).registerAll.funcList.concat(funcList.map(func => {
 			let value, opts;
 			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
 			funcs[opts.name = funcName(func = getFunc(value ?? func))] = func;
@@ -118,8 +118,6 @@ export const nullProto = {}.__proto__,
 		log('funcs:', funcs);
 		return funcs;
 	}))();
-
-({}).addRegister(function getProto2(obj = Object, i = 0) { return obj.protoList()[i]; });
 
 const h = {}.registerAll(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
