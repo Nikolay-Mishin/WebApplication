@@ -85,42 +85,34 @@ export const nullProto = {}.__proto__,
 			return func;
 		};
 	})(),
-	registerAll = (() => ({})._register(function registerAll(obj, ...funcList) {
-		return fromEntries(funcList.map(func => {
-			let value, opts;
-			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
-			func = getFunc(value ?? func);
-			return [funcName(func), obj._register(func, opts)];
-		}));
-	}))(),
 	filterEntries = (() => ({})._register(function filterEntries(obj, cb = null) {
 		return obj.filter(cb ?? (file => file[1] != null));
 	}))(),
-	registerAll2 = (() => ({})._register(function registerAll2(helpers = []) {
+	registerAll = (() => ({})._register(function registerAll(helpers = []) {
 		const funcList = {}.registerAll.funcList.map(([func, opts]) => {
-			return helpers.length === 0 || helpers.includes(opts.name) ? [opts.name, func /*func.obj._register(func, opts)*/] : null;
+			return helpers.length === 0 || helpers.includes(opts.name) ? [opts.name, opts.obj._register(func, opts)] : null;
 		});
 		({}).registerAll.funcList = [];
-		log('funcList:', fromEntries(funcList.filterEntries()));
+		log('registerAll:', fromEntries(funcList.filterEntries()));
 		return fromEntries(funcList.filterEntries());
 	}))(),
 	addRegister = (() => ({})._register(function addRegister(obj, ...funcList) {
 		({}).registerAll.funcList = {}.registerAll.funcList ?? [];
-		log('funcList:', {}.registerAll.funcList);
+		//log('funcList:', {}.registerAll.funcList);
 		const funcs = {};
 		({}).registerAll.funcList = {}.registerAll.funcList.concat(funcList.map(func => {
 			let value, opts;
 			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
 			funcs[opts.name = funcName(func = getFunc(value ?? func))] = func;
-			func.obj = obj
+			opts.obj = obj
 			return [func, opts];
 		}));
-		log('funcList:', {}.registerAll.funcList);
-		log('funcs:', funcs);
+		//log('funcList:', {}.registerAll.funcList);
+		//log('funcs:', funcs);
 		return funcs;
 	}))();
 
-const h = {}.registerAll(
+const h = {}.addRegister(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
 	assign, keys, values, fromEntries, entries, getPrototypeOf, isArray, from,
 	funcName, is, isObject, isFunc,
@@ -187,9 +179,7 @@ export const {
 	toJson, isJson, jsonParse, empty, _filter: filter, concat, slice, $delete, reverse, renameKeys
 } = h;
 
-renameKeys(h, '_filter');
-
-const fs = {}.registerAll(
+const fs = {}.addRegister(
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
 	function _relative(from, to) { return relative(from.url ? from._dirname() : from, to); },
 	function fileName(f, info = false) {
@@ -211,9 +201,7 @@ const { _dirname, _relative } = fs;
 export { _dirname as dirname, _relative as relative };
 export const { fileName, isDir, isFile, getFolders, getFiles } = fs;
 
-renameKeys(fs, '_dirname', '_relative');
-
-const func = {}.registerAll(
+const func = {}.addRegister(
 	function callThis(context, ...args) { return context.call(context, ...args); },
 	function bind(context, ...funcList) { return concat(funcList).map(func => func.bind(context)); },
 	function getBind(context, func) { return bind(context, func).shift(); },
@@ -226,14 +214,14 @@ const func = {}.registerAll(
 
 export const { callThis, bind, getBind, setBind, callBind } = func;
 
-const { assignParentFiles, assignRootFiles } = {}.registerAll(
+const { assignParentFiles, assignRootFiles } = {}.addRegister(
 	function assignParentFiles(parent) { return parent.entries().map(file => file[1]).reverse(); },
 	function assignRootFiles(root, config, parent) {
 		return !config.isObject() ? { file: config } : root.assign(...parent.assignParentFiles(), config);
 	}
 );
 
-const _context = {}.registerAll(
+const _context = {}.addRegister(
 	function runInContext(path, cb) {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
@@ -309,13 +297,16 @@ const _context = {}.registerAll(
 	}
 );
 
-export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
+export const { runInContext, searchFile, assignFiles, setBinding } = _context;
+
+[].registerAll();
+
+export const configList = setBinding(INIT_CWD, 'config.json', 'package.json', 'gulpfile.js'),
 	{ config, package: $package, gulpfile } = configList;
 
-const { paths: { root: $root = './' } } = config;
+const { helpers = [], paths: { root: $root = './' } } = config;
 
-export const { runInContext, searchFile, assignFiles, setBinding } = _context,
-	{ project, context } = (() => {
+export const { project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 			_projectsPath = join(cwd, projectsRoot),
 			exist = _projectsPath.isDir(),
@@ -342,8 +333,11 @@ export const { runInContext, searchFile, assignFiles, setBinding } = _context,
 	root = join(context, $root),
 	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
 
+renameKeys(h, '_filter');
+fs.renameKeys('_dirname', '_relative');
+
 export default {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, argv, parseArgs, args,
-	createObj, createAssign, hasOwn, define, register, registerAll, filterEntries, registerAll2, addRegister,
+	createObj, createAssign, hasOwn, define, register, filterEntries, registerAll, addRegister,
 	configList, project, context
 }.assignDefine(h, fs, func, _context);

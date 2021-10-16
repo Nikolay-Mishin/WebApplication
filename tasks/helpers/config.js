@@ -1,15 +1,12 @@
 import { log, config, root, cwd, context, project, configList, from } from './baseHelpers.js';
 
-'configList\n'.log(configList);
+'configList:'.log(configList);
 
 log('from:', from(new Map([[0, '1'], [1, '2']])));
 log('from:', from({ 0: '1', 1: '2' }));
 log('reverse:', { 0: '1', 1: '2' }.reverse());
 log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
 log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
-
-({}).addRegister(function getProto2(obj = Object, i = 0) { return obj.protoList()[i]; });
-[].registerAll2();
 
 'project:'.log(project);
 'context:'.log(context);
