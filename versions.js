@@ -46,4 +46,9 @@
  * 6.8 - remove gulpfile.config to helpers
  * 6.9 - refactory baseHelpers
  * 7.0 - add domHelpers
+ * 7.1 - add addRegister() & fix registerAll() in BaseHelpers
+ * 7.2 - add unegister() in BaseHelpers
+ * 7.3 - add getPrototype() in BaseHelpers
+ * 7.4 - add getProps() in BaseHelpers
+
 */
