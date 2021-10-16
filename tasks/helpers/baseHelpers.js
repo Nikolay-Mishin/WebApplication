@@ -92,7 +92,34 @@ export const nullProto = {}.__proto__,
 			func = getFunc(value ?? func);
 			return [funcName(func), obj._register(func, opts)];
 		}));
+	}))(),
+	filterEntries = (() => ({})._register(function filterEntries(obj, cb = null) {
+		return obj.filter(cb ?? (file => file[1] != null));
+	}))(),
+	registerAll2 = (() => ({})._register(function registerAll2(helpers = []) {
+		const funcList = fromEntries(registerAll.funcList.map(([func, opts]) => {
+			return !helpers || helpers.includes(name) ? [opts.name, func.obj._register(func, opts)] : null;
+		}).filterEntries());
+		registerAll.funcList = [];
+		return funcList;
+	}))(),
+	addRegister = (() => ({})._register(function addRegister(obj, ...funcList) {
+		({}).registerAll.funcList = {}.registerAll.funcList ?? [];
+		log('funcList:', ({}).registerAll.funcList);
+		const funcs = {};
+		({}).registerAll.funcList.push(funcList.map(func => {
+			let value, opts;
+			isArray(func) ? [value, opts = {}] = func : { value, opts = {} } = func;
+			funcs[opts.name = funcName(func = getFunc(value ?? func))] = func;
+			func.obj = obj
+			return [func, opts];
+		}));
+		log('funcList:', ({}).registerAll.funcList);
+		log('funcs:', funcs);
+		return funcs;
 	}))();
+
+({}).addRegister(function getProto2(obj = Object, i = 0) { return obj.protoList()[i]; });
 
 const h = {}.registerAll(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
@@ -318,6 +345,6 @@ export const { runInContext, searchFile, assignFiles, setBinding } = _context,
 
 export default {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, argv, parseArgs, args,
-	createObj, createAssign, hasOwn, define, register, registerAll,
+	createObj, createAssign, hasOwn, define, register, registerAll, filterEntries, registerAll2, addRegister,
 	configList, project, context
 }.assignDefine(h, fs, func, _context);
