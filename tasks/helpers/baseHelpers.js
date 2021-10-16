@@ -97,11 +97,12 @@ export const nullProto = {}.__proto__,
 		return obj.filter(cb ?? (file => file[1] != null));
 	}))(),
 	registerAll2 = (() => ({})._register(function registerAll2(helpers = []) {
-		const funcList = fromEntries({}.registerAll.funcList.map(([func, opts]) => {
-			return !helpers || helpers.includes(name) ? [opts.name, func /*func.obj._register(func, opts)*/] : null;
-		}).filterEntries());
+		const funcList = {}.registerAll.funcList.map(([func, opts]) => {
+			return helpers.length === 0 || helpers.includes(opts.name) ? [opts.name, func /*func.obj._register(func, opts)*/] : null;
+		});
 		({}).registerAll.funcList = [];
-		return funcList;
+		log('funcList:', fromEntries(funcList.filterEntries()));
+		return fromEntries(funcList.filterEntries());
 	}))(),
 	addRegister = (() => ({})._register(function addRegister(obj, ...funcList) {
 		({}).registerAll.funcList = {}.registerAll.funcList ?? [];
