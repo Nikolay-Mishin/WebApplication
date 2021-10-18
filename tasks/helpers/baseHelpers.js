@@ -99,7 +99,7 @@ export const nullProto = {}.__proto__,
 			return helpers.length === 0 || helpers.includes(opts.name) ? [opts.name, opts.obj._register(func, opts)] : null;
 		});
 		({}).registerAll.funcList = [];
-		log('registerAll:', fromEntries(funcList.filterEntries()));
+		//log('registerAll:', fromEntries(funcList.filterEntries()));
 		return fromEntries(funcList.filterEntries());
 	}))(),
 	addRegister = (() => ({})._register(function addRegister(obj, ...funcList) {
@@ -318,12 +318,12 @@ export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gu
 
 const { helpers = [], paths: { root: $root = './' } } = config;
 
-log({}.setBinding);
+//log({}.setBinding);
 
 const proto = {}.unregister(...helpers);
 
-log('proto:', proto);
-log('props:', proto.getProps());
+//log('proto:', proto);
+//log('props:', proto.getProps());
 
 export const { project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,

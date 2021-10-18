@@ -106,6 +106,7 @@
 		"fs": "fs",
 		"path": "path",
 		"buffer": "buffer",
+		"jsdom": "jsdom",
 		"browserSync": "browser-sync",
 		"$if": "gulp-if",
 		"gutil": "gulp-util",

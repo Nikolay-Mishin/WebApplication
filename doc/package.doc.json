@@ -72,6 +72,9 @@ npm i -D tslib @types/jquery
 npm i -D eslint tslint tslint-react @typescript-eslint/parser @typescript-eslint/eslint-plugin tslint-eslint-rules tslint-config-prettier eslint-config-prettier
 npm i -D @typescript-eslint/eslint-plugin-tslint eslint-plugin-react eslint-plugin-import eslint-plugin-jsdoc eslint-plugin-prefer-arrow
 
+// Dom
+npm i -D jsdom
+
 ----- Package Properties -----
 
 "type": "module",

@@ -11,6 +11,8 @@ import { log, config, root, cwd, context, project, configList, from } from './ba
 //log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
 //log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
 
+import h from './domHelpers.js';
+
 // Подключаемые модули
 const {
 	excludeTasks = [],
