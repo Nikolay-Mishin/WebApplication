@@ -1,10 +1,12 @@
 import h, { log, error, nullProto } from './baseHelpers.js';
 
-const nodeList = document.querySelectorAll('html'),
+export const nodeList = document.querySelectorAll('html'),
 	html = nodeList[0],
 	htmlEl = html.getProto(),
-	create = {}._register(function create(el = 'div') { return document.createElement(el) }),
-	nodeListHelpers = nodeList.registerAll(
+    htmlProto = html.getPrototype(),
+	create = {}._register(function create(el = 'div') { return document.createElement(el) });
+
+const nodeListHelpers = nodeList.registerAll(
 		{ filter(obj, cb) { return [].filter.call(obj, cb) } },
 		function clearClasses(target, ...classList) {
 			target.filter(placeholder => {
@@ -33,9 +35,11 @@ const nodeList = document.querySelectorAll('html'),
 export const { filter, clearClasses } = nodeListHelpers,
 	{ getAll, getStyles, get, addEvent, setHtml, getRect } = htmlElHelpers;
 
-export default h.assignDefine({ nodeList, html, htmlEl, create }, nodeListHelpers, htmlElHelpers);
+export default h.assignDefine({ nodeList, html, htmlEl, htmlProto, create }, nodeListHelpers, htmlElHelpers);
 
-log('h\n', h);
+log('h:', h);
+log('htmlEl:', htmlEl);
+log('htmlProto:', htmlProto);
 
 //html.classList.add('active');
 //log(html.classList);
