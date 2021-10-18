@@ -1,10 +1,11 @@
 import { pathToFileURL as toUrl } from 'url';
 import config from './config.js';
-import bh from './baseHelpers.js';
+import bh, { log, context, project, configList, from } from './baseHelpers.js';
+import dh, { dom, document, nodeList, html, htmlEl } from './domHelpers.js';
 
 const { argv } = bh,
 	{
-		tasksPath, excludeTasks, root, useWebpack, esModule,
+		helpers = [], tasksPath, excludeTasks, root, useWebpack, esModule,
 		modules: {
 			gulp: { lastRun },
 			fs: { existsSync: exist, readFileSync: readFile },
@@ -58,4 +59,31 @@ const h = {
 	}
 };
 
-export default h.setBind(h.setMode).assignDefine(bh);
+export default h.setBind(h.setMode).assignDefine(bh, dh);
+
+log('h:', h);
+
+log({}.setBinding);
+
+const proto = {}.unregister(...helpers);
+
+log('proto:', proto);
+log('props:', proto.getProps());
+
+'configList:'.log(configList);
+
+'project:'.log(project);
+'context:'.log(context);
+
+//log('from:', from(new Map([[0, '1'], [1, '2']])));
+//log('from:', from({ 0: '1', 1: '2' }));
+//log('reverse:', { 0: '1', 1: '2' }.reverse());
+//log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
+//log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
+
+log('document:', document);
+//log('location:', document.location);
+
+log('nodeList:', nodeList);
+log('html:', html);
+log('htmlEl:', htmlEl);

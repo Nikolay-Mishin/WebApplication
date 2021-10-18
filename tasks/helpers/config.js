@@ -1,21 +1,8 @@
-import { log, config, root, cwd, context, project, configList, from } from './baseHelpers.js';
-
-//'configList:'.log(configList);
-
-'project:'.log(project);
-'context:'.log(context);
-
-//log('from:', from(new Map([[0, '1'], [1, '2']])));
-//log('from:', from({ 0: '1', 1: '2' }));
-//log('reverse:', { 0: '1', 1: '2' }.reverse());
-//log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
-//log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
-
-import h from './domHelpers.js';
+import { config, root, cwd, context, project } from './baseHelpers.js';
 
 // Подключаемые модули
 const {
-	excludeTasks = [],
+	helpers = [], excludeTasks = [],
 	es: { useWebpack, esModule, webpackConfig },
 	paths: { tasksPath = 'tasks', build: { root: $build }, src: { root: srcRoot } },
 	server: { serverPHP, domain, port, baseDir: $baseDir, index },

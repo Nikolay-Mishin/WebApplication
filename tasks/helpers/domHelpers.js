@@ -3,27 +3,16 @@ import { JSDOM } from 'jsdom';
 
 export { JSDOM };
 
-log('JSDOM:', JSDOM);
-
 export const dom = new JSDOM(`...`),
 	{ window } = dom,
 	{ document } = window;
 
-log('dom:', dom);
-log('window:', window);
-log('document:', document);
-
 export const nodeList = document.querySelectorAll('html'),
 	html = nodeList[0],
-	htmlEl = html.getProto(),
-    htmlProto = html.getPrototype(),
+	htmlEl = html.getPrototype(),
 	create = {}._register(function create(el = 'div') { return document.createElement(el) });
 
-log('nodeList:', nodeList);
-log('htmlEl:', htmlEl);
-log('htmlProto:', htmlProto);
-
-const nodeListHelpers = nodeList.registerAll(
+const nodeListHelpers = nodeList.addRegister(
 		{ filter(obj, cb) { return [].filter.call(obj, cb) } },
 		function clearClasses(target, ...classList) {
 			target.filter(placeholder => {
@@ -34,7 +23,7 @@ const nodeListHelpers = nodeList.registerAll(
 			}).forEach(placeholder => placeholder.classList.remove(classList))
 		}
 	),
-	htmlElHelpers = htmlEl.registerAll(
+	htmlElHelpers = htmlEl.addRegister(
 		function getAll(el = 'html', target = document) {
 			if (el instanceof HTMLElement) [el, target] = arguments.reverse()
 			log([el, target])
@@ -49,14 +38,12 @@ const nodeListHelpers = nodeList.registerAll(
 		{ getRect(el = document) { return el.getBoundingClientRect(); } },
 	);
 
+[].registerAll();
+
 export const { filter, clearClasses } = nodeListHelpers,
 	{ getAll, getStyles, get, addEvent, setHtml, getRect } = htmlElHelpers;
 
-export default h.assignDefine({ JSDOM, dom, nodeList, html, htmlEl, htmlProto, create }, nodeListHelpers, htmlElHelpers);
-
-log('h:', h);
-log('htmlEl:', htmlEl);
-log('htmlProto:', htmlProto);
+export default { JSDOM, dom, nodeList, html, htmlEl, create }.assignDefine(nodeListHelpers, htmlElHelpers);
 
 //html.classList.add('active');
 //log(html.classList);

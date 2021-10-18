@@ -316,14 +316,7 @@ export const { runInContext, searchFile, assignFiles, setBinding } = _context;
 export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
 	{ config, package: $package, gulpfile } = configList;
 
-const { helpers = [], paths: { root: $root = './' } } = config;
-
-//log({}.setBinding);
-
-const proto = {}.unregister(...helpers);
-
-//log('proto:', proto);
-//log('props:', proto.getProps());
+const { paths: { root: $root = './' } } = config;
 
 export const { project, context } = (() => {
 		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
@@ -352,7 +345,7 @@ export const { project, context } = (() => {
 	root = join(context, $root),
 	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
 
-renameKeys(h, '_filter');
+renameKeys(h, { keyList: ['_filter'], searchVal: '_filter', replaceVal: 'filterObj' });
 fs.renameKeys('_dirname', '_relative');
 
 export default {
