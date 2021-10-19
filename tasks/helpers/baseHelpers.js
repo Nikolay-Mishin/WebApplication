@@ -46,16 +46,20 @@ export const nullProto = {}.__proto__,
 	createAssign = (proto = Object, ...assignList) => assign(createObj(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
-			Object.defineProperty(nullProto, 'hasOwn', { value: function hasOwn(prop) { return this.hasOwnProperty(prop); } });
+			function hasOwn(prop) { return this.hasOwnProperty(prop); }
+			hasOwn.type = 'custom';
+			Object.defineProperty(nullProto, 'hasOwn', { value: hasOwn, configurable: true });
 		}
 		return (obj, prop) => obj.hasOwnProperty(prop);
 	})(),
 	define = (() => {
-		if (!nullProto.hasOwn('_define')) Object.defineProperty(nullProto, '_define', {
-			value:
-				function _define(value = null, { prop = '', enumerable = false, configurable = true, writable = false, get, set } = {}) { return define(this, ...arguments); }
-		})
+		if (!nullProto.hasOwn('_define')) {
+			function _define(value = null, { prop = '', enumerable = false, configurable = true, writable = false, get, set } = {}) { return define(this, ...arguments); }
+			_define.type = 'custom';
+			Object.defineProperty(nullProto, '_define', { value: _define, configurable: true });
+		}
 		return function define(obj, value = null, { prop = '', enumerable = false, configurable = true, writable = false, get, set } = {}) {
+			value.type = value.type ?? 'custom';
 			prop = prop || value.name;
 			if (!obj.hasOwn(prop)) {
 				const desc = assign({ enumerable, configurable }, get || set ? { get, set } : { value, writable });
@@ -71,10 +75,10 @@ export const nullProto = {}.__proto__,
 	})(),
 	register = (() => {
 		nullProto._define(
-			function _register({ prop, value, def, enumerable = false, configurable = true, writable = false, get, set } = {})
+			function _register({ def, prop, enumerable = false, configurable = true, writable = false, get, set } = {})
 				{ return register(this, ...arguments); }
 		);
-		return function register(obj, value, { prop, def = false, enumerable = false, configurable = true, writable = false, get, set } = {}) {
+		return function register(obj, value, { def = false, prop, enumerable = false, configurable = true, writable = false, get, set } = {}) {
 			const proto = obj.getPrototype();
 			[value, prop] = [getFunc(value), prop ?? funcName(value)];
 
@@ -83,10 +87,11 @@ export const nullProto = {}.__proto__,
 					[prop]: function (...args) { return _func[prop].func(this, ...args); }
 				};
 			_func[prop].func = value;
+			_func[prop].type = 'custom';
 			value = _func[prop];
 
-			(def ? obj : proto)._define(value,
-				{ prop, enumerable, configurable, writable: writable || proto === nullProto, get, set });
+			writable = writable || proto === nullProto;
+			(def ? obj : proto)._define(value, { prop, enumerable, configurable, writable, get, set });
 
 			return func;
 		};
@@ -119,7 +124,13 @@ export const nullProto = {}.__proto__,
 	}))(),
 	unregister = (() => ({})._register(function unregister(obj, ...funcList) {
 		const proto = obj.getPrototype();
-		$delete(proto, ...funcList);
+		log('unregister:', funcList);
+		if (!funcList.empty()) $delete(proto, ...funcList);
+		else {
+			const props = proto.getProps().filter(prop => proto[prop]?.type === 'custom');
+			log('props:', props);
+			//$delete(proto, ...props);
+		}
 		return proto;
 	}))();
 
@@ -164,11 +175,15 @@ const h = {}.addRegister(
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
 	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
-	function filterIn(obj, arr, compareValues = false) {
-		log('obj:', obj);
-		log('arr:', arr);
-		return arr.empty() ? obj : obj._filter(([k, v]) => arr.includes(compareValues ? k : v));
+	function filterIn(obj, arr, values = false, without = false) {
+		const isArr = obj.isArray();
+		return arr.empty() ? obj : obj[isArr ? 'filter' : '_filter'](_v => {
+			const [k, v] = isArr ? [null, _v] : _v,
+				includes = arr.includes(k && values ? k : v);
+			return without ? !includes : includes;
+		});
 	},
+	function filterWithout(obj, arr, values = false) { return filterIn(obj, arr, values, true); },
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
 	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); return obj; },
@@ -193,7 +208,7 @@ const h = {}.addRegister(
 
 export const {
 	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, _filter: filter, filterIn, concat, slice, $delete, reverse, renameKeys
+	toJson, isJson, jsonParse, empty, _filter: filter, filterIn, filterWithout, concat, slice, $delete, reverse, renameKeys
 } = h;
 
 const fs = {}.addRegister(

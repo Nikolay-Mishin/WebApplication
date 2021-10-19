@@ -30,7 +30,7 @@ export const {
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, isArray,
 	funcName, is, isObject, isFunc,
 	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, filter: filterObj, filterIn, concat, slice, $delete, reverse, renameKeys,
+	toJson, isJson, jsonParse, empty, filter: filterObj, filterIn, filterWithout, concat, slice, $delete, reverse, renameKeys,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
 	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding
@@ -90,9 +90,12 @@ export const { setMode, setModeSync, currTask, error } = h;
 
 log('h:', h);
 
+//({}).unregister(...keys(filterWithout(h, helpers)));
+({}).unregister();
+
 log({}.setBinding);
 
-const proto = {}.unregister(...helpers);
+const proto = {}.unregister('setBinding');
 
 log('proto:', proto);
 log('props:', proto.getProps());
