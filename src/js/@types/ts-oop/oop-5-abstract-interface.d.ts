@@ -1,8 +1,8 @@
 interface IClient {
-    url: string;
-    connect(url: string): void;
+    url?: string;
+    connect?: (url: string) => void;
     read(url: string): string;
-    write(data: string): void;
+    write?(data: string): void;
 }
 declare abstract class Client implements IClient {
     url: string;

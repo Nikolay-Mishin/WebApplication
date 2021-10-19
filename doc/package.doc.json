@@ -65,15 +65,15 @@ npm i -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runt
 // Стили
 npm i -D sass-loader css-loader style-loader less less-loader postcss
 
-// Typings
-npm i -D tslib @types/jquery
-
 // Linters
 npm i -D eslint tslint tslint-react @typescript-eslint/parser @typescript-eslint/eslint-plugin tslint-eslint-rules tslint-config-prettier eslint-config-prettier
 npm i -D @typescript-eslint/eslint-plugin-tslint eslint-plugin-react eslint-plugin-import eslint-plugin-jsdoc eslint-plugin-prefer-arrow
 
+// Typings
+npm i -D tslib @types/jquery @types/react @types/react-router-dom
+
 // Dom
-npm i -D jsdom
+npm i -D jsdom react-router-dom
 
 ----- Package Properties -----
 
