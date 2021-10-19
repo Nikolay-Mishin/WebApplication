@@ -1,20 +1,43 @@
 import { pathToFileURL as toUrl } from 'url';
 import config from './config.js';
-import bh, { log, context, project, configList, from } from './baseHelpers.js';
-import dh, { dom, document, nodeList, html, htmlEl } from './domHelpers.js';
+import bh, { argv, log, configList, context, project, from } from './baseHelpers.js';
+import dh, { window, document, dom, nodeList, html, htmlEl } from './domHelpers.js';
 
-const { argv } = bh,
-	{
-		helpers = [], tasksPath, excludeTasks, root, useWebpack, esModule,
-		modules: {
-			gulp: { lastRun },
-			fs: { existsSync: exist, readFileSync: readFile },
-			path: { join },
-			gutil, notify, plumber
-		},
-		webpackConfig = join(root, 'webpack.config.js'),
-		tsconfig = join(root, 'tsconfig.json')
-	} = config;
+export { argv, log, configList, context, project, from };
+export { window, document, dom, nodeList, html, htmlEl };
+
+const {
+	helpers = [], tasksPath, excludeTasks, root, useWebpack, esModule,
+	modules: {
+		gulp: { lastRun },
+		fs: { existsSync: exist, readFileSync: readFile },
+		path: { join },
+		gutil, notify, plumber
+	},
+	webpackConfig = join(root, 'webpack.config.js'),
+	tsconfig = join(root, 'tsconfig.json')
+} = config;
+
+export const {
+	JSDOM, create,
+	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
+} = dh;
+
+export const {
+	nullProto, objProto, arrProto, INIT_CWD, cwd, parseArgs, args,
+	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
+	imports, importModules, error: errorMsg,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, isArray,
+	funcName, is, isObject, isFunc,
+	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
+	toJson, isJson, jsonParse, empty, filter: filterObj, filterIn, concat, slice, $delete, reverse, renameKeys,
+	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
+	callThis, bind, getBind, setBind, callBind,
+	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding
+} = bh;
+
+renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
+renameKeys(bh, { keyList: ['filter'], searchVal: 'filter', replaceVal: 'filterObj' });
 
 const h = {
 	get tasks() { return process.node_tasks = process.node_tasks ?? tasksPath.importModules(excludeTasks); },
@@ -59,7 +82,11 @@ const h = {
 	}
 };
 
-export default h.setBind(h.setMode).assignDefine(bh, dh);
+export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh), helpers);
+
+const { lastRun: _lastRun, notify: _notify } = h;
+export { _lastRun as lastRun, _notify as notify };
+export const { setMode, setModeSync, currTask, error } = h;
 
 log('h:', h);
 

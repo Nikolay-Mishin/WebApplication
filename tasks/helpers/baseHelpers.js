@@ -164,6 +164,11 @@ const h = {}.addRegister(
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
 	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
+	function filterIn(obj, arr, compareValues = false) {
+		log('obj:', obj);
+		log('arr:', arr);
+		return arr.empty() ? obj : obj._filter(([k, v]) => arr.includes(compareValues ? k : v));
+	},
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
 	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); return obj; },
@@ -187,8 +192,8 @@ const h = {}.addRegister(
 );
 
 export const {
-	getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, _filter: filter, concat, slice, $delete, reverse, renameKeys
+	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
+	toJson, isJson, jsonParse, empty, _filter: filter, filterIn, concat, slice, $delete, reverse, renameKeys
 } = h;
 
 const fs = {}.addRegister(
@@ -226,13 +231,6 @@ const func = {}.addRegister(
 
 export const { callThis, bind, getBind, setBind, callBind } = func;
 
-const { assignParentFiles, assignRootFiles } = {}.addRegister(
-	function assignParentFiles(parent) { return parent.entries().map(file => file[1]).reverse(); },
-	function assignRootFiles(root, config, parent) {
-		return !config.isObject() ? { file: config } : root.assign(...parent.assignParentFiles(), config);
-	}
-);
-
 const _context = {}.addRegister(
 	function runInContext(path, cb) {
 		const context = relative(cwd, path),
@@ -266,6 +264,10 @@ const _context = {}.addRegister(
 		return !(parent && path != cwd && path != dirname(path)) ? result() :
 			searchFile.call(this, dirname(path), ...from(arguments).slice(1));
 	}).bind({}),
+	function assignParentFiles(parent) { return parent.entries().map(file => file[1]).reverse(); },
+	function assignRootFiles(root, config, parent) {
+		return !config.isObject() ? { file: config } : root.assign(...parent.assignParentFiles(), config);
+	},
 	function assignFiles(path, ...files) {
 		return files.concat().map(file => {
 			const { config, root = {}, parent = {} } = path.searchFile(file);
@@ -309,7 +311,7 @@ const _context = {}.addRegister(
 	}
 );
 
-export const { runInContext, searchFile, assignFiles, setBinding } = _context;
+export const { runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding } = _context;
 
 [].registerAll();
 
@@ -345,7 +347,7 @@ export const { project, context } = (() => {
 	root = join(context, $root),
 	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
 
-renameKeys(h, { keyList: ['_filter'], searchVal: '_filter', replaceVal: 'filterObj' });
+renameKeys(h, '_filter');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
