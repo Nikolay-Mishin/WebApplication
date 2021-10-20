@@ -1,5 +1,3 @@
-export {};
-
 const f = (x: number): number => x + 1;
 const g = (x: number): number => x * 2;
 
@@ -21,7 +19,7 @@ h(10); // Возвращает 22
 //const m = h.(g.f);
 
 // Или следующему, если переписать с использованием функции compose:
-const m = compose(h, compose(g, f));
+export const m = compose(h, compose(g, f));
 
 const pipe = <P, R>(x: P, f: F<P, R>): R => f(x);
 
@@ -35,4 +33,4 @@ pipe(10, f); // Возвращает 11
 //const result = (10 |> f) |> g;
 
 // Или следующему, если переписать с использованием функции pipe:
-const result = pipe(pipe(10, f), g); // Возвращает 22
+export const result = pipe(pipe(10, f), g); // Возвращает 22

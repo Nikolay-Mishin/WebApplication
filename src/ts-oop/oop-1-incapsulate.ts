@@ -1,3 +1,5 @@
+export {};
+
 // ООП построено на 3 основных концепциях: Инкапсуляция, Наследование и Полиморфизм
 
 // 1. Инкапсуляция и сокрытие
@@ -76,9 +78,10 @@ const rect = new Rectangle2(5, 10);
 rect.calcArea(); // вызов метода
 const width2 = rect.width;
 //const width2 = rect._width; // ошибка - свойтво доступно только внутри класса Rectangle
+console.log(width2);
 
 // класс Пользователь
-class User {
+export class User {
 
 	private _username;
 	private _password;

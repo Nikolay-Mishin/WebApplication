@@ -1,21 +1,18 @@
 import { pathToFileURL as toUrl } from 'url';
-import config from './config.js';
-import bh, { argv, log, configList, context, project, from } from './baseHelpers.js';
+import config, { configList, project, context, root } from './config.js';
+import bh, { argv, log, from } from './baseHelpers.js';
 import dh, { window, document, dom, nodeList, html, htmlEl } from './domHelpers.js';
 
-export { argv, log, configList, context, project, from };
-export { window, document, dom, nodeList, html, htmlEl };
+export { configList, project, context, root, argv, log, from, window, document, dom, nodeList, html, htmlEl };
 
 const {
-	helpers = [], tasksPath, excludeTasks, root, useWebpack, esModule,
+	helpers, useWebpack, esModule, webpackConfig, tsconfig,
 	modules: {
 		gulp: { lastRun },
 		fs: { existsSync: exist, readFileSync: readFile },
 		path: { join },
 		gutil, notify, plumber
-	},
-	webpackConfig = join(root, 'webpack.config.js'),
-	tsconfig = join(root, 'tsconfig.json')
+	}
 } = config;
 
 export const {
@@ -40,7 +37,8 @@ renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' 
 renameKeys(bh, { keyList: ['filter'], searchVal: 'filter', replaceVal: 'filterObj' });
 
 const h = {
-	get tasks() { return process.node_tasks = process.node_tasks ?? tasksPath.importModules(excludeTasks); },
+	relativeRoot: {}._register(function relativeRoot(from) { return from._relative(root); }),
+	get tasks() { return process.node_tasks; },
 	get modules() { return this.config.modules; },
 	get config() { return process.node_config; },
 	set config(value) {

@@ -5,7 +5,7 @@
 // Хорошей практикой является делать классы под конкретные задачи
 
 // класс Прямоугольник
-class Rectangle {
+export class Rectangle {
 
 	width;
 	height;
@@ -31,7 +31,7 @@ class Rectangle {
 }
 
 // оператор `new` - используется для создания нового объекта
-const rect1 = new Rectangle(5, 10),
+export const rect1 = new Rectangle(5, 10),
 	rect2 = new Rectangle(52, 102),
 	rect3 = new Rectangle(10, 102);
 

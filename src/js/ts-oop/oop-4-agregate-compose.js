@@ -1,4 +1,3 @@
-"use strict";
 // Помимо наследования есть еще несколько способов взаимодействия между классами: композиция и агрегация
 // 4.1. Композиция
 // Суть композиции заключается в том, что внутри класса используются объекты другого класса, которые создаются (инициализируются) внутри этого класса и не могут существовать отдельно (вне этого класса), как самостоятельные элементы
@@ -19,9 +18,9 @@ class Wheel {
     }
 }
 // освежитель
-class Freshener {
+export class Freshener {
 }
-class Car {
+export class Car {
     constructor(freshener) {
         // композиция
         this.engine = new Engine();
@@ -49,5 +48,5 @@ class Flat {
         console.log(this.freshener);
     }
 }
-const flat = new Flat(new Freshener());
+export const flat = new Flat(new Freshener());
 //# sourceMappingURL=oop-4-agregate-compose.js.map

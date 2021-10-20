@@ -19,16 +19,21 @@
 		"target": "es6",
 		"module": "es6",
 		"moduleResolution": "node",
-		"jsx": "react-jsx",
+		"jsx": "react",
 		"lib": [
 			"dom",
 			"dom.iterable",
 			"es6",
 			"esnext"
 		],
+		"paths": {
+			"js/*": [ "src/js/*" ],
+			"app": [ "src/js/app" ]
+		},
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
+		"isolatedModules": true,
 		"charset": "utf-8",
 		"newLine": "crlf",
 		"allowJs": true,
@@ -40,7 +45,6 @@
 		"removeComments": false,
 		"noEmit": true,
 		"noEmitOnError": true,
-		"noEmitHelpers": false,
-		"isolatedModules": true
+		"noEmitHelpers": false
 	}
 }

@@ -1,4 +1,4 @@
-﻿// ts/main.ts
+// ts/main.ts
 export default class Greeter {
     constructor(element) {
         this.element = element;

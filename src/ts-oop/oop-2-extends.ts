@@ -21,7 +21,7 @@
 // методы и свойства дочернего класса, объявленные с теми же именами, что и у класса-родителя, переопределяют (перезаписывают/затирают) их
 
 // базовый класс
-class Person {
+export class Person {
 
 	private _firstName;
 	private _lastName;
@@ -77,7 +77,7 @@ class Person {
 
 }
 
-const person = new Person('Person', 'TV', 15);
+export const person = new Person('Person', 'TV', 15);
 console.log(person);
 
 // класс Работник - наследует класс Person (класс-родитель)
@@ -126,7 +126,7 @@ class Employee extends Person {
 
 }
 
-const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
+export const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
 console.log(employee);
 
 class Developer extends Employee {
@@ -162,7 +162,7 @@ class Developer extends Employee {
 
 }
 
-const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
+export const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
 
 console.log(UlbiTv);
 console.log(UlbiTv.fullName); // используем геттер родительского класс

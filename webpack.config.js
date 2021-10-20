@@ -160,12 +160,14 @@ export default {
 	//},
 	resolve: {
 		modules: ['node_modules'],
-		extensions: ['.js', '.ts'],
+		extensions: ['.tsx', '.ts', '.jsx', '.js'],
 		//import Utility from '../../utilities/utility'; => import Utility from 'Utilities/utility';
 		alias: {
 			'^@': build,
 			'^/': src,
-			//'jQuery':join(root, './../../../jquery')
+			js: join(src, 'js'),
+			app: join(src, 'js/app')
+			//'jQuery': join(root, './../../../jquery')
 		}
 	},
 	externals: {
@@ -184,6 +186,15 @@ export default {
 			},
 			//{
 			//	test: /\.ts$/,
+			//	exclude: excludes(),
+			//	include: '/ts',
+			//	loader: {
+			//		loader: 'babel-loader',
+			//		options: babelOptions('@babel/preset-typescript')
+			//	}
+			//},
+			//{
+			//	test: /\.tsx$/,
 			//	exclude: excludes(),
 			//	include: '/ts',
 			//	loader: {

@@ -1,3 +1,6 @@
+import { User } from './oop-1-incapsulate';
+import { Car, Freshener } from './oop-4-agregate-compose';
+
 // Абстрактные классы и интерейсы
 
 // 5.1. Интерфейсы
@@ -58,7 +61,7 @@ abstract class Client implements IClient {
 
 }
 
-class ClientChild extends Client {
+export class ClientChild extends Client {
 
 	public data: string;
 
@@ -99,13 +102,13 @@ interface IWriter {
 }
 
 // наследование интерфейса
-interface IFileReader extends IReader {
+export interface IFileReader extends IReader {
 
 	read(data: string): string;
 
 }
 
-class FileClient implements IReader, IWriter {
+export class FileClient implements IReader, IWriter {
 
 	public read(url: string): string {
 		// реализация для файла
@@ -118,7 +121,7 @@ class FileClient implements IReader, IWriter {
 	}
 }
 
-class HttpClient implements IReader, IWriter {
+export class HttpClient implements IReader, IWriter {
 
 	public read(url: string): string {
 		// реализация для Http
@@ -147,7 +150,7 @@ interface IRepository<T> {
 }
 
 // в качестве типа Дженерика Repository указываем тип User2
-class UserRepo implements IRepository<User> {
+export class UserRepo implements IRepository<User> {
 
 	public create(user: User): User {
 		//return database.query(INSERT ...); // запрос к БД
@@ -168,7 +171,7 @@ class UserRepo implements IRepository<User> {
 
 }
 
-class CarRepo implements IRepository<Car> {
+export class CarRepo implements IRepository<Car> {
 
 	public create(car: Car): Car {
 		return car;

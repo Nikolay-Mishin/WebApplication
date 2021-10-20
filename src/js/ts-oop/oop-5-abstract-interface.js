@@ -1,5 +1,5 @@
-"use strict";
-// Абстрактные классы и интерейсы
+import { User } from './oop-1-incapsulate';
+import { Car, Freshener } from './oop-4-agregate-compose';
 // 5.2. Абстрактные классы
 // Абстрактный класс - отличием от интерфейсов является то, что можно создавать обычные методы с реализацией, при этом методы без реализации имеют модификатор `abstract`
 // У абстракных свойств/методов, также как и у интерфейсов, нельзя использовать модификаторы доступа при объявлении
@@ -15,7 +15,7 @@ class Client {
         console.log(url);
     }
 }
-class ClientChild extends Client {
+export class ClientChild extends Client {
     constructor(url, data) {
         super(url);
         this.data = data;
@@ -33,7 +33,7 @@ class ClientChild extends Client {
         console.log(data);
     }
 }
-class FileClient {
+export class FileClient {
     read(url) {
         // реализация для файла
         return url;
@@ -43,7 +43,7 @@ class FileClient {
         console.log(data);
     }
 }
-class HttpClient {
+export class HttpClient {
     read(url) {
         // реализация для Http
         return url;
@@ -54,7 +54,7 @@ class HttpClient {
     }
 }
 // в качестве типа Дженерика Repository указываем тип User2
-class UserRepo {
+export class UserRepo {
     create(user) {
         //return database.query(INSERT ...); // запрос к БД
         return user;
@@ -69,7 +69,7 @@ class UserRepo {
         return user;
     }
 }
-class CarRepo {
+export class CarRepo {
     create(car) {
         return car;
     }

@@ -1,4 +1,3 @@
-"use strict";
 // ООП построено на 3 основных концепциях: Инкапсуляция, Наследование и Полиморфизм
 // 2. Наследование
 // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Operators/super
@@ -17,7 +16,7 @@
 // super должен быть вызван первым!
 // методы и свойства дочернего класса, объявленные с теми же именами, что и у класса-родителя, переопределяют (перезаписывают/затирают) их
 // базовый класс
-class Person {
+export class Person {
     // инициализируем свойства в конструкторе класса
     constructor(firstName, lastName, age) {
         this.firstName = firstName;
@@ -57,7 +56,7 @@ class Person {
         console.log(`Привет я человек и меня зовут ${this.firstName}`);
     }
 }
-const person = new Person('Person', 'TV', 15);
+export const person = new Person('Person', 'TV', 15);
 console.log(person);
 // класс Работник - наследует класс Person (класс-родитель)
 class Employee extends Person {
@@ -91,7 +90,7 @@ class Employee extends Person {
         console.log(`Привет я работник и меня зовут ${this.firstName}`);
     }
 }
-const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
+export const employee = new Employee('Employee', 'TV', 15, 15, 15, 15);
 console.log(employee);
 class Developer extends Employee {
     constructor(firstName, lastName, age, inn, passport, snils, level, language) {
@@ -115,7 +114,7 @@ class Developer extends Employee {
         console.log(`Привет я разработчик и меня зовут ${this.firstName}`);
     }
 }
-const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
+export const UlbiTv = new Developer('Ulbi', 'TV', 15, 15, 15, 15, 'Senior', 'JavaScript');
 console.log(UlbiTv);
 console.log(UlbiTv.fullName); // используем геттер родительского класс
 //# sourceMappingURL=oop-2-extends.js.map

@@ -1,4 +1,3 @@
-"use strict";
 const f = (x) => x + 1;
 const g = (x) => x * 2;
 const compose = (f1, f2) => (x) => f1(f2(x));
@@ -12,7 +11,7 @@ h(10); // Возвращает 22
 // Это эквивалентно следующему коду:
 //const m = h.(g.f);
 // Или следующему, если переписать с использованием функции compose:
-const m = compose(h, compose(g, f));
+export const m = compose(h, compose(g, f));
 const pipe = (x, f) => f(x);
 pipe(10, f); // Возвращает 11
 // Теперь представьте, что в языке есть оператор (|>) для записи pipe:
@@ -22,5 +21,5 @@ pipe(10, f); // Возвращает 11
 // Это эквивалентно следующему коду:
 //const result = (10 |> f) |> g;
 // Или следующему, если переписать с использованием функции pipe:
-const result = pipe(pipe(10, f), g); // Возвращает 22
+export const result = pipe(pipe(10, f), g); // Возвращает 22
 //# sourceMappingURL=compose.js.map

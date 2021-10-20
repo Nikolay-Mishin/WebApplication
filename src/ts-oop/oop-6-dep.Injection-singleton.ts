@@ -1,3 +1,5 @@
+import { User } from './oop-1-incapsulate';
+
 // Комбинируя все принципы и подходы, которые мы рассмотрели ранее (наследование, интерфейсы, полиморфизм, инкапсуляция), можно разрабатывать очень гибкие, масштабируемые приложения
 // На основе всех этих принципов строятся такие принципы, как S.O.L.I.D., большое количество паттернов проектирования, которые предназначены практически на любой случай жизни
 
@@ -40,7 +42,7 @@ class UserMongoDbRepo implements IUserRepo {
 
 }
 
-class UserPostgresDbRepo implements IUserRepo {
+export class UserPostgresDbRepo implements IUserRepo {
 
 	public getUsers(): User[] {
 		console.log('Используем подключение к Postgres и получаем пользователей');

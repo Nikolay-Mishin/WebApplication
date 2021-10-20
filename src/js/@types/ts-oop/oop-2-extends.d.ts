@@ -1,4 +1,4 @@
-declare class Person {
+export declare class Person {
     private _firstName;
     private _lastName;
     private _age;
@@ -12,7 +12,7 @@ declare class Person {
     get fullName(): string;
     greeting(): void;
 }
-declare const person: Person;
+export declare const person: Person;
 declare class Employee extends Person {
     private _inn;
     private _passport;
@@ -26,7 +26,7 @@ declare class Employee extends Person {
     set snils(value: any);
     greeting(): void;
 }
-declare const employee: Employee;
+export declare const employee: Employee;
 declare class Developer extends Employee {
     private _level;
     private _language;
@@ -37,4 +37,5 @@ declare class Developer extends Employee {
     set language(value: any);
     greeting(): void;
 }
-declare const UlbiTv: Developer;
+export declare const UlbiTv: Developer;
+export {};

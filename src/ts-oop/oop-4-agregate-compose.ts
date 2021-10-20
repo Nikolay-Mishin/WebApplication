@@ -31,9 +31,9 @@ class Wheel {
 }
 
 // освежитель
-class Freshener {}
+export class Freshener {}
 
-class Car {
+export class Car {
 
 	private engine: Engine;
 	private wheels: Wheel[];
@@ -75,4 +75,4 @@ class Flat {
 
 }
 
-const flat = new Flat(new Freshener());
+export const flat = new Flat(new Freshener());

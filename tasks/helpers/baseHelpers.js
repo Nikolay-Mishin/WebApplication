@@ -330,43 +330,10 @@ export const { runInContext, searchFile, assignParentFiles, assignRootFiles, ass
 
 [].registerAll();
 
-export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js'),
-	{ config, package: $package, gulpfile } = configList;
-
-const { paths: { root: $root = './' } } = config;
-
-export const { project, context } = (() => {
-		const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
-			_projectsPath = join(cwd, projectsRoot),
-			exist = _projectsPath.isDir(),
-			projectsPath = exist ? _projectsPath : cwd,
-			projects = projectsPath.getFolders({ exclude })
-				.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
-			arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
-			project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
-			contextPath = join(projectsPath, project),
-			context = exist && contextPath.isDir() ? contextPath : projectsPath;
-		//log('INIT_CWD:', INIT_CWD);
-		//log('cwd:', cwd);
-		//log('projectsPath:', projectsPath);
-		//log('exist:', exist);
-		//log('cwd.fileName():', cwd.fileName());
-		//log('name:', name);
-		//log('project:', project);
-		//log('context:', context);
-		//log('args:', args);
-		//log('arg:', arg);
-		//log('projects:', projects);
-		return { project, context };
-	})(),
-	root = join(context, $root),
-	relativeRoot = {}._register(function relativeRoot(from) { return from._relative(root); });
-
 renameKeys(h, '_filter');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, argv, parseArgs, args,
-	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
-	configList, project, context
+	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister
 }.assignDefine(h, fs, func, _context);
