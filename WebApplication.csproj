@@ -9,6 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="src\react\App.tsx" />
 	  <None Remove="src\ts-oop\compose.ts" />
 	  <None Remove="src\ts-oop\function.ts" />
 	  <None Remove="src\ts-oop\oop-1-incapsulate.ts" />
@@ -19,6 +20,7 @@
 	  <None Remove="src\ts-oop\oop-6-dep.Injection-singleton.ts" />
 	  <None Remove="src\ts-oop\oop.ts" />
 	  <None Remove="src\ts-oop\_time-list.ts" />
+	  <None Remove="src\ts\index.tsx" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -59,8 +61,12 @@
 		<Content Include="src\ts\app.ts">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+		<TypeScriptCompile Include="src\react\App.tsx">
+		  <SubType>Code</SubType>
+		</TypeScriptCompile>
 		<TypeScriptCompile Include="src\ts\lib.ts" />
 		<TypeScriptCompile Include="src\ts\main.ts" />
+		<TypeScriptCompile Include="src\react\index.tsx" />
 	</ItemGroup>
 
 	<ItemGroup>

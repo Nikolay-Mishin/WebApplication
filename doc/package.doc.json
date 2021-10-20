@@ -61,7 +61,8 @@ npm i -D html-webpack-externals-plugin html-webpack-plugin clean-webpack-plugin 
 npm i -D file-loader csv-loader xml-loader
 // Babel (JavaScript)
 npm i -D @babel/cli @babel/node babel-core babel-preset-env babel-preset-latest
-npm i -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime @babel/runtime @babel/plugin-proposal-class-properties @babel/preset-typescript cross-env babel-eslint eslint-loader tslint-loader tslint-react @babel/preset-react
+npm i -D babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime @babel/runtime @babel/plugin-proposal-class-properties @babel/preset-typescript cross-env babel-eslint eslint-loader tslint-loader @babel/preset-react
+
 // Стили
 npm i -D sass-loader css-loader style-loader less less-loader postcss
 
@@ -70,10 +71,16 @@ npm i -D eslint tslint tslint-react @typescript-eslint/parser @typescript-eslint
 npm i -D @typescript-eslint/eslint-plugin-tslint eslint-plugin-react eslint-plugin-import eslint-plugin-jsdoc eslint-plugin-prefer-arrow
 
 // Typings
-npm i -D tslib @types/jquery @types/react @types/react-router-dom
+npm i -D tslib @types/jquery @types/node @types/react @types/react-dom @types/react-router-dom @types/react-redux
 
 // Dom
-npm i -D jsdom react-router-dom
+npm i -D jsdom
+
+// React
+npm i -D react-router-dom axios
+
+// Redux
+npm i -D redux react-redux redux-thunk
 
 ----- Package Properties -----
 

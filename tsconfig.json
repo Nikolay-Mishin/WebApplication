@@ -29,7 +29,6 @@
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"resolveJsonModule": true,
-
 		"charset": "utf-8",
 		"newLine": "crlf",
 		"allowJs": true,
