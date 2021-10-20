@@ -1,5 +1,5 @@
-import React from 'react';
-export default class App extends React.Component {
+import React, { Component } from 'react';
+export default class App extends Component {
     render() {
         return React.createElement("div", null, "Hi");
     }

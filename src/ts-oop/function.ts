@@ -6,7 +6,7 @@ const width = 5;
 const height = 10;
 
 // процедура - функция
-function calcRectArea(width, height) {
+export default function calcRectArea(width, height) {
 	return width * height; // результат
 }
 

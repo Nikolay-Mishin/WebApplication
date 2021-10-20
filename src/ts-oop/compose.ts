@@ -1,3 +1,5 @@
+export {};
+
 const f = (x: number): number => x + 1;
 const g = (x: number): number => x * 2;
 
