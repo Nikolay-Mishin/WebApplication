@@ -9,16 +9,12 @@ const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
 	modules: {
 		gulp: { lastRun },
-		fs: { existsSync: exist, readFileSync: readFile },
-		path: { join },
+		fs: { existsSync: exist },
 		gutil, notify, plumber
 	}
 } = config;
 
-export const {
-	JSDOM, create,
-	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
-} = dh;
+export const { JSDOM, create, filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect } = dh;
 
 export const {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, parseArgs, args,
@@ -84,7 +80,7 @@ export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh), helpers);
 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
-export const { setMode, setModeSync, currTask, error } = h;
+export const { relativeRoot, setMode, setModeSync, currTask, error } = h;
 
 log('h:', h);
 
