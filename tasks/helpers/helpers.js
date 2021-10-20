@@ -76,7 +76,7 @@ const h = {
 	}
 };
 
-export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList }), helpers);
+export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList, project, context }), helpers);
 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
