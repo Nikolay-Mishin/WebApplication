@@ -1,7 +1,11 @@
-import { INIT_CWD, cwd, context, project } from './baseHelpers.js';
+import { INIT_CWD, cwd, args } from './baseHelpers.js';
+import { join, dirname } from 'path';
 
-export const configList = INIT_CWD.setBinding('config.json', 'package.json', 'gulpfile.js', 'webpack.config.js', 'tsconfig.json'),
-	{ config, package: $package, gulpfile } = configList;
+const bindings = ['config.json', 'package.json', 'gulpfile.js'],
+	esConfigs = ['tsconfig.json', 'webpack.config.js']
+
+export const configList = INIT_CWD.setBinding(...bindings).assign(INIT_CWD.assignFiles(...esConfigs)),
+	{ config, package: $package, gulpfile, tsconfig } = configList;
 
 const { paths: { root: $root = './' } } = config;
 
@@ -34,19 +38,17 @@ export const { project, context } = (() => {
 // Подключаемые модули
 const {
 	helpers = [], excludeTasks = [],
-	es: { useWebpack, esModule, webpackConfig = 'webpack.config.js', tsconfig = 'tsconfig.json' },
-	paths: { tasksPath = 'tasks', build: { root: $build }, src: { root: srcRoot } },
+	es: { useWebpack, esModule, webpackConfig: $webpackConfig = 'webpack.config.js', tsconfig: $tsconfig = 'tsconfig.json' },
+	paths: { tasksPath: $tasksPath = 'tasks', build: { root: $build }, src: { root: srcRoot } },
 	server: { serverPHP, domain, port, baseDir: $baseDir, index },
 	deploy, modules: $modules
 } = config,
-	modules = await $modules.importModules(),
-	{ path, browserSync } = modules,
-	{ join } = path,
+	_modules = await $modules.importModules(),
+	{ browserSync } = _modules,
 	server = browserSync.create(),
 	reload = async () => server.reload(),
 	{ stream } = server,
 	{ reload: $reload } = browserSync,
-	root = join(context, $root),
 	build = join(root, $build),
 	src = join(root, srcRoot),
 	baseDir = join(build, $baseDir);
@@ -54,11 +56,10 @@ const {
 export { helpers, excludeTasks, build, src, serverPHP, deploy, /*useWebpack, esModule*/ };
 
 export default process.node_config = process.node_config ?? {
-	modules: modules.assign({ server, reload, stream, $reload }),
-	tasksPath: join(cwd, tasksPath),
+	modules: _modules.assign({ server, reload, stream, $reload }),
+	tasksPath: join(cwd, $tasksPath),
 	helpers, excludeTasks, project, context, root, build, src, serverPHP, deploy, //useWebpack, esModule,
-	webpackConfig: join(root, webpackConfig),
-	tsconfig: join(root, tsconfig),
+	tsconfig, webpackConfig: join(root, $webpackConfig),
 	paths: {
 		root,
 		// пути для сборки проекта
@@ -131,4 +132,4 @@ export default process.node_config = process.node_config ?? {
 	}
 };
 
-export const { modules, tasksPath, paths, serverConfig, serverPHPconfig } = process.node_config;
+export const { modules, tasksPath, webpackConfig, paths, serverConfig, serverPHPconfig } = process.node_config;

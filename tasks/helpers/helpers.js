@@ -50,7 +50,7 @@ const h = {
 			(this.config = { webpackConfig: (await import(toUrl(webpackConfig))).default }).webpackConfig)();
 	},
 	get useWebpack() {
-		const _esModule = esModule || !exist(tsconfig) ? 'es5' : JSON.parse(readFile(tsconfig)).compilerOptions.module;
+		const _esModule = esModule || !tsconfig ? 'es5' : tsconfig?.compilerOptions.module;
 		if (useWebpack ?? this.config.useWebpack) return useWebpack ?? this.config.useWebpack;
 		const search = 'es',
 			includes = _esModule.includes(search),

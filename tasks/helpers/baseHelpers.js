@@ -12,18 +12,7 @@ export { log, imports, importModules };
 
 const getFunc = func => func[keys(func).shift()] ?? func;
 
-export const error = msg => { throw new Error(msg) },
-	{ assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames } = Object,
-	{ isArray, from } = Array,
-	funcName = func => func.name.replace('bound ', '').trim(),
-	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
-	isObject = obj => is(Object, obj),
-	isFunc = obj => is(Function, obj);
-
-export const nullProto = {}.__proto__,
-	objProto = Object.prototype,
-	arrProto = Array.prototype,
-	{ INIT_CWD } = env,
+export const { INIT_CWD } = env,
 	cwd = $cwd(),
 	argv = $argv.slice(2),
 	parseArgs = (argList, sep = '^\-+') => {
@@ -39,10 +28,22 @@ export const nullProto = {}.__proto__,
 		});
 		return args;
 	},
-	args = (argList => parseArgs(argList))(argv),
-	// return {} => __proto__ = obj
-	// new Object(obj) - return obj => __proto__ = obj.__proto__
-	createObj = (proto = Object, props) => Object.create(proto, props),
+	args = (argList => parseArgs(argList))(argv);
+
+export const nullProto = {}.__proto__,
+	objProto = Object.prototype,
+	arrProto = Array.prototype,
+	error = msg => { throw new Error(msg) },
+	{ assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames } = Object,
+	{ isArray, from } = Array,
+	funcName = func => func.name.replace('bound ', '').trim(),
+	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
+	isObject = obj => is(Object, obj),
+	isFunc = obj => is(Function, obj);
+
+// return {} => __proto__ = obj
+// new Object(obj) - return obj => __proto__ = obj.__proto__
+export const createObj = (proto = Object, props) => Object.create(proto, props),
 	createAssign = (proto = Object, ...assignList) => assign(createObj(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
@@ -334,6 +335,6 @@ renameKeys(h, '_filter');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
-	nullProto, objProto, arrProto, INIT_CWD, cwd, argv, parseArgs, args,
+	INIT_CWD, cwd, argv, parseArgs, args, nullProto, objProto, arrProto,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister
 }.assignDefine(h, fs, func, _context);
