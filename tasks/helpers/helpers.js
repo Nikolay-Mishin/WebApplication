@@ -76,7 +76,7 @@ const h = {
 	}
 };
 
-export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh), helpers);
+export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList }), helpers);
 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
@@ -93,8 +93,6 @@ const proto = {}.unregister('setBinding');
 
 log('proto:', proto);
 log('props:', proto.getProps());
-
-'configList:'.log(configList);
 
 log('from:', from(new Map([[0, '1'], [1, '2']])));
 log('from:', from({ 0: '1', 1: '2' }));
