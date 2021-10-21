@@ -9,15 +9,15 @@ export const configList = INIT_CWD.setBinding(...bindings).assign(INIT_CWD.assig
 
 const { excludeProjects = [], paths: { root: $root = './' } } = config;
 
-const { project, context, projList } = (() => {
+const { project, context, projectsPath, projList } = (() => {
 	const { name = '', paths: { projects: projectsRoot = '' } } = config,
 		_projectsPath = join(cwd, projectsRoot),
 		exist = _projectsPath.isDir(),
-		projectsPath = exist ? _projectsPath : cwd,
-		projList = (exist ? projectsPath : dirname(projectsPath)).getFolders(excludeProjects),
+		projectsPath = exist ? _projectsPath : dirname(cwd),
+		projList = projectsPath.getFolders(excludeProjects),
 		arg = args._filter(([arg, val]) => val === true && (projList.includes(arg))),
 		project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
-		context = exist ? join(projectsPath, project) : projectsPath;
+		context = join(projectsPath, project);
 	//log('INIT_CWD:', INIT_CWD);
 	//log('cwd:', cwd);
 	//log('projectsPath:', projectsPath);
@@ -29,11 +29,11 @@ const { project, context, projList } = (() => {
 	//log('args:', args);
 	//log('arg:', arg);
 	//log('projList:', projList);
-	return { project, context, projList };
+	return { project, context, projectsPath, projList: projectsPath.initProjects(...projList) };
 })(),
 	root = join(context, $root);
 
-export { project, context, root, projList };
+export { project, context, projectsPath, projList, root };
 
 // Подключаемые модули
 const {

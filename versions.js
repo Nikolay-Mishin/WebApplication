@@ -50,5 +50,6 @@
  * 7.2 - add unegister() in BaseHelpers
  * 7.3 - add getPrototype() in BaseHelpers
  * 7.4 - add getProps() in BaseHelpers
-
+ * 7.5 - add projList in config
+ * 7.6 - add initProjects() in BaseHelpers
 */

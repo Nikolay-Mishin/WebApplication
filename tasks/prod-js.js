@@ -4,7 +4,7 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
-		reload, stream, rigger, uglify
+		$reload, stream, rigger, uglify
 	}
 } = h;
 
@@ -14,6 +14,6 @@ export default function prod_js() {
 		.pipe(uglify().on('error', error)) // сжатие js
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify('prod:js'));
-		//.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe($reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
 }

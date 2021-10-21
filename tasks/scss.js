@@ -4,7 +4,7 @@ const {
 		config: { paths },
 		modules: {
 			gulp: { src, dest },
-			reload, stream, $if, sourcemaps, sass, prefixer
+			$reload, stream, $if, sourcemaps, sass, prefixer
 		}
 	} = h;
 
@@ -24,6 +24,6 @@ export default function scss() {
 		.pipe($if(dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.css)) // готовый файл min в build
 		.pipe(notify(`${mode}:scss`));
-		//.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe($reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
 }

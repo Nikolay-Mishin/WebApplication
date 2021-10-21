@@ -4,7 +4,7 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
-		reload, stream, sass, prefixer
+		$reload, stream, sass, prefixer
 	}
 } = h;
 
@@ -21,6 +21,6 @@ export default function prod_scss() {
 		}))
 		.pipe(dest(paths.build.css))
 		.pipe(notify('prod:scss'));
-		//.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe($reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
 }

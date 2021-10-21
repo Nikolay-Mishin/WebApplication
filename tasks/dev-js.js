@@ -4,7 +4,7 @@ const {
 	config: { paths },
 	modules: {
 		gulp: { src, dest },
-		reload, stream, sourcemaps, rigger, uglify
+		$reload, stream, sourcemaps, rigger, uglify
 	}
 } = h;
 
@@ -18,6 +18,6 @@ export default function dev_js() {
 		.pipe(sourcemaps.write('.')) // Пропишем карты
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify('dev:js'));
-		//.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe($reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
 }

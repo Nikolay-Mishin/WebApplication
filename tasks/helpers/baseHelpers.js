@@ -2,9 +2,9 @@ import { log } from 'console';
 import { env, cwd as $cwd, argv as $argv } from 'process';
 import { fileURLToPath as toPath } from 'url';
 import {
-	existsSync as exist, readdirSync as readDir, statSync as stat, readFileSync as readFile, writeFileSync as writeFile
+	existsSync as exist, readdirSync as readDir, statSync as stat, readFileSync as read, writeFileSync as write
 } from 'fs';
-import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
+import { resolve, join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 import { Buffer } from 'buffer';
 import { imports, importModules } from './import.js';
 
@@ -167,12 +167,8 @@ const h = {}.addRegister(
 	function toJson(item, space = null, replacer = null) { return JSON.stringify(item, replacer, space); },
 	function isJson(item) { return item.jsonParse() ? true : false; },
 	function jsonParse(item) {
-		try {
-			item = JSON.parse(item);
-		}
-		catch (e) {
-			return null;
-		}
+		try { item = JSON.parse(item); }
+		catch (e) { return null; }
 		return item;
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
@@ -235,7 +231,7 @@ const fs = {}.addRegister(
 	}
 );
 
-const { _dirname, _relative } = fs;
+const { _dirname, _relative, toPath: strToPath } = fs;
 export { _dirname as dirname, _relative as relative };
 export const { fileName, isDir, isFile, getFolders, getFiles } = fs;
 
@@ -262,7 +258,7 @@ const _context = {}.addRegister(
 	},
 	(function searchFile(path, search, parent = true) {
 		const filePath = join(path, search),
-			_file = path.isDir() && filePath.isFile() ? readFile(filePath) : null,
+			_file = path.isDir() && filePath.isFile() ? read(filePath) : null,
 			result = () => {
 				const result = {}.assign(this);
 				[this.config, this.root, this.parent] = [null, null, {}];
@@ -313,7 +309,7 @@ const _context = {}.addRegister(
 				$package['-vs-binding'] = npm;
 				//'$package\n'.log({}.assign($package).$delete('$path', '$file').toJson(4));
 				//'npm:'.log(`${name}.${ext}`);
-				if (config?.setBinding) writeFile(`${name}.${ext}`, {}.assign($package).$delete('$path', '$file').toJson(4));
+				if (config?.setBinding) write(`${name}.${ext}`, {}.assign($package).$delete('$path', '$file').toJson(4));
 			}
 			if (gulp && gulpfile) {
 				const bindings = gulp.entries().reduce((str, val) => str += ` ${val[0]}='${val[1].join(', ')}'`, '// <binding'),
@@ -324,15 +320,25 @@ const _context = {}.addRegister(
 						file = _gulpfile.file = Buffer.from(exec.input = exec.input.replace(exec[0], `${bindings} />\r\n`));
 					//'gulpfile:'.log(file);
 					//'gulp:'.log(`${name}.${ext}`);
-					if (config?.setBinding) writeFile(`${name}.${ext}`, file);
+					if (config?.setBinding) write(`${name}.${ext}`, file);
 				}
 			}
 		}
 		return configList;
+	},
+	function initProjects(path, ...projects) {
+		return projects.map(proj => {
+			let _path;
+			return [proj, {
+				path: _path = join(path, proj),
+				package: !exist(_path = join(_path, 'package.json')) ? null : read(_path).jsonParse()
+			}];
+		}).fromEntries();
+		
 	}
 );
 
-export const { runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding } = _context;
+export const { runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects } = _context;
 
 [].registerAll();
 

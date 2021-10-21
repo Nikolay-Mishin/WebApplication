@@ -1,9 +1,12 @@
 import { pathToFileURL as toUrl } from 'url';
-import config, { configList, project, context, root, projList } from './config.js';
+import config, { configList, project, context, projectsPath, projList, root } from './config.js';
 import bh, { argv, log, from } from './baseHelpers.js';
 import dh, { window, document, dom, nodeList, html, htmlEl } from './domHelpers.js';
 
-export { configList, project, context, root, projList, argv, log, from, window, document, dom, nodeList, html, htmlEl };
+export {
+	configList, project, context, projectsPath, projList, root,
+	argv, log, from, window, document, dom, nodeList, html, htmlEl
+};
 
 const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
@@ -27,7 +30,7 @@ export const {
 	concat, slice, $delete, reverse, renameKeys,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
-	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding
+	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects
 } = bh;
 
 renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
@@ -113,3 +116,4 @@ log('projList:', projList);
 
 'project:'.log(project);
 'context:'.log(context);
+'projectsPath:'.log(projectsPath);

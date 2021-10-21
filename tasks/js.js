@@ -1,10 +1,10 @@
 import h from './helpers/helpers.js';
 const {
 		lastRun, error, notify,
-		config: { paths, webpackConfig },
+		config: { paths },
 		modules: {
 			gulp: { src, dest },
-			reload, stream, $if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
+			$reload, stream, $if, rename, sourcemaps, rigger, uglify, webpack, webpackStream
 		}
 	} = h;
 
@@ -25,6 +25,6 @@ export default async function js() {
 		.pipe($if(dev, sourcemaps.write('.'))) // Пропишем карты
 		.pipe(dest(paths.build.js)) // готовый файл min в build
 		.pipe(notify(`${mode}:js`));
-		//.pipe(reload({ stream: true })); // И перезагрузим сервер
+		//.pipe($reload({ stream: true })); // И перезагрузим сервер
 		//.pipe(stream());
 }
