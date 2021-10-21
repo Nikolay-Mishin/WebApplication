@@ -1,4 +1,4 @@
-import { INIT_CWD, cwd, args } from './baseHelpers.js';
+import { log, INIT_CWD, cwd, args } from './baseHelpers.js';
 import { join, dirname } from 'path';
 
 const bindings = ['config.json', 'package.json', 'gulpfile.js'],
@@ -7,15 +7,15 @@ const bindings = ['config.json', 'package.json', 'gulpfile.js'],
 export const configList = INIT_CWD.setBinding(...bindings).assign(INIT_CWD.assignFiles(...esConfigs)),
 	{ config, package: $package, gulpfile, tsconfig } = configList;
 
-const { paths: { root: $root = './' } } = config;
+const { excludeProjects = [], paths: { root: $root = './' } } = config;
 
-export const { project, context } = (() => {
+const { project, context, projectsPath } = (() => {
 	const { name = '', deploy: { exclude = [] }, paths: { projects: projectsRoot = '' } } = config,
 		_projectsPath = join(cwd, projectsRoot),
 		exist = _projectsPath.isDir(),
 		projectsPath = exist ? _projectsPath : cwd,
-		projects = projectsPath.getFolders({ exclude })
-			.concat(exist ? [] : dirname(projectsPath).getFolders({ exclude })),
+		projects = projectsPath.getFolders(exclude)
+			.concat(exist ? [] : dirname(projectsPath).getFolders(exclude)),
 		arg = args._filter(([arg, val]) => val === true && (projects.includes(arg))),
 		project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
 		contextPath = join(projectsPath, project),
@@ -31,9 +31,17 @@ export const { project, context } = (() => {
 	//log('args:', args);
 	//log('arg:', arg);
 	//log('projects:', projects);
-	return { project, context };
+	return { project, context, projectsPath };
 })(),
 	root = join(context, $root);
+
+export { project, context, root };
+
+const projList = projectsPath.getFolders(excludeProjects);
+
+log('projList:', projList);
+log('filter:', projList.filter(proj => new RegExp('^_|\W').test(proj)));
+log('projList:', projList.filter(proj => !excludeProjects.filterInclude(proj)));
 
 // Подключаемые модули
 const {

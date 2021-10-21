@@ -20,10 +20,11 @@ export const {
 	nullProto, objProto, arrProto, INIT_CWD, cwd, parseArgs, args,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
 	imports, importModules, error: errorMsg,
-	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, isArray,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray,
 	funcName, is, isObject, isFunc,
 	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, filter: filterObj, filterIn, filterWithout, concat, slice, $delete, reverse, renameKeys,
+	toJson, isJson, jsonParse, empty, filter: filterObj, filterWithout, filterIn, filterInclude,
+	concat, slice, $delete, reverse, renameKeys,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
 	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding

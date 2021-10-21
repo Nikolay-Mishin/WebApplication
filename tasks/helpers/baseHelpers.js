@@ -34,7 +34,7 @@ export const nullProto = {}.__proto__,
 	objProto = Object.prototype,
 	arrProto = Array.prototype,
 	error = msg => { throw new Error(msg) },
-	{ assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames } = Object,
+	{ assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, is: equal } = Object,
 	{ isArray, from } = Array,
 	funcName = func => func.name.replace('bound ', '').trim(),
 	is = (context, obj) => (function (obj) { return obj != null && obj.constructor === this; }).call(context, obj),
@@ -137,7 +137,7 @@ export const createObj = (proto = Object, props) => Object.create(proto, props),
 
 const h = {}.addRegister(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
-	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, isArray, from,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,
 	funcName, is, isObject, isFunc,
 	function getProps(obj = Object) { return obj.getOwnPropertyNames(); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
@@ -176,6 +176,7 @@ const h = {}.addRegister(
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
 	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
+	function filterWithout(obj, arr, values = false) { return filterIn(obj, arr, values, true); },
 	function filterIn(obj, arr, values = false, without = false) {
 		const isArr = obj.isArray();
 		return arr.empty() ? obj : obj[isArr ? 'filter' : '_filter'](_v => {
@@ -184,7 +185,12 @@ const h = {}.addRegister(
 			return without ? !includes : includes;
 		});
 	},
-	function filterWithout(obj, arr, values = false) { return filterIn(obj, arr, values, true); },
+	function filterInclude(patterns, str) {
+		let test = patterns.includes(str);
+		if (!test) test = patterns.find(pattern => { log(pattern, str.toLowerCase()); log('RegExp:', new RegExp(pattern).test(str.toLowerCase())); return new RegExp(pattern).test(str.toLowerCase()); });
+		log('test:', test);
+		return test;
+	},
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
 	function $delete(obj, ...keys) { keys.forEach(key => delete obj[key]); return obj; },
@@ -209,7 +215,8 @@ const h = {}.addRegister(
 
 export const {
 	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, _filter: filter, filterIn, filterWithout, concat, slice, $delete, reverse, renameKeys
+	toJson, isJson, jsonParse, empty, _filter: filter, filterWithout, filterIn, filterInclude,
+	concat, slice, $delete, reverse, renameKeys
 } = h;
 
 const fs = {}.addRegister(
@@ -220,7 +227,7 @@ const fs = {}.addRegister(
 	},
 	function isDir(path) { return exist(path) && stat(path).isDirectory(); },
 	function isFile(path) { return exist(path) && stat(path).isFile(); },
-	function getFolders(path, { exclude = [] } = {}) {
+	function getFolders(path, exclude = []) {
 		return readDir(path).filter(f => join(path, f).isDir() && !exclude.includes(f));
 	},
 	function getFiles(path, { exclude = [], nonExt = false } = {}) {

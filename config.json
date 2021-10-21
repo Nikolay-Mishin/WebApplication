@@ -1,5 +1,6 @@
 {
 	"name": "WebApplication",
+	"excludeProjects": [ "alivio-html-project", "^battle-city", "drawter-master", "ExtremeCode", "^gulp", "gw-starter-kit", "object-unfreeze", "^php", "utimur", "vladilenm", "Webpack" ],
 	"setBinding": false,
 	"binding": {
 		"gulp": {
