@@ -1,9 +1,9 @@
 import { pathToFileURL as toUrl } from 'url';
-import config, { configList, project, context, root } from './config.js';
+import config, { configList, project, context, root, projList } from './config.js';
 import bh, { argv, log, from } from './baseHelpers.js';
 import dh, { window, document, dom, nodeList, html, htmlEl } from './domHelpers.js';
 
-export { configList, project, context, root, argv, log, from, window, document, dom, nodeList, html, htmlEl };
+export { configList, project, context, root, projList, argv, log, from, window, document, dom, nodeList, html, htmlEl };
 
 const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
@@ -22,8 +22,8 @@ export const {
 	imports, importModules, error: errorMsg,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray,
 	funcName, is, isObject, isFunc,
-	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, filter: filterObj, filterWithout, filterIn, filterInclude,
+	toNum, getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
+	toJson, isJson, jsonParse, empty, filter: filterObj, filterWithout, filterIn, includes,
 	concat, slice, $delete, reverse, renameKeys,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
@@ -51,10 +51,10 @@ const h = {
 		if (useWebpack ?? this.config.useWebpack) return useWebpack ?? this.config.useWebpack;
 		const search = 'es',
 			includes = _esModule.includes(search),
-			replace = _esModule.replace(new RegExp(search), ''),
+			replace = _esModule.replace(search, ''),
 			esNext = replace.toLowerCase() === 'next',
-			higher5 = Number(replace) >= 6,
-			higher2014 = Number(replace) >= 2015;
+			higher5 = replace.toNum() >= 6,
+			higher2014 = replace.toNum() >= 2015;
 		return (this.config = { useWebpack: !includes || esNext || higher5 || higher2014 }).useWebpack;
 	},
 	get mode() { return this.dev ? 'dev' : 'prod'; },
@@ -83,9 +83,10 @@ const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
 export const { relativeRoot, setMode, setModeSync, currTask, error } = h;
 
+//({}).unregister(...keys(filterWithout(h, helpers)));
+
 log('h:', h);
 
-//({}).unregister(...keys(filterWithout(h, helpers)));
 ({}).unregister();
 
 log({}.setBinding);
@@ -107,6 +108,8 @@ log('location:', document.location);
 log('nodeList:', nodeList);
 log('html:', html);
 log('htmlEl:', htmlEl);
+
+log('projList:', projList);
 
 'project:'.log(project);
 'context:'.log(context);

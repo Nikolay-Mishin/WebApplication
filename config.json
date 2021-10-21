@@ -1,6 +1,6 @@
 {
 	"name": "WebApplication",
-	"excludeProjects": [ "alivio-html-project", "^battle-city", "drawter-master", "ExtremeCode", "^gulp", "gw-starter-kit", "object-unfreeze", "^php", "utimur", "vladilenm", "Webpack" ],
+	"excludeProjects": [ "^(_|\\W)", "bin|obj|properties|node_modules|bower_components|doc", "alivio-html-project", "^battle-city", "drawter-master", "ExtremeCode", "^gulp", "gw-starter-kit", "object-unfreeze", "^php", "utimur", "vladilenm", "Webpack" ],
 	"setBinding": false,
 	"binding": {
 		"gulp": {
@@ -36,22 +36,10 @@
 		"folder": "",
 		"include": [ "*.htaccess" ],
 		"exclude": [
-			".git",
-			".vs",
-			"bin",
-			"obj",
-			"Properties",
-			"**/node_modules",
-			"**/bower_components",
-			"**/doc",
-			"**/Thumbs.db",
-			"**/*.DS_Store",
-			".gitattributes",
-			".gitignore",
-			"*.sln",
-			"*.cs",
-			"appsettings.json",
-			"appsettings.Development.json"
+			".git", ".vs", "bin", "obj", "Properties",
+			"**/node_modules", "**/bower_components", "**/doc",
+			"**/Thumbs.db", "**/*.DS_Store", ".gitattributes", ".gitignore",
+			"*.sln", "*.cs", "appsettings.json", "appsettings.Development.json"
 		]
 	},
 	"paths": {

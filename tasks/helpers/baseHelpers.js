@@ -15,11 +15,11 @@ const getFunc = func => func[keys(func).shift()] ?? func;
 export const { INIT_CWD } = env,
 	cwd = $cwd(),
 	argv = $argv.slice(2),
-	parseArgs = (argList, sep = '^\-+') => {
+	parseArgs = (argList, sep = /^\-+/) => {
 		let args = {}, opt, thisOpt, curOpt;
 		argList.forEach(arg => {
 			thisOpt = arg.trim();
-			opt = thisOpt.replace(new RegExp(sep), '');
+			opt = thisOpt.replace(sep, '');
 			if (thisOpt === opt) {
 				if (curOpt) args[curOpt] = opt; // argument value
 				curOpt = null;
@@ -139,6 +139,7 @@ const h = {}.addRegister(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,
 	funcName, is, isObject, isFunc,
+	function toNum(num) { return Number(num); },
 	function getProps(obj = Object) { return obj.getOwnPropertyNames(); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
 	(function protoList(obj = Object) {
@@ -185,11 +186,8 @@ const h = {}.addRegister(
 			return without ? !includes : includes;
 		});
 	},
-	function filterInclude(patterns, str) {
-		let test = patterns.includes(str);
-		if (!test) test = patterns.find(pattern => { log(pattern, str.toLowerCase()); log('RegExp:', new RegExp(pattern).test(str.toLowerCase())); return new RegExp(pattern).test(str.toLowerCase()); });
-		log('test:', test);
-		return test;
+	function _includes(re, str) {
+		return re.includes(str) || re.find(pattern => new RegExp(pattern).test(str.toLowerCase())) ? true : false;
 	},
 	function concat(...list) { return [].concat.apply([], ...list); },
 	function slice(obj, i = 0) { return [].slice.call(obj, i); },
@@ -201,10 +199,10 @@ const h = {}.addRegister(
 		if (!oldLength && obj.isObject()) obj.$delete('length');
 		return obj;
 	},
-	function renameKeys(obj, { keyList, searchVal = '^_|\W', replaceVal = '' } = {}) {
+	function renameKeys(obj, { keyList, searchVal = /^(_|\W)/, replaceVal = '' } = {}) {
 		keyList = keyList ?? arguments.slice(1);
 		const newKeys = keyList.map((key, i) => {
-			key = key.replace(new RegExp(searchVal), replaceVal);
+			key = key.replace(searchVal, replaceVal);
 			obj[key] = obj[keyList[i]];
 			return key;
 		});
@@ -214,8 +212,8 @@ const h = {}.addRegister(
 );
 
 export const {
-	getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, _filter: filter, filterWithout, filterIn, filterInclude,
+	toNum, getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
+	toJson, isJson, jsonParse, empty, _filter: filter, filterWithout, filterIn, _includes: includes,
 	concat, slice, $delete, reverse, renameKeys
 } = h;
 
@@ -223,16 +221,16 @@ const fs = {}.addRegister(
 	function _dirname(meta) { return dirname(toPath(meta.url)); },
 	function _relative(from, to) { return relative(from.url ? from._dirname() : from, to); },
 	function fileName(f, info = false) {
-		return !info ? base(f, ext(f)) : { file: f, name: base(f, ext(f)), ext: ext(f).replace(new RegExp('^\.'), '') };
+		return !info ? base(f, ext(f)) : { file: f, name: base(f, ext(f)), ext: ext(f).replace(/^\./, '') };
 	},
 	function isDir(path) { return exist(path) && stat(path).isDirectory(); },
 	function isFile(path) { return exist(path) && stat(path).isFile(); },
 	function getFolders(path, exclude = []) {
-		return readDir(path).filter(f => join(path, f).isDir() && !exclude.includes(f));
+		return readDir(path).filter(f => join(path, f).isDir() && !exclude._includes(f));
 	},
 	function getFiles(path, { exclude = [], nonExt = false } = {}) {
 		return readDir(path)
-			.filter(file => join(path, file).isFile() && !exclude.includes(nonExt ? file.fileName() : file))
+			.filter(file => join(path, file).isFile() && !exclude._includes(nonExt ? file.fileName() : file))
 			.map(file => nonExt ? file.replace(ext(file), '') : file);
 	}
 );
@@ -338,7 +336,7 @@ export const { runInContext, searchFile, assignParentFiles, assignRootFiles, ass
 
 [].registerAll();
 
-renameKeys(h, '_filter');
+renameKeys(h, '_filter', '_includes');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
