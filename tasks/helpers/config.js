@@ -17,8 +17,7 @@ const { project, context, projList } = (() => {
 		projList = (exist ? projectsPath : dirname(projectsPath)).getFolders(excludeProjects),
 		arg = args._filter(([arg, val]) => val === true && (projList.includes(arg))),
 		project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
-		contextPath = join(projectsPath, project),
-		context = exist && contextPath.isDir() ? contextPath : projectsPath;
+		context = exist ? join(projectsPath, project) : projectsPath;
 	//log('INIT_CWD:', INIT_CWD);
 	//log('cwd:', cwd);
 	//log('projectsPath:', projectsPath);
