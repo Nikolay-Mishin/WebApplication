@@ -1,8 +1,9 @@
-import { log } from 'console';
-import { env, cwd, argv, title } from 'process';
-import h from '../helpers/helpers.js';
-
-const { INIT_CWD, HOMEDRIVE } = env;
+import { env } from 'process';
+import h, {
+	log, cwd, INIT_CWD, HOMEDRIVE, argv, title,
+	from, project, context, projectsPath, projList, root,
+	document, nodeList, html, htmlEl
+} from '../helpers/helpers.js';
 
 export default async () => {
 	const {
@@ -56,4 +57,37 @@ export default async () => {
 	//	log[h.mode].prod = h.prod;
 	//}
 	//log('log\n', log);
+
+	//({}).unregister(...keys(filterWithout(h, helpers)));
+
+	log('h:', h);
+
+	({}).unregister();
+
+	log({}.setBinding);
+
+	const proto = {}.unregister('setBinding');
+
+	log('proto:', proto);
+	log('props:', proto.getProps());
+
+	log('from:', from(new Map([[0, '1'], [1, '2']])));
+	log('from:', from({ 0: '1', 1: '2' }));
+	log('reverse:', { 0: '1', 1: '2' }.reverse());
+	log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
+	log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
+
+	log('document:', document);
+	log('location:', document.location);
+
+	log('nodeList:', nodeList);
+	log('html:', html);
+	log('htmlEl:', htmlEl);
+
+	log('projList:', projList);
+
+	'project:'.log(project);
+	'root:'.log(root);
+	'context:'.log(context);
+	'projectsPath:'.log(projectsPath);
 }

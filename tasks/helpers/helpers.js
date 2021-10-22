@@ -1,12 +1,9 @@
 import { pathToFileURL as toUrl } from 'url';
 import config, { configList, project, context, projectsPath, projList, root } from './config.js';
-import bh, { argv, log, from } from './baseHelpers.js';
-import dh, { window, document, dom, nodeList, html, htmlEl } from './domHelpers.js';
+import bh, { argv } from './baseHelpers.js';
+import dh, { window, document } from './domHelpers.js';
 
-export {
-	configList, project, context, projectsPath, projList, root,
-	argv, log, from, window, document, dom, nodeList, html, htmlEl
-};
+export { configList, project, context, projectsPath, projList, root, argv, window, document };
 
 const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
@@ -17,13 +14,16 @@ const {
 	}
 } = config;
 
-export const { JSDOM, create, filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect } = dh;
+export const {
+	JSDOM, dom, nodeList, html, htmlEl, create,
+	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
+} = dh;
 
 export const {
-	nullProto, objProto, arrProto, INIT_CWD, cwd, parseArgs, args,
+	log, env, imports, importModules, error: errorMsg,
+	nullProto, objProto, arrProto, cwd, INIT_CWD, HOMEDRIVE, title, parseArgs, args,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
-	imports, importModules, error: errorMsg,
-	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray,
+	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,
 	funcName, is, isObject, isFunc,
 	toNum, getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
 	toJson, isJson, jsonParse, empty, filter: filterObj, filterWithout, filterIn, includes,
@@ -85,35 +85,3 @@ export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList, 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
 export const { relativeRoot, setMode, setModeSync, currTask, error } = h;
-
-//({}).unregister(...keys(filterWithout(h, helpers)));
-
-log('h:', h);
-
-({}).unregister();
-
-log({}.setBinding);
-
-const proto = {}.unregister('setBinding');
-
-log('proto:', proto);
-log('props:', proto.getProps());
-
-log('from:', from(new Map([[0, '1'], [1, '2']])));
-log('from:', from({ 0: '1', 1: '2' }));
-log('reverse:', { 0: '1', 1: '2' }.reverse());
-log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
-log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
-
-log('document:', document);
-log('location:', document.location);
-
-log('nodeList:', nodeList);
-log('html:', html);
-log('htmlEl:', htmlEl);
-
-log('projList:', projList);
-
-'project:'.log(project);
-'context:'.log(context);
-'projectsPath:'.log(projectsPath);

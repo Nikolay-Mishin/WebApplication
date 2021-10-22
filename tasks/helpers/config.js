@@ -1,4 +1,4 @@
-import { log, INIT_CWD, cwd, args } from './baseHelpers.js';
+import { INIT_CWD, cwd, args } from './baseHelpers.js';
 import { join, dirname } from 'path';
 
 const bindings = ['config.json', 'package.json', 'gulpfile.js'],
@@ -9,7 +9,7 @@ export const configList = INIT_CWD.setBinding(...bindings).assign(INIT_CWD.assig
 
 const { excludeProjects = [], paths: { root: $root = './' } } = config;
 
-const { project, context, projectsPath, projList } = (() => {
+export const { project, context, projectsPath, projList } = (() => {
 	const { name = '', paths: { projects: projectsRoot = '' } } = config,
 		_projectsPath = join(cwd, projectsRoot),
 		exist = _projectsPath.isDir(),
@@ -32,8 +32,6 @@ const { project, context, projectsPath, projList } = (() => {
 	return { project, context, projectsPath, projList: projectsPath.initProjects(...projList) };
 })(),
 	root = join(context, $root);
-
-export { project, context, projectsPath, projList, root };
 
 // Подключаемые модули
 const {

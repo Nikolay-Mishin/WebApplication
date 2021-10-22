@@ -1,19 +1,20 @@
 import { log } from 'console';
-import { env, cwd as $cwd, argv as $argv } from 'process';
+import { env, cwd as $cwd, argv as $argv, title } from 'process';
 import { fileURLToPath as toPath } from 'url';
 import {
 	existsSync as exist, readdirSync as readDir, statSync as stat, readFileSync as read, writeFileSync as write
 } from 'fs';
-import { resolve, join, dirname, relative, basename as base, extname as ext, sep } from 'path';
+import { join, dirname, relative, basename as base, extname as ext, sep } from 'path';
 import { Buffer } from 'buffer';
 import { imports, importModules } from './import.js';
 
-export { log, imports, importModules };
+export { log, env, title, imports, importModules };
 
 const getFunc = func => func[keys(func).shift()] ?? func;
 
-export const { INIT_CWD } = env,
-	cwd = $cwd(),
+export const cwd = $cwd(),
+	{ INIT_CWD } = env,
+	{ HOMEDRIVE } = env,
 	argv = $argv.slice(2),
 	parseArgs = (argList, sep = /^\-+/) => {
 		let args = {}, opt, thisOpt, curOpt;
@@ -283,16 +284,16 @@ const _context = {}.addRegister(
 	}).bind({}),
 	function assignParentFiles(parent) { return parent.entries().map(file => file[1]).reverse(); },
 	function assignRootFiles(root, config, parent) {
-		return !config.isObject() ? { file: config } : root.assign(...parent.assignParentFiles(), config);
+		parent = root.assign(...parent.assignParentFiles());
+		return { parent, file: !config.isObject() ? { file: config } : parent.assign(config) };
 	},
 	function assignFiles(path, ...files) {
 		return files.concat().map(file => {
-			const { config, root = {}, parent = {} } = path.searchFile(file);
+			const { config, root = {}, parent = {} } = path.searchFile(file),
+				{ file: $file, parent: $parent } = (root?.file ?? {}).assignRootFiles(config.file, parent);
 			return [
 				file.fileName(),
-				!config ? null :
-					{ $path: `${config.path}\\${file}`, $file: file }
-						.assign((root?.file ?? {}).assignRootFiles(config.file, parent))
+				!config ? null : { $path: `${config.path}\\${file}`, $file: file, $parent }.assign($file)
 			];
 		}).filter(file => file[1] != null).fromEntries();
 	},
@@ -346,6 +347,6 @@ renameKeys(h, '_filter', '_includes');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
-	INIT_CWD, cwd, argv, parseArgs, args, nullProto, objProto, arrProto,
+	cwd, INIT_CWD, HOMEDRIVE, argv, parseArgs, args, nullProto, objProto, arrProto,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister
 }.assignDefine(h, fs, func, _context);
