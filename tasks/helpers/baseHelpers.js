@@ -327,7 +327,7 @@ const _context = {}.addRegister(
 		}
 		return configList;
 	},
-	function initProjects(path, ...projects) {
+	function initProjects(path, configList, ...projects) {
 		return projects.map(proj => {
 			let _path;
 			return [proj, {

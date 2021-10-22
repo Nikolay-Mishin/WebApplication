@@ -29,7 +29,7 @@ export const { project, context, projectsPath, projList } = (() => {
 	//log('args:', args);
 	//log('arg:', arg);
 	//log('projList:', projList);
-	return { project, context, projectsPath, projList: projectsPath.initProjects(...projList) };
+	return { project, context, projectsPath, projList: projectsPath.initProjects(configList, ...projList) };
 })(),
 	root = join(context, $root);
 
