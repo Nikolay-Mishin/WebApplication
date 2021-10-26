@@ -1,13 +1,12 @@
-import { env } from 'process';
 import h, {
-	log, cwd, INIT_CWD, HOMEDRIVE, argv, title,
-	from, project, context, projectsPath, projList, root,
-	document, nodeList, html, htmlEl
+	log, env, cwd, INIT_CWD, HOMEDRIVE, argv, title,
+	from, project, context, projectsPath, projList, root
+	//document, nodeList, html, htmlEl
 } from '../helpers/helpers.js';
 
 export default async () => {
 	const {
-			config, modules, tasks, useWebpack, tasksList, args, currTask,
+			config, modules, tasks, useWebpack, args,
 			dirname, setModeSync, mode, dev, prod
 		} = h,
 		{ paths, serverConfig } = config,
@@ -15,9 +14,7 @@ export default async () => {
 
 	//log('process\n', process);
 
-	//log('tasksList\n', tasksList);
-
-	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, currTask, args });
+	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, args });
 
 	//log('env\n', env);
 	//log('argv\n', argv);
@@ -77,12 +74,12 @@ export default async () => {
 	log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
 	log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
 
-	log('document:', document);
-	log('location:', document.location);
+	//log('document:', document);
+	//log('location:', document.location);
 
-	log('nodeList:', nodeList);
-	log('html:', html);
-	log('htmlEl:', htmlEl);
+	//log('nodeList:', nodeList);
+	//log('html:', html);
+	//log('htmlEl:', htmlEl);
 
 	log('projList:', projList);
 

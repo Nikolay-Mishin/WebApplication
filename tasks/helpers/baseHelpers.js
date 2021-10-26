@@ -250,6 +250,27 @@ const func = {}.addRegister(
 export const { callThis, bind, getBind, setBind, callBind } = func;
 
 const _context = {}.addRegister(
+	function getContext(name, projectsRoot, configList, excludeProjects = []) {
+		const _projectsPath = join(cwd, projectsRoot),
+			exist = _projectsPath.isDir(),
+			projectsPath = exist ? _projectsPath : dirname(cwd),
+			projList = projectsPath.getFolders(excludeProjects),
+			arg = args._filter(([arg, val]) => val === true && (projList.includes(arg))),
+			project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
+			context = join(projectsPath, project);
+		//log('INIT_CWD:', INIT_CWD);
+		//log('cwd:', cwd);
+		//log('projectsPath:', projectsPath);
+		//log('exist:', exist);
+		//log('cwd.fileName():', cwd.fileName());
+		//log('name:', name);
+		//log('project:', project);
+		//log('context:', context);
+		//log('args:', args);
+		//log('arg:', arg);
+		//log('projList:', projList);
+		return { project, context, projectsPath, projList: projectsPath.initProjects(configList, ...projList) };
+	},
 	function runInContext(path, cb) {
 		const context = relative(cwd, path),
 			project = context.split(sep)[0];
@@ -335,11 +356,13 @@ const _context = {}.addRegister(
 				package: !exist(_path = join(_path, 'package.json')) ? null : read(_path).jsonParse()
 			}];
 		}).fromEntries();
-		
+
 	}
 );
 
-export const { runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects } = _context;
+export const {
+	getContext, runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects
+} = _context;
 
 [].registerAll();
 

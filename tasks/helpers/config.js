@@ -7,30 +7,9 @@ const bindings = ['config.json', 'package.json', 'gulpfile.js'],
 export const configList = INIT_CWD.setBinding(...bindings).assign(INIT_CWD.assignFiles(...esConfigs)),
 	{ config, package: $package, gulpfile, tsconfig } = configList;
 
-const { excludeProjects = [], paths: { root: $root = './' } } = config;
+const { name = '', excludeProjects = [], paths: { root: $root = './', projects: projectsRoot = '' } } = config;
 
-export const { project, context, projectsPath, projList } = (() => {
-	const { name = '', paths: { projects: projectsRoot = '' } } = config,
-		_projectsPath = join(cwd, projectsRoot),
-		exist = _projectsPath.isDir(),
-		projectsPath = exist ? _projectsPath : dirname(cwd),
-		projList = projectsPath.getFolders(excludeProjects),
-		arg = args._filter(([arg, val]) => val === true && (projList.includes(arg))),
-		project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
-		context = join(projectsPath, project);
-	//log('INIT_CWD:', INIT_CWD);
-	//log('cwd:', cwd);
-	//log('projectsPath:', projectsPath);
-	//log('exist:', exist);
-	//log('cwd.fileName():', cwd.fileName());
-	//log('name:', name);
-	//log('project:', project);
-	//log('context:', context);
-	//log('args:', args);
-	//log('arg:', arg);
-	//log('projList:', projList);
-	return { project, context, projectsPath, projList: projectsPath.initProjects(configList, ...projList) };
-})(),
+export const { project, context, projectsPath, projList } = name.getContext(projectsRoot, configList, excludeProjects),
 	root = join(context, $root);
 
 // Подключаемые модули

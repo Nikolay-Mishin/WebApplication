@@ -1,15 +1,15 @@
 import { log } from 'console';
 import h from './helpers.js';
 const {
-		config: { paths: { tasks: {
-			root, deploy, watch: { tasks, root: $root, doc, package: $package, server }
-		}}},
-		modules: {
-			gulp: { src, dest, watch, lastRun },
-			path: { join },
-			changed
-		}
-	} = h;
+	config: { paths: { tasks: {
+		root, deploy, watch: { tasks, root: $root, doc, package: $package, server }
+	}}},
+	modules: {
+		gulp: { src, dest, watch, lastRun },
+		path: { join },
+		changed
+	}
+} = h;
 
 export default async () => {
 	watch(tasks, function tasksWatch() {

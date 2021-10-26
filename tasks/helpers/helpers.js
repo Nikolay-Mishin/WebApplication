@@ -1,9 +1,9 @@
 import { pathToFileURL as toUrl } from 'url';
 import config, { configList, project, context, projectsPath, projList, root } from './config.js';
 import bh, { argv } from './baseHelpers.js';
-import dh, { window, document } from './domHelpers.js';
+//import dh, { window, document } from './domHelpers.js';
 
-export { configList, project, context, projectsPath, projList, root, argv, window, document };
+export { configList, project, context, projectsPath, projList, root, argv/*, window, document*/ };
 
 const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
@@ -14,10 +14,10 @@ const {
 	}
 } = config;
 
-export const {
-	JSDOM, dom, nodeList, html, htmlEl, create,
-	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
-} = dh;
+//export const {
+//	JSDOM, dom, nodeList, html, htmlEl, create,
+//	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
+//} = dh;
 
 export const {
 	log, env, imports, importModules, error: errorMsg,
@@ -30,7 +30,7 @@ export const {
 	concat, slice, $delete, reverse, renameKeys,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
-	runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects
+	getContext, runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects
 } = bh;
 
 renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
@@ -80,7 +80,7 @@ const h = {
 	}
 };
 
-export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList, project, context }), helpers);
+export default filterIn(h.setBind(h.setMode).assignDefine(bh, /*dh,*/ { configList, project, context }), helpers);
 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };
