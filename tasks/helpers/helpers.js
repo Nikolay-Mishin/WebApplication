@@ -1,7 +1,7 @@
 import { pathToFileURL as toUrl } from 'url';
 import config, { configList, project, context, projectsPath, projList, root } from './config.js';
-import bh, { argv } from './baseHelpers.js';
-//import dh, { window, document } from './domHelpers.js';
+import bh, { argv, renameKeys } from './baseHelpers.js';
+import dh/*, { window, document }*/ from './domHelpers.js';
 
 export { configList, project, context, projectsPath, projList, root, argv/*, window, document*/ };
 
@@ -19,22 +19,22 @@ const {
 //	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
 //} = dh;
 
+renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
+renameKeys(bh, { keyList: ['filter'], searchVal: 'filter', replaceVal: 'filterObj' });
+
 export const {
-	log, env, imports, importModules, error: errorMsg,
+	log, env, imports, importModules, errorMsg,
 	nullProto, objProto, arrProto, cwd, INIT_CWD, HOMEDRIVE, title, parseArgs, args,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,
 	funcName, is, isObject, isFunc,
 	toNum, getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, filter: filterObj, filterWithout, filterIn, includes,
-	concat, slice, $delete, reverse, renameKeys,
+	toJson, isJson, jsonParse, empty, filterObj, map, filterWithout, filterIn, includes,
+	concat, slice, $delete, reverse,
 	dirname, relative, fileName, isDir, isFile, getFolders, getFiles,
 	callThis, bind, getBind, setBind, callBind,
 	getContext, runInContext, searchFile, assignParentFiles, assignRootFiles, assignFiles, setBinding, initProjects
 } = bh;
-
-renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
-renameKeys(bh, { keyList: ['filter'], searchVal: 'filter', replaceVal: 'filterObj' });
 
 const h = {
 	relativeRoot: {}._register(function relativeRoot(from) { return from._relative(root); }),
@@ -80,7 +80,7 @@ const h = {
 	}
 };
 
-export default filterIn(h.setBind(h.setMode).assignDefine(bh, /*dh,*/ { configList, project, context }), helpers);
+export default filterIn(h.setBind(h.setMode).assignDefine(bh, dh, { configList, project, context }), helpers);
 
 const { lastRun: _lastRun, notify: _notify } = h;
 export { _lastRun as lastRun, _notify as notify };

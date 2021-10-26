@@ -173,13 +173,13 @@ const h = {}.addRegister(
 		return item;
 	},
 	function empty(obj) { return (obj.isObject() ? obj.keys() : obj).length == 0; },
-	function _filter(obj, cb) { return obj.entries().filter(cb).fromEntries(); },
+	function _filter(obj, cb) { return obj.entries().filter(([key, val], i, obj) => cb(val, key, i, obj)).fromEntries(); },
+	function _map(obj, cb) { return obj.entries().map(([key, val], i, obj) => cb(val, key, i, obj)).fromEntries(); },
 	function filterWithout(obj, arr, values = false) { return filterIn(obj, arr, values, true); },
 	function filterIn(obj, arr, values = false, without = false) {
 		const isArr = obj.isArray();
-		return arr.empty() ? obj : obj[isArr ? 'filter' : '_filter'](_v => {
-			const [k, v] = isArr ? [null, _v] : _v,
-				includes = arr.includes(k && values ? k : v);
+		return arr.empty() ? obj : obj[isArr ? 'filter' : '_filter']((v, k) => {
+			const includes = arr.includes(isArr || values ? v : k);
 			return without ? !includes : includes;
 		});
 	},
@@ -210,7 +210,7 @@ const h = {}.addRegister(
 
 export const {
 	toNum, getProps, getProto, protoList, forEach, defineAll, getDesc, assignDefine,
-	toJson, isJson, jsonParse, empty, _filter: filter, filterWithout, filterIn, _includes: includes,
+	toJson, isJson, jsonParse, empty, _filter: filter, _map: map, filterWithout, filterIn, _includes: includes,
 	concat, slice, $delete, reverse, renameKeys
 } = h;
 
@@ -232,7 +232,7 @@ const fs = {}.addRegister(
 	}
 );
 
-const { _dirname, _relative, toPath: strToPath } = fs;
+const { _dirname, _relative } = fs;
 export { _dirname as dirname, _relative as relative };
 export const { fileName, isDir, isFile, getFolders, getFiles } = fs;
 
@@ -255,7 +255,7 @@ const _context = {}.addRegister(
 			exist = _projectsPath.isDir(),
 			projectsPath = exist ? _projectsPath : dirname(cwd),
 			projList = projectsPath.getFolders(excludeProjects),
-			arg = args._filter(([arg, val]) => val === true && (projList.includes(arg))),
+			arg = args._filter((val, arg) => val === true && (projList.includes(arg))),
 			project = !name ? name : arg.keys()[1] ?? (exist && INIT_CWD != cwd ? INIT_CWD : cwd).fileName(),
 			context = join(projectsPath, project);
 		//log('INIT_CWD:', INIT_CWD);
@@ -349,14 +349,25 @@ const _context = {}.addRegister(
 		return configList;
 	},
 	function initProjects(path, configList, ...projects) {
-		return projects.map(proj => {
+		configList = configList._map((val, key) => [key, val.$parent]);
+		log('configList:', configList);
+		const { config, package: $package } = configList;
+		projects = projects.map(proj => {
 			let _path;
+			//const newPackage = $package._map((val, key) => {
+			//	if (key === 'name' && val !== proj) val = proj;
+			//	return [key, val];
+			//});
+			const newPackage = {
+				name: proj
+			};
 			return [proj, {
 				path: _path = join(path, proj),
-				package: !exist(_path = join(_path, 'package.json')) ? null : read(_path).jsonParse()
+				package: !exist(_path = join(_path, 'package.json')) ? newPackage : read(_path).jsonParse()
 			}];
 		}).fromEntries();
-
+		log('projects:', projects);
+		return projects;
 	}
 );
 
@@ -366,7 +377,7 @@ export const {
 
 [].registerAll();
 
-renameKeys(h, '_filter', '_includes');
+renameKeys(h, '_filter', '_map','_includes');
 fs.renameKeys('_dirname', '_relative');
 
 export default {
