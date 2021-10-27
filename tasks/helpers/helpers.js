@@ -21,9 +21,6 @@ export const {
 
 renameKeys(bh, { keyList: ['error', 'create', 'filter'], replaceVal: ['errorMsg', 'createObj', 'filterObj'] });
 
-log('bh:', bh);
-log('dh:', dh);
-
 export const {
 	env, imports, importModules, errorMsg,
 	nullProto, objProto, arrProto, cwd, INIT_CWD, HOMEDRIVE, title, parseArgs, args,
