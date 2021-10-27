@@ -378,7 +378,6 @@ const _context = {}.addRegister(
 					license, author, engines, scripts,
 					'-vs-binding': $package['-vs-binding']
 				};
-
 			return [proj, {
 				path: _path,
 				config: !exist(configPath) ? newConfig : newConfig.assign(read(configPath).jsonParse()),
