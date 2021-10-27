@@ -44,7 +44,7 @@ export const nullProto = {}.__proto__,
 
 // return {} => __proto__ = obj
 // new Object(obj) - return obj => __proto__ = obj.__proto__
-export const createObj = (proto = Object, props) => Object.create(proto, props),
+export const create = (proto = Object, props) => Object.create(proto, props),
 	createAssign = (proto = Object, ...assignList) => assign(createObj(proto), ...assignList),
 	hasOwn = (() => {
 		if (!nullProto.hasOwnProperty('hasOwn')) {
@@ -139,7 +139,7 @@ export const createObj = (proto = Object, props) => Object.create(proto, props),
 const h = {}.addRegister(
 	log, imports, importModules, [error, { prop: 'errorMsg' }],
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,
-	funcName, is, isObject, isFunc,
+	funcName, is, isObject, isFunc, createAssign, [create, { prop: 'createObj' }],
 	function toNum(num) { return Number(num); },
 	function getProps(obj = Object) { return obj.getOwnPropertyNames(); },
 	function getProto(obj = Object, i = 0) { return obj.protoList()[i]; },
@@ -196,10 +196,14 @@ const h = {}.addRegister(
 		if (!oldLength && obj.isObject()) obj.$delete('length');
 		return obj;
 	},
-	function renameKeys(obj, { keyList, searchVal = /^(_|\W)/, replaceVal = '' } = {}) {
+	function renameKeys(obj, { keyList, searchVal, replaceVal = '' } = {}) {
+		searchVal = keyList ? searchVal : /^(_|\W)/;
 		keyList = keyList ?? arguments.slice(1);
+		searchVal = searchVal ?? keyList;
 		const newKeys = keyList.map((key, i) => {
-			key = key.replace(searchVal, replaceVal);
+			const search = searchVal.isArray() ? searchVal[i] : searchVal,
+				replace = replaceVal.isArray() ? replaceVal[i] : replaceVal;
+			key = key.replace(search, replace);
 			obj[key] = obj[keyList[i]];
 			return key;
 		});
@@ -351,7 +355,7 @@ const _context = {}.addRegister(
 	function initProjects(path, configList, ...projects) {
 		configList = configList._map((val, key) => [key, val.$parent]);
 
-		log('configList:', configList);
+		//log('configList:', configList);
 
 		const { config, package: $package } = configList,
 			{ binding } = config,
@@ -386,7 +390,7 @@ const _context = {}.addRegister(
 			}];
 		}).fromEntries();
 
-		log('projects:', projects);
+		//log('projects:', projects);
 
 		return projects;
 	}
@@ -403,5 +407,5 @@ fs.renameKeys('_dirname', '_relative');
 
 export default {
 	cwd, INIT_CWD, HOMEDRIVE, argv, parseArgs, args, nullProto, objProto, arrProto,
-	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister
+	hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister
 }.assignDefine(h, fs, func, _context);

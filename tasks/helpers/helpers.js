@@ -1,9 +1,9 @@
 import { pathToFileURL as toUrl } from 'url';
 import config, { configList, project, context, projectsPath, projList, root } from './config.js';
-import bh, { argv, renameKeys } from './baseHelpers.js';
-import dh/*, { window, document }*/ from './domHelpers.js';
+import bh, { log, argv, renameKeys } from './baseHelpers.js';
+import dh, { window, document } from './domHelpers.js';
 
-export { configList, project, context, projectsPath, projList, root, argv/*, window, document*/ };
+export { configList, project, context, projectsPath, projList, root, log, argv, window, document };
 
 const {
 	helpers, useWebpack, esModule, webpackConfig, tsconfig,
@@ -14,16 +14,18 @@ const {
 	}
 } = config;
 
-//export const {
-//	JSDOM, dom, nodeList, html, htmlEl, create,
-//	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
-//} = dh;
+export const {
+	JSDOM, dom, nodeList, html, htmlEl, create,
+	filter, clearClasses, getAll, getStyles, get, addEvent, setHtml, getRect
+} = dh;
 
-renameKeys(bh, { keyList: ['error'], searchVal: 'error', replaceVal: 'errorMsg' });
-renameKeys(bh, { keyList: ['filter'], searchVal: 'filter', replaceVal: 'filterObj' });
+renameKeys(bh, { keyList: ['error', 'create', 'filter'], replaceVal: ['errorMsg', 'createObj', 'filterObj'] });
+
+log('bh:', bh);
+log('dh:', dh);
 
 export const {
-	log, env, imports, importModules, errorMsg,
+	env, imports, importModules, errorMsg,
 	nullProto, objProto, arrProto, cwd, INIT_CWD, HOMEDRIVE, title, parseArgs, args,
 	createObj, createAssign, hasOwn, define, getPrototype, register, filterEntries, registerAll, addRegister, unregister,
 	assign, keys, values, fromEntries, entries, getPrototypeOf, getOwnPropertyNames, equal, isArray, from,

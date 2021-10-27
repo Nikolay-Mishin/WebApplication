@@ -6,15 +6,15 @@ import h, {
 
 export default async () => {
 	const {
-			config, modules, tasks, useWebpack, args,
-			dirname, setModeSync, mode, dev, prod
-		} = h,
+		config, modules, tasks, useWebpack, args, currTask,
+		dirname, setModeSync, mode, dev, prod
+	} = h,
 		{ paths, serverConfig } = config,
 		{ server } = modules;
 
 	//log('process\n', process);
 
-	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, args });
+	//log('env-list\n', { title, cwd: cwd(), INIT_CWD, HOMEDRIVE, args, currTask });
 
 	//log('env\n', env);
 	//log('argv\n', argv);

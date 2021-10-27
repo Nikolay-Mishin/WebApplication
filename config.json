@@ -83,7 +83,7 @@
 			"deploy": "../_server",
 			"watch": {
 				"tasks": "tasks/**/*",
-				"root": [ "!*doc*", "*.js", "*config*", "*lint*", ".git*", ".*" ],
+				"root": [ "!*doc*", "*.js", "*config*", "*lint*", ".eslintrc.*", ".gitattributes", ".gitignore" ],
 				"doc": "doc/**/*",
 				"package": "package.json",
 				"server": [ "../../../package.json", "../../../.editorconfig" ]
