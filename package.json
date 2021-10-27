@@ -5,7 +5,7 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"module": "./tslib.es6.js",
+			"module": "./tasks/helpers/config.js",
 			"import": "./modules/index.js",
 			"default": "./tasks/helpers/config.js"
 		},
@@ -37,7 +37,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"gulp": "gulp",
 		"tasks": "gulp --tasks",
-		"tasksWatch": "gulp _tasksWatch"
+		"tasksWatch": "gulp $tasksWatch"
 	},
 	"-vs-binding": {
 		"BeforeBuild": [

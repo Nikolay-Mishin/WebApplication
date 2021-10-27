@@ -350,23 +350,44 @@ const _context = {}.addRegister(
 	},
 	function initProjects(path, configList, ...projects) {
 		configList = configList._map((val, key) => [key, val.$parent]);
+
 		log('configList:', configList);
-		const { config, package: $package } = configList;
+
+		const { config, package: $package } = configList,
+			{ binding } = config,
+			{ type, license, author, engines, scripts } = $package;
 		projects = projects.map(proj => {
-			let _path;
-			//const newPackage = $package._map((val, key) => {
-			//	if (key === 'name' && val !== proj) val = proj;
-			//	return [key, val];
-			//});
-			const newPackage = {
-				name: proj
-			};
+			const _path = join(path, proj),
+				configPath = join(_path, 'config.json'),
+				packagePath = join(_path, 'package.json'),
+				newConfig = {
+					name: proj,
+					binding
+				},
+				newPackage = {
+					name: proj,
+					version: '0.0.1',
+					main: './index.js',
+					type,
+					exports: {
+						'.': {
+							'default': './index.js'
+						},
+						'./*': './*.js'
+					},
+					license, author, engines, scripts,
+					'-vs-binding': $package['-vs-binding']
+				};
+
 			return [proj, {
-				path: _path = join(path, proj),
-				package: !exist(_path = join(_path, 'package.json')) ? newPackage : read(_path).jsonParse()
+				path: _path,
+				config: !exist(configPath) ? newConfig : newConfig.assign(read(configPath).jsonParse()),
+				package: !exist(packagePath) ? newPackage : newPackage.assign(read(packagePath).jsonParse())
 			}];
 		}).fromEntries();
+
 		log('projects:', projects);
+
 		return projects;
 	}
 );
