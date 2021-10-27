@@ -1,7 +1,7 @@
 import h, {
 	log, env, cwd, INIT_CWD, HOMEDRIVE, argv, title,
-	from, project, context, projectsPath, projList, root
-	//document, nodeList, html, htmlEl
+	from, project, context, projectsPath, projList, root,
+	document, nodeList, html, htmlEl
 } from '../helpers/helpers.js';
 
 export default async () => {
@@ -74,12 +74,12 @@ export default async () => {
 	log('reverse:', new Map([[0, '1'], [1, '2']]).reverse());
 	log('fromEntries:', [['1', '2'], ['0', '1']].fromEntries());
 
-	//log('document:', document);
-	//log('location:', document.location);
+	log('document:', document);
+	log('location:', document.location);
 
-	//log('nodeList:', nodeList);
-	//log('html:', html);
-	//log('htmlEl:', htmlEl);
+	log('nodeList:', nodeList);
+	log('html:', html);
+	log('htmlEl:', htmlEl);
 
 	log('projList:', projList);
 
