@@ -353,14 +353,10 @@ const _context = {}.addRegister(
 		return configList;
 	},
 	function initProjects(path, configList, ...projects) {
-		configList = configList._map((val, key) => [key, val.$parent]);
-
-		//log('configList:', configList);
-
-		const { config, package: $package } = configList,
+		const { config, package: $package } = configList._map((val, key) => [key, val.$parent]),
 			{ binding } = config,
 			{ type, license, author, engines, scripts } = $package;
-		projects = projects.map(proj => {
+		return projects.map(proj => {
 			const _path = join(path, proj),
 				configPath = join(_path, 'config.json'),
 				packagePath = join(_path, 'package.json'),
@@ -389,10 +385,6 @@ const _context = {}.addRegister(
 				package: !exist(packagePath) ? newPackage : newPackage.assign(read(packagePath).jsonParse())
 			}];
 		}).fromEntries();
-
-		//log('projects:', projects);
-
-		return projects;
 	}
 );
 
