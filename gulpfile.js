@@ -21,7 +21,7 @@ export const {
 	move = series(clean, move_files);
 
 // задача по умолчанию
-//export default build;
+export default build;
 
 export { $tasksWatch, $test };
 
